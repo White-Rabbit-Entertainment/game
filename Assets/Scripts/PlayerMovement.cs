@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviourPun
     public float gravity = -19.62f;
     public float jumpHeight = 3f;
     private Movement movement;
+
+    void Awake() {
+      DontDestroyOnLoad(gameObject);
+    }
   
     // Start is called before the first frame update
     void Start()
