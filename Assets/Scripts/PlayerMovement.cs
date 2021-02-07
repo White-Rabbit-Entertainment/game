@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float gravity = -19.62f;
     public float jumpHeight = 3f;
-    public Movement movement;
+    private Movement movement;
   
     // Start is called before the first frame update
     void Start()
