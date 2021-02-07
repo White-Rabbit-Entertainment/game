@@ -20,7 +20,7 @@ jobs:
           lfs: true
 
       - name: Decrypt the license file
-        run: openssl aes-256-cbc -d -in Unity_v2019.4.19f1.alf.enc -k ${{ secrets.UNITY_LICENSE_DECRYPT_KEY }} >> .github/Unity_v2019.x.ulf
+        run: openssl aes-256-cbc -d -in .github/Unity_v2019.4.19f1.alf.enc -k ${{ secrets.UNITY_LICENSE_DECRYPT_KEY }} >> .github/Unity_v2019.x.ulf
 
       # Activate unity
       - name: Activate Unity
