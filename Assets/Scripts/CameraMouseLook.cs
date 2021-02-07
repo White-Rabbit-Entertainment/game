@@ -16,9 +16,11 @@ public class CameraMouseLook : MonoBehaviourPun
     void Start()
     {
         if (!photonView.IsMine) {
+          Debug.Log("This is not mine Im out");
           Destroy(this);
+        } else {
+          Cursor.lockState = CursorLockMode.Locked;
         }
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
