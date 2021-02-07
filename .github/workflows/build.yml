@@ -11,6 +11,7 @@ jobs:
   build:
     name: Build my project ✨
     runs-on: ubuntu-latest
+    container: unityci/editor:2019.4.19f1-webgl-0
     steps:
       # Checkout
       - name: Checkout repository
@@ -18,24 +19,16 @@ jobs:
         with:
           lfs: true
 
-      # Cache
-      - uses: actions/cache@v1.1.0
-        with:
-          path: Library
-          key: Library
+      - name: Decrypt the license file
+        run: openssl aes-256-cbc -d -in Unity_v2019.4.19f1.alf.enc -k ${{ secrets.UNITY_LICENSE_DECRYPT_KEY }} >> .github/Unity_v2019.x.ulf
 
-          # # Test
-          # - name: Run tests
-          #   uses: webbertakken/unity-test-runner@v1.3
-          #   with:
-          #     unityVersion: 2019.2.11f1
+      # Activate unity
+      - name: Activate Unity
+        run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -manualLicenseFile .github/Unity_v2019.x.ulf || exit 0
 
-      # Build
-      - name: Build project
-        uses: webbertakken/unity-builder@v0.10
-        with:
-          unityVersion: 2019.4.19f1
-          targetPlatform: WebGL
+      # Build Windows and OSX
+      - name: Build 
+        run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -projectPath . -buildTarget WebGL ./build
 
       # Output
       - uses: actions/upload-artifact@v1
