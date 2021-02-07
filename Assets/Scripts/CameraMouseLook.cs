@@ -18,6 +18,9 @@ public class CameraMouseLook : MonoBehaviourPun
         if (!photonView.IsMine) {
           Debug.Log("This is not mine Im out");
           Destroy(this);
+
+          // Also destory the camera object
+          Destroy(gameObject);
         } else {
           Cursor.lockState = CursorLockMode.Locked;
         }
