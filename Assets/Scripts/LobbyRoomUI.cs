@@ -21,6 +21,6 @@ public class LobbyRoomUI : MonoBehaviour
     }
 
     void SetText() {
-      playerList.text = network.GetPlayers().ToString();
+      playerList.text = network.GetPlayers().Count.ToString();
     }
 }
