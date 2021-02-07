@@ -28,16 +28,19 @@ jobs:
 
       # Build Windows and OSX
       - name: Build 
-        run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -projectPath . -buildTarget WebGL ./build
+        run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -projectPath . -buildTarget WebGL /build
 
       - name: pwd
         run: pwd
       
       - name: ls 
         run: ls 
+      
+      - name: ls /
+        run: ls /
 
       # Output
       - uses: actions/upload-artifact@v1
         with:
           name: Build
-          path: ./build
+          path: /build
