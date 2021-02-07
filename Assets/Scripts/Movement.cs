@@ -5,10 +5,10 @@ using UnityEngine;
 public class Movement
 {
     private float groundDistance = 0.4f;
-    public float speed;
-    public float gravity;
-    public float jumpHeight;
-    public float y = 0f;
+    private float speed;
+    private float gravity;
+    private float jumpHeight;
+    private float y = 0f;
 
     public Movement(float speed, float gravity, float jumpHeight) {
         this.speed = speed;
