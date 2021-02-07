@@ -16,7 +16,7 @@ public class JoinRoomUI: MonoBehaviour {
 
       // Setup listenors 
       createRoomButton.onClick.AddListener(OnClickCreateRoom);
-      createRoomButton.onClick.AddListener(OnClickJoinRoom);
+      joinRoomButton.onClick.AddListener(OnClickJoinRoom);
     }
 
     // Update is called once per frame

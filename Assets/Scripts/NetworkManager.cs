@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.SceneManagement;
+using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -40,7 +40,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     
     public override void OnJoinedRoom() {
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
-      SceneManager.LoadScene(lobbyScene);
+      ChangeScene(lobbyScene);
     }
 
     public void CreateRoom (string roomName) {
@@ -53,5 +53,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     
     public void ChangeScene(string sceneName) {
       PhotonNetwork.LoadLevel(sceneName);
+    }
+    
+    public List<Player> GetPlayers() {
+      Dictionary<int, Player> players = PhotonNetwork.CurrentRoom.Players;
+      return new List<Player>(players.Values);
     }
 }
