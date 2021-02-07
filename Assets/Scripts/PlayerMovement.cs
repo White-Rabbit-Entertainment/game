@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviourPun
 {
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -20,7 +21,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update() {
+      // If the player is me (ie not some other player on the network)
+      if (photonView.IsMine) {
+        UpdatePosition();
+      }
+    }
+
+    void UpdatePosition()
     {
         //get user input
         float x = Input.GetAxis("Horizontal");
