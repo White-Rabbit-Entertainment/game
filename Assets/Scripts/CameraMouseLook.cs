@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CameraMouseLook : MonoBehaviour
+public class CameraMouseLook : MonoBehaviourPun
 {
     public float mouseSensitivity = 100f;
     public Transform playerBody;
@@ -14,6 +15,9 @@ public class CameraMouseLook : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!photonView.IsMine) {
+          Destroy(this);
+        }
         Cursor.lockState = CursorLockMode.Locked;
     }
 
