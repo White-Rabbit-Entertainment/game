@@ -15,7 +15,14 @@ public class PlayerMovement : MonoBehaviourPun
     private Movement movement;
 
     void Awake() {
-      DontDestroyOnLoad(gameObject);
+        // If the player is not me (ie not some other player on the network)
+        // then destory this script
+        if (!photonView.IsMine) {
+            Destroy(this);
+        }
+
+        // Dont destory a player on scene change
+        DontDestroyOnLoad(gameObject);
     }
   
     // Start is called before the first frame update
@@ -26,14 +33,6 @@ public class PlayerMovement : MonoBehaviourPun
 
     // Update is called once per frame
     void Update() {
-      // If the player is me (ie not some other player on the network)
-      if (photonView.IsMine) {
-        UpdatePosition();
-      }
-    }
-
-    void UpdatePosition()
-    {
         //get user input
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
