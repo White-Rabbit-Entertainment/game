@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviourPun
 {
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -12,6 +13,17 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = -19.62f;
     public float jumpHeight = 3f;
     private Movement movement;
+
+    void Awake() {
+        // If the player is not me (ie not some other player on the network)
+        // then destory this script
+        if (!photonView.IsMine) {
+            Destroy(this);
+        }
+
+        // Dont destory a player on scene change
+        DontDestroyOnLoad(gameObject);
+    }
   
     // Start is called before the first frame update
     void Start()
@@ -20,8 +32,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         //get user input
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CameraMouseLook : MonoBehaviour
+public class CameraMouseLook : MonoBehaviourPun
 {
     public float mouseSensitivity = 100f;
     public Transform playerBody;
@@ -14,7 +15,15 @@ public class CameraMouseLook : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        if (!photonView.IsMine) {
+          Debug.Log("This is not mine Im out");
+          Destroy(this);
+
+          // Also destory the camera object
+          Destroy(gameObject);
+        } else {
+          Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     // Update is called once per frame
@@ -26,7 +35,5 @@ public class CameraMouseLook : MonoBehaviour
 	    xRotation -= mouseY;
 	    xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 	    transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-        
     }
 }
