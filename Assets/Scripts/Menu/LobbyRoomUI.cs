@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
+using System;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class LobbyRoomUI : MonoBehaviour
+public class LobbyRoomUI : MonoBehaviourPun
 {
   
     public Text playerList;
@@ -12,6 +15,7 @@ public class LobbyRoomUI : MonoBehaviour
     public Button seekerButton;
     public Button robberButton;
     
+    private Hashtable props;
     private NetworkManager network;
     private string gameScene = "GameScene";
 
@@ -36,16 +40,28 @@ public class LobbyRoomUI : MonoBehaviour
     }
 
     void OnClickJoinSeeker() {
-      ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+      props = new Hashtable();
       props.Add("PlayerTeam", "seeker");
+      PhotonNetwork.LocalPlayer.NickName = "seeker";
       PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+      Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["PlayerTeam"]);
+      foreach(var key in props.Keys) {
+            Debug.Log(String.Format("{0}: {1}", key, props[key]));
+      }
+      foreach(var key in PhotonNetwork.LocalPlayer.CustomProperties.Keys) {
+            Debug.Log(String.Format("{0}: {1}", key, PhotonNetwork.LocalPlayer.CustomProperties[key]));
+      }
       network.ChangeScene(gameScene);
     }
 
     void OnClickJoinRobber() {
-      ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+      props = new Hashtable();
       props.Add("PlayerTeam", "robber");
+      PhotonNetwork.LocalPlayer.NickName = "robber";
       PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+      foreach(var key in props.Keys) {
+            Debug.Log(String.Format("{0}: {1}", key, props[key]));
+        }
       network.ChangeScene(gameScene);
     }
 }
