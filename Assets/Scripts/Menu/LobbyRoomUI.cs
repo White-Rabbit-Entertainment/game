@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class LobbyRoomUI : MonoBehaviour
 {
-
+  
     public Text playerList;
     
-    public Button startGame; 
+    public Button seekerButton;
+    public Button robberButton;
     
     private NetworkManager network;
     private string gameScene = "GameScene";
@@ -19,7 +21,8 @@ public class LobbyRoomUI : MonoBehaviour
        network = new NetworkManager();
         
        // Setup start game button
-       startGame.onClick.AddListener(OnClickStartGame);
+       seekerButton.onClick.AddListener(OnClickJoinSeeker);
+       robberButton.onClick.AddListener(OnClickJoinRobber);
     }
 
     // Update is called once per frame
@@ -32,7 +35,17 @@ public class LobbyRoomUI : MonoBehaviour
       playerList.text = network.GetPlayers().Count.ToString();
     }
 
-    void OnClickStartGame() {
+    void OnClickJoinSeeker() {
+      ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+      props.Add("PlayerTeam", "seeker");
+      PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+      network.ChangeScene(gameScene);
+    }
+
+    void OnClickJoinRobber() {
+      ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+      props.Add("PlayerTeam", "robber");
+      PhotonNetwork.LocalPlayer.SetCustomProperties(props);
       network.ChangeScene(gameScene);
     }
 }
