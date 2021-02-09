@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
          if (Input.GetKey("left shift"))
         {   
             // print("sprinting");
-            if (stamina <= 0.01) {
+            if (stamina == 0) {
                 //If player hasn't got enough stamina, no sprint
                 movement = slowMovement;
                 // print("Tired");
