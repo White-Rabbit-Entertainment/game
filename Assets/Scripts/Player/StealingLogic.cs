@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StealingLogic : MonoBehaviour
+public class Restartwithmovetargettoendpoint : MonoBehaviour
 {
 	void OnCollisionEnter(Collision collision){
 		if(collision.gameObject.tag == "endpoint")

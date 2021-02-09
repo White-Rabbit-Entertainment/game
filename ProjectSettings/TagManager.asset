@@ -6,6 +6,7 @@ TagManager:
   tags:
   - endpoint
   - seeker
+  - robber
   layers:
   - Default
   - TransparentFX

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class RestartifCollisionwithSeeker : MonoBehaviour
+public class SeekerCollisions : MonoBehaviour
 {
  private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == "seeker")
