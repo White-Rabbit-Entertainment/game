@@ -6,6 +6,7 @@ public class Movement
 {
     private float groundDistance = 0.4f;
     private float speed;
+    private float sprintFactor = 2f;
     private float gravity;
     private float jumpHeight;
     private float y = 0f;
@@ -16,7 +17,7 @@ public class Movement
         this.jumpHeight = jumpHeight;
     }
 
-    public Vector3 Calculate(float x, float z, bool isJumping, bool isGrounded, float deltaTime) {
+    public Vector3 Calculate(float x, float z, bool isJumping, bool isGrounded, bool isSprinting, float deltaTime) {
 
         //resets falling velocity if player is grounded
         if (isGrounded && y < 0) {
@@ -33,6 +34,7 @@ public class Movement
 
         //combining 2D transform and y velocity
         Vector3 move = new Vector3(x, 0, z) * speed;
+        if (isSprinting) move =  move * sprintFactor;
         move.y = y;  //adding gravity transform
 
         return move * deltaTime;
