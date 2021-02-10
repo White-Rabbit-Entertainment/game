@@ -18,26 +18,23 @@ public class SeekerCollisions : MonoBehaviour {
         }
     }
 
-    [PunRPC]
-    private void movePlayer(Vector3 position) {
-        CharacterController playerController = ((CharacterController)gameObject.GetComponent(typeof(CharacterController)));
-        playerController.Move(new Vector3(0,10,0));
-        //transform.position = position;
-        //((PlayerMovement)gameObject.GetComponent(typeof(PlayerMovement))).enabled = true;
-    }
+    // [PunRPC]
+    // private void movePlayer(Vector3 position) {
+    //     CharacterController playerController = ((CharacterController)gameObject.GetComponent(typeof(CharacterController)));
+    //     playerController.Move(new Vector3(0,10,0));
+    //     //transform.position = position;
+    // }
 
-    public void OnRobberCapture(GameObject robber) {
-        Debug.Log("robber caught");
-        PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("movePlayer", RpcTarget.All, new Vector3(0,10,0));
-    }
+    // public void OnRobberCapture(GameObject robber) {
+    //     Debug.Log("robber caught");
+    //     PhotonView photonView = PhotonView.Get(this);
+    //     photonView.RPC("movePlayer", RpcTarget.All, new Vector3(0,10,0));
+    // }
 
-    private void OnCollisionEnter(Collision collision) {
+    private void OnControllerColliderHit(ControllerColliderHit hit) {
         Debug.Log("colliding");
-        if (collision.gameObject.tag == "seeker"){
-            //((PlayerMovement)gameObject.GetComponent(typeof(PlayerMovement))).enabled = false;
-            
-            OnRobberCapture(gameObject);            
+        if (hit.gameObject.tag == "seeker"){
+            gameController.OnRobberCapture(gameObject);
         }
     }
 }

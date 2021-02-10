@@ -25,15 +25,15 @@ public class GameLogic : MonoBehaviour {
       }
     }
 
-    [PunRPC]
     private void movePlayer(GameObject player, Vector3 position) {
-        player.transform.position = position;
+      Vector3 move = player.transform.position - position;
+      CharacterController playerController = ((CharacterController)player.GetComponent(typeof(CharacterController)));
+      playerController.Move(move);
     }
 
     public void OnRobberCapture(GameObject robber) {
         Debug.Log("robber caught");
-        PhotonView photonView = PhotonView.Get(robber);
-        photonView.RPC("movePlayer", RpcTarget.All, robber, new Vector3(0,10,0));
+        movePlayer(robber, new Vector3(0,10,0));
     }
 
     // Start is called before the first frame update
