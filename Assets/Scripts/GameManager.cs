@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+
 public class GameManager : MonoBehaviour {
 
     // Instance
     public GameObject playerPrefab;
+    public NetworkManager networkManager;
     public static GameManager instance;
     public GameObject jail;
   
@@ -16,9 +18,9 @@ public class GameManager : MonoBehaviour {
         gameObject.SetActive(false);
       }
       else { 
-        // Otherwise set the instance to this class 
+        // Otherwise set the instance to this class
         instance = this;
-
+        networkManager = new NetworkManager();
         // When we change scenes (eg to game scene) dont destroy this instance
         DontDestroyOnLoad(gameObject);
       }
@@ -32,9 +34,16 @@ public class GameManager : MonoBehaviour {
     }
 
     public void OnRobberCapture(GameObject robber) {
-      // jail = GameObject.Find("/Jail/JailSpawn");
+      jail = GameObject.Find("/Jail/JailSpawn");
       Debug.Log(jail.transform.position);
       movePlayer(robber, jail.transform.position);
+    }
+
+    public void OnItemInSafeZone(GameObject item) {
+      networkManager = new NetworkManager();
+      Debug.Log("Item Captured");
+      networkManager.IncrementRoomProperty("ItemsStolen");
+      Destroy(item);
     }
 
     // Start is called before the first frame update

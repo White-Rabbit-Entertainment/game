@@ -8,21 +8,16 @@ using Photon.Pun;
 public class SeekerCollisions : MonoBehaviour {
 
     
-    private GameManager gameController;
+    private GameManager manager;
     
     void Start() {
-        gameController = new GameManager();
-        if (gameController != null) {
-            Debug.Log("Created gameController");
-        } else {
-            Debug.Log("Could not create gameController");
-        }
+        manager = new GameManager();
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         
         if (hit.gameObject.tag == "seeker"){
-            gameController.OnRobberCapture(gameObject);
+            manager.OnRobberCapture(gameObject);
         }
     }
 }

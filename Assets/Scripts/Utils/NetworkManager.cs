@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -41,6 +42,25 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom() {
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
+    }
+
+    public void SetRoomProperty(string key, object value) {
+      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
+      if (properties.ContainsKey(key)) {
+        properties[key] = value;
+      } else {
+        properties.Add(key, value);
+      }
+      PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+    }
+
+    public void IncrementRoomProperty(string key) {
+      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
+      if (properties.ContainsKey(key)) {
+        SetRoomProperty(key, (int)properties[key] + 1);
+      } else {
+        SetRoomProperty(key, 1);
+      }
     }
 
     public void CreateRoom (string roomName) {
