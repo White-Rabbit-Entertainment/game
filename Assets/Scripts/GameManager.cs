@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour {
       }
     }
 
-    private void movePlayer(GameObject player, Vector3 position) {
+    private void MovePlayer(GameObject player, Vector3 position) {
       CharacterController characterController = player.GetComponent<CharacterController>();
 	    characterController.enabled = false;
 	    player.transform.position = position;
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
     public void OnRobberCapture(GameObject robber) {
       jail = GameObject.Find("/Jail/JailSpawn");
       Debug.Log(jail.transform.position);
-      movePlayer(robber, jail.transform.position);
+      MovePlayer(robber, jail.transform.position);
     }
 
     public void OnItemInSafeZone(GameObject item) {
@@ -46,9 +46,21 @@ public class GameManager : MonoBehaviour {
       Destroy(item);
     }
 
+    public void StartRoundTimer() {
+      networkManager = new NetworkManager();
+      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+        networkManager.StartRoundTimer(500);
+      }
+    }
+
+    public double TimeRemaining() {
+      networkManager = new NetworkManager();
+      return networkManager.GetRoundTimeRemaining();
+    }
+
     // Start is called before the first frame update
-    void Start() {
-        
+    public void OnStartGame() {
+      StartRoundTimer();
     }
 
     // Update is called once per frame

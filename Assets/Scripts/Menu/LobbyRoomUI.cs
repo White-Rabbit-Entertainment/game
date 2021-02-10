@@ -16,13 +16,15 @@ public class LobbyRoomUI : MonoBehaviourPun
     public Button robberButton;
     
     private Hashtable props;
-    private NetworkManager network;
+    private NetworkManager networkManager; 
+    private GameManager gameManager;
     private string gameScene = "GameScene";
 
     // Start is called before the first frame update
     void Start()
     {
-       network = new NetworkManager();
+       networkManager = new NetworkManager();
+       gameManager = new GameManager();
         
        // Setup start game button
        seekerButton.onClick.AddListener(OnClickJoinSeeker);
@@ -36,7 +38,12 @@ public class LobbyRoomUI : MonoBehaviourPun
     }
 
     void SetText() {
-      playerList.text = network.GetPlayers().Count.ToString();
+      playerList.text = networkManager.GetPlayers().Count.ToString();
+    }
+
+    void OnJoin() {
+      networkManager.ChangeScene(gameScene);
+      gameManager.OnStartGame();
     }
 
     void OnClickJoinSeeker() {
@@ -44,14 +51,7 @@ public class LobbyRoomUI : MonoBehaviourPun
       props.Add("PlayerTeam", "seeker");
       PhotonNetwork.LocalPlayer.NickName = "seeker";
       PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-      Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["PlayerTeam"]);
-      foreach(var key in props.Keys) {
-            Debug.Log(String.Format("{0}: {1}", key, props[key]));
-      }
-      foreach(var key in PhotonNetwork.LocalPlayer.CustomProperties.Keys) {
-            Debug.Log(String.Format("{0}: {1}", key, PhotonNetwork.LocalPlayer.CustomProperties[key]));
-      }
-      network.ChangeScene(gameScene);
+      OnJoin();
     }
 
     void OnClickJoinRobber() {
@@ -59,9 +59,6 @@ public class LobbyRoomUI : MonoBehaviourPun
       props.Add("PlayerTeam", "robber");
       PhotonNetwork.LocalPlayer.NickName = "robber";
       PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-      foreach(var key in props.Keys) {
-            Debug.Log(String.Format("{0}: {1}", key, props[key]));
-        }
-      network.ChangeScene(gameScene);
+      OnJoin();
     }
 }

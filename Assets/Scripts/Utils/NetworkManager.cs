@@ -63,6 +63,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       }
     }
 
+    public void StartRoundTimer(double roundLength) {
+      Debug.Log("Started Timer");
+      SetRoomProperty("RoundLength", roundLength);
+      SetRoomProperty("RoundTimerStart", PhotonNetwork.Time);
+    }
+
+    public double GetRoundTimeRemaining() {
+      return (double)PhotonNetwork.CurrentRoom.CustomProperties["RoundLength"] - (PhotonNetwork.Time - (double)PhotonNetwork.CurrentRoom.CustomProperties["RoundTimerStart"]);
+    }
+
     public void CreateRoom (string roomName) {
       PhotonNetwork.CreateRoom(roomName);
     }
