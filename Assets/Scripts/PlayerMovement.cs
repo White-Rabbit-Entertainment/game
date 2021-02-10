@@ -34,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
         bool isJumping = Input.GetButtonDown("Jump");
         bool isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         bool isSprinting = Input.GetKey("left shift");
-        // isSprinting = staminaHandler(isSprinting);
         //apply movement
         Vector3 move = movement.Calculate(x, z, isJumping, isGrounded, isSprinting, Time.deltaTime);
         Vector3 finalMove = move.x * transform.right + move.y * transform.up + move.z * transform.forward;
