@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class GameLogic : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
     // Instance
     public GameObject playerPrefab;
-    public static GameLogic instance;
-    private GameObject jail;
+    public static GameManager instance;
+    public GameObject jail;
   
     void Awake() {
       // If there is already a network manager instance then stop
@@ -32,7 +32,7 @@ public class GameLogic : MonoBehaviour {
     }
 
     public void OnRobberCapture(GameObject robber) {
-      jail = GameObject.Find("/Jail/JailSpawn");
+      // jail = GameObject.Find("/Jail/JailSpawn");
       Debug.Log(jail.transform.position);
       movePlayer(robber, jail.transform.position);
     }

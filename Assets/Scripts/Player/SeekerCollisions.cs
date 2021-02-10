@@ -8,10 +8,10 @@ using Photon.Pun;
 public class SeekerCollisions : MonoBehaviour {
 
     
-    private GameLogic gameController;
+    private GameManager gameController;
     
     void Start() {
-        gameController = new GameLogic();
+        gameController = new GameManager();
         if (gameController != null) {
             Debug.Log("Created gameController");
         } else {
