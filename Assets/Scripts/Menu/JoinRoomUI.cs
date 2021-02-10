@@ -13,7 +13,7 @@ public class JoinRoomUI: MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
       networkManager = new NetworkManager();
-
+      
       // Setup listenors 
       createRoomButton.onClick.AddListener(OnClickCreateRoom);
       joinRoomButton.onClick.AddListener(OnClickJoinRoom);
