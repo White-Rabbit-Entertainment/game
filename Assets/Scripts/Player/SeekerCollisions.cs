@@ -7,6 +7,7 @@ using Photon.Pun;
 
 public class SeekerCollisions : MonoBehaviour {
 
+    
     private GameLogic gameController;
     
     void Start() {
@@ -18,21 +19,8 @@ public class SeekerCollisions : MonoBehaviour {
         }
     }
 
-    // [PunRPC]
-    // private void movePlayer(Vector3 position) {
-    //     CharacterController playerController = ((CharacterController)gameObject.GetComponent(typeof(CharacterController)));
-    //     playerController.Move(new Vector3(0,10,0));
-    //     //transform.position = position;
-    // }
-
-    // public void OnRobberCapture(GameObject robber) {
-    //     Debug.Log("robber caught");
-    //     PhotonView photonView = PhotonView.Get(this);
-    //     photonView.RPC("movePlayer", RpcTarget.All, new Vector3(0,10,0));
-    // }
-
     private void OnControllerColliderHit(ControllerColliderHit hit) {
-        Debug.Log("colliding");
+        
         if (hit.gameObject.tag == "seeker"){
             gameController.OnRobberCapture(gameObject);
         }
