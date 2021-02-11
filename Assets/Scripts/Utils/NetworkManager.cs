@@ -54,6 +54,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
     }
 
+    public void SetLocalPlayerProperty(string key, object value) {
+      Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
+      if (properties.ContainsKey(key)) {
+        properties[key] = value;
+      } else {
+        properties.Add(key, value);
+      }
+      PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+    }
+
     public void IncrementRoomProperty(string key) {
       Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
       if (properties.ContainsKey(key)) {
@@ -61,6 +71,29 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       } else {
         SetRoomProperty(key, 1);
       }
+    }
+
+    public void IncrementLocalPlayerProperty(string key) {
+      Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
+      if (properties.ContainsKey(key)) {
+        SetRoomProperty(key, (int)properties[key] + 1);
+      } else {
+        SetRoomProperty(key, 1);
+      }
+    }
+
+    public bool RoomPropertyIs(string key, object value) {
+      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
+      return (properties.ContainsKey(key) && properties[key] == value);
+    }
+
+    public bool LocalPlayerPropertyIs(string key, object value) {
+      return PlayerPropertyIs(key, value, PhotonNetwork.LocalPlayer);
+    }
+
+    public bool PlayerPropertyIs(string key, object value, Player player) {
+      Hashtable properties = player.CustomProperties;
+      return (properties.ContainsKey(key) && properties[key] == value);
     }
 
     public void StartRoundTimer(double roundLength) {

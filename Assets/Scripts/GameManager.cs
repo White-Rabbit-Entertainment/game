@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
 
     public void OnRobberCapture(GameObject robber) {
       jail = GameObject.Find("/Jail/JailSpawn");
+      NetworkManager.instance.SetLocalPlayerProperty("Captured", true);
       Debug.Log(jail.transform.position);
       MovePlayer(robber, jail.transform.position);
     }
