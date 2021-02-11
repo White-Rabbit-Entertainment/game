@@ -8,7 +8,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
 
-    public delegate bool SetPropertyDelegate(Hashtable propertiesToSet, Hashtable expectedValues=null, WebFlags webFlags=null);
+    public delegate bool PhotonSetPropertyDelegate(Hashtable propertiesToSet, Hashtable expectedValues=null, WebFlags webFlags=null);
+    public delegate void SetPropertyDelegate(string key, object value);
 
     // Instance
     public static NetworkManager instance;
@@ -56,13 +57,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return false;
     }
     
-    public void SetProperty(string key, object value, Hashtable currentProperties, SetPropertyDelegate setProperties) {
+    public void SetProperty(string key, object value, Hashtable currentProperties, PhotonSetPropertyDelegate setProperties) {
       if (currentProperties.ContainsKey(key)) {
         currentProperties[key] = value;
       } else {
         currentProperties.Add(key, value);
       }
       setProperties(currentProperties);
+    }
+    
+    public void IncrementProperty(string key, Hashtable properties, SetPropertyDelegate setProperty) {
+      if (properties.ContainsKey(key)) {
+        SetRoomProperty(key, (int)properties[key] + 1);
+      } else {
+        SetRoomProperty(key, 1);
+      }
     }
 
     public void SetRoomProperty(string key, object value) {
@@ -74,21 +83,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     public void IncrementRoomProperty(string key) {
-      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
-      if (properties.ContainsKey(key)) {
-        SetRoomProperty(key, (int)properties[key] + 1);
-      } else {
-        SetRoomProperty(key, 1);
-      }
+      IncrementProperty(key, PhotonNetwork.CurrentRoom.CustomProperties, SetRoomProperty);
     }
 
     public void IncrementLocalPlayerProperty(string key) {
-      Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
-      if (properties.ContainsKey(key)) {
-        SetLocalPlayerProperty(key, (int)properties[key] + 1);
-      } else {
-        SetLocalPlayerProperty(key, 1);
-      }
+      IncrementProperty(key, PhotonNetwork.LocalPlayer.CustomProperties, SetLocalPlayerProperty);
     }
     
     public bool RoomPropertyIs<T>(string key, T value) {
