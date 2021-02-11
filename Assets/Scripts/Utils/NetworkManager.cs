@@ -47,7 +47,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
     }
-    
+
+    public T GetProperty<T>(string key, Hashtable properties) {
+      object temp;
+      if (properties.TryGetValue(key, out temp) && temp is T) {
+          T propertiesValue = (T)temp;
+          return propertiesValue;
+      }
+      return default(T);
+    }
+
     public bool PropertyIs<T>(string key, T value, Hashtable properties) {
       object temp;
       if (properties.TryGetValue(key, out temp) && temp is T) {
@@ -72,6 +81,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       } else {
         SetRoomProperty(key, 1);
       }
+    }
+    
+    public T GetRoomProperty<T>(string key) {
+      return GetProperty<T>(key, PhotonNetwork.CurrentRoom.CustomProperties);
     }
 
     public void SetRoomProperty(string key, object value) {
