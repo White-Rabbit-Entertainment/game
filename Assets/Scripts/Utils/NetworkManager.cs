@@ -83,6 +83,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     
     public T GetRoomProperty<T>(string key, T defaultValue = default(T)) {
+      if (PhotonNetwork.CurrentRoom == null) {
+        return defaultValue;
+      }
       return GetProperty<T>(key, PhotonNetwork.CurrentRoom.CustomProperties, defaultValue);
     }
 
@@ -103,6 +106,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     
     public bool RoomPropertyIs<T>(string key, T value) {
+      if (PhotonNetwork.CurrentRoom == null) {
+        return false;
+      }
       Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
       return PropertyIs<T>(key, value, properties);
     }
@@ -123,7 +129,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     public double GetRoundTimeRemaining() {
-      return (double)PhotonNetwork.CurrentRoom.CustomProperties["RoundLength"] - (PhotonNetwork.Time - (double)PhotonNetwork.CurrentRoom.CustomProperties["RoundTimerStart"]);
+      return GetRoomProperty<double>("RoundLength", 0f) - GetRoomProperty<double>("RoundTimerStart", 0f);
     }
 
     public bool AllRobbersCaught() {
@@ -149,6 +155,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     
     public List<Player> GetPlayers() {
+      if (PhotonNetwork.CurrentRoom == null) {
+        return new List<Player>();
+      }
       Dictionary<int, Player> players = PhotonNetwork.CurrentRoom.Players;
       return new List<Player>(players.Values);
     }

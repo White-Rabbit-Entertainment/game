@@ -73,16 +73,19 @@ public class GameManager : MonoBehaviour {
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
       int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
       Debug.Log(itemsStolen.ToString());
-      if (secondsLeft <= 0) {
-        GameOver(false);
-      }
 
-      if (NetworkManager.instance.AllRobbersCaught()) {
-        GameOver(false);
-      }
+      if (PhotonNetwork.CurrentRoom != null) {
+        if (secondsLeft <= 0) {
+          GameOver(false);
+        }
 
-      if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 2)) {
-        GameOver(true);
+        if (NetworkManager.instance.AllRobbersCaught()) {
+          GameOver(false);
+        }
+
+        if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 2)) {
+          GameOver(true);
+        }
       }
     }
 }
