@@ -36,7 +36,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster() {
       Debug.Log("Connected to master server");
-      // CreateRoom("testRoom");
     }
     
     public override void OnCreatedRoom() {
@@ -63,7 +62,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
           T propertiesValue = (T)temp;
           return (EqualityComparer<T>.Default.Equals(propertiesValue, value));
       }
-      return false;
+      return EqualityComparer<T>.Default.Equals(GetProperty<T>(key, properties), value);
     }
     
     public void SetProperty(string key, object value, Hashtable currentProperties, PhotonSetPropertyDelegate setProperties) {
@@ -104,7 +103,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     
     public bool RoomPropertyIs<T>(string key, T value) {
-      Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
+      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
       return PropertyIs<T>(key, value, properties);
     }
 
