@@ -129,7 +129,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     public double GetRoundTimeRemaining() {
-      return GetRoomProperty<double>("RoundLength", 0f) - GetRoomProperty<double>("RoundTimerStart", 0f);
+      return GetRoomProperty<double>("RoundLength", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>("RoundTimerStart", 0f));
     }
 
     public bool AllRobbersCaught() {
