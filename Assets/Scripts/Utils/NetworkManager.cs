@@ -116,6 +116,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return (double)PhotonNetwork.CurrentRoom.CustomProperties["RoundLength"] - (PhotonNetwork.Time - (double)PhotonNetwork.CurrentRoom.CustomProperties["RoundTimerStart"]);
     }
 
+    public bool AllRobbersCaught() {
+      bool allRobbersCaught = true;
+      foreach (Player player in GetPlayers()) {
+          if (PlayerPropertyIs<string>("Team", "Robber", player) && (!PlayerPropertyIs<bool>("Captured", true, player))) {
+              allRobbersCaught = false;
+          }
+      }
+      return allRobbersCaught;
+    }
+
     public void CreateRoom (string roomName) {
       PhotonNetwork.CreateRoom(roomName);
     }

@@ -30,8 +30,8 @@ public class LobbyRoomUI : MonoBehaviourPun
        gameManager = new GameManager();
         
        // Setup start game button
-       seekerButton.onClick.AddListener(()=>OnJoin(seekerPrefab));
-       robberButton.onClick.AddListener(()=>OnJoin(robberPrefab));
+       seekerButton.onClick.AddListener(()=>OnJoin("Seeker"));
+       robberButton.onClick.AddListener(()=>OnJoin("Robber"));
     }
 
     // Update is called once per frame
@@ -44,9 +44,14 @@ public class LobbyRoomUI : MonoBehaviourPun
       playerList.text = networkManager.GetPlayers().Count.ToString();
     }
 
-    void OnJoin(GameObject playerPrefab) {
+    void OnJoin(string team) {
       networkManager.ChangeScene(gameScene);
-      PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+      if (team == "Seeker") {
+        PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+      } else if (team == "Robber") {
+        PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+      }
+      networkManager.SetLocalPlayerProperty("Team", team);
       gameManager.OnStartGame();
     }
 }

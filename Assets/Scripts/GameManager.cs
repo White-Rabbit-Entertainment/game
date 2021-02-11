@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour {
 
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartRoundTimer(500);
+        NetworkManager.instance.StartRoundTimer(600);
       }
     }
 
@@ -73,11 +73,13 @@ public class GameManager : MonoBehaviour {
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
       if (secondsLeft <= 0) {
         GameOver(false);
-      } 
+      }
+
       if (NetworkManager.instance.AllRobbersCaught()) {
         GameOver(false);
       }
-      if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 3)) {
+
+      if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 2)) {
         GameOver(true);
       }
     }
