@@ -87,13 +87,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return (properties.ContainsKey(key) && properties[key] == value);
     }
 
-    public bool LocalPlayerPropertyIs(string key, object value) {
-      return PlayerPropertyIs(key, value, PhotonNetwork.LocalPlayer);
+    public bool LocalPlayerPropertyIs<T>(string key, T value) {
+      return PlayerPropertyIs<T>(key, value, PhotonNetwork.LocalPlayer);
     }
 
-    public bool PlayerPropertyIs(string key, object value, Player player) {
+    public bool PlayerPropertyIs<T>(string key, T value, Player player) {
       Hashtable properties = player.CustomProperties;
-      return (properties.ContainsKey(key) && properties[key] == value);
+      object temp;
+      if (properties.TryGetValue(key, out temp) && temp is T) {
+          T isCaptured = (T)temp;
+          return (EqualityComparer<T>.Default.Equals(isCaptured, value));
+      }
+      return false;
     }
 
     public void StartRoundTimer(double roundLength) {

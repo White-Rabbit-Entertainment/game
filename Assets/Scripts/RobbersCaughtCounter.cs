@@ -14,7 +14,7 @@ public class RobbersCaughtCounter : MonoBehaviour
         List<Player> players = NetworkManager.instance.GetPlayers();
         int count = 0;
         foreach (Player player in players) {
-            if (NetworkManager.instance.PlayerPropertyIs("Captured", true, player)) {
+            if (NetworkManager.instance.PlayerPropertyIs<bool>("Captured", true, player)) {
                 count++;
             }
         }
