@@ -48,13 +48,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       ChangeScene(lobbyScene);
     }
 
-    public T GetProperty<T>(string key, Hashtable properties) {
+    public T GetProperty<T>(string key, Hashtable properties, T defaultValue=default(T)) {
       object temp;
       if (properties.TryGetValue(key, out temp) && temp is T) {
           T propertiesValue = (T)temp;
           return propertiesValue;
       }
-      return default(T);
+      return defaultValue;
     }
 
     public bool PropertyIs<T>(string key, T value, Hashtable properties) {
@@ -83,8 +83,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       }
     }
     
-    public T GetRoomProperty<T>(string key) {
-      return GetProperty<T>(key, PhotonNetwork.CurrentRoom.CustomProperties);
+    public T GetRoomProperty<T>(string key, T defaultValue = default(T)) {
+      return GetProperty<T>(key, PhotonNetwork.CurrentRoom.CustomProperties, defaultValue);
     }
 
     public void SetRoomProperty(string key, object value) {
