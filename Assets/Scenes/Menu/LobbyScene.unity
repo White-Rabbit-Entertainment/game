@@ -916,6 +916,10 @@ MonoBehaviour:
   playerList: {fileID: 1097336904}
   seekerButton: {fileID: 2013410952}
   robberButton: {fileID: 987213405}
+  robberPrefab: {fileID: 6809595694847979762, guid: 53562f569106608ac8347e95c06e0600,
+    type: 3}
+  seekerPrefab: {fileID: 1784732065346499672, guid: 08bec8ebd599e47c8a6d9d16c6f13ce4,
+    type: 3}
 --- !u!1 &2013410950
 GameObject:
   m_ObjectHideFlags: 0
