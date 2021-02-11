@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour {
 
     // Instance
     public GameObject playerPrefab;
-    public NetworkManager networkManager;
     public static GameManager instance;
     public GameObject jail;
   
@@ -20,7 +19,6 @@ public class GameManager : MonoBehaviour {
       else { 
         // Otherwise set the instance to this class
         instance = this;
-        networkManager = new NetworkManager();
         // When we change scenes (eg to game scene) dont destroy this instance
         DontDestroyOnLoad(gameObject);
       }
@@ -41,22 +39,19 @@ public class GameManager : MonoBehaviour {
     }
 
     public void OnItemInSafeZone(GameObject item) {
-      networkManager = new NetworkManager();
       Debug.Log("Item Captured");
-      networkManager.IncrementRoomProperty("ItemsStolen");
+      NetworkManager.instance.IncrementRoomProperty("ItemsStolen");
       Destroy(item);
     }
 
     public void StartRoundTimer() {
-      networkManager = new NetworkManager();
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        networkManager.StartRoundTimer(500);
+        NetworkManager.instance.StartRoundTimer(500);
       }
     }
 
     public double TimeRemaining() {
-      networkManager = new NetworkManager();
-      return networkManager.GetRoundTimeRemaining();
+      return NetworkManager.instance.GetRoundTimeRemaining();
     }
 
     // Start is called before the first frame update
@@ -64,8 +59,26 @@ public class GameManager : MonoBehaviour {
       StartRoundTimer();
     }
 
+    public void GameOver(bool robbersWin) {
+      Debug.Log("GAME OVER");
+      if (robbersWin) {
+        Debug.Log("Robbers Win");
+      } else {
+        Debug.Log("Seekers Win");
+      }
+    }
+
     // Update is called once per frame
     void Update() {
-        
+      int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
+      if (secondsLeft <= 0) {
+        GameOver(false);
+      } 
+      if (NetworkManager.instance.AllRobbersCaught()) {
+        GameOver(false);
+      }
+      if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 3)) {
+        GameOver(true);
+      }
     }
 }

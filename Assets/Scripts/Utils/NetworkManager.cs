@@ -82,9 +82,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       }
     }
 
-    public bool RoomPropertyIs(string key, object value) {
-      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
-      return (properties.ContainsKey(key) && properties[key] == value);
+    public bool RoomPropertyIs<T>(string key, T value) {
+      Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
+      object temp;
+      if (properties.TryGetValue(key, out temp) && temp is T) {
+          T propertiesValue = (T)temp;
+          return (EqualityComparer<T>.Default.Equals(propertiesValue, value));
+      }
+      return false;
     }
 
     public bool LocalPlayerPropertyIs<T>(string key, T value) {
@@ -95,8 +100,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       Hashtable properties = player.CustomProperties;
       object temp;
       if (properties.TryGetValue(key, out temp) && temp is T) {
-          T isCaptured = (T)temp;
-          return (EqualityComparer<T>.Default.Equals(isCaptured, value));
+          T propertiesValue = (T)temp;
+          return (EqualityComparer<T>.Default.Equals(propertiesValue, value));
       }
       return false;
     }
