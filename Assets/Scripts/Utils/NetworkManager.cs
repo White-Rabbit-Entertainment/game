@@ -7,6 +7,9 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+
+    public delegate bool SetPropertyDelegate(Hashtable propertiesToSet, Hashtable expectedValues=null, WebFlags webFlags=null);
+
     // Instance
     public static NetworkManager instance;
     private string lobbyScene = "LobbyScene";
@@ -43,25 +46,31 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
     }
+    
+    public bool PropertyIs<T>(string key, T value, Hashtable properties) {
+      object temp;
+      if (properties.TryGetValue(key, out temp) && temp is T) {
+          T propertiesValue = (T)temp;
+          return (EqualityComparer<T>.Default.Equals(propertiesValue, value));
+      }
+      return false;
+    }
+    
+    public void SetProperty(string key, object value, Hashtable currentProperties, SetPropertyDelegate setProperties) {
+      if (currentProperties.ContainsKey(key)) {
+        currentProperties[key] = value;
+      } else {
+        currentProperties.Add(key, value);
+      }
+      setProperties(currentProperties);
+    }
 
     public void SetRoomProperty(string key, object value) {
-      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
-      if (properties.ContainsKey(key)) {
-        properties[key] = value;
-      } else {
-        properties.Add(key, value);
-      }
-      PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+      SetProperty(key, value, PhotonNetwork.CurrentRoom.CustomProperties, PhotonNetwork.CurrentRoom.SetCustomProperties);
     }
 
     public void SetLocalPlayerProperty(string key, object value) {
-      Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
-      if (properties.ContainsKey(key)) {
-        properties[key] = value;
-      } else {
-        properties.Add(key, value);
-      }
-      PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+      SetProperty(key, value, PhotonNetwork.LocalPlayer.CustomProperties, PhotonNetwork.LocalPlayer.SetCustomProperties);
     }
 
     public void IncrementRoomProperty(string key) {
@@ -76,20 +85,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void IncrementLocalPlayerProperty(string key) {
       Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
       if (properties.ContainsKey(key)) {
-        SetRoomProperty(key, (int)properties[key] + 1);
+        SetLocalPlayerProperty(key, (int)properties[key] + 1);
       } else {
-        SetRoomProperty(key, 1);
+        SetLocalPlayerProperty(key, 1);
       }
     }
-
+    
     public bool RoomPropertyIs<T>(string key, T value) {
       Hashtable properties = PhotonNetwork.LocalPlayer.CustomProperties;
-      object temp;
-      if (properties.TryGetValue(key, out temp) && temp is T) {
-          T propertiesValue = (T)temp;
-          return (EqualityComparer<T>.Default.Equals(propertiesValue, value));
-      }
-      return false;
+      return PropertyIs<T>(key, value, properties);
     }
 
     public bool LocalPlayerPropertyIs<T>(string key, T value) {
@@ -98,12 +102,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public bool PlayerPropertyIs<T>(string key, T value, Player player) {
       Hashtable properties = player.CustomProperties;
-      object temp;
-      if (properties.TryGetValue(key, out temp) && temp is T) {
-          T propertiesValue = (T)temp;
-          return (EqualityComparer<T>.Default.Equals(propertiesValue, value));
-      }
-      return false;
+      return PropertyIs<T>(key, value, properties);
     }
 
     public void StartRoundTimer(double roundLength) {
