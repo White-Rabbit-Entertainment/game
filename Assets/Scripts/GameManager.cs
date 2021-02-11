@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
+      int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
+      Debug.Log(itemsStolen.ToString());
       if (secondsLeft <= 0) {
         GameOver(false);
       }
