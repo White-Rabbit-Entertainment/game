@@ -17,15 +17,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Awake()
     {
-      // If there is already a network manager instance then stop
       if (instance != null && instance != this) {
         gameObject.SetActive(false);
       }
       else { 
-        // Otherwise set the instance to this class 
         instance = this;
-
-        // When we change scenes (eg to game scene) dont desotry this instance
         DontDestroyOnLoad(gameObject);
       }
     }
@@ -47,6 +43,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       ChangeScene(lobbyScene);
     }
 
+    // Generic function to get property from CustomProperties (of Photon room or player)
     public T GetProperty<T>(string key, Hashtable properties, T defaultValue=default(T)) {
       object temp;
       if (properties.TryGetValue(key, out temp) && temp is T) {
@@ -56,24 +53,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return defaultValue;
     }
 
+    // Generic function to check value from CustomProperties (of Photon room or player)
     public bool PropertyIs<T>(string key, T value, Hashtable properties) {
-      object temp;
-      if (properties.TryGetValue(key, out temp) && temp is T) {
-          T propertiesValue = (T)temp;
-          return (EqualityComparer<T>.Default.Equals(propertiesValue, value));
-      }
       return EqualityComparer<T>.Default.Equals(GetProperty<T>(key, properties), value);
     }
     
+    // Generic function to set value from CustomProperties (of Photon room or player)
     public void SetProperty(string key, object value, Hashtable currentProperties, PhotonSetPropertyDelegate setProperties) {
-      if (currentProperties.ContainsKey(key)) {
-        currentProperties[key] = value;
-      } else {
-        currentProperties.Add(key, value);
-      }
+      currentProperties[key] = value;
       setProperties(currentProperties);
     }
     
+    // Generic function to increment value from CustomProperties (of Photon room or player)
+    // If the value is not set it is set to 1
     public void IncrementProperty(string key, Hashtable properties, SetPropertyDelegate setProperty) {
       if (properties.ContainsKey(key)) {
         SetRoomProperty(key, (int)properties[key] + 1);
@@ -82,6 +74,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       }
     }
     
+    // Generic function to get value from CustomProperties (of Photon room or player)
     public T GetRoomProperty<T>(string key, T defaultValue = default(T)) {
       if (PhotonNetwork.CurrentRoom == null) {
         return defaultValue;
@@ -109,8 +102,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       if (PhotonNetwork.CurrentRoom == null) {
         return false;
       }
-      Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
-      return PropertyIs<T>(key, value, properties);
+      return PropertyIs<T>(key, value, PhotonNetwork.CurrentRoom.CustomProperties);
     }
 
     public bool LocalPlayerPropertyIs<T>(string key, T value) {
@@ -118,20 +110,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     public bool PlayerPropertyIs<T>(string key, T value, Player player) {
-      Hashtable properties = player.CustomProperties;
-      return PropertyIs<T>(key, value, properties);
+      return PropertyIs<T>(key, value, player.CustomProperties);
     }
 
+    // Start the timer for the game, but assigning the start time and round length (which all clients use)
     public void StartRoundTimer(double roundLength) {
-      Debug.Log("Started Timer");
       SetRoomProperty("RoundLength", roundLength);
       SetRoomProperty("RoundTimerStart", PhotonNetwork.Time);
     }
 
+    // Returns round time remaining (or 0 if not started)
     public double GetRoundTimeRemaining() {
       return GetRoomProperty<double>("RoundLength", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>("RoundTimerStart", 0f));
     }
 
+    // Check all players in the room and returns whether all the robbers are captured
     public bool AllRobbersCaught() {
       bool allRobbersCaught = true;
       foreach (Player player in GetPlayers()) {
@@ -153,8 +146,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void ChangeScene(string sceneName) {
       PhotonNetwork.LoadLevel(sceneName);
     }
-    
+   
+    // Returns a list of all the players in the current room
     public List<Player> GetPlayers() {
+      // If the room is null return empty list
       if (PhotonNetwork.CurrentRoom == null) {
         return new List<Player>();
       }
