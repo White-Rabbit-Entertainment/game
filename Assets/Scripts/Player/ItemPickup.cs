@@ -4,52 +4,37 @@ using UnityEngine;
  
 public class ItemPickup : MonoBehaviour {
 
-     public Transform pickupDestination;
-     public float maxInteractionDistance = 5f;
+    public Transform pickupDestination;
+    public float maxInteractionDistance = 5f;
  
     [SerializeField] private Transform cameraTransform;
 
-     private RaycastHit raycastFocus;
-     private bool canInteract = false;
+    private RaycastHit raycastFocus;
+    private bool canInteract = false;
+    private Interactable currentItem; 
+ 
+    private void Update() {
+        
+        // Has interact button been pressed whilst interactable object is in front of player?
+        if (Input.GetButtonDown("Fire1") && canInteract && currentItem == null) {
+            currentItem = raycastFocus.collider.transform.GetComponent<Interactable>();
+            currentItem.PickUp(pickupDestination);
 
-    //  private void Start() {
-    //    List<Camera> cameras = gameObject.GetComponentsInChildrenOfAsset<Camera>();
-    //  }
+        } else if (Input.GetButtonUp("Fire1") && currentItem != null) {
+            currentItem.PutDown();
+            currentItem = null;
+        }
+    }
  
+    private void FixedUpdate() {
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
  
-     private void Update() {
-         // Has interact button been pressed whilst interactable object is in front of player?
-         if (Input.GetButtonDown("Fire1") && canInteract) {
-             Interactable interactComponent = raycastFocus.collider.transform.GetComponent<Interactable>();
-             Debug.Log(interactComponent);
-             if (interactComponent != null) {
-                 Debug.Log("picking up");
-                 // Perform object's interaction
-                 interactComponent.Pickup(pickupDestination);
-             }
-         }
-
-         // Has action button been pressed whilst interactable object is in front of player?
-         // if (Input.GetButtonDown("Fire3") && canInteract == true) {
-         //     IInteractable interactComponent = raycastFocus.collider.transform.GetComponent<IInteractable>();
- 
-         //     if (interactComponent != null) {
-         //         // Perform object's action
-         //         interactComponent.Action(this);
-         //     }
-         // }
-     }
- 
-     private void FixedUpdate() {
-         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
- 
-         // Is interactable object detected in front of player?
-         if (Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) && raycastFocus.collider.transform.tag == "interactable") {
-            Debug.Log("can interact");
+        // Is interactable object detected in front of player?
+        if (Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) && raycastFocus.collider.transform.tag == "interactable") {
             canInteract = true;
-         }
-         else {
+        }
+        else {
             canInteract = false;
-         }
-     }
- }
+        }
+    }
+}

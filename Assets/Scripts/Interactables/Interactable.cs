@@ -3,5 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 interface Interactable {
-  void Pickup(Transform pickUpDestination);
+  void PickUp(Transform pickUpDestination);
+  void PutDown();
 }
