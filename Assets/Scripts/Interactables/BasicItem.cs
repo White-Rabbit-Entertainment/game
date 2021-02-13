@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class BasicItem : MonoBehaviour, Interactable {
+
     public void PickUp(Transform pickupDestination) {
+        GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         transform.position = pickupDestination.position;
@@ -25,8 +28,7 @@ public class BasicItem : MonoBehaviour, Interactable {
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         
     }
 }
