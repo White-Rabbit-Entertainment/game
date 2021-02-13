@@ -2,24 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
+using System;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class LobbyRoomUI : MonoBehaviour
+public class LobbyRoomUI : MonoBehaviourPun
 {
-
+  
     public Text playerList;
     
-    public Button startGame; 
+    public Button seekerButton;
+    public Button robberButton;
+
+    public GameObject robberPrefab;
+    public GameObject seekerPrefab;
     
-    private NetworkManager network;
+    private Hashtable props;
+    private NetworkManager networkManager; 
+    private GameManager gameManager;
     private string gameScene = "GameScene";
 
     // Start is called before the first frame update
     void Start()
     {
-       network = new NetworkManager();
+       networkManager = new NetworkManager();
+       gameManager = new GameManager();
         
        // Setup start game button
-       startGame.onClick.AddListener(OnClickStartGame);
+       seekerButton.onClick.AddListener(()=>OnJoin("Seeker"));
+       robberButton.onClick.AddListener(()=>OnJoin("Robber"));
     }
 
     // Update is called once per frame
@@ -29,10 +41,17 @@ public class LobbyRoomUI : MonoBehaviour
     }
 
     void SetText() {
-      playerList.text = network.GetPlayers().Count.ToString();
+      playerList.text = networkManager.GetPlayers().Count.ToString();
     }
 
-    void OnClickStartGame() {
-      network.ChangeScene(gameScene);
+    void OnJoin(string team) {
+      networkManager.ChangeScene(gameScene);
+      if (team == "Seeker") {
+        PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+      } else if (team == "Robber") {
+        PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+      }
+      networkManager.SetLocalPlayerProperty("Team", team);
+      gameManager.OnStartGame();
     }
 }
