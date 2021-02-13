@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
  
-public class ItemPickup : MonoBehaviour {
+public class ItemPickup : MonoBehaviourPun {
 
     public Transform pickupDestination;
     public float maxInteractionDistance = 5f;
@@ -11,7 +12,13 @@ public class ItemPickup : MonoBehaviour {
 
     private RaycastHit raycastFocus;
     private bool canInteract = false;
-    private Interactable currentItem; 
+    private Interactable currentItem;
+
+    private void Start() {
+        if (!photonView.IsMine) {
+            Destroy(this);
+        }
+    }
  
     private void Update() {
         
