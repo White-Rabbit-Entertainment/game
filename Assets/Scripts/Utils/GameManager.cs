@@ -80,8 +80,8 @@ public class GameManager : MonoBehaviour {
         }
       }
       if (winner != Team.None) {
-        Debug.Log("Game Over!");
-        Debug.Log($"{winner}'s have won!");
+        // Debug.Log("Game Over!");
+        // Debug.Log($"{winner}'s have won!");
       }
     }
 

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicItem : MonoBehaviour
-{
+public class BasicItem : MonoBehaviour, Interactable {
     public void Pickup(Transform pickupDestination) {
-        gameObject.tag = "Interactable";
+        
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         transform.position = pickupDestination.position;
@@ -16,8 +15,8 @@ public class BasicItem : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        gameObject.tag = "interactable";
     }
 
     // Update is called once per frame

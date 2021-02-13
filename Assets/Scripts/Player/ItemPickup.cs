@@ -5,30 +5,30 @@ using UnityEngine;
 public class ItemPickup : MonoBehaviour {
 
      public Transform pickupDestination;
-     [SerializeField] private Transform cameraTransform;
-
-     public float throwForce = 200f;
-     public float maxInteractionDistance = 100f;
+     public float maxInteractionDistance = 5f;
  
+    [SerializeField] private Transform cameraTransform;
+
      private RaycastHit raycastFocus;
      private bool canInteract = false;
 
-     private void Start() {
-       List<Camera> cameras = gameObject.GetComponentsInChildrenOfAsset<Camera>();
-     }
+    //  private void Start() {
+    //    List<Camera> cameras = gameObject.GetComponentsInChildrenOfAsset<Camera>();
+    //  }
  
  
      private void Update() {
          // Has interact button been pressed whilst interactable object is in front of player?
          if (Input.GetButtonDown("Fire1") && canInteract) {
              Interactable interactComponent = raycastFocus.collider.transform.GetComponent<Interactable>();
- 
+             Debug.Log(interactComponent);
              if (interactComponent != null) {
+                 Debug.Log("picking up");
                  // Perform object's interaction
                  interactComponent.Pickup(pickupDestination);
              }
          }
- 
+
          // Has action button been pressed whilst interactable object is in front of player?
          // if (Input.GetButtonDown("Fire3") && canInteract == true) {
          //     IInteractable interactComponent = raycastFocus.collider.transform.GetComponent<IInteractable>();
@@ -44,7 +44,8 @@ public class ItemPickup : MonoBehaviour {
          Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
  
          // Is interactable object detected in front of player?
-         if (Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) && raycastFocus.collider.transform.tag == "Interactable") {
+         if (Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) && raycastFocus.collider.transform.tag == "interactable") {
+            Debug.Log("can interact");
             canInteract = true;
          }
          else {

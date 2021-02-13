@@ -351,5 +351,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 970474518680991807}
-  throwForce: 200
   maxInteractionDistance: 100
+  cameraTransform: {fileID: 970474518199395634}
