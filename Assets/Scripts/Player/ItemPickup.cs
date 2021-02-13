@@ -6,7 +6,7 @@ using Photon.Pun;
 public class ItemPickup : MonoBehaviourPun {
 
     public Transform pickupDestination;
-    public float maxInteractionDistance = 5f;
+    public float maxInteractionDistance = 0f;
  
     [SerializeField] private Transform cameraTransform;
 
@@ -26,8 +26,8 @@ public class ItemPickup : MonoBehaviourPun {
         if (Input.GetButtonDown("Fire1") && canInteract && currentItem == null) {
             currentItem = raycastFocus.collider.transform.GetComponent<Interactable>();
             currentItem.PickUp(pickupDestination);
-
-        } else if (Input.GetButtonUp("Fire1") && currentItem != null) {
+        //on release mouse click drop item
+        } else if (Input.GetButtonUp("Fire1") && currentItem != null) { 
             currentItem.PutDown();
             currentItem = null;
         }

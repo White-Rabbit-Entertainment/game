@@ -7,11 +7,10 @@ using UnityEngine.UI;
 public class ItemCounter : MonoBehaviour
 {
     public Text counter;
-
-    // Update is called once per frame
     void Update() {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("ItemsStolen")) {
-            counter.text = PhotonNetwork.CurrentRoom.CustomProperties["ItemsStolen"].ToString();
-        }
+        // if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("ItemsStolen")) {
+        //     counter.text = PhotonNetwork.CurrentRoom.CustomProperties["ItemsStolen"].ToString();
+        // }
+        counter.text = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen", 0).ToString();
     }
 }
