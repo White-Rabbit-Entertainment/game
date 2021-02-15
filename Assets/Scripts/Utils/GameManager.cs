@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour {
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour {
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
       int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
 
-      if (PhotonNetwork.CurrentRoom != null) {
+      if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
         if (secondsLeft <= 0) {
           winner = Team.Seeker;
         }

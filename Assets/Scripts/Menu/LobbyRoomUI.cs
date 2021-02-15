@@ -7,51 +7,48 @@ using Photon.Realtime;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class LobbyRoomUI : MonoBehaviourPun
-{
-  
-    public Text playerList;
-    
+public class LobbyRoomUI : MonoBehaviourPun {
+    public Text playerCounter;
+    public GameObject playerList;
     public Button seekerButton;
     public Button robberButton;
-
     public GameObject robberPrefab;
     public GameObject seekerPrefab;
-    
+    public GameObject playerItemPrefab;
+  
     private Hashtable props;
-    private NetworkManager networkManager; 
-    private GameManager gameManager;
-    private string gameScene = "GameScene";
+    private List<string> currentPlayers;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       networkManager = new NetworkManager();
-       gameManager = new GameManager();
-        
-       // Setup start game button
-       seekerButton.onClick.AddListener(()=>OnJoin("Seeker"));
-       robberButton.onClick.AddListener(()=>OnJoin("Robber"));
+    void Start() {
+      currentPlayers = new List<string>();
+      seekerButton.onClick.AddListener(()=>OnJoin("Seeker"));
+      robberButton.onClick.AddListener(()=>OnJoin("Robber"));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void Update() {
       SetText();
     }
 
     void SetText() {
-      playerList.text = networkManager.GetPlayers().Count.ToString();
+      foreach (Player player in NetworkManager.instance.GetPlayers()) {
+        if (!currentPlayers.Contains(player.UserId)) {
+          GameObject item = Instantiate(playerItemPrefab, transform);
+          item.GetComponentInChildren<Text>().text = player.NickName;
+          item.transform.SetParent(playerList.transform);
+          currentPlayers.Add(player.UserId);
+        }
+      }
+      playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
     }
 
     void OnJoin(string team) {
-      networkManager.ChangeScene(gameScene);
+      NetworkManager.instance.ChangeScene("GameScene");
       if (team == "Seeker") {
         PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
       } else if (team == "Robber") {
         PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
       }
-      networkManager.SetLocalPlayerProperty("Team", team);
-      gameManager.OnStartGame();
+      NetworkManager.instance.SetLocalPlayerProperty("Team", team);
+      GameManager.instance.OnStartGame();
     }
 }
