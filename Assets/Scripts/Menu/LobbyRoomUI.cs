@@ -10,21 +10,21 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class LobbyRoomUI : MonoBehaviourPun {
     public Text playerCounter;
     public GameObject playerList;
-    public Button seekerButton;
-    public Button robberButton;
+    public Button toggleReadyButton;
     public GameObject robberPrefab;
     public GameObject seekerPrefab;
-    public GameObject playerItemPrefab;
+    public GameObject readyPlayerItemPrefab;
+    public GameObject unreadyPlayerItemPrefab;
   
     private Hashtable props;
 
     void Start() {
-      seekerButton.onClick.AddListener(()=>OnJoin("Seeker"));
-      robberButton.onClick.AddListener(()=>OnJoin("Robber"));
+      toggleReadyButton.onClick.AddListener(()=>toggleReady());
     }
 
     void Update() {
       SetText();
+
     }
 
     void SetText() {
@@ -32,12 +32,26 @@ public class LobbyRoomUI : MonoBehaviourPun {
         Destroy(child.gameObject);
       }
       foreach (Player player in NetworkManager.instance.GetPlayers()) {
+        GameObject playerItemPrefab; 
+        if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
+          playerItemPrefab = readyPlayerItemPrefab;
+        } else {
+          playerItemPrefab = unreadyPlayerItemPrefab;
+        }
         GameObject item = Instantiate(playerItemPrefab, transform);
         item.GetComponentInChildren<Text>().text = player.NickName;
         item.transform.SetParent(playerList.transform);
       }
       
       playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
+    }
+
+    void toggleReady() {
+      if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
+      } else {
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
+      }
     }
 
     void OnJoin(string team) {
