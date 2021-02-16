@@ -1591,7 +1591,7 @@ MonoBehaviour:
     type: 3}
   seekerPrefab: {fileID: 1784732065346499672, guid: 08bec8ebd599e47c8a6d9d16c6f13ce4,
     type: 3}
-  playerItemPrefab: {fileID: 4020948783175538395, guid: 352400f20f40d24d6870184f18ceb268,
+  playerItemPrefab: {fileID: 2983694630441182780, guid: b075ac08209f85d90a0a7f0414733ae8,
     type: 3}
 --- !u!1 &1795297594
 GameObject:
