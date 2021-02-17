@@ -149,6 +149,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return allPlayersReady;
     }
 
+    public bool AllPlayersInGame() {
+      bool allPlayersInGame = true;
+      foreach (Player player in GetPlayers()) {
+          if (!PlayerPropertyIs<bool>("Ready", true, player)) {
+              allPlayersInGame = false;
+          }
+      }
+      return allPlayersInGame;
+    }
+
     public void ResetRoom() {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
