@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void SetupGame() {
-      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+      if (PhotonNetwork.LocalPlayer.IsMasterClient && NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
         List<Player> players = NetworkManager.instance.GetPlayers();
         int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
         players.Shuffle();
