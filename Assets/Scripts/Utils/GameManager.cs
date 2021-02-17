@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour {
 
     // Instance
-    public GameObject playerPrefab;
+    public GameObject robberPrefab;
+    public GameObject seekerPrefab;
     public static GameManager instance;
     
     public enum Team
@@ -29,9 +32,9 @@ public class GameManager : MonoBehaviour {
 
     private void MovePlayer(GameObject player, Vector3 position) {
       CharacterController characterController = player.GetComponent<CharacterController>();
-	  characterController.enabled = false;
-	  player.transform.position = position;
-	  characterController.enabled = true;
+	    characterController.enabled = false;
+	    player.transform.position = position;
+	    characterController.enabled = true;
     }
 
     public void OnRobberCapture(GameObject robber) {
@@ -56,8 +59,29 @@ public class GameManager : MonoBehaviour {
       return NetworkManager.instance.GetRoundTimeRemaining();
     }
 
-    // Start is called before the first frame update
-    public void OnStartGame() {
+    public void SetupGame() {
+      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+        List<Player> players = NetworkManager.instance.GetPlayers();
+        int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
+        players.Shuffle();
+        for (int i = 0; i < numberOfRobbers; i++) {
+          NetworkManager.instance.SetPlayerProperty("Team", "Robber", players[i]);
+        }
+
+        for (int i = numberOfRobbers; i < players.Count; i++) {
+          NetworkManager.instance.SetPlayerProperty("Team", "Seeker", players[i]);
+        }
+        NetworkManager.instance.SetRoomProperty("GameReady", true);
+      }
+    }
+
+    public void StartGame() {
+      NetworkManager.instance.ChangeScene("GameScene");
+      if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
+        PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+      } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
+        PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+      }
       StartRoundTimer();
     }
 
@@ -66,7 +90,7 @@ public class GameManager : MonoBehaviour {
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
       int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
 
-      if (PhotonNetwork.CurrentRoom != null) {
+      if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
         if (secondsLeft <= 0) {
           winner = Team.Seeker;
         }
@@ -85,7 +109,6 @@ public class GameManager : MonoBehaviour {
       }
     }
 
-    // Update is called once per frame
     void Update() {
       HandleGameOver();
     }

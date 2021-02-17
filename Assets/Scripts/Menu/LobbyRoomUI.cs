@@ -7,51 +7,57 @@ using Photon.Realtime;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class LobbyRoomUI : MonoBehaviourPun
-{
-  
-    public Text playerList;
-    
-    public Button seekerButton;
-    public Button robberButton;
-
+public class LobbyRoomUI : MonoBehaviourPun {
+    public Text playerCounter;
+    public GameObject playerList;
+    public Button toggleReadyButton;
     public GameObject robberPrefab;
     public GameObject seekerPrefab;
-    
-    private Hashtable props;
-    private NetworkManager networkManager; 
-    private GameManager gameManager;
-    private string gameScene = "GameScene";
+    public GameObject readyPlayerItemPrefab;
+    public GameObject unreadyPlayerItemPrefab;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       networkManager = new NetworkManager();
-       gameManager = new GameManager();
-        
-       // Setup start game button
-       seekerButton.onClick.AddListener(()=>OnJoin("Seeker"));
-       robberButton.onClick.AddListener(()=>OnJoin("Robber"));
+    private bool gameStarted = false; 
+    private Hashtable props;
+
+    void Start() {
+      toggleReadyButton.onClick.AddListener(()=>toggleReady());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void Update() {
       SetText();
+      if (NetworkManager.instance.AllPlayersReady() && !gameStarted) {
+        GameManager.instance.SetupGame();
+        if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
+          gameStarted = true;
+          GameManager.instance.StartGame();
+        }
+      }
     }
 
     void SetText() {
-      playerList.text = networkManager.GetPlayers().Count.ToString();
+      foreach (Transform child in playerList.transform) {
+        Destroy(child.gameObject);
+      }
+      foreach (Player player in NetworkManager.instance.GetPlayers()) {
+        GameObject playerItemPrefab; 
+        if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
+          playerItemPrefab = readyPlayerItemPrefab;
+        } else {
+          playerItemPrefab = unreadyPlayerItemPrefab;
+        }
+        GameObject item = Instantiate(playerItemPrefab, transform);
+        item.GetComponentInChildren<Text>().text = player.NickName;
+        item.transform.SetParent(playerList.transform);
+      }
+      
+      playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
     }
 
-    void OnJoin(string team) {
-      networkManager.ChangeScene(gameScene);
-      if (team == "Seeker") {
-        PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-      } else if (team == "Robber") {
-        PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+    void toggleReady() {
+      if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
+      } else {
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
-      networkManager.SetLocalPlayerProperty("Team", team);
-      gameManager.OnStartGame();
     }
 }
