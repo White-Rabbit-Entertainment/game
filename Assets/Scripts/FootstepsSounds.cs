@@ -6,9 +6,7 @@ public class FootstepsSounds : MonoBehaviour
 {
     public CharacterController playerController;
     public AudioSource audioSource;
-    // private float walkStepRate = 0.08f;
-    // private float runStepRate = 0.02f;
-    // AudioSource
+    
     // Start is called before the first frame update
     void Start()
     {   
