@@ -135,6 +135,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return allRobbersCaught;
     }
 
+    public bool AllPlayersReady() {
+      bool allPlayersReady = true;
+      foreach (Player player in GetPlayers()) {
+          if (!PlayerPropertyIs<bool>("Ready", true, player)) {
+              allPlayersReady = false;
+          }
+      }
+      return allPlayersReady;
+    }
+
     public void CreateRoom (string roomName) {
       PhotonNetwork.CreateRoom(roomName);
     }

@@ -58,7 +58,9 @@ public class GameManager : MonoBehaviour {
     }
 
     // Start is called before the first frame update
-    public void OnStartGame() {
+    public void StartGame() {
+      NetworkManager.instance.ChangeScene("GameScene");
+      PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
       StartRoundTimer();
     }
 

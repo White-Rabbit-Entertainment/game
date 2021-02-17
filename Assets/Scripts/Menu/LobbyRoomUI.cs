@@ -15,7 +15,8 @@ public class LobbyRoomUI : MonoBehaviourPun {
     public GameObject seekerPrefab;
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
-  
+
+    private bool gameStarted = false; 
     private Hashtable props;
 
     void Start() {
@@ -24,7 +25,10 @@ public class LobbyRoomUI : MonoBehaviourPun {
 
     void Update() {
       SetText();
-
+      if (NetworkManager.instance.AllPlayersReady() && !gameStarted) {
+        gameStarted = true;
+        GameManager.instance.StartGame();
+      }
     }
 
     void SetText() {
@@ -54,14 +58,14 @@ public class LobbyRoomUI : MonoBehaviourPun {
       }
     }
 
-    void OnJoin(string team) {
-      NetworkManager.instance.ChangeScene("GameScene");
-      if (team == "Seeker") {
-        PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-      } else if (team == "Robber") {
-        PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-      }
-      NetworkManager.instance.SetLocalPlayerProperty("Team", team);
-      GameManager.instance.OnStartGame();
-    }
+    // void OnJoin(string team) {
+    //   NetworkManager.instance.ChangeScene("GameScene");
+    //   if (team == "Seeker") {
+    //     PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+    //   } else if (team == "Robber") {
+    //     PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+    //   }
+    //   NetworkManager.instance.SetLocalPlayerProperty("Team", team);
+    //   GameManager.instance.StartGame();
+    // }
 }
