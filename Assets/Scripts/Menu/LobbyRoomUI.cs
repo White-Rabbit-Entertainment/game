@@ -60,15 +60,4 @@ public class LobbyRoomUI : MonoBehaviourPun {
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }
-
-    // void OnJoin(string team) {
-    //   NetworkManager.instance.ChangeScene("GameScene");
-    //   if (team == "Seeker") {
-    //     PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-    //   } else if (team == "Robber") {
-    //     PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-    //   }
-    //   NetworkManager.instance.SetLocalPlayerProperty("Team", team);
-    //   GameManager.instance.StartGame();
-    // }
 }
