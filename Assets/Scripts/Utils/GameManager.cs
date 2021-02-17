@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour {
     public void SetupGame() {
       PhotonNetwork.AutomaticallySyncScene = true;
       if (PhotonNetwork.LocalPlayer.IsMasterClient && NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
+        NetworkManager.instance.ChangeScene("GameScene");
         List<Player> players = NetworkManager.instance.GetPlayers();
         int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
         players.Shuffle();
@@ -77,7 +78,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void StartGame() {
-      NetworkManager.instance.ChangeScene("GameScene");
       // if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
       //   PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
       // } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
