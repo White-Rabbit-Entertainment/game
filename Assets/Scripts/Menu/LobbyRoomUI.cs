@@ -31,6 +31,7 @@ public class LobbyRoomUI : MonoBehaviourPun {
           GameManager.instance.StartGame();
         }
       }
+    }
 
     void SetText() {
       foreach (Transform child in playerList.transform) {
