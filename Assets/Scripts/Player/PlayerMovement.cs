@@ -23,9 +23,6 @@ public class PlayerMovement : MonoBehaviourPun
         if (!photonView.IsMine) {
             Destroy(this);
         }
-
-        // Dont destory a player on scene change
-        DontDestroyOnLoad(gameObject);
     }
   
     // Start is called before the first frame update

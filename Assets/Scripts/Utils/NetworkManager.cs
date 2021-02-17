@@ -149,6 +149,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return allPlayersReady;
     }
 
+    public void ResetRoom() {
+      SetRoomProperty("GameReady", false);
+      SetRoomProperty("GameStarted", false);
+      foreach(Player player in GetPlayers()) {
+        SetPlayerProperty("Ready", false, player);
+      }
+    }
+
     public void CreateRoom (string roomName) {
       PhotonNetwork.CreateRoom(roomName);
     }

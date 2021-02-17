@@ -16,7 +16,6 @@ public class LobbyRoomUI : MonoBehaviourPun {
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
-    private bool gameStarted = false; 
     private Hashtable props;
 
     void Start() {
@@ -25,10 +24,10 @@ public class LobbyRoomUI : MonoBehaviourPun {
 
     void Update() {
       SetText();
-      if (NetworkManager.instance.AllPlayersReady() && !gameStarted) {
+      if (NetworkManager.instance.AllPlayersReady() && NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
         GameManager.instance.SetupGame();
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
-          gameStarted = true;
+          NetworkManager.instance.SetRoomProperty("GameStarted", true);
           GameManager.instance.StartGame();
         }
       }

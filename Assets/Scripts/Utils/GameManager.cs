@@ -106,6 +106,10 @@ public class GameManager : MonoBehaviour {
       if (winner != Team.None) {
         Debug.Log("Game Over!");
         Debug.Log($"{winner}'s have won!");
+        
+        
+        NetworkManager.instance.ResetRoom();
+        NetworkManager.instance.ChangeScene("LobbyScene");
       }
     }
 
