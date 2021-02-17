@@ -152,7 +152,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public bool AllPlayersInGame() {
       bool allPlayersInGame = true;
       foreach (Player player in GetPlayers()) {
-          if (!PlayerPropertyIs<bool>("Ready", true, player)) {
+          if (!PlayerPropertyIs<bool>("InGameScene", true, player)) {
               allPlayersInGame = false;
           }
       }
