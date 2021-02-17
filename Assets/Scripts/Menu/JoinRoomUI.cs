@@ -2,31 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class JoinRoomUI: MonoBehaviour {
 
-    public InputField roomInput; 
+    public InputField roomNameInput;
+    public InputField playerNameInput;
     public Button createRoomButton; 
     public Button joinRoomButton; 
 
-    private NetworkManager networkManager;
-    // Start is called before the first frame update
     void Start() {
-      networkManager = new NetworkManager();
-      
-      // Setup listenors 
       createRoomButton.onClick.AddListener(OnClickCreateRoom);
       joinRoomButton.onClick.AddListener(OnClickJoinRoom);
     }
 
-    // Update is called once per frame
-    void OnClickCreateRoom()
-    {
-      networkManager.CreateRoom(roomInput.text);
+    void OnClickCreateRoom() {
+      NetworkManager.instance.CreateRoom(roomNameInput.text);
+      PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
     
-    void OnClickJoinRoom()
-    {
-      networkManager.JoinRoom(roomInput.text);
+    void OnClickJoinRoom() {
+      NetworkManager.instance.JoinRoom(roomNameInput.text);
+      PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
 }
