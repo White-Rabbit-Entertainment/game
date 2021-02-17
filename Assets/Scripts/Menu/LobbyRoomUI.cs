@@ -26,8 +26,11 @@ public class LobbyRoomUI : MonoBehaviourPun {
     void Update() {
       SetText();
       if (NetworkManager.instance.AllPlayersReady() && !gameStarted) {
-        gameStarted = true;
-        GameManager.instance.StartGame();
+        GameManager.instance.SetupGame();
+        if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
+          gameStarted = true;
+          GameManager.instance.StartGame();
+        }
       }
     }
 

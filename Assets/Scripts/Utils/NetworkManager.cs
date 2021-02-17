@@ -90,6 +90,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       SetProperty(key, value, PhotonNetwork.LocalPlayer.CustomProperties, PhotonNetwork.LocalPlayer.SetCustomProperties);
     }
 
+    public void SetPlayerProperty(string key, object value, Player player) {
+      SetProperty(key, value, player.CustomProperties, player.SetCustomProperties);
+    }
+
     public void IncrementRoomProperty(string key) {
       IncrementProperty(key, PhotonNetwork.CurrentRoom.CustomProperties, SetRoomProperty);
     }
