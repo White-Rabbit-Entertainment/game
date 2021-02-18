@@ -79,11 +79,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void StartGame() {
-      // if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-      //   PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-      // } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-      //   PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-      // }
+      // Player spawning is now handled by the player spawner in GameScene
       StartRoundTimer();
     }
 
@@ -108,8 +104,8 @@ public class GameManager : MonoBehaviour {
       if (winner != Team.None) {
         Debug.Log("Game Over!");
         Debug.Log($"{winner}'s have won!");
-        // NetworkManager.instance.ResetRoom();
-        // NetworkManager.instance.ChangeScene("LobbyScene");
+        NetworkManager.instance.ResetRoom();
+        NetworkManager.instance.ChangeScene("LobbyScene");
       }
     }
 
