@@ -61,7 +61,6 @@ public class GameManager : MonoBehaviour {
 
     public void SetupGame() {
       if (NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
-        NetworkManager.instance.ChangeScene("GameScene");
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
@@ -80,6 +79,7 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame() {
       // Player spawning is now handled by the player spawner in GameScene
+      NetworkManager.instance.ChangeScene("GameScene");
       StartRoundTimer();
     }
 

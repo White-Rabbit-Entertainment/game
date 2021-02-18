@@ -28,13 +28,13 @@ public class LobbyRoomUI : MonoBehaviourPun {
       SetText();
       if (NetworkManager.instance.AllPlayersReady()) {
         if (!settingUp) {
-          NetworkManager.instance.ChangeScene("GameScene");
           settingUp = true;
           GameManager.instance.SetupGame();
         }
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
           NetworkManager.instance.SetRoomProperty("GameStarted", true);
           GameManager.instance.StartGame();
+          Destroy(this);
         }
       }
     }
