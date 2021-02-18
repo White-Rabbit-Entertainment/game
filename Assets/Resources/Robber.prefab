@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!95 &-4666048462207865514
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809595694847979762}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e60896b33d3d54a7bba790727202a4e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &4617745966275864761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,6 +31,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c7357da2848435d8d6c2a7cc175496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8573953901436548305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809595694847979762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3aa049df836483f8acf65c29dfbbca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 6809595694847979760}
 --- !u!1001 &6050403968897764889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -94,6 +126,12 @@ PrefabInstance:
 --- !u!1 &6809595694847979762 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 970474518700277483, guid: d759674618dad8007acd33ec36b2e696,
+    type: 3}
+  m_PrefabInstance: {fileID: 6050403968897764889}
+  m_PrefabAsset: {fileID: 0}
+--- !u!143 &6809595694847979760 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 970474518700277481, guid: d759674618dad8007acd33ec36b2e696,
     type: 3}
   m_PrefabInstance: {fileID: 6050403968897764889}
   m_PrefabAsset: {fileID: 0}
