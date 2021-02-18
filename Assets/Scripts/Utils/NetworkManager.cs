@@ -159,8 +159,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void ResetRoom() {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
+      SetRoomProperty("ItemsStolen", 0);
       foreach(Player player in GetPlayers()) {
         SetPlayerProperty("Ready", false, player);
+        SetPlayerProperty("InGameScene", false, player);
+        SetPlayerProperty("Captured", false, player);
       }
     }
 
