@@ -38,6 +38,7 @@ public class PlayerSpawner : MonoBehaviour {
     }
 
     void Update() {
+        Debug.Log("In player spawner");
         if (NetworkManager.instance.AllPlayersInGame()) {
           LoadPlayer();
           Destroy(this);
