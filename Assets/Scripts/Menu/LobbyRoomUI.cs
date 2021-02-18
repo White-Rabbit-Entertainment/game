@@ -19,6 +19,7 @@ public class LobbyRoomUI : MonoBehaviourPun {
     private Hashtable props;
 
     void Start() {
+      Cursor.lockState = CursorLockMode.None;
       toggleReadyButton.onClick.AddListener(()=>toggleReady());
     }
 
