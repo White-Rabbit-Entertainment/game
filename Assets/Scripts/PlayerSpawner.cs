@@ -33,7 +33,7 @@ public class PlayerSpawner : MonoBehaviour {
             PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
             Debug.Log("Instantiating robber");
-            PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+            PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
     }
 
