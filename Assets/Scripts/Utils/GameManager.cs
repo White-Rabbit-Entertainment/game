@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour {
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
       int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
 
-      if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
+      if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene" && NetworkManager.instance.RoomPropertyIs("GameStarted", true)) {
         if (secondsLeft <= 0) {
           winner = Team.Seeker;
         }
@@ -104,8 +104,8 @@ public class GameManager : MonoBehaviour {
       if (winner != Team.None) {
         Debug.Log("Game Over!");
         Debug.Log($"{winner}'s have won!");
-        // NetworkManager.instance.ResetRoom();
-        // NetworkManager.instance.ChangeScene("LobbyScene");
+        NetworkManager.instance.ResetRoom();
+        NetworkManager.instance.ChangeScene("LobbyScene");
       }
     }
 
