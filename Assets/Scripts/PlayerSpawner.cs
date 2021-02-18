@@ -9,10 +9,8 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject seekerPrefab;
     public GameObject robberPrefab;
 
-    private bool playerIsLoaded = false;
-
     void Start() {
-      
+      Debug.Log("Player spawner created");
     }
     void OnEnable() {
     //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
@@ -39,8 +37,9 @@ public class PlayerSpawner : MonoBehaviour {
     }
 
     void LoadPlayer() {
-        if (!playerIsLoaded) {
-            playerIsLoaded = true;
+        Debug.Log("Player loaded");
+        if (!NetworkManager.instance.LocalPlayerPropertyIs<bool>("PlayerSpawned", true)) {
+            NetworkManager.instance.SetLocalPlayerProperty("PlayerSpawned", true);
             if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
                 Debug.Log("Instantiating seeker");
                 PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
