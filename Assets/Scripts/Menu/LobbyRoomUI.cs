@@ -18,8 +18,6 @@ public class LobbyRoomUI : MonoBehaviourPun {
 
     private Hashtable props;
 
-    bool settingUp = false;
-
     void Start() {
       toggleReadyButton.onClick.AddListener(()=>toggleReady());
     }
@@ -27,10 +25,7 @@ public class LobbyRoomUI : MonoBehaviourPun {
     void Update() {
       SetText();
       if (NetworkManager.instance.AllPlayersReady()) {
-        if (!settingUp) {
-          settingUp = true;
-          GameManager.instance.SetupGame();
-        }
+        GameManager.instance.SetupGame();
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
           NetworkManager.instance.SetRoomProperty("GameStarted", true);
           GameManager.instance.StartGame();
