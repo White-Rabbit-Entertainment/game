@@ -38,22 +38,22 @@ public class PlayerSpawner : MonoBehaviour {
 
     void LoadPlayer() {
         Debug.Log("Player loaded");
-        if (!NetworkManager.instance.LocalPlayerPropertyIs<bool>("PlayerSpawned", true)) {
-            NetworkManager.instance.SetLocalPlayerProperty("PlayerSpawned", true);
-            if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-                Debug.Log("Instantiating seeker");
-                PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-            } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-                Debug.Log("Instantiating robber");
-                PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-            }
+        if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
+            Debug.Log("Instantiating seeker");
+            PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
+            Debug.Log("Instantiating robber");
+            PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         }
+        Destroy(this);
     }
 
     void Update() {
         if (NetworkManager.instance.AllPlayersInGame()) {
-            LoadPlayer();
-            Destroy(this);
+           if (!NetworkManager.instance.LocalPlayerPropertyIs<bool>("PlayerSpawned", true)) {
+             NetworkManager.instance.SetLocalPlayerProperty("PlayerSpawned", true);
+             LoadPlayer();
+           }
         }
     }
 }
