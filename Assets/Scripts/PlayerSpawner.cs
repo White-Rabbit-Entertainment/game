@@ -38,8 +38,8 @@ public class PlayerSpawner : MonoBehaviour {
         // }
     }
 
-    void Update() {
-        if (NetworkManager.instance.AllPlayersInGame() && !playerIsLoaded) {
+    void LoadPlayer() {
+        if (!playerIsLoaded) {
             playerIsLoaded = true;
             if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
                 Debug.Log("Instantiating seeker");
@@ -48,6 +48,12 @@ public class PlayerSpawner : MonoBehaviour {
                 Debug.Log("Instantiating robber");
                 PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
             }
+        }
+    }
+
+    void Update() {
+        if (NetworkManager.instance.AllPlayersInGame()) {
+            LoadPlayer();
             Destroy(this);
         }
     }
