@@ -45,15 +45,12 @@ public class PlayerSpawner : MonoBehaviour {
             Debug.Log("Instantiating robber");
             PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         }
-        // Destroy(this);
     }
 
     void Update() {
         if (NetworkManager.instance.AllPlayersInGame()) {
-           if (!NetworkManager.instance.LocalPlayerPropertyIs<bool>("PlayerSpawned", true)) {
-             NetworkManager.instance.SetLocalPlayerProperty("PlayerSpawned", true);
-             LoadPlayer();
-           }
+          LoadPlayer();
+          Destroy(this);
         }
     }
 }
