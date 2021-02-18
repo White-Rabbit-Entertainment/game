@@ -45,7 +45,7 @@ public class PlayerSpawner : MonoBehaviour {
             Debug.Log("Instantiating robber");
             PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         }
-        Destroy(this);
+        // Destroy(this);
     }
 
     void Update() {
