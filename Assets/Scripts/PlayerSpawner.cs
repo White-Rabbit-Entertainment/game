@@ -11,6 +11,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     void Start() {
       Debug.Log("Player spawner created");
+      NetworkManager.instance.SetLocalPlayerProperty("InGameScene", true);
     }
     void OnEnable() {
     //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
