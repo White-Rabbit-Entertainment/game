@@ -9,8 +9,10 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject seekerPrefab;
     public GameObject robberPrefab;
 
+    private bool playerIsLoaded = false;
+
     void Start() {
-        NetworkManager.instance.SetLocalPlayerProperty("InGameScene", true);
+      
     }
     void OnEnable() {
     //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
@@ -23,6 +25,7 @@ public class PlayerSpawner : MonoBehaviour {
     }
 
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
+        NetworkManager.instance.SetLocalPlayerProperty("InGameScene", true);
         // while(!NetworkManager.instance.AllPlayersInGame()) {
         //     Debug.Log("not all players in scene");
         // }
@@ -36,10 +39,13 @@ public class PlayerSpawner : MonoBehaviour {
     }
 
     void Update() {
-        if (NetworkManager.instance.AllPlayersInGame()) {
+        if (NetworkManager.instance.AllPlayersInGame() && !playerIsLoaded) {
+            playerIsLoaded = true;
             if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
+                Debug.Log("Instantiating seeker");
                 PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
             } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
+                Debug.Log("Instantiating robber");
                 PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
             }
             Destroy(this);
