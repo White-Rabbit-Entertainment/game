@@ -24,16 +24,6 @@ public class PlayerSpawner : MonoBehaviour {
 
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
         NetworkManager.instance.SetLocalPlayerProperty("InGameScene", true);
-        // while(!NetworkManager.instance.AllPlayersInGame()) {
-        //     Debug.Log("not all players in scene");
-        // }
-        // if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-        //     PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-        // } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-        //     PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-        // } else {
-        //     Debug.Log("no team");
-        // }
     }
 
     void LoadPlayer() {
@@ -51,6 +41,7 @@ public class PlayerSpawner : MonoBehaviour {
         if (NetworkManager.instance.AllPlayersInGame()) {
           LoadPlayer();
           Destroy(this);
+          Destroy(gameObject);
         }
     }
 }
