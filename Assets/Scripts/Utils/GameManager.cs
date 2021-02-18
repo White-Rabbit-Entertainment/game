@@ -60,19 +60,21 @@ public class GameManager : MonoBehaviour {
     }
 
     public void SetupGame() {
-      NetworkManager.instance.ChangeScene("GameScene");
-      if (PhotonNetwork.LocalPlayer.IsMasterClient && NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
-        List<Player> players = NetworkManager.instance.GetPlayers();
-        int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
-        players.Shuffle();
-        for (int i = 0; i < numberOfRobbers; i++) {
-          NetworkManager.instance.SetPlayerProperty("Team", "Robber", players[i]);
-        }
+      if (NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
+        NetworkManager.instance.ChangeScene("GameScene");
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          List<Player> players = NetworkManager.instance.GetPlayers();
+          int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
+          players.Shuffle();
+          for (int i = 0; i < numberOfRobbers; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", "Robber", players[i]);
+          }
 
-        for (int i = numberOfRobbers; i < players.Count; i++) {
-          NetworkManager.instance.SetPlayerProperty("Team", "Seeker", players[i]);
+          for (int i = numberOfRobbers; i < players.Count; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", "Seeker", players[i]);
+          }
+          NetworkManager.instance.SetRoomProperty("GameReady", true);
         }
-        NetworkManager.instance.SetRoomProperty("GameReady", true);
       }
     }
 
