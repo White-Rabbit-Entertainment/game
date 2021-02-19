@@ -100,14 +100,15 @@ public class GameManager : MonoBehaviour {
         if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 2)) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", "Robber");
         }
+        if (!NetworkManager.instance.RoomPropertyIs<string>("WinningTeam", "None")) {
+          string winner = NetworkManager.instance.GetRoomProperty<string>("WinningTeam");
+          Debug.Log("Game Over!");
+          Debug.Log($"{winner}'s have won!");
+          NetworkManager.instance.ResetRoom();
+          NetworkManager.instance.ChangeScene("LobbyScene");
+        }
       }
-      if (!NetworkManager.instance.RoomPropertyIs<string>("WinningTeam", "None")) {
-        string winner = NetworkManager.instance.GetRoomProperty<string>("WinningTeam");
-        Debug.Log("Game Over!");
-        Debug.Log($"{winner}'s have won!");
-        NetworkManager.instance.ResetRoom();
-        NetworkManager.instance.ChangeScene("LobbyScene");
-      }
+      
     }
 
     void Update() {
