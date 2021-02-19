@@ -29,7 +29,7 @@ public class BasicItem : PickUpable {
     // }
 
     // Start is called before the first frame update
-    void Start() {
-        gameObject.tag = "interactable";
-    }
+    // void Start() {
+    //     gameObject.tag = "interactable";
+    // }
 }

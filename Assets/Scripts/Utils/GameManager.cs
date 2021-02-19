@@ -38,9 +38,13 @@ public class GameManager : MonoBehaviour {
     }
 
     public void OnRobberCapture(GameObject robber) {
+      PhotonView view = robber.GetComponent<PhotonView>();
+      Player owner = view.Owner;
+      view.TransferOwnership(PhotonNetwork.LocalPlayer);
       GameObject jail = GameObject.Find("/Jail/JailSpawn");
       NetworkManager.instance.SetLocalPlayerProperty("Captured", true);
       MovePlayer(robber, jail.transform.position);
+      view.TransferOwnership(owner);
     }
 
     public void OnItemInSafeZone(GameObject item) {

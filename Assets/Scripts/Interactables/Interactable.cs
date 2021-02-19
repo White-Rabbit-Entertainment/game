@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public abstract class Interactable : MonoBehaviour {
+  void Start() {
+      gameObject.tag = "interactable";
+  }
+
   public void GlowOn() {
     GetComponent<Outline>().enabled = true;
   }
