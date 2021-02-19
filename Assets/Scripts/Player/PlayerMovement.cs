@@ -34,11 +34,13 @@ public class PlayerMovement : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void MovePlayer(Vector3 position) {
+    public void MovePlayer(Vector3 position) {
+        Debug.Log("Started MovePlayer");
         CharacterController characterController = GetComponent<CharacterController>();
 	    characterController.enabled = false;
         transform.position = position;
 	    characterController.enabled = true;
+        Debug.Log("Finished MovePlayer");
     }
 
     bool IsGrounded() {
