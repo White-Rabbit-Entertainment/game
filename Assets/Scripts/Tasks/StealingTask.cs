@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StealingTask : Task {
-    public StealingTask(string description) {
-        this.description = description;
+    private Stealable objectToSteal;
+
+    public Stealable ObjectToSteal {
+        get {return objectToSteal;}
     }
-    public override void Complete() {
-        Debug.Log("Completed");
+
+    public StealingTask(string description, Stealable objectToSteal) {
+        this.description = description;
     }
 }

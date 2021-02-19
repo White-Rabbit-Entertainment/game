@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviourPun {
       // Player spawning is now handled by the player spawner in GameScene
       NetworkManager.instance.ChangeScene("GameScene");
       List<Task> tasks = new List<Task>();
-      tasks.Add(new StealingTask("steal the item"));
-      Debug.Log(tasks[0].Description);
+      //tasks.Add(new StealingTask("steal the item", ));
+      //Debug.Log(tasks[0].Description);
       StartRoundTimer();
     }
 
