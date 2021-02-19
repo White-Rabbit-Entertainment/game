@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour {
           Debug.Log($"{winner}'s have won!");
           NetworkManager.instance.ResetRoom();
           NetworkManager.instance.ChangeScene("LobbyScene");
-        /}
+        }
       }
       
     }
