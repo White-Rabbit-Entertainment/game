@@ -29,10 +29,11 @@ public class GameManager : MonoBehaviourPun {
         DontDestroyOnLoad(gameObject);
       }
     }
-    
+
     public void OnRobberCapture(GameObject robber) {
       PhotonView view = robber.GetComponent<PhotonView>();
       GameObject jail = GameObject.Find("/Jail/JailSpawn");
+      NetworkManager.instance.SetPlayerProperty("Captured", true, view.Owner);
       view.RPC("MovePlayer", view.Owner, jail.transform.position);
     }
 
