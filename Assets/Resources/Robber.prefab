@@ -13,12 +13,39 @@ Animator:
   m_Controller: {fileID: 9100000, guid: e60896b33d3d54a7bba790727202a4e9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4038054568294525856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809595694847979762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: Velocity
+  - Type: 9
+    SynchronizeType: 1
+    Name: Dummy1
+  - Type: 9
+    SynchronizeType: 1
+    Name: Dummy2
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
 --- !u!114 &4617745966275864761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +148,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: robber
       objectReference: {fileID: 0}
+    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: ObservedComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: 4038054568294525856}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d759674618dad8007acd33ec36b2e696, type: 3}
 --- !u!1 &6809595694847979762 stripped
