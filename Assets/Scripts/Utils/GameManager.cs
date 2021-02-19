@@ -31,9 +31,9 @@ public class GameManager : MonoBehaviourPun {
     }
 
     [PunRPC]
-    private void TransferOwnership(PhotonView view, Player newOwner) {
+    private void TransferOwnership(PhotonMessageInfo info) {
       Debug.Log("transferring ownership");
-      view.TransferOwnership(newOwner);
+      info.photonView.TransferOwnership(info.Sender);
     }
 
     private void MovePlayer(GameObject player, Vector3 position) {
@@ -46,11 +46,12 @@ public class GameManager : MonoBehaviourPun {
     public void OnRobberCapture(GameObject robber) {
       PhotonView view = robber.GetComponent<PhotonView>();
       Player owner = view.Owner;
-      photonView.RPC("TransferOwnership", RpcTarget.All, view, PhotonNetwork.LocalPlayer);
+      Debug.Log(owner);
+      view.RPC("TransferOwnership", RpcTarget.All);
       GameObject jail = GameObject.Find("/Jail/JailSpawn");
       NetworkManager.instance.SetLocalPlayerProperty("Captured", true);
       MovePlayer(robber, jail.transform.position);
-      photonView.RPC("TransferOwnership", RpcTarget.All, view, owner);
+      //photonView.RPC("TransferOwnership", RpcTarget.All);
     }
 
     public void OnItemInSafeZone(GameObject item) {
