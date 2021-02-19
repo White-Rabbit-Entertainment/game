@@ -16,20 +16,21 @@ public class LobbyRoomUI : MonoBehaviourPun {
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
-    private bool gameStarted = false; 
     private Hashtable props;
 
     void Start() {
+      Cursor.lockState = CursorLockMode.None;
       toggleReadyButton.onClick.AddListener(()=>toggleReady());
     }
 
     void Update() {
       SetText();
-      if (NetworkManager.instance.AllPlayersReady() && !gameStarted) {
+      if (NetworkManager.instance.AllPlayersReady()) {
         GameManager.instance.SetupGame();
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
-          gameStarted = true;
+          NetworkManager.instance.SetRoomProperty("GameStarted", true);
           GameManager.instance.StartGame();
+          Destroy(this);
         }
       }
     }
