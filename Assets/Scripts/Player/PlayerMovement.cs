@@ -29,9 +29,16 @@ public class PlayerMovement : MonoBehaviourPun
     }
   
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         movement = new Movement(speed, gravity, jumpHeight, sprintFactor, stamina, staminaDepletionRate, staminaRegenerationRate);
+    }
+
+    [PunRPC]
+    private void MovePlayer(Vector3 position) {
+        CharacterController characterController = GetComponent<CharacterController>();
+	    characterController.enabled = false;
+        transform.position = position;
+	    characterController.enabled = true;
     }
 
     bool IsGrounded() {
