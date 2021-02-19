@@ -5,7 +5,8 @@
         "PhotonUnityNetworking.Utilities.Culling.Editor",
         "PhotonUnityNetworking.Utilities",
         "PhotonUnityNetworking.Utilities.PhotonPlayer.Editor",
-        "PhotonRealtime"
+        "PhotonRealtime",
+        "Outline"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
