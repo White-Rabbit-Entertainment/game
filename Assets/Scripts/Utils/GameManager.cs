@@ -6,7 +6,7 @@ using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviourPun {
 
     // Instance
     public GameObject robberPrefab;
@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour {
       }
     }
 
+    [PunRPC]
+    private void TransferOwnership(PhotonView view) {
+      view.TransferOwnership(PhotonNetwork.LocalPlayer);
+    }
+
     private void MovePlayer(GameObject player, Vector3 position) {
       CharacterController characterController = player.GetComponent<CharacterController>();
 	    characterController.enabled = false;
@@ -40,11 +45,11 @@ public class GameManager : MonoBehaviour {
     public void OnRobberCapture(GameObject robber) {
       PhotonView view = robber.GetComponent<PhotonView>();
       Player owner = view.Owner;
-      view.TransferOwnership(PhotonNetwork.LocalPlayer);
+      photonView.RPC("TransferOwnership", RpcTarget.All, view);
       GameObject jail = GameObject.Find("/Jail/JailSpawn");
       NetworkManager.instance.SetLocalPlayerProperty("Captured", true);
       MovePlayer(robber, jail.transform.position);
-      view.TransferOwnership(owner);
+      photonView.RPC("TransferOwnership", RpcTarget.All, owner);
     }
 
     public void OnItemInSafeZone(GameObject item) {
