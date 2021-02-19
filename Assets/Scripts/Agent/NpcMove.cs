@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using ObjectRandomizer.cs;
 
 public class NpcMove : MonoBehaviour
 {
@@ -19,10 +18,6 @@ public class NpcMove : MonoBehaviour
     List<string> animationConditions = new List<string>() {
       "walk","idle"
     };
-    // // public var animation_conditions = new List<string>();
-    // animation_conditions.Add("walk");
-    // animation_conditions.Add("idle");
-    // animation_conditions.Add("run");
     public float speed = 30f;
     Animator animator;
     private List<GameObject> spawnedPeople;
@@ -33,9 +28,6 @@ public class NpcMove : MonoBehaviour
         _navMeshAgent = this.GetComponent<NavMeshAgent>();
         animator = this.GetComponent<Animator>();
         current_animation_state = "idle";
-        spawnedPeople = new List<GameObject>();
-
-        SpawnAllPeople();
         // current_animation_state = idle;
     }
 
@@ -96,76 +88,4 @@ public class NpcMove : MonoBehaviour
       return new Vector3(navHit.position.x,transform.position.y,navHit.position.z);
     }
 
-
-    private void SpawnAllPeople()
-    {
-      ObjectRandomizer objectRandomizer = GetComponent<ObjectRandomizer>();
-
-        // spawn all people
-      for (int personIndex = 0; personIndex < TotalNumberOfPeopleToSpawn; personIndex += 1)
-      {
-            // get a game location on the board
-            Vector3 randomBoardLocation = GetRandomGameBoardLocation();
-
-            // spawn a random person prefab at that location
-            GameObject spawnedPerson = SpawnPersonAtLocation(randomBoardLocation, objectRandomizer);
-
-            //Debug.Log("Spawned " + spawnedPerson.name + " at " + randomBoardLocation);
-
-            // add the spawned person to our collection
-            spawnedPeople.Add(spawnedPerson);
-        }
-      }
-
-
-    private GameObject SpawnPersonAtLocation(Vector3 spawnPosition, ObjectRandomizer objectRandomizer)
-    {
-        // get a random person prefab to spawn
-        GameObject randomPersonPrefab = (GameObject)objectRandomizer.RandomObject();
-
-        // spawn the person at the current spawn point
-        GameObject personGameObject = Instantiate(randomPersonPrefab, spawnPosition, Quaternion.identity);
-
-        Vector3 randomDestination = GetRandomGameBoardLocation();
-        Person person = personGameObject.GetComponent<Person>();
-        person.CurrentDestination = randomDestination;
-
-        Debug.Log("Assigned CurrentDestination to " + person.name);
-
-        //Debug.Log("Random dest: " + randomDestination);
-
-        personGameObject.name = person.name + "_" + spawnPosition.x + "_" + spawnPosition.y + "_" + spawnPosition.z;
-        return personGameObject;
-    }
-
-
-    private Vector3 GetRandomGameBoardLocation()
-    {
-        NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
-
-        int maxIndices = navMeshData.indices.Length - 3;
-
-        // pick the first indice of a random triangle in the nav mesh
-        int firstVertexSelected = UnityEngine.Random.Range(0, maxIndices);
-        int secondVertexSelected = UnityEngine.Random.Range(0, maxIndices);
-
-        // spawn on verticies
-        Vector3 point = navMeshData.vertices[navMeshData.indices[firstVertexSelected]];
-
-        Vector3 firstVertexPosition = navMeshData.vertices[navMeshData.indices[firstVertexSelected]];
-        Vector3 secondVertexPosition = navMeshData.vertices[navMeshData.indices[secondVertexSelected]];
-
-        // eliminate points that share a similar X or Z position to stop spawining in square grid line formations
-        if ((int)firstVertexPosition.x == (int)secondVertexPosition.x || (int)firstVertexPosition.z == (int)secondVertexPosition.z)
-        {
-            point = GetRandomGameBoardLocation(); // re-roll a position - I'm not happy with this recursion it could be better
-        }
-        else
-        {
-            // select a random point on it
-            point = Vector3.Lerp(firstVertexPosition, secondVertexPosition, UnityEngine.Random.Range(0.05f, 0.95f));
-        }
-
-        return point;
-    }
 }
