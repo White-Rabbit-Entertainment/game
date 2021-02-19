@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviourPun {
       Debug.Log("Starting OnRobberCapture");
       PhotonView view = robber.GetComponent<PhotonView>();
       GameObject jail = GameObject.Find("/Jail/JailSpawn");
-      view.RPC("MovePlayer", RpcTarget.All, jail.transform.position);
+      view.RPC("MovePlayer", RpcTarget.MasterClient, jail.transform.position);
       Debug.Log("Finished OnRobberCapture");
       // Player owner = view.Owner;
       // Debug.Log(owner);
