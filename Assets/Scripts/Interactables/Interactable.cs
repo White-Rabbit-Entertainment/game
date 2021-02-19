@@ -5,4 +5,6 @@ using UnityEngine;
 interface Interactable {
   void PickUp(Transform pickUpDestination);
   void PutDown();
+  void GlowOn();
+  void GlowOff();
 }

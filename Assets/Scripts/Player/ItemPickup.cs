@@ -12,7 +12,8 @@ public class ItemPickup : MonoBehaviourPun {
 
     private RaycastHit raycastFocus;
     private bool canInteract = false;
-    private Interactable currentItem;
+    private Interactable currentHeldItem;
+    private Interactable currentInteractable;
 
     private void Start() {
         if (!photonView.IsMine) {
@@ -21,15 +22,20 @@ public class ItemPickup : MonoBehaviourPun {
     }
  
     private void Update() {
-        
+        if (canInteract && currentHeldItem == null) {
+            currentInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
+            currentInteractable.GlowOn();
+        } else if (currentInteractable != null) {
+            currentInteractable.GlowOff();
+        }
         // Has interact button been pressed whilst interactable object is in front of player?
-        if (Input.GetButtonDown("Fire1") && canInteract && currentItem == null) {
-            currentItem = raycastFocus.collider.transform.GetComponent<Interactable>();
-            currentItem.PickUp(pickupDestination);
+        if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null) {
+            currentHeldItem = currentInteractable;
+            currentHeldItem.PickUp(pickupDestination);
         //on release mouse click drop item
-        } else if (Input.GetButtonUp("Fire1") && currentItem != null) { 
-            currentItem.PutDown();
-            currentItem = null;
+        } else if (Input.GetButtonUp("Fire1") && currentHeldItem != null) { 
+            currentHeldItem.PutDown();
+            currentHeldItem = null;
         }
     }
  
