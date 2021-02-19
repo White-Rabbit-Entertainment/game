@@ -130,23 +130,41 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     // Check all players in the room and returns whether all the robbers are captured
     public bool AllRobbersCaught() {
-      bool allRobbersCaught = true;
       foreach (Player player in GetPlayers()) {
           if (PlayerPropertyIs<string>("Team", "Robber", player) && (!PlayerPropertyIs<bool>("Captured", true, player))) {
-              allRobbersCaught = false;
+              return false;
           }
       }
-      return allRobbersCaught;
+      return true;
     }
 
     public bool AllPlayersReady() {
-      bool allPlayersReady = true;
       foreach (Player player in GetPlayers()) {
           if (!PlayerPropertyIs<bool>("Ready", true, player)) {
-              allPlayersReady = false;
+              return false;
           }
       }
-      return allPlayersReady;
+      return true;
+    }
+
+    public bool AllPlayersInGame() {
+      foreach (Player player in GetPlayers()) {
+          if (!PlayerPropertyIs<bool>("InGameScene", true, player)) {
+              return false;
+          }
+      }
+      return true;
+    }
+
+    public void ResetRoom() {
+      SetRoomProperty("GameReady", false);
+      SetRoomProperty("GameStarted", false);
+      SetRoomProperty("ItemsStolen", 0);
+      foreach(Player player in GetPlayers()) {
+        SetPlayerProperty("Ready", false, player);
+        SetPlayerProperty("InGameScene", false, player);
+        SetPlayerProperty("Captured", false, player);
+      }
     }
 
     public void CreateRoom (string roomName) {

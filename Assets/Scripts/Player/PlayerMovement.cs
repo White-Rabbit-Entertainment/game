@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviourPun
         }
 
         // Dont destory a player on scene change
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
   
     // Start is called before the first frame update

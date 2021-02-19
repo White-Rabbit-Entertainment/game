@@ -60,53 +60,55 @@ public class GameManager : MonoBehaviour {
     }
 
     public void SetupGame() {
-      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        List<Player> players = NetworkManager.instance.GetPlayers();
-        int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
-        players.Shuffle();
-        for (int i = 0; i < numberOfRobbers; i++) {
-          NetworkManager.instance.SetPlayerProperty("Team", "Robber", players[i]);
-        }
+      if (NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "None");
+          List<Player> players = NetworkManager.instance.GetPlayers();
+          int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
+          players.Shuffle();
+          for (int i = 0; i < numberOfRobbers; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", "Robber", players[i]);
+          }
 
-        for (int i = numberOfRobbers; i < players.Count; i++) {
-          NetworkManager.instance.SetPlayerProperty("Team", "Seeker", players[i]);
+          for (int i = numberOfRobbers; i < players.Count; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", "Seeker", players[i]);
+          }
+          NetworkManager.instance.SetRoomProperty("GameReady", true);
         }
-        NetworkManager.instance.SetRoomProperty("GameReady", true);
       }
     }
 
     public void StartGame() {
+      // Player spawning is now handled by the player spawner in GameScene
       NetworkManager.instance.ChangeScene("GameScene");
-      if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-        PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-      } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-        PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-      }
       StartRoundTimer();
     }
 
     public void HandleGameOver() {
-      Team winner = Team.None;
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
       int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
 
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
         if (secondsLeft <= 0) {
-          winner = Team.Seeker;
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "Seeker");
         }
 
         if (NetworkManager.instance.AllRobbersCaught()) {
-          winner = Team.Seeker;
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "Seeker");
         }
 
         if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 2)) {
-          winner = Team.Robber;
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "Robber");
+        }
+        if (!NetworkManager.instance.RoomPropertyIs<string>("WinningTeam", "None")) {
+          string winner = NetworkManager.instance.GetRoomProperty<string>("WinningTeam");
+          Debug.Log("Game Over!");
+          Debug.Log($"{winner}'s have won!");
+          NetworkManager.instance.ResetRoom();
+          NetworkManager.instance.ChangeScene("LobbyScene");
         }
       }
-      if (winner != Team.None) {
-        Debug.Log("Game Over!");
-        Debug.Log($"{winner}'s have won!");
-      }
+      
     }
 
     void Update() {
