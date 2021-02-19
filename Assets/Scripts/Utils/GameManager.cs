@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour {
     public void SetupGame() {
       if (NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "None");
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
           players.Shuffle();
@@ -84,24 +85,24 @@ public class GameManager : MonoBehaviour {
     }
 
     public void HandleGameOver() {
-      Team winner = Team.None;
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
       int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
 
-      if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene" && NetworkManager.instance.RoomPropertyIs("GameStarted", true)) {
+      if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
         if (secondsLeft <= 0) {
-          winner = Team.Seeker;
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "Seeker");
         }
 
         if (NetworkManager.instance.AllRobbersCaught()) {
-          winner = Team.Seeker;
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "Seeker");
         }
 
         if (NetworkManager.instance.RoomPropertyIs<int>("ItemsStolen", 2)) {
-          winner = Team.Robber;
+          NetworkManager.instance.SetRoomProperty("WinningTeam", "Robber");
         }
       }
-      if (winner != Team.None) {
+      if (!NetworkManager.instance.RoomPropertyIs<string>("WinningTeam", "None")) {
+        string winner = NetworkManager.instance.GetRoomProperty<string>("WinningTeam");
         Debug.Log("Game Over!");
         Debug.Log($"{winner}'s have won!");
         NetworkManager.instance.ResetRoom();
