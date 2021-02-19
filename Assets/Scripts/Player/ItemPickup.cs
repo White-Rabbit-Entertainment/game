@@ -6,7 +6,7 @@ using Photon.Pun;
 public class ItemPickup : MonoBehaviourPun {
 
     public Transform pickupDestination;
-    public float maxInteractionDistance = 0f;
+    public float maxInteractionDistance = 2f;
  
     [SerializeField] private Transform cameraTransform;
 
