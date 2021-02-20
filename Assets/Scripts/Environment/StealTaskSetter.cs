@@ -27,7 +27,7 @@ public class StealTaskSetter : MonoBehaviour {
 
             Utils.Shuffle<Transform>(possibleStealables);
             for (int i = 0; i < numberOfTargetItems; i++) {
-                stealingTasks[itemIndex] = new StealingTask("Steal item", possibleStealables[itemIndex]);
+                stealingTasks[i] = new StealingTask("Steal item", possibleStealables[i]);
                 PhotonView view = possibleStealables[i].GetComponent<PhotonView>();
                 view.RPC("MakeStealable", RpcTarget.All);
             }
