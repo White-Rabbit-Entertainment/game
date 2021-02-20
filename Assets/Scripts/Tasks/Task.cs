@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class Task {
     public bool isCompleted = false;
     public string description;
+    public string type; // Used for serialization
 
     public void Complete() {
         isCompleted = true;
