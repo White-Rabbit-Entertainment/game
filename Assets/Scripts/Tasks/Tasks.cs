@@ -38,7 +38,7 @@ public class Tasks {
         string ttJsonString = JsonUtility.ToJson(tt);
          
         jsonTasks.Add(ttJsonString);
-        Debug.Log(ttJsonString);
+        // Debug.Log(ttJsonString);
       }
       return jsonTasks;
     }
