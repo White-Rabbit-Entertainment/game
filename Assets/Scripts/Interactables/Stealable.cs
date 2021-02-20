@@ -10,8 +10,5 @@ public abstract class Stealable : PickUpable {
 		}
 	}
 
-	[PunRPC]
-	void Steal() {
-		Destroy(gameObject);
-	}
+	
 }
