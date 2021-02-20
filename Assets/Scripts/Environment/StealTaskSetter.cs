@@ -25,7 +25,7 @@ public class StealTaskSetter : MonoBehaviour {
             }
             Utils.Shuffle<Transform>(possibleStealables);
             for (int i = 0; i < numberOfTargetItems; i++) {
-                possibleStealables[i].GetComponent<StealableItem>().enabled = true;
+                possibleStealables[i].gameObject.AddComponent<StealableItem>();
                 tasks[i] = new StealingTask("Steal item", possibleStealables[i]);
             }
             stealingTasks = tasks;
