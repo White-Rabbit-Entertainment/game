@@ -16,10 +16,17 @@ public class StealTaskSetter : MonoBehaviour {
         // }
     }
 
-    void Start() {
+    void Update() {
+        if (NetworkManager.instance.AllPlayersInGame()) {
+          InitItems();
+          Destroy(this);
+        }
+    }
+
+    void InitItems() {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
             int numberOfTargetItems = NetworkManager.instance.GetRoomProperty<int>("NumberOfTargetItems");
-            StealingTask[] stealIngTasks = new StealingTask[numberOfTargetItems];
+            stealingTasks = new StealingTask[numberOfTargetItems];
             possibleStealables = new List<Transform>();
             foreach(Transform transform in stealables.transform) {
                 possibleStealables.Add(transform);
