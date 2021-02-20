@@ -8,6 +8,7 @@ public class StealTaskSetter : MonoBehaviour {
 
     public GameObject stealables;
     public StealingTask[] stealingTasks;
+    private List<Transform> possibleStealables;
 
     void LoadItems() {
         // foreach (GameObject spawn in itemSpawns.transform) {
@@ -18,18 +19,20 @@ public class StealTaskSetter : MonoBehaviour {
     void Start() {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
             int numberOfTargetItems = NetworkManager.instance.GetRoomProperty<int>("NumberOfTargetItems");
-            StealingTask[] tasks = new StealingTask[numberOfTargetItems];
-            List<Transform> possibleStealables = new List<Transform>();
+            StealingTask[] stealIngTasks = new StealingTask[numberOfTargetItems];
+            possibleStealables = new List<Transform>();
             foreach(Transform transform in stealables.transform) {
                 possibleStealables.Add(transform);
             }
+
             Utils.Shuffle<Transform>(possibleStealables);
             for (int i = 0; i < numberOfTargetItems; i++) {
-                possibleStealables[i].gameObject.AddComponent<StealableItem>();
-                tasks[i] = new StealingTask("Steal item", possibleStealables[i]);
+                stealingTasks[i] = new StealingTask("Steal item", possibleStealables[i]);
+                PhotonView view = possibleStealables[i].GetComponent<PhotonView>();
+                view.RPC("MakeStealable", RpcTarget.All);
             }
-            stealingTasks = tasks;
+        }
     }
-    }
+
     
 }
