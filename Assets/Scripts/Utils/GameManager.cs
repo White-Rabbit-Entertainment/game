@@ -39,9 +39,10 @@ public class GameManager : MonoBehaviourPun {
     }
 
     public void OnItemInSafeZone(GameObject item) {
+      PhotonView view = item.GetComponent<PhotonView>();
       Debug.Log("Item Captured");
       NetworkManager.instance.IncrementRoomProperty("ItemsStolen");
-      Destroy(item);
+      view.RPC("Steal", RpcTarget.All);
     }
 
     public void StartRoundTimer() {
