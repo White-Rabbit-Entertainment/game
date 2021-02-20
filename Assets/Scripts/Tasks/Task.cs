@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public abstract class Task {
-    protected bool isCompleted = false;
-    protected string description;
-
-    public string Description {
-        get {return description;}
-    }
-
-    public bool IsCompleted {
-        get {return isCompleted;}
-    }
+    public bool isCompleted = false;
+    public string description;
 
     public void Complete() {
         isCompleted = true;

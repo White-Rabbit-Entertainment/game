@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class StealingTask : Task {
-    private Stealable objectToSteal;
+    public Stealable objectToSteal;
 
-    public Stealable ObjectToSteal {
-        get {return objectToSteal;}
-    }
+    // public Stealable ObjectToSteal {
+    //     get {return objectToSteal;}
+    // }
 
-    public StealingTask(string description, Stealable objectToSteal) {
+    public StealingTask(string description) {
         this.description = description;
     }
 }
