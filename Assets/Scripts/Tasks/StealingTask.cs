@@ -4,13 +4,14 @@ using UnityEngine;
 
 [System.Serializable]
 public class StealingTask : Task {
-    public Stealable objectToSteal;
+    public Transform objectToSteal;
 
     // public Stealable ObjectToSteal {
     //     get {return objectToSteal;}
     // }
 
-    public StealingTask(string description) {
+    public StealingTask(string description, Transform item) {
         this.description = description;
+        objectToSteal = item;
     }
 }
