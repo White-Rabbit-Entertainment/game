@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviourPun {
     public void SetupGame() {
       if (NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", false)) {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          NetworkManager.instance.SetRoomProperty("TasksSet", false);
           NetworkManager.instance.SetRoomProperty("WinningTeam", "None");
           NetworkManager.instance.SetRoomProperty("NumberOfTargetItems", 2);
           List<Player> players = NetworkManager.instance.GetPlayers();
