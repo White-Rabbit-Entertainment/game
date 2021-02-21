@@ -3,9 +3,13 @@ using Photon.Pun;
 
 class MultiuseInteractable : Interactable, Taskable {
 
+  public string description;
+  // public Animation animation; 
+
   public void OnClick() {
     // Run the animation
     Debug.Log("Doing an animation");
+    // Animation
     
     Task task = GetComponent<Task>();
     if (task != null) {
@@ -15,6 +19,7 @@ class MultiuseInteractable : Interactable, Taskable {
   
   [PunRPC]
   public void AddTask() {
-    Task task = GetComponent<Task>();
+    Task task = gameObject.AddComponent<Task>() as Task;
+    task.description = description; 
   }
 }
