@@ -5,8 +5,4 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 public class StealableItem : Stealable {
-    [PunRPC]
-	void Steal() {
-		Destroy(gameObject);
-	}
 }

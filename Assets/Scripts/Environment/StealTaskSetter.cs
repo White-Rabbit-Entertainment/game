@@ -7,7 +7,6 @@ using Photon.Pun;
 public class StealTaskSetter : MonoBehaviour {
 
     public GameObject stealables;
-    public StealingTask[] stealingTasks;
     private List<Transform> possibleStealables;
 
     void LoadItems() {
@@ -26,7 +25,6 @@ public class StealTaskSetter : MonoBehaviour {
     void InitItems() {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
             int numberOfTargetItems = NetworkManager.instance.GetRoomProperty<int>("NumberOfTargetItems");
-            stealingTasks = new StealingTask[numberOfTargetItems];
             possibleStealables = new List<Transform>();
             foreach(Transform transform in stealables.transform) {
                 possibleStealables.Add(transform);
@@ -34,7 +32,6 @@ public class StealTaskSetter : MonoBehaviour {
 
             Utils.Shuffle<Transform>(possibleStealables);
             for (int i = 0; i < numberOfTargetItems; i++) {
-                stealingTasks[i] = new StealingTask("Steal item", possibleStealables[i]);
                 PhotonView view = possibleStealables[i].GetComponent<PhotonView>();
                 view.RPC("MakeStealable", RpcTarget.All);
             }

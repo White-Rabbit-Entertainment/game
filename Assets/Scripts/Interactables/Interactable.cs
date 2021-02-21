@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 
-
-public abstract class Interactable : MonoBehaviour {
+public abstract class Interactable : MonoBehaviourPun {
   void Start() {
       gameObject.tag = "interactable";
   }
