@@ -13,12 +13,12 @@ class MultiuseInteractable : Interactable, Taskable {
     // Animation
     Task task = GetComponent<Task>();
     if (task != null && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-      GetComponent<PhotonView>().RPC("Complete", RpcTarget.All);
+      GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
     }
   }
 
   [PunRPC]
-  private void Complete() {
+  private void CompleteTask() {
     Task task = GetComponent<Task>();
     task.Complete();
   }
@@ -26,8 +26,8 @@ class MultiuseInteractable : Interactable, Taskable {
   [PunRPC]
   public void AddTask() {
     if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
-			  gameObject.GetComponent<MeshRenderer>().material = material;
-		  }
+      gameObject.GetComponent<MeshRenderer>().material = material;
+	}
     Task task = gameObject.AddComponent<Task>() as Task;
     task.description = description;
   }

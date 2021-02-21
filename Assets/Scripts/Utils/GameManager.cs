@@ -75,6 +75,12 @@ public class GameManager : MonoBehaviourPun {
           
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
+
+          // For now if there is only 1 player in the game it must be a seeker otherwise the game ends immediately
+          if (numberOfRobbers == 0) {
+            numberOfRobbers++;
+          }
+
           players.Shuffle();
           for (int i = 0; i < numberOfRobbers; i++) {
             NetworkManager.instance.SetPlayerProperty("Team", "Robber", players[i]);
