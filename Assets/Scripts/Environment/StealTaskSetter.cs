@@ -34,6 +34,7 @@ public class StealTaskSetter : MonoBehaviour {
             for (int i = 0; i < numberOfTargetItems; i++) {
                 PhotonView view = possibleStealables[i].GetComponent<PhotonView>();
                 view.RPC("MakeStealable", RpcTarget.All);
+                view.RPC("AddTask", RpcTarget.All);
             }
         }
     }

@@ -30,10 +30,10 @@ public abstract class Stealable : PickUpable, Taskable {
     }
     
     [PunRPC]
-	void Steal() {
+	  void Steal() {
       Complete();
       Rigidbody rb = gameObject.GetComponent<Rigidbody>();
       rb.constraints = RigidbodyConstraints.FreezeAll;
       Destroy(this);
-	}
+	  }
 }
