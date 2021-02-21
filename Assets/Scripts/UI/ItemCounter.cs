@@ -4,8 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 
-public class ItemCounter : MonoBehaviour
-{
+public class ItemCounter : MonoBehaviour {
     public Text counter;
     void Update() {
         // if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("ItemsStolen")) {

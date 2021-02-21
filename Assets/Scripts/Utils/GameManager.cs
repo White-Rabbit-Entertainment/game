@@ -103,16 +103,16 @@ public class GameManager : MonoBehaviourPun {
       }  
     }
 
-    bool LevelLoaded() {
+    public bool LevelLoaded() {
       return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true);
     }
 
-    Task[] GetTasks() {
+    public Task[] GetTasks() {
       Task[] tasks = FindObjectsOfType<Task>();
       return tasks;
     }
 
-    bool AllTasksCompleted() {
+    public bool AllTasksCompleted() {
       foreach(Task task in GetTasks()) {
         if (!task.isCompleted) {
           return false;
