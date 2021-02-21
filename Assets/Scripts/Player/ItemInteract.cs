@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
  
+/// <summary><c>ItemInteract</c> is the class which defines the behaviour for
+/// how a player interacts with an <c>Interactable</c>. 
+/// E.g. Defines when to turn on glow and when to pickup a PickUpable
 public class ItemInteract : MonoBehaviourPun {
 
     public Transform pickupDestination;

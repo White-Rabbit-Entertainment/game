@@ -12,36 +12,47 @@ public class PlayerSpawner : MonoBehaviour {
     void Start() {
       Debug.Log("Player spawner created");
     }
+
     void OnEnable() {
-    //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+        //Tell our 'OnLevelFinishedLoading' function to start listening for a
+        //scene change as soon as this script is enabled.
         SceneManager.sceneLoaded += OnLevelFinishedLoading;
     }
 
     void OnDisable() {
-    //Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+        //Tell our 'OnLevelFinishedLoading' function to stop listening for a
+        //scene change as soon as this script is disabled. Remember to always
+        //have an unsubscription for every delegate you subscribe to!
         SceneManager.sceneLoaded -= OnLevelFinishedLoading;
     }
 
+    // This set the player as "InGameScene" so that we can wait till all the
+    // players are in the scene before spawninng any objects.
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
-        Debug.Log("In game scene set");
         NetworkManager.instance.SetLocalPlayerProperty("InGameScene", true);
     }
 
+    // Spawn in a player prefab (of the correct team) for the local players.
+    // Each player runs this once all the players are in the scene.
+    // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
+    // location.
     void LoadPlayer() {
-        Debug.Log("Player loaded");
         if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-            Debug.Log("Instantiating seeker");
             PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-            Debug.Log("Instantiating robber");
             PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
     }
 
     void Update() {
-        Debug.Log("In player spawner");
+        // Wait till all players are in the scene.
         if (NetworkManager.instance.AllPlayersInGame()) {
+
+          // Then load in all the players 
           LoadPlayer();
+
+          // Then this script has done its job (loaded in the player) so we can
+          // destory it.
           Destroy(this);
           Destroy(gameObject);
         }
