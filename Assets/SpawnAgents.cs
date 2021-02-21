@@ -1,29 +1,43 @@
-﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class SpawnAgents : MonoBehaviour
 {
-    [SerializeField]
-    Transform destination;
-    NavMeshAgent navMeshAgent;
-    GameObject agent;
+    public Enemy agent;
+    private List<Enemy> agents;
 
-    // Start is called before the first frame update
+    [Range (0,100)]
+    public int numberOfAgents = 6;
+    private float range = 70.0f;
+
+    private NetworkManager networkManager;
+    private GameManager gameManager;
+    private string gameScene = "GameScene";
+
+
     void Start()
     {
-      navMeshAgent = this.GetComponent<NavMeshAgent>();
-      Instantiate(agent, transform.position);
+        networkManager = new NetworkManager();
+        gameManager = new GameManager();
+        agents = new List<Enemy>(); // init as type
+        for (int index = 0; index < numberOfAgents; index++)
+        {
+            Enemy spawned = Instantiate(agent, RandomNavmeshLocation(range), Quaternion.identity) as Enemy;
+            agents.Add(spawned);
+        }
     }
 
-    public Vector3 RandomPoint()
+    public Vector3 RandomNavmeshLocation(float radius)
     {
-      Vector3 newSpawnPoint;
-      Vector3 random = System.Random.
-      newSpawnPoint = new Vector3 (random.x,0,random.z)
-      Vector3 point1 = navMesh.vertices[System.Random.Range(0,navMesh.vertexCount)];
-      Vector3 point2 = navMesh.vertices[System.Random.Range(0, navMesh.vertexCount)];
-      return Vector3.Lerp(point1, point2, System.Random.value);
-   }
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+        {
+            finalPosition = hit.position;
+        }
+        return finalPosition;
+    }
 }

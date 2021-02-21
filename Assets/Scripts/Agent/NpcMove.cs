@@ -88,4 +88,5 @@ public class NpcMove : MonoBehaviour
       return new Vector3(navHit.position.x,transform.position.y,navHit.position.z);
     }
 
+
 }
