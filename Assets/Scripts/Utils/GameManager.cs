@@ -99,8 +99,11 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.ResetRoom();
           NetworkManager.instance.ChangeScene("LobbyScene");
         }
-      }
-      
+      }  
+    }
+
+    bool LevelLoaded() {
+      return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true);
     }
 
     Task[] GetTasks() {
@@ -118,7 +121,9 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      HandleGameOver();
+      if (LevelLoaded()) {
+        HandleGameOver();
+      }
       Debug.Log(GetTasks());
     }
 }

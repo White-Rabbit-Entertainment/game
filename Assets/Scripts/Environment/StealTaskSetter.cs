@@ -8,7 +8,7 @@ public class StealTaskSetter : MonoBehaviour {
 
     public GameObject stealables;
     private List<Transform> possibleStealables;
-    
+
     void Update() {
         if (NetworkManager.instance.AllPlayersInGame()) {
           InitItems();
@@ -30,6 +30,7 @@ public class StealTaskSetter : MonoBehaviour {
                 view.RPC("MakeStealable", RpcTarget.All);
                 view.RPC("AddTask", RpcTarget.All);
             }
+            NetworkManager.instance.SetRoomProperty("TasksSet", true);
         }
     }
 
