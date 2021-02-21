@@ -64,10 +64,18 @@ public class ItemInteract : MonoBehaviourPun {
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
  
         // Is interactable object detected in front of player?
-        if (Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) && raycastFocus.collider.transform.GetComponent<Interactable>() != null) {
+        if (
+          // Fire a ray out and see if we hit anything within a max distance
+              Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) 
+          // If we hit something that is not interactalbe then it doesnt count 
+          &&  raycastFocus.collider.transform.GetComponent<Interactable>() != null
+          // If we hit ourselves then it also doesnt count 
+          &&  raycastFocus.collider.gameObject.GetInstanceID() != gameObject.GetInstanceID()
+        ) {
             canInteract = true;
         }
         else {
+            Debug.Log("Can not interact");
             canInteract = false;
         }
     }
