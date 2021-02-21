@@ -4,36 +4,29 @@ using UnityEngine;
 using Photon.Pun;
 
 public abstract class Stealable : PickUpable, Taskable {
- 
-    private bool isStolen = false;
-    public bool isCompleted {get {return isStolen;}}
 
     void OnCollisionEnter(Collision collision) {
-		if(collision.gameObject.tag == "endpoint" && PhotonNetwork.LocalPlayer.IsMasterClient) {
-	      GameManager.instance.OnItemInSafeZone(gameObject);
-		}
-	}
-    
+		  if(collision.gameObject.tag == "endpoint" && PhotonNetwork.LocalPlayer.IsMasterClient) {
+        GetComponent<PhotonView>().RPC("Steal", RpcTarget.All);
+		  }
+	  }
+  
     [PunRPC]
-    public void Complete() {
-      isStolen = true;
-    }
-    
-    [PunRPC]
-    public void AddTask(string description = null) {
+    public void AddTask() {
       Task task = gameObject.AddComponent<Task>() as Task;
-
-      if (description == null) {
-        description = "Steal the " + gameObject.name;
-      }
-      task.description = description;
+      Debug.Log("Added task component to gameObject");
+      task.description = "Steal the " + gameObject.name;
     }
     
     [PunRPC]
 	  void Steal() {
-      Complete();
+      Task task = GetComponent<Task>();
+      if (task != null) {
+        task.Complete();
+      }
+      NetworkManager.instance.IncrementRoomProperty("ItemsStolen");
       Rigidbody rb = gameObject.GetComponent<Rigidbody>();
       rb.constraints = RigidbodyConstraints.FreezeAll;
-      Destroy(this);
+      //Destroy(this);
 	  }
 }

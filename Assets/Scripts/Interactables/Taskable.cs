@@ -1,3 +1,3 @@
 interface Taskable {
-  void AddTask(string description = null);
+  void AddTask();
 }

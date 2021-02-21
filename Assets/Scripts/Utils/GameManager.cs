@@ -38,13 +38,6 @@ public class GameManager : MonoBehaviourPun {
       view.RPC("MovePlayer", view.Owner, jail.transform.position);
     }
 
-    public void OnItemInSafeZone(GameObject item) {
-      PhotonView view = item.GetComponent<PhotonView>();
-      Debug.Log("Item Captured");
-      NetworkManager.instance.IncrementRoomProperty("ItemsStolen");
-      view.RPC("Steal", RpcTarget.All);
-    }
-
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
         NetworkManager.instance.StartRoundTimer(600);
@@ -112,7 +105,13 @@ public class GameManager : MonoBehaviourPun {
       
     }
 
+    Task[] GetTasks() {
+      Task[] tasks = FindObjectsOfType<Task>();
+      return tasks;
+    }
+
     void Update() {
       HandleGameOver();
+      Debug.Log(GetTasks()[0]);
     }
 }
