@@ -24,7 +24,6 @@ public class Stealable : PickUpable, Taskable {
       if (task != null) {
         task.Complete();
       }
-      NetworkManager.instance.IncrementRoomProperty("ItemsStolen");
       Rigidbody rb = gameObject.GetComponent<Rigidbody>();
       rb.constraints = RigidbodyConstraints.FreezeAll;
       Destroy(this);

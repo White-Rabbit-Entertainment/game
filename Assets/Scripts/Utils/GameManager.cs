@@ -79,8 +79,6 @@ public class GameManager : MonoBehaviourPun {
 
     public void HandleGameOver() {
       int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
-      int itemsStolen = NetworkManager.instance.GetRoomProperty<int>("ItemsStolen");
-      int numberOfTargetItems = NetworkManager.instance.GetRoomProperty<int>("NumberOfTargetItems");
 
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
         if (secondsLeft <= 0) {
@@ -91,7 +89,7 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.SetRoomProperty("WinningTeam", "Seeker");
         }
 
-        if (itemsStolen >= numberOfTargetItems) {
+        if (AllTasksCompleted()) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", "Robber");
         }
         if (!NetworkManager.instance.RoomPropertyIs<string>("WinningTeam", "None")) {
@@ -108,6 +106,15 @@ public class GameManager : MonoBehaviourPun {
     Task[] GetTasks() {
       Task[] tasks = FindObjectsOfType<Task>();
       return tasks;
+    }
+
+    bool AllTasksCompleted() {
+      foreach(Task task in GetTasks()) {
+        if (!task.isCompleted) {
+          return false;
+        }
+      }
+      return true;
     }
 
     void Update() {
