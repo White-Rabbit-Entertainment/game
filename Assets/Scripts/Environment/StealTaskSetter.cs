@@ -8,13 +8,7 @@ public class StealTaskSetter : MonoBehaviour {
 
     public GameObject stealables;
     private List<Transform> possibleStealables;
-
-    void LoadItems() {
-        // foreach (GameObject spawn in itemSpawns.transform) {
-        //     Debug.Log("spawn found");
-        // }
-    }
-
+    
     void Update() {
         if (NetworkManager.instance.AllPlayersInGame()) {
           InitItems();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public abstract class Stealable : PickUpable, Taskable {
+public class Stealable : PickUpable, Taskable {
 
     void OnCollisionEnter(Collision collision) {
 		  if(collision.gameObject.tag == "endpoint" && PhotonNetwork.LocalPlayer.IsMasterClient) {
@@ -27,6 +27,6 @@ public abstract class Stealable : PickUpable, Taskable {
       NetworkManager.instance.IncrementRoomProperty("ItemsStolen");
       Rigidbody rb = gameObject.GetComponent<Rigidbody>();
       rb.constraints = RigidbodyConstraints.FreezeAll;
-      //Destroy(this);
+      Destroy(this);
 	  }
 }

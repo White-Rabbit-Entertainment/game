@@ -9,7 +9,7 @@ public class BasicItem : PickUpable {
 
     [PunRPC]
     public void MakeStealable() {
-        gameObject.AddComponent<StealableItem>();
+        gameObject.AddComponent<Stealable>();
         if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
 			gameObject.GetComponent<MeshRenderer>().material = stealableMaterial;
 		}

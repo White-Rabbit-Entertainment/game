@@ -112,6 +112,6 @@ public class GameManager : MonoBehaviourPun {
 
     void Update() {
       HandleGameOver();
-      Debug.Log(GetTasks()[0]);
+      Debug.Log(GetTasks());
     }
 }
