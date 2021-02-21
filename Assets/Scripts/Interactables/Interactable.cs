@@ -5,10 +5,6 @@ using Photon.Pun;
 
 
 public abstract class Interactable : MonoBehaviourPun {
-  void Start() {
-      gameObject.tag = "interactable";
-  }
-
   public void GlowOn() {
     GetComponent<Outline>().enabled = true;
   }

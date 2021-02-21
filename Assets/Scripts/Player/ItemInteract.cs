@@ -55,7 +55,7 @@ public class ItemInteract : MonoBehaviourPun {
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
  
         // Is interactable object detected in front of player?
-        if (Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) && raycastFocus.collider.transform.tag == "interactable") {
+        if (Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) && raycastFocus.collider.transform.GetComponent<Interactable>() != null) {
             canInteract = true;
         }
         else {
