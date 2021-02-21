@@ -12,10 +12,15 @@ class MultiuseInteractable : Interactable, Taskable {
     Debug.Log("Doing an animation");
     // Animation
     
-    Task task = GetComponent<Task>();
     if (task != null && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-      task.Complete();
+      GetComponent<PhotonView>().view.RPC("Complete", RpcTarget.All);
     }
+  }
+
+  [PunRPC]
+  private void Complete() {
+    Task task = GetComponent<Task>();
+    task.Complete()
   }
   
   [PunRPC]
