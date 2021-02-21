@@ -13,7 +13,7 @@ class MultiuseInteractable : Interactable, Taskable {
     // Animation
     
     Task task = GetComponent<Task>();
-    if (task != null) {
+    if (task != null && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
       task.Complete();
     }
   }
