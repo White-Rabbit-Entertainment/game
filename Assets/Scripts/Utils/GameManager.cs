@@ -53,7 +53,9 @@ public class GameManager : MonoBehaviourPun {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
           NetworkManager.instance.SetRoomProperty("TasksSet", false);
           NetworkManager.instance.SetRoomProperty("WinningTeam", "None");
-          NetworkManager.instance.SetRoomProperty("NumberOfTargetItems", 2);
+          NetworkManager.instance.SetRoomProperty("NumberOfStealingTasks", 2);
+          NetworkManager.instance.SetRoomProperty("NumberOfNonStealingTasks", 1);
+          
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
           players.Shuffle();
@@ -70,11 +72,7 @@ public class GameManager : MonoBehaviourPun {
     }
 
     public void StartGame() {
-      // Player spawning is now handled by the player spawner in GameScene
       NetworkManager.instance.ChangeScene("GameScene");
-      //string jsonTaskString = JsonListHelper.ToJson(tasks);
-      //Debug.Log(jsonTaskString);
-      // StealingTask[] newTasks = JsonListHelper.FromJson<StealingTask>(jsonTaskString);
       StartRoundTimer();
     }
 

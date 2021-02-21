@@ -4,6 +4,7 @@ using Photon.Pun;
 class MultiuseInteractable : Interactable, Taskable {
 
   public string description;
+  public Material material;
   // public Animation animation; 
 
   public void OnClick() {
@@ -19,7 +20,10 @@ class MultiuseInteractable : Interactable, Taskable {
   
   [PunRPC]
   public void AddTask() {
+    if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
+			  gameObject.GetComponent<MeshRenderer>().material = material;
+		  }
     Task task = gameObject.AddComponent<Task>() as Task;
-    task.description = description; 
+    task.description = description;
   }
 }
