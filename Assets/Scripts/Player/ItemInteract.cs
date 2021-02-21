@@ -43,6 +43,12 @@ public class ItemInteract : MonoBehaviourPun {
             }
         }
 
+        if (currentInteractable is MultiuseInteractable) {
+            if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null) {
+                ((MultiuseInteractable)currentInteractable).OnClick();
+            }
+        }
+
         if (currentInteractable is Capturable && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
             // Has interact button been pressed whilst interactable object is in front of player?
             if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null) {
