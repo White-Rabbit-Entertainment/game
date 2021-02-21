@@ -183,3 +183,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73dc27066f8ff6482972dda264674272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stealableMaterial: {fileID: 2100000, guid: 10bb11ed31ef9ef508e740214298c08f, type: 2}

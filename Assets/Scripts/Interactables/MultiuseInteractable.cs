@@ -24,6 +24,6 @@ class MultiuseInteractable : Interactable, Taskable {
 			  gameObject.GetComponent<MeshRenderer>().material = material;
 		  }
     Task task = gameObject.AddComponent<Task>() as Task;
-    task.description = description;
+    task.description = "Click the " + gameObject.name;
   }
 }
