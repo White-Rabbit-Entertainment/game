@@ -4,4 +4,10 @@ using UnityEngine;
 using Photon.Pun;
 
 public class BasicItem : PickUpable {
+
+    [PunRPC]
+    public void MakeStealable() {
+        gameObject.AddComponent<Stealable>();
+        Destroy(this);
+    }
 }

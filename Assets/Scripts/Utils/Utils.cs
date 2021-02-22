@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 public static class Utils {
-    private static Random rng = new Random();  
+    private static Random rng = new Random();
 
     public static void Shuffle<T>(this IList<T> list) {  
         int n = list.Count;  
@@ -15,6 +15,5 @@ public static class Utils {
             list[n] = value;  
         }  
     }
-
 }
 

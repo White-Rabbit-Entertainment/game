@@ -6,10 +6,13 @@
         "PhotonUnityNetworking.Utilities",
         "PhotonUnityNetworking.Utilities.PhotonPlayer.Editor",
         "PhotonRealtime",
-        "Outline"
+        "Outline",
+        "QuantumUI"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [],
+    "excludePlatforms": [
+        "Android"
+    ],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],

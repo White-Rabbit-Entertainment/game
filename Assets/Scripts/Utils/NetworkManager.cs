@@ -5,18 +5,23 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
+/// <summary> <c>NetworkManager</c> handles logic to do with PhotonNetwork. It
+/// is also a singleton see <c>GameManager</c> <see cref="GameManager"></see>
+/// for more details. This is also initialized in the first scene. </summary>
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-
+    // Delegates to defined the required structure for functions to set room
+    // properties.
     public delegate bool PhotonSetPropertyDelegate(Hashtable propertiesToSet, Hashtable expectedValues=null, WebFlags webFlags=null);
     public delegate void SetPropertyDelegate(string key, object value);
 
-    // Instance
+    // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
     private string lobbyScene = "LobbyScene";
 
     void Awake()
     {
+      // Singleton stuff see GameManager for details.
       if (instance != null && instance != this) {
         gameObject.SetActive(false);
       }
@@ -30,20 +35,41 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       PhotonNetwork.ConnectUsingSettings();
     }
 
+    // A call back for when user connects to the server.
     public override void OnConnectedToMaster() {
       Debug.Log("Connected to master server");
     }
     
+    // A call back for when user creates a room. 
     public override void OnCreatedRoom() {
       Debug.Log("Room created: " + PhotonNetwork.CurrentRoom.Name);
     }
     
+    // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
     }
 
-    // Generic function to get property from CustomProperties (of Photon room or player)
+    /* Helper to set custom properties, all examples are given for room
+     * properties, but functions also exist for local player and player. */
+
+    /// <summary> Function to get a value in custom properties. </summary>
+    /// <example> For example:
+    /// <code>
+    ///    NetworkManager.instance.GetRoomProperty<bool>("GameStarted");
+    /// </code>
+    /// This returns the boolean value for GameStarted in the room
+    /// custom properties. If it is not set it returns the default for boolean.
+    /// </example>
+    /// <example> A custom value can also be specified:
+    /// <code>
+    ///    NetworkManager.instance.GetRoomProperty<bool>("GameStarted", false);
+    /// </code>
+    /// This returns the boolean value for GameStarted in the room
+    /// custom properties. In this case though if it is not set it will return
+    /// false.
+    /// </example>
     public T GetProperty<T>(string key, Hashtable properties, T defaultValue=default(T)) {
       object temp;
       if (properties.TryGetValue(key, out temp) && temp is T) {
@@ -53,19 +79,40 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return defaultValue;
     }
 
-    // Generic function to check value from CustomProperties (of Photon room or player)
+    /// <summary> Function to verify if a value in custom properties is equal
+    /// to a given value.</summary>
+    /// <example> For example:
+    /// <code>
+    ///    NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", true);
+    /// </code>
+    /// This returns true if the game has started (ie gamestarted set to true
+    /// in room).
+    /// </example>
     public bool PropertyIs<T>(string key, T value, Hashtable properties) {
       return EqualityComparer<T>.Default.Equals(GetProperty<T>(key, properties), value);
     }
     
-    // Generic function to set value from CustomProperties (of Photon room or player)
+    /// <summary> Function to set value in custom properties. </summary>
+    /// <example> For example:
+    /// <code>
+    ///    NetworkManager.instance.SetRoomProperty("GameStarted", true);
+    /// </code>
+    /// This sets the room property "GameStarted" to true for all clients.
+    /// </example>
     public void SetProperty(string key, object value, Hashtable currentProperties, PhotonSetPropertyDelegate setProperties) {
       currentProperties[key] = value;
       setProperties(currentProperties);
     }
     
-    // Generic function to increment value from CustomProperties (of Photon room or player)
-    // If the value is not set it is set to 1
+    /// <summary> Increment property value. If the value does not exist
+    /// set it to 1. </summary>
+    /// <example> For example:
+    /// <code>
+    ///    NetworkManager.instance.IncrementRoomProperty("NumberOfRobbers");
+    /// </code>
+    /// If the number of robbers is currently 2, the number will become 3.
+    /// If the number of robbers is not set, the number will become 1.
+    /// </example>
     public void IncrementProperty(string key, Hashtable properties, SetPropertyDelegate setProperty) {
       if (properties.ContainsKey(key)) {
         SetRoomProperty(key, (int)properties[key] + 1);
@@ -101,7 +148,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void IncrementLocalPlayerProperty(string key) {
       IncrementProperty(key, PhotonNetwork.LocalPlayer.CustomProperties, SetLocalPlayerProperty);
     }
-    
+  
     public bool RoomPropertyIs<T>(string key, T value) {
       if (PhotonNetwork.CurrentRoom == null) {
         return false;
@@ -138,6 +185,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return true;
     }
 
+    // Return true is all players have readied up.
     public bool AllPlayersReady() {
       foreach (Player player in GetPlayers()) {
           if (!PlayerPropertyIs<bool>("Ready", true, player)) {
@@ -147,6 +195,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return true;
     }
 
+    // Return true is all players are in the game.
     public bool AllPlayersInGame() {
       foreach (Player player in GetPlayers()) {
           if (!PlayerPropertyIs<bool>("InGameScene", true, player)) {
@@ -156,6 +205,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return true;
     }
 
+    // After a game resets various room and player properties. Not all
+    // properties can be reset here (the game must still be over) so that the
+    // other players leave the room. The other properties are set in SetupGame
+    // in GameManager instead.
     public void ResetRoom() {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
