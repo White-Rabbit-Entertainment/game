@@ -14,7 +14,7 @@ public class ItemInteract : MonoBehaviourPun {
     [SerializeField] private Transform cameraTransform;
 
     private RaycastHit raycastFocus;
-    private bool canInteract = false;
+    private bool itemInRange = false;
     private PickUpable currentHeldItem;
     private Interactable currentInteractable;
 
@@ -25,7 +25,13 @@ public class ItemInteract : MonoBehaviourPun {
     }
  
     private void Update() {
-        if (canInteract && currentHeldItem == null) {
+        
+        // We can only interact with an item if the item is in reach and we are
+        // not currently holding an item.
+        bool canInteract = itemInRange && currentHeldItem == null;
+
+        // If we are able to interact with stuff
+        if (canInteract) {
             Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
             // If we are already interacting with something but we are now
             // trying to interact with something new, then we need to disable
@@ -34,29 +40,35 @@ public class ItemInteract : MonoBehaviourPun {
                 currentInteractable.GlowOff();
             }
             currentInteractable = newInteractable;
-
-            // If we are able to interact with the new interactable then turn on its glow
+            
             if (currentInteractable.CanInteract()) {
+                // If we are able to interact with the new interactable then turn on its glow
                 currentInteractable.GlowOn();
-            }
-        } else if (currentInteractable != null) {
-            currentInteractable.GlowOff();
-        }
-    
-        if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null && currentInteractable.CanInteract()) {
-            // If the interaction is pickup then we need to set where the item is going.
-            if (currentInteractable is PickUpable) {
-              ((PickUpable)currentInteractable).SetPickUpDestination(pickupDestination);
-            }
 
-            // Do whatever the primary interaction of this interactable is.
-            currentInteractable.PrimaryInteraction();
-        }
-        
-        if (Input.GetButtonUp("Fire1") && currentInteractable != null) {
-            // Some item have a primary interaction off method, eg drop the
-            // item after pickup. Therefore run this on mouse up.
-            currentInteractable.PrimaryInteractionOff();
+                // If we are pressing mouse down then do the interaction
+                if (Input.GetButtonDown("Fire1")) {
+                  // If the interaction is pickup then we need to set where the item is going.
+                  if (currentInteractable is PickUpable) {
+                    ((PickUpable)currentInteractable).SetPickUpDestination(pickupDestination);
+                  }
+
+                  // Do whatever the primary interaction of this interactable is.
+                  currentInteractable.PrimaryInteraction();
+                }
+            }
+        } 
+        // Otherwise if we cant interact with anything but we were previously
+        // interacting with something.
+        else if (currentInteractable != null) {
+            // Then turn off the glow of that thing
+            currentInteractable.GlowOff();
+
+            // And if bring the mouse button up
+            if (Input.GetButtonUp("Fire1")) {
+              // Some item have a primary interaction off method, eg drop the
+              // item after pickup. Therefore run this on mouse up.
+              currentInteractable.PrimaryInteractionOff();
+            }
         }
     }
  
@@ -72,10 +84,10 @@ public class ItemInteract : MonoBehaviourPun {
           // If we hit ourselves then it also doesnt count 
           &&  raycastFocus.collider.gameObject.GetInstanceID() != gameObject.GetInstanceID()
         ) {
-            canInteract = true;
+            itemInRange = true;
         }
         else {
-            canInteract = false;
+            itemInRange = false;
         }
     }
 }
