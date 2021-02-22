@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb2bf8859422d849b551bbfd8bf3d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destination: /Jail/JailSpawn
 --- !u!1001 &6050403968897764889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,7 +93,7 @@ PrefabInstance:
     - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
         type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
         type: 3}
