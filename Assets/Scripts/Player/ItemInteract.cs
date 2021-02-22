@@ -14,7 +14,7 @@ public class ItemInteract : MonoBehaviourPun {
     [SerializeField] private Transform cameraTransform;
 
     private RaycastHit raycastFocus;
-    private bool itemInRange = false;
+    private bool interactableInRange = false;
     private PickUpable currentHeldItem;
     private Interactable currentInteractable;
 
@@ -28,7 +28,7 @@ public class ItemInteract : MonoBehaviourPun {
         
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
-        bool canInteract = itemInRange && currentHeldItem == null;
+        bool canInteract = interactableInRange && currentHeldItem == null;
 
         // If we are able to interact with stuff
         if (canInteract) {
@@ -88,10 +88,10 @@ public class ItemInteract : MonoBehaviourPun {
           // If we hit ourselves then it also doesnt count 
           &&  raycastFocus.collider.gameObject.GetInstanceID() != gameObject.GetInstanceID()
         ) {
-            itemInRange = true;
+            interactableInRange = true;
         }
         else {
-            itemInRange = false;
+            interactableInRange = false;
         }
     }
 }
