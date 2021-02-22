@@ -21,16 +21,6 @@ public class GameManager : MonoBehaviourPun {
     // Current instance of the GameManager singleton
     public static GameManager instance;
   
-    // The teams
-    // TODO Do we use this?
-    [System.Serializable]
-    public enum Team {
-      Robber,
-      Seeker,
-      Both,
-      None
-    }
- 
     void Awake() {
       /// This is what makes this a singleton. This means we can do <code>
       /// GameManager.instance </code> in other files to access the gamemanger
@@ -43,15 +33,6 @@ public class GameManager : MonoBehaviourPun {
         instance = this;
         DontDestroyOnLoad(gameObject);
       }
-    }
-
-    // Handle robber being captured
-    // TODO move this into capturable
-    public void OnRobberCapture(GameObject robber) {
-      PhotonView view = robber.GetComponent<PhotonView>();
-      GameObject jail = GameObject.Find("/Jail/JailSpawn");
-      NetworkManager.instance.SetPlayerProperty("Captured", true, view.Owner);
-      view.RPC("MovePlayer", view.Owner, jail.transform.position);
     }
 
     public void StartRoundTimer() {
