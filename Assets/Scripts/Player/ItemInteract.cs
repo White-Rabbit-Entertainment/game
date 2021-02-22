@@ -27,10 +27,15 @@ public class ItemInteract : MonoBehaviourPun {
     private void Update() {
         if (canInteract && currentHeldItem == null) {
             Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
+            // If we are already interacting with something but we are now
+            // trying to interact with something new, then we need to disable
+            // the other interaction (turn off its glow).
             if (newInteractable != currentInteractable && currentInteractable != null) {
                 currentInteractable.GlowOff();
             }
             currentInteractable = newInteractable;
+
+            // If we are able to interact with the new interactable then turn on its glow
             if (currentInteractable.CanInteract()) {
                 currentInteractable.GlowOn();
             }
@@ -39,9 +44,18 @@ public class ItemInteract : MonoBehaviourPun {
         }
     
         if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null && currentInteractable.CanInteract()) {
+            // If the interaction is pickup then we need to set where the item is going.
+            if (currentInteractable is PickUpable) {
+              ((PickUpable)currentInteractable).SetPickUpDestination(pickupDestination);
+            }
+
+            // Do whatever the primary interaction of this interactable is.
             currentInteractable.PrimaryInteraction();
         }
-        if (Input.GetButtonUp("Fire1") && canInteract && currentHeldItem == null && currentInteractable.CanInteract()) {
+        
+        if (Input.GetButtonUp("Fire1") && currentInteractable != null) {
+            // Some item have a primary interaction off method, eg drop the
+            // item after pickup. Therefore run this on mouse up.
             currentInteractable.PrimaryInteractionOff();
         }
     }

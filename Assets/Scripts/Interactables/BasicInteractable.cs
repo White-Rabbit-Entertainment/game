@@ -22,8 +22,8 @@ class BasicInteractable : Interactable, Taskable {
 
   public override bool CanInteract() {
     if (team == Team.Both) return true;
-    if (NetworkManager.LocalPlayerPropertyIs("Team", "Seeker") && team == Team.Seeker) return true;
-    if (NetworkManager.LocalPlayerPropertyIs("Team", "Robber") && team == Team.Robber) return true;
+    if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker") && team == Team.Seeker) return true;
+    if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber") && team == Team.Robber) return true;
     return false;
   }
 
