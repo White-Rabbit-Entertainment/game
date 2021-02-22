@@ -55,7 +55,7 @@ public abstract class PickUpable : Interactable {
 
       // Set velocity of box after it is putdown to the speed to the character moving it
       // TODO Not this
-      GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<CharacterController>().velocity/2;
+      // GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<CharacterController>().velocity/2;
       
       transform.parent = GameObject.Find("/Environment").transform;
     }
