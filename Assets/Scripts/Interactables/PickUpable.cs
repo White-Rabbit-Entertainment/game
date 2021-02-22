@@ -8,6 +8,7 @@ using Photon.Pun;
 public abstract class PickUpable : Interactable {
     
   private Transform pickupDestination;
+  bool isPickedUp = false;
 
   public override void PrimaryInteraction() {
     PickUp(pickupDestination);
@@ -25,6 +26,8 @@ public abstract class PickUpable : Interactable {
     
   /// <summary> Pickup item and freeze it on player. </summary>
   public void PickUp(Transform pickupDestination) {
+
+      isPickedUp = true;
      
       // An item can only be moved by a player if they are the owner.
       // Therefore, give ownership of the item to the local player before
@@ -49,14 +52,18 @@ public abstract class PickUpable : Interactable {
 
     /// <summary> Drop item. </summary>
     public void PutDown() {
-      GetComponent<BoxCollider>().enabled = true;
-      GetComponent<Rigidbody>().useGravity = true;
-      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+      if(isPickedUp) {
+        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
-      // Set velocity of box after it is putdown to the speed to the character moving it
-      // TODO Not this
-      // GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<CharacterController>().velocity/2;
-      
-      transform.parent = GameObject.Find("/Environment").transform;
+        // Set velocity of box after it is putdown to the speed to the character moving it
+        // TODO Not this
+        GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<CharacterController>().velocity/2;
+        
+        transform.parent = GameObject.Find("/Environment").transform;
+
+        isPickedUp = false;
+      }
     }
 }
