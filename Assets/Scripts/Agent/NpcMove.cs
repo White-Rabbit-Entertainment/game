@@ -22,6 +22,10 @@ public class NpcMove : MonoBehaviour
     Animator animator;
     private List<GameObject> spawnedPeople;
     public int TotalNumberOfPeopleToSpawn;
+
+    // public CharacterController playerController;
+
+
     // Start is called before the first frame update
     void Start()
     {

@@ -1,36 +1,64 @@
+// using System.Collections.Generic;
+// using UnityEngine;
+// using UnityEngine.AI;
+// using Photon.Pun;
+// using Photon.Realtime;
+// using Hashtable = ExitGames.Client.Photon.Hashtable;
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
+using Photon.Pun;
+using Photon.Realtime;
+using System;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 public class SpawnAgents : MonoBehaviour
 {
-    public Enemy agent;
-    private List<Enemy> agents;
+    public GameObject agent;
+    // private List<GameObject> agents;
 
     [Range (0,100)]
     public int numberOfAgents = 6;
-    private float range = 70.0f;
+    private float range = 10.0f;
 
     private NetworkManager networkManager;
     private GameManager gameManager;
     private string gameScene = "GameScene";
+
+    public Text agentList;
 
 
     void Start()
     {
         networkManager = new NetworkManager();
         gameManager = new GameManager();
-        agents = new List<Enemy>(); // init as type
-        for (int index = 0; index < numberOfAgents; index++)
-        {
-            Enemy spawned = Instantiate(agent, RandomNavmeshLocation(range), Quaternion.identity) as Enemy;
-            agents.Add(spawned);
-        }
+        // networkManager.Start();
+        // agents = new List<GameObject>(); // init as type
+        networkManager.ChangeScene(gameScene);
+        // for (int index = 0; index < numberOfAgents; index++)
+        // {
+        //     PhotonNetwork.Instantiate(agent.name, RandomNavmeshLocation(range), Quaternion.identity);
+        //     // spawned;
+        //     // agents.Add(spawned);
+        // }
+
+        PhotonNetwork.Instantiate(agent.name, new Vector3(1,2,-10), Quaternion.identity);
+        agent.SetActive(true);
+        // PhotonNetwork.Instantiate(agent.name, RandomNavmeshLocation(range), Quaternion.identity);
+        gameManager.OnStartGame();
     }
+
+    // void SetText() {
+    //   agentList.text = networkManager.GetPlayers().Count.ToString();
+    // }
 
     public Vector3 RandomNavmeshLocation(float radius)
     {
-        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
         randomDirection += transform.position;
         NavMeshHit hit;
         Vector3 finalPosition = Vector3.zero;
