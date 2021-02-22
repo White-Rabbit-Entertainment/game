@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviourPun
     public float gravity = -19.62f;
     public float jumpHeight = 3f;
     private Movement movement;
-    
+
 
     void Awake() {
         // If the player is not me (ie not some other player on the network)
@@ -25,21 +25,20 @@ public class PlayerMovement : MonoBehaviourPun
         }
 
         // Dont destory a player on scene change
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
-  
-    // Start is called before the first frame update
-    void Start()
-    {
-         // If the player is not me (ie not some other player on the network)
-        // then destory this script
-        if (!photonView.IsMine) {
-            Destroy(this);
-        }
 
-        // Dont destory a player on scene change
-        DontDestroyOnLoad(gameObject);
+    // Start is called before the first frame update
+    void Start() {
         movement = new Movement(speed, gravity, jumpHeight, sprintFactor, stamina, staminaDepletionRate, staminaRegenerationRate);
+    }
+
+    [PunRPC]
+    public void MovePlayer(Vector3 position) {
+        CharacterController characterController = GetComponent<CharacterController>();
+	    characterController.enabled = false;
+        transform.position = position;
+	    characterController.enabled = true;
     }
 
     bool IsGrounded() {
