@@ -9,8 +9,15 @@ using Photon.Pun;
 /// in <c>ItemInteract</c>. </summary>
 public abstract class Interactable : MonoBehaviourPun {
 
+  // The primary action to do when an item is interacted with. At the moment
+  // this is when an item is clicked on.
   public abstract void PrimaryInteraction();
+  
+  // The action to do when an interaction stops. Atm this when the mouse is
+  // released.
   public virtual void PrimaryInteractionOff() {}
+
+  // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract() {
     return true;
   }
