@@ -72,6 +72,7 @@ public class ItemInteract : MonoBehaviourPun {
               // Some item have a primary interaction off method, eg drop the
               // item after pickup. Therefore run this on mouse up.
               currentInteractable.PrimaryInteractionOff();
+              currentInteractable = null;
             }
         }
     }
