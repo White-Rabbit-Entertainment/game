@@ -26,7 +26,11 @@ public class ItemInteract : MonoBehaviourPun {
  
     private void Update() {
         if (canInteract && currentHeldItem == null) {
-            currentInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
+            Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
+            if (newInteractable != currentInteractable && currentInteractable != null) {
+                currentInteractable.GlowOff();
+            }
+            currentInteractable = newInteractable;
             if (!(currentInteractable is Capturable && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber"))) {
                 currentInteractable.GlowOn();
             }
