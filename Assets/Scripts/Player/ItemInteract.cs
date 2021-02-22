@@ -49,7 +49,8 @@ public class ItemInteract : MonoBehaviourPun {
                 if (Input.GetButtonDown("Fire1")) {
                   // If the interaction is pickup then we need to set where the item is going.
                   if (currentInteractable is PickUpable) {
-                    ((PickUpable)currentInteractable).SetPickUpDestination(pickupDestination);
+                    currentHeldItem = (PickUpable)currentInteractable;
+                    currentHeldItem.SetPickUpDestination(pickupDestination);
                   }
 
                   // Do whatever the primary interaction of this interactable is.
@@ -65,6 +66,9 @@ public class ItemInteract : MonoBehaviourPun {
 
             // And if bring the mouse button up
             if (Input.GetButtonUp("Fire1")) {
+              if (currentInteractable is PickUpable) {
+                currentHeldItem = null;
+              }
               // Some item have a primary interaction off method, eg drop the
               // item after pickup. Therefore run this on mouse up.
               currentInteractable.PrimaryInteractionOff();

@@ -24,4 +24,9 @@ public abstract class Interactable : MonoBehaviourPun {
   public void GlowOff() {
     GetComponent<Outline>().enabled = false;
   }
+
+  // When we remove iteractablility from an item it should stop glowing.
+  void OnDestroy() {
+    GlowOff();
+  }
 }

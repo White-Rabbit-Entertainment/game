@@ -55,8 +55,6 @@ public class Stealable : PickUpable, Taskable {
         // After at item is stolen we dont want to make it interactable any
         // more so we can destory this script, which removes all
         // interactability.
-        // Turn off the glow before destorying this script.
-        GlowOff();
         Destroy(this);
       }
 	}

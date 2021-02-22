@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.SetRoomProperty("TasksSet", false);
           NetworkManager.instance.SetRoomProperty("WinningTeam", "None");
           NetworkManager.instance.SetRoomProperty("NumberOfStealingTasks", 2);
-          NetworkManager.instance.SetRoomProperty("NumberOfNonStealingTasks", 1);
+          NetworkManager.instance.SetRoomProperty("NumberOfNonStealingTasks", 2);
           
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 1384972617313755211}
   - component: {fileID: -7912685742954480149}
   m_Layer: 0
-  m_Name: Taskable
+  m_Name: Basic task
   m_TagString: interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,8 +180,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1384972617313755202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cbed6f94a5466758b9051774d58362a, type: 3}
+  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   description: Click on this
-  material: {fileID: 2100000, guid: 09b27e4666d81de29af26e8815f27dbc, type: 2}
+  material: {fileID: 2100000, guid: 10bb11ed31ef9ef508e740214298c08f, type: 2}
+  team: 2
+  singleUse: 0
