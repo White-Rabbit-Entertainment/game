@@ -36,6 +36,11 @@ public abstract class PickUpable : Interactable {
       GetComponent<BoxCollider>().enabled = true;
       GetComponent<Rigidbody>().useGravity = true;
       GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+
+      // Set velocity of box after it is putdown to the speed to the character moving it
+      // TODO Not this
+      // GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<CharacterController>().velocity;
+      
       transform.parent = GameObject.Find("/Environment").transform;
     }
 }

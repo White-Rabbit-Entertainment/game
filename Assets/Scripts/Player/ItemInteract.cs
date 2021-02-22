@@ -75,7 +75,6 @@ public class ItemInteract : MonoBehaviourPun {
             canInteract = true;
         }
         else {
-            Debug.Log("Can not interact");
             canInteract = false;
         }
     }
