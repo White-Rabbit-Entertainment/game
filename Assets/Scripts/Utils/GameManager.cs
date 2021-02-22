@@ -23,10 +23,11 @@ public class GameManager : MonoBehaviourPun {
   
     // The teams
     // TODO Do we use this?
-    public enum Team
-    {
+    [System.Serializable]
+    public enum Team {
       Robber,
       Seeker,
+      Both,
       None
     }
  

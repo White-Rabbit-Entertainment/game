@@ -1,13 +1,15 @@
 using UnityEngine;
 using Photon.Pun;
 
-class MultiuseInteractable : Interactable, Taskable {
+class BasicInteractable : Interactable, Taskable {
 
   public string description;
   public Material material;
+  public Team team;
+  public bool singleUse;
   // public Animation animation; 
 
-  public void OnClick() {
+  public override void PrimaryInteraction() {
     // Run the animation
     Debug.Log("Doing an animation");
     // Animation
@@ -15,6 +17,14 @@ class MultiuseInteractable : Interactable, Taskable {
     if (task != null && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
       GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
     }
+    if (singleUse) Destroy(this);
+  }
+
+  public override bool CanInteract() {
+    if (team == Team.Both) return true;
+    if (NetworkManager.LocalPlayerPropertyIs("Team", "Seeker") && team == Team.Seeker) return true;
+    if (NetworkManager.LocalPlayerPropertyIs("Team", "Robber") && team == Team.Robber) return true;
+    return false;
   }
 
   [PunRPC]

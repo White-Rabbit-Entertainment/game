@@ -8,6 +8,12 @@ using Photon.Pun;
 /// interacted with. It add the funcitons for glowing. These can then be called
 /// in <c>ItemInteract</c>. </summary>
 public abstract class Interactable : MonoBehaviourPun {
+
+  public abstract void PrimaryInteraction();
+  public virtual void PrimaryInteractionOff() {}
+  public virtual bool CanInteract() {
+    return true;
+  }
   
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {

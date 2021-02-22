@@ -6,6 +6,14 @@ using Photon.Pun;
 /// <summary><c>PickUpable</c> extends <c>Interactable</c> to allow the item to
 /// be picked up and put down. </summary>
 public abstract class PickUpable : Interactable {
+
+  public override void PrimaryInteraction() {
+    PickUp();
+  }
+
+  public override void PrimaryInteractionOff() {
+    PutDown();
+  }
     
   /// <summary> Pickup item and freeze it on player. </summary>
   public void PickUp(Transform pickupDestination) {

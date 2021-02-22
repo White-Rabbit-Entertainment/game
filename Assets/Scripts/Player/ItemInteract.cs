@@ -31,36 +31,18 @@ public class ItemInteract : MonoBehaviourPun {
                 currentInteractable.GlowOff();
             }
             currentInteractable = newInteractable;
-            if (!(currentInteractable is Capturable && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber"))) {
+            if (currentInteractable.CanInteract()) {
                 currentInteractable.GlowOn();
             }
         } else if (currentInteractable != null) {
             currentInteractable.GlowOff();
         }
-        
-        if (currentInteractable is PickUpable) {
-            // Has interact button been pressed whilst interactable object is in front of player?
-            if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null) {
-                currentHeldItem = (PickUpable)currentInteractable;
-                currentHeldItem.PickUp(pickupDestination);
-            //on release mouse click drop item
-            } else if (Input.GetButtonUp("Fire1") && currentHeldItem != null) { 
-                currentHeldItem.PutDown();
-                currentHeldItem = null;
-            }
+    
+        if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null && currentInteractable.CanInteract()) {
+            currentInteractable.PrimaryInteraction();
         }
-
-        if (currentInteractable is MultiuseInteractable) {
-            if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null) {
-                ((MultiuseInteractable)currentInteractable).OnClick();
-            }
-        }
-
-        if (currentInteractable is Capturable && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-            // Has interact button been pressed whilst interactable object is in front of player?
-            if (Input.GetButtonDown("Fire1") && canInteract && currentHeldItem == null) {
-                ((Capturable)currentInteractable).Capture();
-            }
+        if (Input.GetButtonUp("Fire1") && canInteract && currentHeldItem == null && currentInteractable.CanInteract()) {
+            currentInteractable.PrimaryInteractionOff();
         }
     }
  
