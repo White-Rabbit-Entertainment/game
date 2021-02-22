@@ -31,14 +31,14 @@ public class PlayerAnimation : MonoBehaviourPun
         animator.SetFloat("Velocity", playerController.velocity.magnitude);
 
         if (Input.GetKeyDown(KeyCode.Z)) {
-            Debug.Log("anim1");
-            animator.SetTrigger("Dummy1");
-            animator.ResetTrigger("Dummy2");
+            // Debug.Log("anim1");
+            animator.SetTrigger("Dancing");
+            animator.ResetTrigger("Talking");
         }
         if (Input.GetKeyDown(KeyCode.X)) {
             Debug.Log("anim2");
-            animator.SetTrigger("Dummy2");
-            animator.ResetTrigger("Dummy1");
+            animator.SetTrigger("Talking");
+            animator.ResetTrigger("Dancing");
 
         }
     }

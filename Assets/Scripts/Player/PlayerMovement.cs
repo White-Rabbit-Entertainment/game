@@ -31,6 +31,14 @@ public class PlayerMovement : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+         // If the player is not me (ie not some other player on the network)
+        // then destory this script
+        if (!photonView.IsMine) {
+            Destroy(this);
+        }
+
+        // Dont destory a player on scene change
+        DontDestroyOnLoad(gameObject);
         movement = new Movement(speed, gravity, jumpHeight, sprintFactor, stamina, staminaDepletionRate, staminaRegenerationRate);
     }
 
