@@ -54,9 +54,7 @@ public abstract class PickUpable : Interactable {
     /// <summary> Drop item. </summary>
     public void PutDown() {
       if(isPickedUp) {
-        GetComponent<BoxCollider>().enabled = true;
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        GetComponent<PhotonView>().RPC("ResetItemConditions", RpcTarget.All);
 
         // Set velocity of box after it is putdown to the speed to the character moving it
         // TODO Not this
