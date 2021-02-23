@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviourPun {
 
     void Update() {
       if (LevelLoaded()) {
-        // HandleGameOver();
+        HandleGameOver();
       }
     }
 }
