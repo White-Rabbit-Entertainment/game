@@ -23,6 +23,10 @@ public abstract class PickUpable : Interactable {
     return transform.parent != null && transform.parent.name == "Item Pickup Destination";
   }
 
+  public virtual bool CanInteract() {
+    return !isPickedUp();
+  }
+
   /// <summary> Set the transform where the item will be once it it picked up.
   /// This is usually on the player which picks it up. </summary>
   public void SetPickUpDestination(Transform pickupDestination) {
