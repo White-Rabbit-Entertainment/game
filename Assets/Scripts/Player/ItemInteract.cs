@@ -18,10 +18,13 @@ public class ItemInteract : MonoBehaviourPun {
     private PickUpable currentHeldItem;
     private Interactable currentInteractable;
 
+    [SerializeField] private Animator animator;
+
     private void Start() {
         if (!photonView.IsMine) {
             Destroy(this);
         }
+        animator = GetComponentInChildren<Animator>();
     }
  
     private void Update() {
@@ -52,7 +55,8 @@ public class ItemInteract : MonoBehaviourPun {
                     currentHeldItem = (PickUpable)currentInteractable;
                     currentHeldItem.SetPickUpDestination(pickupDestination);
                   }
-
+                  // Do whatever the Primary Interactable is                
+                  currentInteractable.PlayerPrimaryInteractionAnimation(animator);
                   // Do whatever the primary interaction of this interactable is.
                   currentInteractable.PrimaryInteraction();
                 }

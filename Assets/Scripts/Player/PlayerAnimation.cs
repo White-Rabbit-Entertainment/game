@@ -28,21 +28,13 @@ public class PlayerAnimation : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W)) animator.SetTrigger("Walking");
-        else {
-            animator.SetTrigger("Walking");
-        }
-
+        
+        animator.SetFloat("Walking", Input.GetAxis("Vertical"));
         if (Input.GetKeyDown(KeyCode.Z)) {
-            // Debug.Log("anim1");
             animator.SetTrigger("Dancing");
-            animator.ResetTrigger("Talking");
         }
         if (Input.GetKeyDown(KeyCode.X)) {
-            Debug.Log("anim2");
             animator.SetTrigger("Talking");
-            animator.ResetTrigger("Dancing");
-
         }
     }
 }
