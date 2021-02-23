@@ -8,6 +8,7 @@ using Photon.Pun;
 public abstract class PickUpable : Interactable {
     
   private Transform pickupDestination;
+  public bool isPickedUp = false;
 
   public override void PrimaryInteraction() {
     PickUp(pickupDestination);
@@ -19,12 +20,9 @@ public abstract class PickUpable : Interactable {
 
   /// <summary> Checks if the item is in a pickup destination, if so it is
   /// picked up.  </summary>
-  public bool isPickedUp() {
-    return transform.parent != null && transform.parent.name == "Item Pickup Destination";
-  }
 
   public virtual bool CanInteract() {
-    return !isPickedUp();
+    return !isPickedUp;
   }
 
   /// <summary> Set the transform where the item will be once it it picked up.
@@ -32,23 +30,17 @@ public abstract class PickUpable : Interactable {
   public void SetPickUpDestination(Transform pickupDestination) {
     this.pickupDestination = pickupDestination;
   }
-    
+
   /// <summary> Pickup item and freeze it on player. </summary>
   public void PickUp(Transform pickupDestination) {
 
-      if(!isPickedUp()) {
+      if(!isPickedUp) {
         // An item can only be moved by a player if they are the owner.
         // Therefore, give ownership of the item to the local player before
         // moving it.
-        GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
-        
-        // Disable the box collider to prevent collisions whilst carrying item.
-        // Also turn off gravity on item and freeze its Rigidbody.
-        // TODO this needs to happen on all clients, atm gravity (and probably
-        // everything else) still applies to the objects in everyone elses game.
-        GetComponent<BoxCollider>().enabled = false;                                        
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        PhotonView view = GetComponent<PhotonView>();
+        view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        view.RPC("SetItemPickupConditions", RpcTarget.All);
 
         // Move to players pickup destination.
         transform.position = pickupDestination.position;
@@ -61,7 +53,7 @@ public abstract class PickUpable : Interactable {
 
     /// <summary> Drop item. </summary>
     public void PutDown() {
-      if(isPickedUp()) {
+      if(isPickedUp) {
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
@@ -73,4 +65,25 @@ public abstract class PickUpable : Interactable {
         transform.parent = GameObject.Find("/Environment").transform;
       }
     }
+  
+    [PunRPC]
+    public void SetItemPickupConditions() {
+      isPickedUp = true;
+      // Disable the box collider to prevent collisions whilst carrying item.
+      // Also turn off gravity on item and freeze its Rigidbody.
+      // TODO this needs to happen on all clients, atm gravity (and probably
+      // everything else) still applies to the objects in everyone elses game.
+      GetComponent<BoxCollider>().enabled = false;                                        
+      GetComponent<Rigidbody>().useGravity = false;
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    }
+    
+    [PunRPC]
+    public void ResetItemConditions() {
+      isPickedUp = false;
+      GetComponent<BoxCollider>().enabled = true;
+      GetComponent<Rigidbody>().useGravity = true;
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+    }
+    
 }
