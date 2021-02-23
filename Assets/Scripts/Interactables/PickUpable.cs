@@ -41,6 +41,7 @@ public abstract class PickUpable : Interactable {
         PhotonView view = GetComponent<PhotonView>();
         view.TransferOwnership(PhotonNetwork.LocalPlayer);
         view.RPC("SetItemPickupConditions", RpcTarget.All);
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
         // Move to players pickup destination.
         transform.position = pickupDestination.position;
@@ -55,6 +56,7 @@ public abstract class PickUpable : Interactable {
     public void PutDown() {
       if(isPickedUp) {
         GetComponent<PhotonView>().RPC("ResetItemConditions", RpcTarget.All);
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
         // Set velocity of box after it is putdown to the speed to the character moving it
         // TODO Not this
@@ -73,7 +75,6 @@ public abstract class PickUpable : Interactable {
       // everything else) still applies to the objects in everyone elses game.
       GetComponent<BoxCollider>().enabled = false;                                        
       GetComponent<Rigidbody>().useGravity = false;
-      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
     
     [PunRPC]
@@ -81,7 +82,6 @@ public abstract class PickUpable : Interactable {
       isPickedUp = false;
       GetComponent<BoxCollider>().enabled = true;
       GetComponent<Rigidbody>().useGravity = true;
-      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
     }
     
 }
