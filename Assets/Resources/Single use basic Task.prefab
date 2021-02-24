@@ -166,7 +166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   taskDescription: Click on this once
   outlineWidth: 5
-  material: {fileID: 2100000, guid: 42bcb6da2d64c7b53a68bbb667e08b8d, type: 2}
-  team: 2
   singleUse: 1
-  animation: {fileID: 0}
+  team: -1
+  itemAnimation: {fileID: 0}

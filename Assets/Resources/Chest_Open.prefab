@@ -155,7 +155,7 @@ MonoBehaviour:
   taskDescription: Open the chest
   outlineWidth: 5
   singleUse: 0
-  team: 2
+  team: -1
   itemAnimation: {fileID: 653854866609470075}
   animation0: ChestOpening
   animation1: ChestClosing
