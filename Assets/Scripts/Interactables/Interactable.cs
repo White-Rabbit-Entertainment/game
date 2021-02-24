@@ -17,7 +17,6 @@ public abstract class Interactable : MonoBehaviourPun {
   // released.
   public virtual void PrimaryInteractionOff() {}
 
-  // public virtual void PlayerPrimaryInteractionAnimation(Animator animator) {}
 
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract() {
