@@ -11,8 +11,8 @@ public class Capturable : Interactable {
     Capture();
   }
 
-  public override bool CanInteract() {
-    return NetworkManager.instance.LocalPlayerPropertyIs("Team", "Seeker");
+  public override bool CanInteract(Character character) {
+    return character is Seeker;
   }
 
   public void Capture() {

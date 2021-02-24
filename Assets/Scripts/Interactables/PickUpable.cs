@@ -21,8 +21,8 @@ public abstract class PickUpable : Interactable {
   /// <summary> Checks if the item is in a pickup destination, if so it is
   /// picked up.  </summary>
 
-  public virtual bool CanInteract() {
-    return !isPickedUp;
+  public virtual bool CanInteract(Character character) {
+    return !isPickedUp && !character.HasItem();
   }
 
   /// <summary> Set the transform where the item will be once it it picked up.

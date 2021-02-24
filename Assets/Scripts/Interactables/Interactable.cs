@@ -17,7 +17,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public float outlineWidth = 5f;
   
   public bool singleUse;
-  public Team team = Team.Both;
+  public Team team = Team.All;
   
   public Animation itemAnimation;
 
@@ -115,10 +115,10 @@ public abstract class Interactable : MonoBehaviourPun {
   }
   
   // Return true is the current player can interact with this interatable.
-  public virtual bool CanInteract() {
-    if (team == Team.Both) return true;
-    if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker") && team == Team.Seeker) return true;
-    if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber") && team == Team.Robber) return true;
+  public virtual bool CanInteract(Character character) {
+    if (team == Team.All) return true;
+    if (team == character.team) return true;
+    if (team == Team.Real && (character is Seeker || character is Robber)) return true;
     return false;
   }
 
