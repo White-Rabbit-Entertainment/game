@@ -32,7 +32,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 6809595694795437607}
   currentHeldItem: {fileID: 0}
-  team: 0
+  team: 1
 --- !u!1001 &6050403968897764889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109,6 +109,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: robber
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[1].Name
+      value: Dummy1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[1].Type
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[2].Name
+      value: Dummy2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[2].Type
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[1].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[2].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: ObservedComponents.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d759674618dad8007acd33ec36b2e696, type: 3}

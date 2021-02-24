@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7d60c5fc0e1aa3886f19df3685a61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDestination: {fileID: 0}
+  pickupDestination: {fileID: 1784732065326232205}
   currentHeldItem: {fileID: 0}
-  team: 0
+  team: 2
 --- !u!1001 &1563722367472536243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,11 +92,67 @@ PrefabInstance:
       propertyPath: m_TagString
       value: seeker
       objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[1].Name
+      value: Dummy1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[1].Type
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[2].Name
+      value: Dummy2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[2].Type
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[1].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[2].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: ObservedComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d759674618dad8007acd33ec36b2e696, type: 3}
 --- !u!1 &1784732065346499672 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 970474518700277483, guid: d759674618dad8007acd33ec36b2e696,
+    type: 3}
+  m_PrefabInstance: {fileID: 1563722367472536243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1784732065326232205 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 970474518680991806, guid: d759674618dad8007acd33ec36b2e696,
     type: 3}
   m_PrefabInstance: {fileID: 1563722367472536243}
   m_PrefabAsset: {fileID: 0}

@@ -35,7 +35,7 @@ public abstract class Interactable : MonoBehaviourPun {
 
   // The primary action to do when an item is interacted with. At the moment
   // this is when an item is clicked on.
-  public virtual void PrimaryInteraction() {
+  public virtual void PrimaryInteraction(Character player) {
     if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
       GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
     }
@@ -51,6 +51,11 @@ public abstract class Interactable : MonoBehaviourPun {
   // released.
   public virtual void PrimaryInteractionOff() {}
 
+  // Return true is the current player can interact with this interatable.
+  public virtual bool CanInteract() {
+    return true;
+  }
+  
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {
     Debug.Log("Glow on");

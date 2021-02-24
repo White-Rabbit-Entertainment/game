@@ -18,7 +18,6 @@ public class ItemInteract : MonoBehaviourPun {
     private bool interactableInRange = false;
     private PickUpable currentHeldItem;
     private Interactable currentInteractable;
-
     private void Start() {
         if (!photonView.IsMine) {
             Destroy(this);
@@ -55,9 +54,8 @@ public class ItemInteract : MonoBehaviourPun {
                     currentHeldItem = (PickUpable)currentInteractable;
                     currentHeldItem.SetPickUpDestination(pickupDestination);
                   }
-
                   // Do whatever the primary interaction of this interactable is.
-                  currentInteractable.PrimaryInteraction();
+                  currentInteractable.PrimaryInteraction(character);
                 }
             }
         } 

@@ -10,7 +10,9 @@ public abstract class PickUpable : Interactable {
   private Transform pickupDestination;
   public bool isPickedUp = false;
 
-  public override void PrimaryInteraction() {
+  public override void PrimaryInteraction(Character player) {
+    Animator animator = player.GetComponentInChildren<Animator>();
+    animator.SetTrigger("Pickup");
     PickUp(pickupDestination);
   }
 

@@ -7,7 +7,7 @@ public class Capturable : Interactable {
 
   public string destination = "/Jail/JailSpawn";
 
-  public override void PrimaryInteraction() {
+  public override void PrimaryInteraction(Character player) {
     Capture();
   }
 
