@@ -15,6 +15,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     //public InputField roomName;
 
     public GameObject roomListUI;
+    public GameObject chatUI;
 
 
 
@@ -69,19 +70,21 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
         //    return;
 
 
-
+        roomListUI.SetActive(false);
         loginUI.SetActive(false);
 
         RoomOptions options = new RoomOptions { MaxPlayers = 6 };
         //PhotonNetwork.JoinOrCreateRoom(roomName.text, options, default);
         PhotonNetwork.JoinOrCreateRoom(roomName(), options, default);
 
+        chatUI.SetActive(true);
+
 
     }
 
-    public override void OnJoinedRoom()
-    {
-        PhotonNetwork.LoadLevel(1);
-    }
+    //public override void OnJoinedRoom()
+    //{
+    //    PhotonNetwork.LoadLevel(1);
+    //}
 
 }

@@ -21,8 +21,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
 
     public Text msgarea;
 
-    public GameObject intoPanel;
-    public GameObject msgPanel;
+
 
     private string worldchat = "worldchat";
     
@@ -31,8 +30,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
         client = new ChatClient(this);
         AppVersion = "1.0.0";    
 
-       intoPanel.SetActive(true);
-        msgPanel.SetActive(false);
+
  
     }
  
@@ -58,8 +56,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
     public void OnConnected()
     {
         Debug.Log("join in");
-        intoPanel.SetActive(false);
-        msgPanel.SetActive(true);
+
          
         client.Subscribe(new string[] { worldchat}); 
         client.SetOnlineStatus(ChatUserStatus.Online);
