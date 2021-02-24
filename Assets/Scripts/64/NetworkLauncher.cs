@@ -15,7 +15,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     //public InputField roomName;
 
     public GameObject roomListUI;
-    public GameObject chatUI;
+    //public GameObject chatUI;
 
 
 
@@ -77,7 +77,7 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
         //PhotonNetwork.JoinOrCreateRoom(roomName.text, options, default);
         PhotonNetwork.JoinOrCreateRoom(roomName(), options, default);
 
-        chatUI.SetActive(true);
+        //chatUI.SetActive(true);
 
 
     }

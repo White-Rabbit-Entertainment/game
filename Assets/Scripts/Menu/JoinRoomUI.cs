@@ -9,7 +9,27 @@ public class JoinRoomUI: MonoBehaviour {
     public InputField roomNameInput;
     public InputField playerNameInput;
     public Button createRoomButton; 
-    public Button joinRoomButton; 
+    public Button joinRoomButton;
+
+
+    public string RoomName()
+    {
+        int number;
+        char code;
+        string roomString = string.Empty;
+        //Random random = new Random();
+        for (int i = 0; i < 8; i++)
+        {
+            number = Random.Range(0, 10);
+            if (number % 2 == 0)
+                code = (char)('0' + (char)(number % 10));
+            else
+                code = (char)('A' + (char)(number % 26));
+            roomString += code.ToString();
+        }
+
+        return roomString;
+    }
 
     void Start() {
       createRoomButton.onClick.AddListener(OnClickCreateRoom);
@@ -17,7 +37,7 @@ public class JoinRoomUI: MonoBehaviour {
     }
 
     void OnClickCreateRoom() {
-      NetworkManager.instance.CreateRoom(roomNameInput.text);
+      NetworkManager.instance.CreateRoom(RoomName());
       PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
     
