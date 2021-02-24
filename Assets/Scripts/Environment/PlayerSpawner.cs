@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
@@ -8,6 +9,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     public GameObject seekerPrefab;
     public GameObject robberPrefab;
+    public GameObject agentPrefab;
 
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
@@ -33,6 +35,9 @@ public class PlayerSpawner : MonoBehaviour {
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
     void LoadPlayer() {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          PhotonNetwork.Instantiate(agentPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        }
         if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
             PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
@@ -44,7 +49,7 @@ public class PlayerSpawner : MonoBehaviour {
         // Wait till all players are in the scene.
         if (NetworkManager.instance.AllPlayersInGame()) {
 
-          // Then load in all the players 
+          // Then load in all the players
           LoadPlayer();
 
           // Then this script has done its job (loaded in the player) so we can
@@ -52,5 +57,18 @@ public class PlayerSpawner : MonoBehaviour {
           Destroy(this);
           Destroy(gameObject);
         }
+    }
+
+    public Vector3 RandomNavmeshLocation(float radius)
+    {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+        {
+            finalPosition = hit.position;
+        }
+        return finalPosition;
     }
 }
