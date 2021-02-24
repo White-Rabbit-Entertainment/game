@@ -51,11 +51,6 @@ public abstract class Interactable : MonoBehaviourPun {
   // released.
   public virtual void PrimaryInteractionOff() {}
 
-  // Return true is the current player can interact with this interatable.
-  public virtual bool CanInteract() {
-    return true;
-  }
-  
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {
     Debug.Log("Glow on");
@@ -121,10 +116,6 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (team == Team.All) return true;
-    if (team == character.team) return true;
-    if (team == Team.Real && (character is Seeker || character is Robber)) return true;
-    return false;
+    return team.HasFlag(character.team);
   }
-
 }

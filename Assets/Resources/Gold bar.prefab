@@ -97,10 +97,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: 
-  interactionColour: {r: 255, g: 255, b: 255, a: 255}
-  taskColour: {r: 255, g: 255, b: 255, a: 255}
+  outlineWidth: 5
+  singleUse: 0
+  team: -1
+  itemAnimation: {fileID: 0}
   isPickedUp: 0
-  stealableMaterial: {fileID: 2100000, guid: 09b27e4666d81de29af26e8815f27dbc, type: 2}
 --- !u!114 &6724540497385013028
 MonoBehaviour:
   m_ObjectHideFlags: 0
