@@ -29,7 +29,6 @@ public class FootstepSounds : MonoBehaviour
         else if (playerController.isGrounded && playerController.velocity.magnitude > 0 && !audioSource.isPlaying) {
             GetComponent<AudioSource>().volume = Random.Range(0.1f,0.2f);
             GetComponent<AudioSource>().pitch = Random.Range(0.8f,1.2f);
-            // Debug.Log("Sound");
             audioSource.PlayOneShot(audioSource.clip, 1); 
         }
     }
