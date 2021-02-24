@@ -11,6 +11,7 @@ public abstract class PickUpable : Interactable {
   bool isPickedUp = false;
 
   public override void PrimaryInteraction(GameObject player) {
+    Debug.Log(player);
     Animator animator = player.GetComponentInChildren<Animator>();
     animator.SetTrigger("Pickup");
     PickUp(pickupDestination);
