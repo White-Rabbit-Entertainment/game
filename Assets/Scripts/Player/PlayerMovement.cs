@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviourPun
     public float gravity = -19.62f;
     public float jumpHeight = 3f;
     private Movement movement;
-    
+
 
     void Awake() {
         // If the player is not me (ie not some other player on the network)
@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviourPun
         // Dont destory a player on scene change
         // DontDestroyOnLoad(gameObject);
     }
-  
+
     // Start is called before the first frame update
     void Start() {
         movement = new Movement(speed, gravity, jumpHeight, sprintFactor, stamina, staminaDepletionRate, staminaRegenerationRate);
