@@ -11,13 +11,13 @@ public abstract class Interactable : MonoBehaviourPun {
 
   // The primary action to do when an item is interacted with. At the moment
   // this is when an item is clicked on.
-  public abstract void PrimaryInteraction();
+  public abstract void PrimaryInteraction(GameObject player);
   
   // The action to do when an interaction stops. Atm this when the mouse is
   // released.
   public virtual void PrimaryInteractionOff() {}
 
-  public virtual void PlayerPrimaryInteractionAnimation(Animator animator) {}
+  // public virtual void PlayerPrimaryInteractionAnimation(Animator animator) {}
 
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract() {

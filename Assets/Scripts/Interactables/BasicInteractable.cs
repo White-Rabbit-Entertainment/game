@@ -9,7 +9,7 @@ class BasicInteractable : Interactable, Taskable {
   public bool singleUse;
   // public Animation animation; 
 
-  public override void PrimaryInteraction() {
+  public override void PrimaryInteraction(GameObject Player) {
     // Run the animation
     Debug.Log("Doing an animation");
     // Animation
