@@ -20,6 +20,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public Team team = Team.All;
   
   public Animation itemAnimation;
+  public string playerAnimationTrigger;
 
   private Outline outline;
 
@@ -35,13 +36,14 @@ public abstract class Interactable : MonoBehaviourPun {
 
   // The primary action to do when an item is interacted with. At the moment
   // this is when an item is clicked on.
-  public virtual void PrimaryInteraction(Character player) {
+  public virtual void PrimaryInteraction(Character character) {
     if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
       GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
     }
     
     // Animation
-    PlayAnimation();
+    PlayItemAnimation();
+    PlayCharacterAnimation(character);
 
     // Destory if single use
     if (singleUse) Destroy(this);
@@ -49,7 +51,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // The action to do when an interaction stops. Atm this when the mouse is
   // released.
-  public virtual void PrimaryInteractionOff() {}
+  public virtual void PrimaryInteractionOff(Character character) {}
 
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {
@@ -108,9 +110,16 @@ public abstract class Interactable : MonoBehaviourPun {
     task.Complete();
   }
 
-  public virtual void PlayAnimation() {
+  public virtual void PlayItemAnimation() {
     if (GetComponent<Animation>() != null) {
       GetComponent<Animation>().Play();
+    }
+  }
+  
+  public virtual void PlayCharacterAnimation(Character character) {
+    if (playerAnimationTrigger != null && playerAnimationTrigger != "") {
+      Animator animator = character.GetComponentInChildren<Animator>();
+      animator.SetTrigger(playerAnimationTrigger);
     }
   }
   

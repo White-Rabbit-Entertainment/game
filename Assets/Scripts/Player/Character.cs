@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public abstract class Character : MonoBehaviour
 {
-  public GameObject pickupDestination; 
+  public Transform pickupDestination; 
   public PickUpable currentHeldItem; 
 
   public Team team;
@@ -13,5 +14,13 @@ public abstract class Character : MonoBehaviour
   }
 
   public virtual void Start() {
+  }
+
+  public void PickUp(PickUpable item) {
+    currentHeldItem = item;
+  }
+  
+  public void PutDown(PickUpable item) {
+    currentHeldItem = null;
   }
 }

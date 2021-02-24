@@ -17,6 +17,7 @@ MonoBehaviour:
   singleUse: 0
   team: 2
   itemAnimation: {fileID: 0}
+  playerAnimationTrigger: 
   destination: /Jail/JailSpawn
 --- !u!114 &5177377172016824999
 MonoBehaviour:
@@ -30,7 +31,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928378c18302d836aa00475ab8a1aa9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDestination: {fileID: 6809595694795437607}
+  pickupDestination: {fileID: 6809595694795437606}
   currentHeldItem: {fileID: 0}
   team: 1
 --- !u!1001 &6050403968897764889
@@ -168,9 +169,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6050403968897764889}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6809595694795437607 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 970474518680991806, guid: d759674618dad8007acd33ec36b2e696,
+--- !u!4 &6809595694795437606 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 970474518680991807, guid: d759674618dad8007acd33ec36b2e696,
     type: 3}
   m_PrefabInstance: {fileID: 6050403968897764889}
   m_PrefabAsset: {fileID: 0}

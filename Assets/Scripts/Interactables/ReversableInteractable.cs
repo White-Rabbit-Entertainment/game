@@ -9,7 +9,7 @@ class ReversableInteractable: Interactable {
   public string animation0;
   public string animation1;
 
-  public override void PlayAnimation() {
+  public override void PlayItemAnimation() {
     if (currentState == 0) {
       itemAnimation.Play(animation0);
       currentState = 1;

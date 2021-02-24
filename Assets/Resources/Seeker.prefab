@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7d60c5fc0e1aa3886f19df3685a61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDestination: {fileID: 1784732065326232205}
+  pickupDestination: {fileID: 1784732065326232204}
   currentHeldItem: {fileID: 0}
   team: 2
 --- !u!1001 &1563722367472536243
@@ -150,9 +150,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1563722367472536243}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1784732065326232205 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 970474518680991806, guid: d759674618dad8007acd33ec36b2e696,
+--- !u!4 &1784732065326232204 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 970474518680991807, guid: d759674618dad8007acd33ec36b2e696,
     type: 3}
   m_PrefabInstance: {fileID: 1563722367472536243}
   m_PrefabAsset: {fileID: 0}

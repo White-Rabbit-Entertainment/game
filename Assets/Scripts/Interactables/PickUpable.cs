@@ -9,32 +9,25 @@ public abstract class PickUpable : Interactable {
     
   private Transform pickupDestination;
   public bool isPickedUp = false;
+  public string playerAnimationTrigger = "PickUp";
 
-  public override void PrimaryInteraction(Character player) {
-    Animator animator = player.GetComponentInChildren<Animator>();
-    animator.SetTrigger("Pickup");
-    PickUp(pickupDestination);
+  public override void PrimaryInteraction(Character character) {
+    PlayCharacterAnimation(character);
+    PickUp(character);
   }
 
-  public override void PrimaryInteractionOff() {
-    PutDown();
+  public override void PrimaryInteractionOff(Character character) {
+    PutDown(character);
   }
 
   /// <summary> Checks if the item is in a pickup destination, if so it is
   /// picked up.  </summary>
-
   public override bool CanInteract(Character character) {
     return !isPickedUp && !character.HasItem();
   }
 
-  /// <summary> Set the transform where the item will be once it it picked up.
-  /// This is usually on the player which picks it up. </summary>
-  public void SetPickUpDestination(Transform pickupDestination) {
-    this.pickupDestination = pickupDestination;
-  }
-
   /// <summary> Pickup item and freeze it on player. </summary>
-  public void PickUp(Transform pickupDestination) {
+  public void PickUp(Character character) {
 
       if(!isPickedUp) {
         // An item can only be moved by a player if they are the owner.
@@ -46,16 +39,19 @@ public abstract class PickUpable : Interactable {
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
         // Move to players pickup destination.
-        transform.position = pickupDestination.position;
+        transform.position = character.pickupDestination.position;
         
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
-        transform.parent = pickupDestination;
+        transform.parent = character.pickupDestination;
+
+        // Set the character's currentHeldItem to this item
+        character.PickUp(this);
       }
     }
 
     /// <summary> Drop item. </summary>
-    public void PutDown() {
+    public void PutDown(Character character) {
       if(isPickedUp) {
         GetComponent<PhotonView>().RPC("ResetItemConditions", RpcTarget.All);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
@@ -64,6 +60,7 @@ public abstract class PickUpable : Interactable {
         GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<CharacterController>().velocity/2;
         
         transform.parent = GameObject.Find("/Environment").transform;
+        character.PutDown(this);
       }
     }
   
