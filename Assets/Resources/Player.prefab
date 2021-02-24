@@ -175,7 +175,6 @@ GameObject:
   - component: {fileID: -9179057879116562422}
   - component: {fileID: 21237489885168550}
   - component: {fileID: 5062417040451838244}
-  - component: {fileID: 3086872093019235386}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -354,21 +353,3 @@ MonoBehaviour:
   pickupDestination: {fileID: 970474518680991807}
   maxInteractionDistance: 3
   cameraTransform: {fileID: 970474518199395634}
---- !u!114 &3086872093019235386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 970474518700277483}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 6
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []

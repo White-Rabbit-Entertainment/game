@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 1384972617313755210}
   - component: {fileID: 1384972617313755204}
   - component: {fileID: 1384972617313755212}
-  - component: {fileID: 1384972617313755211}
   - component: {fileID: -7912685742954480149}
   m_Layer: 0
   m_Name: Basic task
@@ -153,24 +152,6 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1384972617313755211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1384972617313755202}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0.97449327, b: 0.7735849, a: 1}
-  outlineWidth: 6
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &-7912685742954480149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Click on this
+  taskDescription: Click on this
+  outlineWidth: 5
   material: {fileID: 2100000, guid: 10bb11ed31ef9ef508e740214298c08f, type: 2}
   team: 2
   singleUse: 0
+  animation: {fileID: 0}

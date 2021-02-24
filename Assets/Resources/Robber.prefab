@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb2bf8859422d849b551bbfd8bf3d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  taskDescription: 
+  interactionColour: {r: 255, g: 255, b: 255, a: 0}
+  taskColour: {r: 255, g: 255, b: 255, a: 0}
+  outlineWidth: 5
   destination: /Jail/JailSpawn
 --- !u!1001 &6050403968897764889
 PrefabInstance:

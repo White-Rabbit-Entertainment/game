@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using Photon.Pun;
+using Photon.Realtime;
 
 public static class Utils {
     private static Random rng = new Random();
@@ -15,5 +19,5 @@ public static class Utils {
             list[n] = value;  
         }  
     }
-}
 
+}

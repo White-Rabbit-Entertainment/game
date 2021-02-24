@@ -8,11 +8,15 @@ using Photon.Pun;
 /// interacted with. It add the funcitons for glowing. These can then be called
 /// in <c>ItemInteract</c>. </summary>
 [DisallowMultipleComponent]
+[RequireComponent(typeof(PhotonView))]
 public abstract class Interactable : MonoBehaviourPun {
 
   public string taskDescription;
-  public Color interactionColour = new Color(255,255,255,0);
-  public Color taskColour = new Color(255, 255, 255, 0);
+  private Color interactionColour;
+  private Color taskColour;
+  public float outlineWidth = 5f;
+
+  private Outline outline;
 
   public bool IsTaskable() {
     return taskDescription != null;
@@ -20,7 +24,8 @@ public abstract class Interactable : MonoBehaviourPun {
 
   // Returns true is a task has been applied to this interactable.
   public bool HasTask() {
-    return GetComponent<Task>() != null;
+    Task task = GetComponent<Task>();
+    return task != null && !task.isCompleted;
   }
 
   // The primary action to do when an item is interacted with. At the moment
@@ -38,34 +43,58 @@ public abstract class Interactable : MonoBehaviourPun {
   
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {
-    GetComponent<Outline>().OutlineColor = interactionColour;
-    GetComponent<Outline>().enabled = true;
+    Debug.Log("Glow on");
+    outline.OutlineColor = interactionColour;
+    outline.enabled = true;
   }
   
   /// <summary> Remove glow. </summary>
   public void GlowOff() {
-    if (HasTask()) {
-      GetComponent<Outline>().OutlineColor = taskColour;
+    if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
+      outline.OutlineColor = taskColour;
     } else {
-      GetComponent<Outline>().enabled = false;
+      outline.enabled = false;
     }
   }
 
   // When we remove iteractablility from an item it should stop glowing.
   void OnDestroy() {
-    GetComponent<Outline>().enabled = false;
+    outline.enabled = false;
   }
 
   /// <summary> Add a task to this item, i.e. Create a tast to
   /// steal this </summary>
-  [PunRPC]
   public virtual void AddTask() {
       // Add the Task script to this
       Task task = gameObject.AddComponent<Task>() as Task;
 
       // All stealing tasks should have the same kind of description
       task.description = taskDescription;
-      
 
+      // Set outline colour and turn on
+      if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
+        outline.OutlineColor = taskColour;
+        outline.enabled = true;
+      }
+  }
+
+  [PunRPC]
+  public void AddTaskRPC() {
+    AddTask();
+  }
+
+  public virtual void Start() {
+    outline = gameObject.AddComponent<Outline>() as Outline;
+    outline.OutlineWidth = outlineWidth;
+    outline.enabled = false;
+
+    interactionColour = new Color(1f, 1f, 1f, 1f);
+    taskColour = new Color(0f, 1f, 0.3f, 1f);
+  }
+  
+  [PunRPC]
+  public void CompleteTask() {
+    Task task = GetComponent<Task>();
+    task.Complete();
   }
 }

@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 3310681243164480562}
   - component: {fileID: 3303148572912861506}
   - component: {fileID: 2132172858538956652}
-  - component: {fileID: 4045771315128714028}
   - component: {fileID: 8843343324526537177}
-  - component: {fileID: 4569000905231506376}
   - component: {fileID: 653854866609470075}
+  - component: {fileID: 1030361265906560054}
   m_Layer: 0
   m_Name: Chest_Open
   m_TagString: Untagged
@@ -99,33 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Open the chest
+  taskDescription: Open the chest
+  outlineWidth: 5
   material: {fileID: 2100000, guid: 10bb11ed31ef9ef508e740214298c08f, type: 2}
   team: 2
   singleUse: 1
   animation: {fileID: 653854866609470075}
---- !u!114 &4045771315128714028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279212663829947662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  observableSearch: 2
-  Synchronization: 3
-  OwnershipTransfer: 1
-  ObservedComponents: []
-  viewIdField: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!64 &8843343324526537177
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -140,24 +118,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300088, guid: 5f3a7deba91ee3341b2266db1be8c0a0, type: 3}
---- !u!114 &4569000905231506376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279212663829947662}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 5
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!111 &653854866609470075
 Animation:
   m_ObjectHideFlags: 0
@@ -174,6 +134,29 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &1030361265906560054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279212663829947662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 0
+  Synchronization: 3
+  OwnershipTransfer: 1
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!64 &3134961051796514602
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -516,15 +499,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e7ac078c68820d4e8f9deec111d9d53, type: 3}
---- !u!1 &4647486603980650520 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1586128108692680, guid: 7e7ac078c68820d4e8f9deec111d9d53,
-    type: 3}
-  m_PrefabInstance: {fileID: 4646187466470694096}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4641533493050131940 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4671811494041908, guid: 7e7ac078c68820d4e8f9deec111d9d53,
+    type: 3}
+  m_PrefabInstance: {fileID: 4646187466470694096}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4647486603980650520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1586128108692680, guid: 7e7ac078c68820d4e8f9deec111d9d53,
     type: 3}
   m_PrefabInstance: {fileID: 4646187466470694096}
   m_PrefabAsset: {fileID: 0}

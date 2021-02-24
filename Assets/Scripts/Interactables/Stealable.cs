@@ -7,14 +7,14 @@ using Photon.Pun;
 /// be picked up.</summary>
 public class Stealable : PickUpable {
 
-    public Material stealableMaterial;
-
-    void Start() {
+    public override void Start() {
       // If we create a stealable without a task description create a generic
       // one.
-      if (taskDescription == null) {
+      if (taskDescription == null || taskDescription == "") {
         taskDescription = "Steal the " + gameObject.name;
       }
+
+      base.Start();
     }
     
     /// <summary> When a stealable item collides with the "endpoint" the item
@@ -25,20 +25,6 @@ public class Stealable : PickUpable {
         GetComponent<PhotonView>().RPC("Steal", RpcTarget.All);
 	  }
 	}
-  
-    /// item. </summary>
-    [PunRPC]
-    public override void AddTask() {
-
-      // If you are a robber make it obvious the item is stolen by applying a
-      // different material.
-      if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
-	    gameObject.GetComponent<MeshRenderer>().material = stealableMaterial;
-      }
-     
-      // Add the task to the item with the taskDescription
-      base.AddTask();
-    }
     
     /// <summary> Steals an item, if there is a task associated with stealing
     /// it should be completed here. </summary>
@@ -50,7 +36,7 @@ public class Stealable : PickUpable {
       // If there is a task associated with stealing
       if (task != null) {
         // Then after stealing mark as completed 
-        task.Complete();
+        CompleteTask();
         
         // Then make it so the item cant be moved 
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();

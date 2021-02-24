@@ -12,8 +12,7 @@ class BasicInteractable : Interactable {
     // Run the animation
     Debug.Log("Doing an animation");
     // Animation
-    Task task = GetComponent<Task>();
-    if (task != null && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
+    if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
       GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
     }
     if (animation != null) {
@@ -29,17 +28,4 @@ class BasicInteractable : Interactable {
     return false;
   }
 
-  [PunRPC]
-  private void CompleteTask() {
-    Task task = GetComponent<Task>();
-    task.Complete();
-  }
-  
-  [PunRPC]
-  public void AddTask() {
-    if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
-      gameObject.GetComponent<MeshRenderer>().material = material;
-	}
-    base.AddTask();
-  }
 }
