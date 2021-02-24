@@ -23,7 +23,6 @@ public class FootstepSounds : MonoBehaviour
         if (playerController.isGrounded && Input.GetKey("left shift") && !audioSource.isPlaying) {
             GetComponent<AudioSource>().volume = Random.Range(0.2f,0.3f);
             GetComponent<AudioSource>().pitch = Random.Range(1,1.2f) + 0.02f * playerController.velocity.magnitude;
-            // Debug.Log("Sound");
             audioSource.PlayOneShot(audioSource.clip, 1); 
         }
         //Low pitched sound for player running slow
