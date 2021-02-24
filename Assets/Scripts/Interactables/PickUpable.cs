@@ -10,7 +10,9 @@ public abstract class PickUpable : Interactable {
   private Transform pickupDestination;
   bool isPickedUp = false;
 
-  public override void PrimaryInteraction() {
+  public override void PrimaryInteraction(GameObject player) {
+    Animator animator = player.GetComponentInChildren<Animator>();
+    animator.SetTrigger("Pickup");
     PickUp(pickupDestination);
   }
 
@@ -18,9 +20,9 @@ public abstract class PickUpable : Interactable {
     PutDown();
   }
 
-  public override void PlayerPrimaryInteractionAnimation(Animator animator) {
-    animator.SetTrigger("Pickup");
-  }
+  // public override void PlayerPrimaryInteractionAnimation(Animator animator) {
+  //   animator.SetTrigger("Pickup");
+  // }
   /// <summary> Set the transform where the item will be once it it picked up.
   /// This is usually on the player which picks it up. </summary>
   public void SetPickUpDestination(Transform pickupDestination) {

@@ -55,10 +55,8 @@ public class ItemInteract : MonoBehaviourPun {
                     currentHeldItem = (PickUpable)currentInteractable;
                     currentHeldItem.SetPickUpDestination(pickupDestination);
                   }
-                  // Do whatever the Primary Interactable is                
-                  currentInteractable.PlayerPrimaryInteractionAnimation(animator);
                   // Do whatever the primary interaction of this interactable is.
-                  currentInteractable.PrimaryInteraction();
+                  currentInteractable.PrimaryInteraction(gameObject);
                 }
             }
         } 
