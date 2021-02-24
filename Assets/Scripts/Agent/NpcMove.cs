@@ -62,13 +62,14 @@ public class NpcMove : MonoBehaviour
       if (distance > 3f) {
          // walkPath(currGoal);
          // string possibleAction = get_animation_condition();
-         doIntermediaryAction(possibleAction);
+         // doIntermediaryAction(possibleAction);
          return false;
       }
       else {
         frames++;
         if(frames == 500){
           frames = 0;
+          interactWithInteractable(currGoal);
           return true;
         } else {
           return false;
