@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 
-public class NpcMove : MonoBehaviour
+public class NpcMove : MonoBehaviourPun
 {
     [SerializeField]
     // Transform _destination;
@@ -26,13 +27,16 @@ public class NpcMove : MonoBehaviour
     private NavMeshPath path;
     private bool pathSet = false;
     private float elapsed = 0f;
+    private PickUpable currentHeldItem;
+
+    public Transform pickupDestination;
 
 
     // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = this.GetComponent<NavMeshAgent>();
-        animator = this.GetComponent<Animator>();
+        // animator = this.GetComponent<Animator>();
         path = new NavMeshPath();
         current_animation_state = "Idle";
         // current_animation_state = idle;
@@ -70,6 +74,7 @@ public class NpcMove : MonoBehaviour
         if(frames == 500){
           frames = 0;
           interactWithInteractable(currGoal);
+          Debug.Log("interact");
           return true;
         } else {
           return false;
@@ -94,7 +99,11 @@ public class NpcMove : MonoBehaviour
     // }
 
     private void interactWithInteractable(Interactable currGoal){
-      currGoal.PrimaryInteraction();
+      if (currGoal is PickUpable) {
+        currentHeldItem = (PickUpable)currGoal;
+        currentHeldItem.SetPickUpDestination(pickupDestination);
+      }
+      currGoal.PrimaryInteraction(navMeshAgent.gameObject);
     }
 
     private bool CalculateNewPath(Interactable currGoal) {

@@ -41,14 +41,9 @@ GameObject:
   - component: {fileID: 2566148618787177630}
   - component: {fileID: 2566148618787177629}
   - component: {fileID: 2566148618787177628}
-  - component: {fileID: 2566148618787177631}
-  - component: {fileID: 2566148618787177619}
   - component: {fileID: 8923994855432842971}
   - component: {fileID: 3347991472939481712}
   - component: {fileID: 7541922464031169374}
-  - component: {fileID: 8279002543143163647}
-  - component: {fileID: 8935604299109313690}
-  - component: {fileID: 7057933940568108477}
   - component: {fileID: 2198855718796902256}
   - component: {fileID: 3359800350799247836}
   - component: {fileID: 4280296341777236036}
@@ -124,45 +119,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &2566148618787177631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2566148618787177617}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72a1a97c77c8b6c3cbe62e79c9a5dff5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundCheck: {fileID: 2566148619990708822}
-  playerController: {fileID: 2566148618787177619}
-  speed: 12
-  sprintFactor: 2
-  stamina: 1
-  staminaDepletionRate: 2
-  staminaRegenerationRate: 2
-  gravity: -19.62
-  jumpHeight: 3
---- !u!143 &2566148618787177619
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2566148618787177617}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.7
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8923994855432842971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +138,6 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   ObservedComponents:
-  - {fileID: 7057933940568108477}
   - {fileID: 3359800350799247836}
   viewIdField: 0
   InstantiationId: 0
@@ -217,57 +172,6 @@ MonoBehaviour:
   maxInteractionDistance: 3
   cameraTransform: {fileID: 2566148620165193544}
   animator: {fileID: 0}
---- !u!114 &8279002543143163647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2566148618787177617}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb3aa049df836483f8acf65c29dfbbca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 2566148618787177619}
-  currAnimation: 
---- !u!95 &8935604299109313690
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2566148618787177617}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7057933940568108477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2566148618787177617}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
 --- !u!114 &2198855718796902256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,7 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3aa049df836483f8acf65c29dfbbca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 2566148618787177619}
+  playerController: {fileID: 0}
   currAnimation: 
 --- !u!114 &3676058859718659992
 MonoBehaviour:
@@ -511,10 +415,10 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Dancing
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Walking
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Pickup
   m_SynchronizeLayers:
   - SynchronizeType: 2
