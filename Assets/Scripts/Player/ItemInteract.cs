@@ -43,6 +43,7 @@ public class ItemInteract : MonoBehaviourPun {
             currentInteractable = newInteractable;
             
             Character character = GetComponent<Character>();
+            Debug.Log("Checking can interact");
             if (currentInteractable != null && currentInteractable.CanInteract(character)) {
                 // If we are able to interact with the new interactable then turn on its glow
                 currentInteractable.GlowOn();

@@ -22,6 +22,8 @@ public abstract class PickUpable : Interactable {
   /// picked up.  </summary>
 
   public virtual bool CanInteract(Character character) {
+    Debug.Log("In can interact");
+    Debug.Log(!isPickedUp && !character.HasItem());
     return !isPickedUp && !character.HasItem();
   }
 
