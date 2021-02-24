@@ -1,0 +1,151 @@
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Photon.Chat;     
+
+public class MyClient : MonoBehaviour, IChatClientListener 
+{
+    private ChatClient client;       
+    private string AppID = "d0a5737b-396c-4990-8cde-19b4eadbd95e";            
+    private string AppVersion;       
+
+    
+
+    public InputField playrname;
+
+    public Text connectionstate;
+
+    public InputField msginput;
+
+    public Text msgarea;
+
+    public GameObject intoPanel;
+    public GameObject msgPanel;
+
+    private string worldchat = "worldchat";
+    
+    void Start()
+    {
+        client = new ChatClient(this);
+        AppVersion = "1.0.0";    
+
+       intoPanel.SetActive(true);
+        msgPanel.SetActive(false);
+ 
+    }
+ 
+    void Update()
+    {
+        if (client != null)    
+        {
+            client.Service(); 
+        }
+    }
+
+
+    public void GetConnected(){
+        Debug.Log("connecting...");
+        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(playrname.text));
+         
+    }
+    
+    public void sendmsg(){
+        client.PublishMessage(worldchat,msginput.text);
+    }
+     
+    public void OnConnected()
+    {
+        Debug.Log("join in");
+        intoPanel.SetActive(false);
+        msgPanel.SetActive(true);
+         
+        client.Subscribe(new string[] { worldchat}); 
+        client.SetOnlineStatus(ChatUserStatus.Online);
+ 
+    }
+ 
+ 
+   
+    public void OnDisconnected()
+    {
+        Debug.Log("quit");
+    }
+ 
+ 
+   
+    public void OnChatStateChange(ChatState state)
+    {
+        Debug.Log("statue：" + state);
+    }
+ 
+ 
+   
+    public void OnGetMessages(string channelName, string[] senders, object[] messages)
+    {
+        for(int i = 0; i< senders.Length;i++){
+            msgarea.text += senders[i] + ":" + messages[i] + "\n";
+        }
+        Debug.Log("channel："+channelName+",sender："+senders[0]+", messages："+messages[0]);
+    }
+ 
+    public void OnPrivateMessage(string sender, object message, string channelName)
+    {
+        Debug.Log("channel：" + channelName + ",sender" + sender + ", messages：" + message);
+    }
+ 
+ 
+    public void OnSubscribed(string[] channels, bool[] results)
+    {
+        foreach(var channel in channels){
+            this.client.PublishMessage(channel,"joined");
+        }
+        connectionstate.text = "connected";
+        Debug.Log("channel" + channels[0] + "result：" + results[0]);
+    }
+ 
+ 
+    public void OnUnsubscribed(string[] channels)
+    {
+        Debug.Log(channels[0] + "fail to join in ");
+    }
+ 
+    public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
+    {
+ 
+    }
+ 
+    public void Test()
+    {
+        client.AddFriends(new string[] { "fu", "zhu" }); 
+        client.SetOnlineStatus(1); 
+    }
+ 
+ 
+    public void DebugReturn(ExitGames.Client.Photon.DebugLevel level, string message)
+    {
+ 
+    }
+ 
+    void OnGUI()
+    {
+        // if(GUI.Button(new Rect(100,100,100,100),"quit")) 
+        // {
+        //     client.Disconnect();
+        //     Application.Quit();
+        // }
+    }
+
+    public void OnUserSubscribed(string channel, string user)
+    {
+        Debug.LogFormat("OnUserSubscribed: channel=\"{0}\" userId=\"{1}\"", channel, user);
+    }
+
+    public void OnUserUnsubscribed(string channel, string user)
+    {
+        Debug.LogFormat("OnUserUnsubscribed: channel=\"{0}\" userId=\"{1}\"", channel, user);
+    }
+
+    }
+
