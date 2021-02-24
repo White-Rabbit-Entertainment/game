@@ -17,14 +17,10 @@ public class ItemInteract : MonoBehaviourPun {
     private bool interactableInRange = false;
     private PickUpable currentHeldItem;
     private Interactable currentInteractable;
-
-    [SerializeField] private Animator animator;
-
     private void Start() {
         if (!photonView.IsMine) {
             Destroy(this);
         }
-        animator = GetComponentInChildren<Animator>();
     }
  
     private void Update() {
