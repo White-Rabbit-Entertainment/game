@@ -1,13 +1,12 @@
 using UnityEngine;
 using Photon.Pun;
 
-class BasicInteractable : Interactable, Taskable {
+class BasicInteractable : Interactable {
 
-  public string description;
   public Material material;
   public Team team;
   public bool singleUse;
-  // public Animation animation; 
+  public Animation animation; 
 
   public override void PrimaryInteraction() {
     // Run the animation
@@ -16,6 +15,9 @@ class BasicInteractable : Interactable, Taskable {
     Task task = GetComponent<Task>();
     if (task != null && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
       GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
+    }
+    if (animation != null) {
+      animation.Play();
     }
     if (singleUse) Destroy(this);
   }
@@ -38,7 +40,6 @@ class BasicInteractable : Interactable, Taskable {
     if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
       gameObject.GetComponent<MeshRenderer>().material = material;
 	}
-    Task task = gameObject.AddComponent<Task>() as Task;
-    task.description = description;
+    base.AddTask();
   }
 }

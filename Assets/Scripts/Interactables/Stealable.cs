@@ -5,9 +5,17 @@ using Photon.Pun;
 
 /// <summary><c>Stealable</c> extends <c>PickUpable</c> to allow the item to
 /// be picked up.</summary>
-public class Stealable : PickUpable, Taskable {
+public class Stealable : PickUpable {
 
     public Material stealableMaterial;
+
+    void Start() {
+      // If we create a stealable without a task description create a generic
+      // one.
+      if (taskDescription == null) {
+        taskDescription = "Steal the " + gameObject.name;
+      }
+    }
     
     /// <summary> When a stealable item collides with the "endpoint" the item
     /// should be stolen on all clients. </summary>
@@ -18,22 +26,18 @@ public class Stealable : PickUpable, Taskable {
 	  }
 	}
   
-    /// <summary> Add a task to this item, i.e. Create a tast to steal this
     /// item. </summary>
     [PunRPC]
-    public void AddTask() {
+    public override void AddTask() {
 
       // If you are a robber make it obvious the item is stolen by applying a
       // different material.
       if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
 	    gameObject.GetComponent<MeshRenderer>().material = stealableMaterial;
       }
-
-      // Add the Task script to this
-      Task task = gameObject.AddComponent<Task>() as Task;
-
-      // All stealing tasks should have the same kind of description
-      task.description = "Steal the " + gameObject.name;
+     
+      // Add the task to the item with the taskDescription
+      base.AddTask();
     }
     
     /// <summary> Steals an item, if there is a task associated with stealing
