@@ -11,27 +11,34 @@ public class AgentAnimation : MonoBehaviour
       "walk","idle"
     };
     Animator animator;
-    public CharacterController playerController;
+    NavMeshAgent navMeshAgent;
+    private Vector3 previousPosition;
+    public float curSpeed;
     // Start is called before the first frame update
     void Start()
     {
       animator = this.GetComponent<Animator>();
+      navMeshAgent = this.GetComponent<NavMeshAgent>();
+      previousPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-      animator.SetFloat("Velocity", playerController.velocity.magnitude);
-      string anim_cond = get_animation_condition();
+      Vector3 curMove = transform.position - previousPosition;
+      curSpeed = curMove.magnitude / Time.deltaTime;
+      previousPosition = transform.position;
+      animator.SetFloat("Walking", curSpeed);
+      // string anim_cond = get_animation_condition();
 
 
 
     }
 
-    public string get_animation_condition(){
-      // return animation_conditions.PickRandom();
-      System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
-      int randNum = r.Next(animationConditions.Count);
-      return (string)animationConditions[randNum];
-    }
+    // public string get_animation_condition(){
+    //   // return animation_conditions.PickRandom();
+    //   System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
+    //   int randNum = r.Next(animationConditions.Count);
+    //   return (string)animationConditions[randNum];
+    // }
 }

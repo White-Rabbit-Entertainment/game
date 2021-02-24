@@ -14,7 +14,7 @@ public class NpcMove : MonoBehaviour
     public int frames = 0;
     public Vector3 targetVector;
     List<string> animationConditions = new List<string>() {
-      "Talking","Dancing","Walking","Idle"
+      "Talking","Dancing","Idle"
     };
     public float speed = 0.5f;
     Animator animator;
@@ -61,13 +61,27 @@ public class NpcMove : MonoBehaviour
       float distance = getDistance(currGoal);
       if (distance > 3f) {
          // walkPath(currGoal);
+         // string possibleAction = get_animation_condition();
+         doIntermediaryAction(possibleAction);
          return false;
       }
       else {
+        frames++;
+        if(frames == 500){
+          frames = 0;
+          return true;
+        } else {
+          return false;
+        }
+
         // interactWithInteractable(currGoal);
-        return true;
+        // return true;
       }
     }
+
+    // private void doIntermediaryAction(string action){
+    //
+    // }
 
     private float getDistance(Interactable currGoal){
       float dist = Vector3.Distance(currGoal.transform.position, transform.position);
@@ -183,12 +197,12 @@ public class NpcMove : MonoBehaviour
     //     }
     // }
     //
-    // public string get_animation_condition(){
-    //   // return animation_conditions.PickRandom();
-    //   System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
-    //   int randNum = r.Next(animationConditions.Count);
-    //   return (string)animationConditions[randNum];
-    // }
+    public string get_animation_condition(){
+      // return animation_conditions.PickRandom();
+      System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
+      int randNum = r.Next(animationConditions.Count);
+      return (string)animationConditions[randNum];
+    }
 
     // public int get_animation_condition(){
     //   // return animation_conditions.PickRandom();

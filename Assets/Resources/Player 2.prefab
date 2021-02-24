@@ -216,6 +216,7 @@ MonoBehaviour:
   pickupDestination: {fileID: 2566148618735419973}
   maxInteractionDistance: 3
   cameraTransform: {fileID: 2566148620165193544}
+  animator: {fileID: 0}
 --- !u!114 &8279002543143163647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,13 +380,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2566148620165193549}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.02, y: 0.39, z: -0.29}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.13450669, y: -0, z: -0, w: 0.99091274}
+  m_LocalPosition: {x: -0.01999998, y: 0.8699999, z: -1.6099997}
+  m_LocalScale: {x: 1, y: 1, z: 0.9995}
   m_Children: []
   m_Father: {fileID: 2566148618787177630}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.460001, y: 0, z: 0}
 --- !u!20 &2566148620165193551
 Camera:
   m_ObjectHideFlags: 0
@@ -393,7 +394,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2566148620165193549}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -436,7 +437,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2566148620165193549}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &2566148620165193545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,9 +513,26 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: Walking
+  - Type: 9
+    SynchronizeType: 0
+    Name: Pickup
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
+--- !u!114 &6934983449955365955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351570365352545405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4428c2b4b58a64de48b852acb8fdd5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  current_animation_state: 
+  curSpeed: 0
 --- !u!1001 &3504517258363384108
 PrefabInstance:
   m_ObjectHideFlags: 0
