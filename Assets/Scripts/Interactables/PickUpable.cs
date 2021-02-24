@@ -59,7 +59,6 @@ public abstract class PickUpable : Interactable {
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
         // Set velocity of box after it is putdown to the speed to the character moving it
-        // TODO Not this
         GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<CharacterController>().velocity/2;
         
         transform.parent = GameObject.Find("/Environment").transform;
@@ -71,8 +70,6 @@ public abstract class PickUpable : Interactable {
       isPickedUp = true;
       // Disable the box collider to prevent collisions whilst carrying item.
       // Also turn off gravity on item and freeze its Rigidbody.
-      // TODO this needs to happen on all clients, atm gravity (and probably
-      // everything else) still applies to the objects in everyone elses game.
       GetComponent<BoxCollider>().enabled = false;                                        
       GetComponent<Rigidbody>().useGravity = false;
     }

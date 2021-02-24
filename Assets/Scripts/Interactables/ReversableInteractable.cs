@@ -5,16 +5,17 @@ using Photon.Pun;
 /// between these whilst doing the thing. </summary>
 class ReversableInteractable: Interactable {
 
-  // public string description;
-  // public Material material;
-  // public Team team;
-  // private bool singleUse = false;
-  // 
-  // public Animation animation0; 
-  // public Animation animation1; 
+  private int currentState = 0;
+  public string animation0;
+  public string animation1;
 
-  public override void PrimaryInteraction() {
-    // animation = animation0;
-    // base.PrimaryInteraction();
+  public override void PlayAnimation() {
+    if (currentState == 0) {
+      itemAnimation.Play(animation0);
+      currentState = 1;
+    } else {
+      itemAnimation.Play(animation1);
+      currentState = 0;
+    }
   }
 }

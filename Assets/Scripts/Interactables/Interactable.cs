@@ -15,6 +15,11 @@ public abstract class Interactable : MonoBehaviourPun {
   private Color interactionColour;
   private Color taskColour;
   public float outlineWidth = 5f;
+  
+  public bool singleUse;
+  public Team team = Team.Both;
+  
+  public Animation itemAnimation;
 
   private Outline outline;
 
@@ -30,17 +35,22 @@ public abstract class Interactable : MonoBehaviourPun {
 
   // The primary action to do when an item is interacted with. At the moment
   // this is when an item is clicked on.
-  public abstract void PrimaryInteraction();
+  public virtual void PrimaryInteraction() {
+    if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
+      GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
+    }
+    
+    // Animation
+    PlayAnimation();
+
+    // Destory if single use
+    if (singleUse) Destroy(this);
+  }
   
   // The action to do when an interaction stops. Atm this when the mouse is
   // released.
   public virtual void PrimaryInteractionOff() {}
 
-  // Return true is the current player can interact with this interatable.
-  public virtual bool CanInteract() {
-    return true;
-  }
-  
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {
     Debug.Log("Glow on");
@@ -97,4 +107,19 @@ public abstract class Interactable : MonoBehaviourPun {
     Task task = GetComponent<Task>();
     task.Complete();
   }
+
+  public virtual void PlayAnimation() {
+    if (GetComponent<Animation>() != null) {
+      GetComponent<Animation>().Play();
+    }
+  }
+  
+  // Return true is the current player can interact with this interatable.
+  public virtual bool CanInteract() {
+    if (team == Team.Both) return true;
+    if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker") && team == Team.Seeker) return true;
+    if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber") && team == Team.Robber) return true;
+    return false;
+  }
+
 }
