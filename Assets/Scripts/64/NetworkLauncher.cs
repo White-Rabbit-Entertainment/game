@@ -12,9 +12,30 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     public GameObject loginUI;
     public GameObject nameUI;
     public InputField playerName;
-    public InputField roomName;
+    //public InputField roomName;
 
     public GameObject roomListUI;
+
+
+
+    public string roomName()
+    {
+        int number;
+        char code;
+        string roomString = string.Empty;
+        //Random random = new Random();
+        for (int i = 0; i < 8; i++)
+        {
+            number = Random.Range(0, 10);
+                if (number % 2 == 0)
+                code = (char)('0' + (char)(number % 10));
+            else
+                code = (char)('A' + (char)(number % 26));
+            roomString += code.ToString();
+        }
+
+        return roomString;
+    }
     
 
     private void Start()
@@ -44,12 +65,16 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
 
     public void JoinOrCreateButton()
     {
-        if (roomName.text.Length < 2)
-            return;
+        //if (roomName.text.Length < 2)
+        //    return;
+
+
+
         loginUI.SetActive(false);
 
         RoomOptions options = new RoomOptions { MaxPlayers = 6 };
-        PhotonNetwork.JoinOrCreateRoom(roomName.text, options, default);
+        //PhotonNetwork.JoinOrCreateRoom(roomName.text, options, default);
+        PhotonNetwork.JoinOrCreateRoom(roomName(), options, default);
 
 
     }
