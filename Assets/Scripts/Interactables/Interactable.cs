@@ -111,7 +111,7 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public virtual void PlayItemAnimation() {
-    Animator animator = GetComponentInChildren<Animator>();
+    Animator animator = GetComponent<Animator>();
     if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
       Debug.Log("Playing item animation");
       animator.SetTrigger(itemAnimationTrigger);
