@@ -4,11 +4,10 @@ using UnityEngine;
 using Photon.Pun;
 
 public class PlayerAnimation : MonoBehaviourPun
-{
+{   
 
     private Animator animator;
     public CharacterController playerController;
-    public string currAnimation;
 
     void Awake() {
         // If the player is not me (ie not some other player on the network)
@@ -28,7 +27,7 @@ public class PlayerAnimation : MonoBehaviourPun
 
     // Update is called once per frame
     void Update()
-    {
+    {      
         animator.SetFloat("Walking", Input.GetAxis("Vertical"));
         if (Input.GetKeyDown(KeyCode.Z)) {
             animator.SetTrigger("Dancing");
