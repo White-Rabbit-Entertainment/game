@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3310681243164480562}
   - component: {fileID: 3303148572912861506}
   - component: {fileID: 8843343324526537177}
-  - component: {fileID: 653854866609470075}
   - component: {fileID: 1030361265906560054}
-  - component: {fileID: 7780409467209818334}
+  - component: {fileID: -313396372820835577}
+  - component: {fileID: 8924493671105407389}
   m_Layer: 0
   m_Name: Chest_Open
   m_TagString: Untagged
@@ -100,23 +100,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300088, guid: 5f3a7deba91ee3341b2266db1be8c0a0, type: 3}
---- !u!111 &653854866609470075
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279212663829947662}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 3b5ee9ea232d63f73898af8f89bf3aa2, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 3b5ee9ea232d63f73898af8f89bf3aa2, type: 2}
-  - {fileID: 7400000, guid: a6f807929500ca6d1b75909e9523ebc8, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &1030361265906560054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +123,26 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &7780409467209818334
+--- !u!95 &-313396372820835577
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279212663829947662}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 859e1e356539a37eb9c59a254a986b6e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8924493671105407389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,16 +151,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3279212663829947662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255a98a7cc7d139dda73f56851acdd06, type: 3}
+  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: Open the chest
   outlineWidth: 5
   singleUse: 0
-  team: -1
-  itemAnimation: {fileID: 653854866609470075}
-  animation0: ChestOpening
-  animation1: ChestClosing
+  team: 3
+  itemAnimationTrigger: Click
+  playerAnimationTrigger: 
 --- !u!64 &3134961051796514602
 MeshCollider:
   m_ObjectHideFlags: 0

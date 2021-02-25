@@ -16,7 +16,7 @@ MonoBehaviour:
   outlineWidth: 5
   singleUse: 0
   team: 2
-  itemAnimation: {fileID: 0}
+  itemAnimationTrigger: 
   playerAnimationTrigger: 
   destination: /Jail/JailSpawn
 --- !u!114 &5177377172016824999

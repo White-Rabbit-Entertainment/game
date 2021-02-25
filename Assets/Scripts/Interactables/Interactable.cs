@@ -19,7 +19,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public bool singleUse;
   public Team team = Team.All;
   
-  public Animation itemAnimation;
+  public string itemAnimationTrigger;
   public string playerAnimationTrigger;
 
   private Outline outline;
@@ -111,8 +111,10 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public virtual void PlayItemAnimation() {
-    if (GetComponent<Animation>() != null) {
-      GetComponent<Animation>().Play();
+    Animator animator = GetComponentInChildren<Animator>();
+    if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
+      Debug.Log("Playing item animation");
+      animator.SetTrigger(itemAnimationTrigger);
     }
   }
   

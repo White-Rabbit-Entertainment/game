@@ -6,16 +6,13 @@ using Photon.Pun;
 class ReversableInteractable: Interactable {
 
   private int currentState = 0;
-  public string animation0;
-  public string animation1;
 
-  public override void PlayItemAnimation() {
+  public override void PrimaryInteraction(Character character) {
     if (currentState == 0) {
-      itemAnimation.Play(animation0);
       currentState = 1;
     } else {
-      itemAnimation.Play(animation1);
       currentState = 0;
     }
+    base.PrimaryInteraction(character);
   }
 }
