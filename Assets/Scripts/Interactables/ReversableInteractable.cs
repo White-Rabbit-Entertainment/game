@@ -26,5 +26,6 @@ class ReversableInteractable: Interactable {
         animator.SetBool(itemAnimationBool, false);
       }
     }
+    base.PlayItemAnimation();
   }
 }

@@ -159,7 +159,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Click
   - Type: 4
     SynchronizeType: 2
@@ -183,7 +183,7 @@ MonoBehaviour:
   outlineWidth: 5
   singleUse: 0
   team: 3
-  itemAnimationTrigger: 
+  itemAnimationTrigger: Click
   playerAnimationTrigger: 
   itemAnimationBool: Open
 --- !u!64 &3134961051796514602
