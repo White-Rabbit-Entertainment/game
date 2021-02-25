@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ea7b5c0f161493ba2bd680248c53d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomNamePrefab: {fileID: 1216403363719254358, guid: 57fd7795513cd4bc5bd6ab08dea409f3,
+  roomNamePrefab: {fileID: 7970467721140766123, guid: 7c789eaebe0634d6cba5dd4a849e5822,
     type: 3}
   gridLayout: {fileID: 560572600}
 --- !u!4 &294201268
@@ -565,6 +565,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 560572600}
+  - component: {fileID: 560572601}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -591,6 +592,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &560572601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560572599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 179.8, y: 35}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &580231897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,6 +1903,8 @@ MonoBehaviour:
     type: 3}
   unreadyPlayerItemPrefab: {fileID: 9098677639369183320, guid: b61ae5d8a0481f3949871e4cb58cd0a3,
     type: 3}
+  roomNamePrefab: {fileID: 0}
+  gridLayout: {fileID: 0}
 --- !u!1 &1534254540
 GameObject:
   m_ObjectHideFlags: 0
