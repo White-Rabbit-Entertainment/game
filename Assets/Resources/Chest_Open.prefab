@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3281431359182964742}
+  - component: {fileID: -313396372820835577}
   - component: {fileID: 3310681243164480562}
   - component: {fileID: 3303148572912861506}
   - component: {fileID: 8843343324526537177}
   - component: {fileID: 1030361265906560054}
-  - component: {fileID: -313396372820835577}
-  - component: {fileID: 8924493671105407389}
   - component: {fileID: 9220503536043473148}
+  - component: {fileID: 4330733558820219452}
   m_Layer: 0
   m_Name: Chest_Open
   m_TagString: Untagged
@@ -39,6 +39,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &-313396372820835577
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279212663829947662}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 859e1e356539a37eb9c59a254a986b6e, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!33 &3310681243164480562
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -124,43 +143,6 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!95 &-313396372820835577
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279212663829947662}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 859e1e356539a37eb9c59a254a986b6e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8924493671105407389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279212663829947662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: Open the chest
-  outlineWidth: 5
-  singleUse: 0
-  team: 3
-  itemAnimationTrigger: Click
-  playerAnimationTrigger: 
 --- !u!114 &9220503536043473148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,11 +159,33 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: Click
+  - Type: 4
+    SynchronizeType: 2
+    Name: Open
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
+--- !u!114 &4330733558820219452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279212663829947662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255a98a7cc7d139dda73f56851acdd06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: Open the chest
+  outlineWidth: 5
+  singleUse: 0
+  team: 3
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 
+  itemAnimationBool: Open
 --- !u!64 &3134961051796514602
 MeshCollider:
   m_ObjectHideFlags: 0
