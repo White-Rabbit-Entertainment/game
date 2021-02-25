@@ -29,10 +29,16 @@ public abstract class Character : MonoBehaviour
 
     // Move to players pickup destination.
     item.transform.position = pickupDestination.position;
+    
+    // Set the parent of the object to the pickupDestination so that it moves
+    // with the player.
+    item.transform.parent = pickupDestination;
   }
   
   public void PutDown(PickUpable item) {
     currentHeldItem = null;
     item.ResetItemConditions();
+
+    item.transform.parent = GameObject.Find("/Environment").transform;
   }
 }
