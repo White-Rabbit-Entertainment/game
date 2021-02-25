@@ -27,9 +27,9 @@ public class NpcMove : MonoBehaviourPun
     private NavMeshPath path;
     private bool pathSet = false;
     private float elapsed = 0f;
-    private PickUpable currentHeldItem;
-
-    public Transform pickupDestination;
+    // private PickUpable currentHeldItem;
+    //
+    // public Transform pickupDestination;
 
 
     // Start is called before the first frame update
@@ -99,10 +99,10 @@ public class NpcMove : MonoBehaviourPun
     // }
 
     private void interactWithInteractable(Interactable currGoal){
-      if (currGoal is PickUpable) {
-        currentHeldItem = (PickUpable)currGoal;
-        currentHeldItem.SetPickUpDestination(pickupDestination);
-      }
+      // if (currGoal is PickUpable) {
+      //   currentHeldItem = (PickUpable)currGoal;
+      //   currentHeldItem.SetPickUpDestination(pickupDestination);
+      // }
       currGoal.PrimaryInteraction(navMeshAgent.gameObject);
     }
 

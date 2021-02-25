@@ -14,7 +14,7 @@ public abstract class PickUpable : Interactable {
   public override void PrimaryInteraction(GameObject player) {
     Animator animator = player.GetComponentInChildren<Animator>();
     animator.SetTrigger("Pickup");
-    // PickUp(pickupDestination); ISAAC COMMNENTED THIS OUT TEMPORARILY
+    PickUp(pickupDestination); //ISAAC COMMNENTED THIS OUT TEMPORARILY
   }
 
   public override void PrimaryInteractionOff() {
