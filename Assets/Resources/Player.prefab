@@ -263,13 +263,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundCheck: {fileID: 970474518025750572}
   playerController: {fileID: 970474518700277481}
-  speed: 12
+  speed: 6
   sprintFactor: 2
   stamina: 1
   staminaDepletionRate: 2
   staminaRegenerationRate: 2
   gravity: -19.62
-  jumpHeight: 3
+  jumpHeight: 1.5
 --- !u!143 &970474518700277481
 CharacterController:
   m_ObjectHideFlags: 0
@@ -353,10 +353,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f409fc56bc1aa194ad50932321f20a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDestination: {fileID: 970474518680991807}
   maxInteractionDistance: 3
   cameraTransform: {fileID: 970474518199395634}
-  animator: {fileID: 5702407829321742023}
 --- !u!82 &4340602842121980160
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1366,12 +1364,6 @@ GameObject:
 --- !u!4 &1856372971256229053 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7631775752c9a4409bcfc5ec50684652,
-    type: 3}
-  m_PrefabInstance: {fileID: 2182433947540015958}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &5702407829321742023 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 7631775752c9a4409bcfc5ec50684652,
     type: 3}
   m_PrefabInstance: {fileID: 2182433947540015958}
   m_PrefabAsset: {fileID: 0}
