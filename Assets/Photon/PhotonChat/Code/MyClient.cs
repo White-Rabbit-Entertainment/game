@@ -12,10 +12,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
     private string AppVersion;       
 
     
-
-    public InputField playrname;
-
-    public Text connectionstate;
+    public Text localPlayerName;
 
     public InputField msginput;
 
@@ -47,7 +44,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
 
     public void GetConnected(){
         Debug.Log("connecting...");
-        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(playrname.text));
+        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues( localPlayerName.text));
          
     }
     
@@ -101,7 +98,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
         foreach(var channel in channels){
             this.client.PublishMessage(channel,"joined");
         }
-        connectionstate.text = "connected";
+      
         Debug.Log("channel" + channels[0] + "result：" + results[0]);
     }
  
