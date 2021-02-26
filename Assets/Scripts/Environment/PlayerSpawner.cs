@@ -11,7 +11,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject robberPrefab;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
-    public int numberOfAgents = 3;
+    public int numberOfAgents = 10;
 
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
