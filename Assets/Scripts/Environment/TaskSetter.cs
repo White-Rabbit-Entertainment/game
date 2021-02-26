@@ -41,11 +41,11 @@ public class TaskSetter : MonoBehaviour {
             // Assign the first few itmes a Task
             for (int i = 0; i < numberOfNonStealingTasks; i++) {
                 PhotonView view = possibleTaskables[i].GetComponent<PhotonView>();
-                view.RPC("AddTask", RpcTarget.All);
+                view.RPC("AddTaskRPC", RpcTarget.All);
             }
             for (int i = 0; i < numberOfStealingTasks; i++) {
                 PhotonView view = possibleStealables[i].GetComponent<PhotonView>();
-                view.RPC("AddTask", RpcTarget.All);
+                view.RPC("AddTaskRPC", RpcTarget.All);
             }
 
             // Say that we have finished the work of setting up tasks (used for

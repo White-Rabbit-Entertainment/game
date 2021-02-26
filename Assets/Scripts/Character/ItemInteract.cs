@@ -6,28 +6,29 @@ using Photon.Pun;
 /// <summary><c>ItemInteract</c> is the class which defines the behaviour for
 /// how a player interacts with an <c>Interactable</c>. 
 /// E.g. Defines when to turn on glow and when to pickup a PickUpable
+[RequireComponent(typeof(Character))]
 public class ItemInteract : MonoBehaviourPun {
 
-    public Transform pickupDestination;
     public float maxInteractionDistance = 2f;
- 
     [SerializeField] private Transform cameraTransform;
 
     private RaycastHit raycastFocus;
     private bool interactableInRange = false;
-    private PickUpable currentHeldItem;
     private Interactable currentInteractable;
+    private Character character;
+
     private void Start() {
         if (!photonView.IsMine) {
             Destroy(this);
         }
+        character = GetComponent<Character>();
     }
  
     private void Update() {
         
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
-        bool canInteract = interactableInRange && currentHeldItem == null;
+        bool canInteract = interactableInRange && !character.HasItem();
 
         // If we are able to interact with stuff
         if (canInteract) {
@@ -40,19 +41,14 @@ public class ItemInteract : MonoBehaviourPun {
             }
             currentInteractable = newInteractable;
             
-            if (currentInteractable != null && currentInteractable.CanInteract()) {
+            if (currentInteractable != null && currentInteractable.CanInteract(character)) {
                 // If we are able to interact with the new interactable then turn on its glow
                 currentInteractable.GlowOn();
 
                 // If we are pressing mouse down then do the interaction
                 if (Input.GetButtonDown("Fire1")) {
-                  // If the interaction is pickup then we need to set where the item is going.
-                  if (currentInteractable is PickUpable) {
-                    currentHeldItem = (PickUpable)currentInteractable;
-                    currentHeldItem.SetPickUpDestination(pickupDestination);
-                  }
                   // Do whatever the primary interaction of this interactable is.
-                  currentInteractable.PrimaryInteraction(gameObject);
+                  currentInteractable.PrimaryInteraction(character);
                 }
             }
         } 
@@ -64,12 +60,9 @@ public class ItemInteract : MonoBehaviourPun {
 
             // And if bring the mouse button up
             if (Input.GetButtonUp("Fire1")) {
-              if (currentInteractable is PickUpable) {
-                currentHeldItem = null;
-              }
               // Some item have a primary interaction off method, eg drop the
               // item after pickup. Therefore run this on mouse up.
-              currentInteractable.PrimaryInteractionOff();
+              currentInteractable.PrimaryInteractionOff(character);
               currentInteractable = null;
             }
         }

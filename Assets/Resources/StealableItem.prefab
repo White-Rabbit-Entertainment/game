@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 5002148565844352164}
   - component: {fileID: 5002148565844352170}
   - component: {fileID: 5002148565844352162}
-  - component: {fileID: 5002148565844352165}
   - component: {fileID: -2952390499213649483}
   m_Layer: 0
   m_Name: StealableItem
@@ -153,24 +152,6 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &5002148565844352165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5002148565844352172}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0.97449327, b: 0.7735849, a: 1}
-  outlineWidth: 6
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &-2952390499213649483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,4 +164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73dc27066f8ff6482972dda264674272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stealableMaterial: {fileID: 2100000, guid: 10bb11ed31ef9ef508e740214298c08f, type: 2}
+  taskDescription: 
+  outlineWidth: 5
+  singleUse: 0
+  team: -1
+  itemAnimation: {fileID: 0}
+  isPickedUp: 0

@@ -1,9 +1,19 @@
 using UnityEngine;
+using System;
 
-[System.Serializable]
+[Flags]
 public enum Team {
     Robber,
     Seeker,
-    Both,
-    None
+    Agent,
+    Real = Robber | Seeker,
+    All = Robber | Seeker | Agent
+}
+
+public static class TeamUtils {
+  // Works with "None" as well
+  public static bool HasFlag (this Team a, Team b)
+  {
+      return (a & b) == b;
+  }
 }
