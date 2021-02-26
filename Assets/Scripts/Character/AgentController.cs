@@ -60,8 +60,6 @@ public class AgentController : MonoBehaviourPun {
     }
 
     private float GetDistance(Interactable currGoal){
-      Debug.Log("Distance");
-      Debug.Log(Vector3.Distance(currGoal.transform.position, transform.position));
       return Vector3.Distance(currGoal.transform.position, transform.position);
     }
 
@@ -78,17 +76,15 @@ public class AgentController : MonoBehaviourPun {
       animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
 
       if (currentGoal == null) {
-        Debug.Log("Searching for goal");
+        // 80% of the time
         currentGoal = SetGoal();
+        // 10% Do an animation
+        // 10% wander aimlessly
       } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
-        Debug.Log("Searching for path");
         CalculatePath(currentGoal);
       } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
-        Debug.Log("Completeing goal");
         goalInProgress = true;
         StartCoroutine(CompleteGoal());
-      } else {
-        Debug.Log("Going towards the goal");
       }
     }
 
