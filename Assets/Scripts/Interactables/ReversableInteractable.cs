@@ -6,7 +6,7 @@ using Photon.Pun;
 class ReversableInteractable: Interactable {
 
   private int currentState = 0;
-  public string itemAnimationBool = "Open";
+  public string itemAnimationBool;
 
   public override void PrimaryInteraction(Character character) {
     if (currentState == 0) {
@@ -17,8 +17,9 @@ class ReversableInteractable: Interactable {
     base.PrimaryInteraction(character);
   }
 
-  public virtual void PlayItemAnimation() {
+  public override void PlayItemAnimation() {
     Animator animator = GetComponentInChildren<Animator>();
+    view.TransferOwnership(PhotonNetwork.LocalPlayer);
     if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
       if (currentState == 0) {
         animator.SetBool(itemAnimationBool, true);
@@ -26,6 +27,5 @@ class ReversableInteractable: Interactable {
         animator.SetBool(itemAnimationBool, false);
       }
     }
-    base.PlayItemAnimation();
   }
 }

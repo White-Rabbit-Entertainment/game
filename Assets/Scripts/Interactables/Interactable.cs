@@ -22,7 +22,9 @@ public abstract class Interactable : MonoBehaviourPun {
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
 
-  private Outline outline;
+  protected Outline outline;
+  protected PhotonView view;
+  protected Task task;
 
   public bool IsTaskable() {
     return taskDescription != null;
@@ -30,7 +32,6 @@ public abstract class Interactable : MonoBehaviourPun {
 
   // Returns true is a task has been applied to this interactable.
   public bool HasTask() {
-    Task task = GetComponent<Task>();
     return task != null && !task.isCompleted;
   }
 
@@ -38,7 +39,7 @@ public abstract class Interactable : MonoBehaviourPun {
   // this is when an item is clicked on.
   public virtual void PrimaryInteraction(Character character) {
     if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-      GetComponent<PhotonView>().RPC("CompleteTask", RpcTarget.All);
+      view.RPC("CompleteTask", RpcTarget.All);
     }
     
     // Animation
@@ -78,7 +79,7 @@ public abstract class Interactable : MonoBehaviourPun {
   /// steal this </summary>
   public virtual void AddTask() {
       // Add the Task script to this
-      Task task = gameObject.AddComponent<Task>() as Task;
+      task = gameObject.AddComponent<Task>() as Task;
 
       // All stealing tasks should have the same kind of description
       task.description = taskDescription;
@@ -99,6 +100,7 @@ public abstract class Interactable : MonoBehaviourPun {
     outline = gameObject.AddComponent<Outline>() as Outline;
     outline.OutlineWidth = outlineWidth;
     outline.enabled = false;
+    view = GetComponent<PhotonView>();
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
@@ -106,14 +108,12 @@ public abstract class Interactable : MonoBehaviourPun {
   
   [PunRPC]
   public void CompleteTask() {
-    Task task = GetComponent<Task>();
     task.Complete();
   }
 
   public virtual void PlayItemAnimation() {
     Animator animator = GetComponent<Animator>();
     if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
-      PhotonView view = GetComponent<PhotonView>();
       view.TransferOwnership(PhotonNetwork.LocalPlayer);
       Debug.Log("Playing item animation");
       animator.SetTrigger(itemAnimationTrigger);
