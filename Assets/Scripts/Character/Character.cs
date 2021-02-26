@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-[RequireComponent(typeof(Animator))]
 public abstract class Character : MonoBehaviour
 {
   public Transform pickupDestination; 
