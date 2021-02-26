@@ -14,8 +14,7 @@ GameObject:
   - component: {fileID: 3303148572912861506}
   - component: {fileID: 8843343324526537177}
   - component: {fileID: 1030361265906560054}
-  - component: {fileID: 9220503536043473148}
-  - component: {fileID: 3753576744137004968}
+  - component: {fileID: 2244035727389638681}
   m_Layer: 0
   m_Name: Chest_Open
   m_TagString: Untagged
@@ -139,11 +138,11 @@ MonoBehaviour:
   Synchronization: 1
   OwnershipTransfer: 1
   ObservedComponents:
-  - {fileID: 9220503536043473148}
+  - {fileID: 0}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &9220503536043473148
+--- !u!114 &2244035727389638681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,37 +151,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3279212663829947662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: Open
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
---- !u!114 &3753576744137004968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279212663829947662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255a98a7cc7d139dda73f56851acdd06, type: 3}
+  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: Open the chest
   outlineWidth: 5
   singleUse: 0
   team: 3
-  itemAnimationTrigger: 
+  itemAnimationTrigger: Click
   playerAnimationTrigger: 
-  itemAnimationBool: Open
 --- !u!64 &3134961051796514602
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -525,15 +502,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e7ac078c68820d4e8f9deec111d9d53, type: 3}
---- !u!1 &4647486603980650520 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1586128108692680, guid: 7e7ac078c68820d4e8f9deec111d9d53,
-    type: 3}
-  m_PrefabInstance: {fileID: 4646187466470694096}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4641533493050131940 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4671811494041908, guid: 7e7ac078c68820d4e8f9deec111d9d53,
+    type: 3}
+  m_PrefabInstance: {fileID: 4646187466470694096}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4647486603980650520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1586128108692680, guid: 7e7ac078c68820d4e8f9deec111d9d53,
     type: 3}
   m_PrefabInstance: {fileID: 4646187466470694096}
   m_PrefabAsset: {fileID: 0}

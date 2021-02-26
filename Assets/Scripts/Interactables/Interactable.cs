@@ -110,12 +110,21 @@ public abstract class Interactable : MonoBehaviourPun {
     task.Complete();
   }
 
+  [PunRPC]
+  public void PlayerAnimationTrigger() {
+
+  }
+
+  [PunRPC]
+  public void ItemAnimationTrigger() {
+    Animator animator = GetComponent<Animator>();
+    animator.SetTrigger(itemAnimationTrigger);
+  }
+
   public virtual void PlayItemAnimation() {
     Animator animator = GetComponent<Animator>();
     if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
-      view.TransferOwnership(PhotonNetwork.LocalPlayer);
-      Debug.Log("Playing item animation");
-      animator.SetTrigger(itemAnimationTrigger);
+      view.RPC("ItemAnimationTrigger", RpcTarget.All);
     }
   }
   
