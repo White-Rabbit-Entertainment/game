@@ -159,7 +159,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Open
   m_SynchronizeLayers:
   - SynchronizeType: 2

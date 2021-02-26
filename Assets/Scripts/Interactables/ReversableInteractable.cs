@@ -18,13 +18,17 @@ class ReversableInteractable: Interactable {
   }
 
   public override void PlayItemAnimation() {
+    Debug.Log("Attempting to play animation");
     Animator animator = GetComponentInChildren<Animator>();
     view.TransferOwnership(PhotonNetwork.LocalPlayer);
-    if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
+    if (itemAnimationBool != null && itemAnimationBool != "" && animator != null) {
+      Debug.Log("in big if");
       if (currentState == 0) {
         animator.SetBool(itemAnimationBool, true);
+        Debug.Log("set bool true");
       } else {
         animator.SetBool(itemAnimationBool, false);
+        Debug.Log("set bool false");
       }
     }
   }

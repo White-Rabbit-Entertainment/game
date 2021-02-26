@@ -56,7 +56,6 @@ public abstract class Interactable : MonoBehaviourPun {
 
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {
-    Debug.Log("Glow on");
     outline.OutlineColor = interactionColour;
     outline.enabled = true;
   }
