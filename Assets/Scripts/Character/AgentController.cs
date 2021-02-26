@@ -1,15 +1,15 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
 
-public class AgentController : MonoBehaviourPun
-{
+public class AgentController : MonoBehaviourPun {
     [SerializeField]
     NavMeshAgent navMeshAgent;
-    public float wanderRadius = 30f;
+    public float maxInteractionDistance = 3f;
     
     // public string currentAnimationState;
     // List<string> animationConditions = new List<string>() {
@@ -18,6 +18,7 @@ public class AgentController : MonoBehaviourPun
     // public float speed = 0.5f;
     Animator animator;
 
+    [SerializeField]
     private Interactable currentGoal;
     private NavMeshPath path;
     private bool pathSet = false;
@@ -31,7 +32,7 @@ public class AgentController : MonoBehaviourPun
         navMeshAgent = this.GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
         interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
-        animator = this.GetComponent<Animator>();
+        animator = this.GetComponentInChildren<Animator>();
         // currentAnimationState = "Idle";
     }
 
@@ -40,7 +41,7 @@ public class AgentController : MonoBehaviourPun
         return null;
       }
 
-      System.Random r = new System.Random();
+      System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randIndex = r.Next(interactables.Count);
   
       Interactable newInteractable = interactables[randIndex];
@@ -55,17 +56,20 @@ public class AgentController : MonoBehaviourPun
       currentGoal.PrimaryInteraction(GetComponent<Agent>()); //interact with interactable
       currentGoal = null;
       goalInProgress = false;
+      path = null;
     }
 
     private float GetDistance(Interactable currGoal){
+      Debug.Log("Distance");
+      Debug.Log(Vector3.Distance(currGoal.transform.position, transform.position));
       return Vector3.Distance(currGoal.transform.position, transform.position);
     }
 
     private void CalculatePath(Interactable currentGoal){
       NavMeshHit navHit;
-      NavMesh.SamplePosition(currentGoal.transform.position, out navHit, wanderRadius,-1);
-      Vector3 targetLocation = new Vector3(navHit.position.x,transform.position.y,navHit.position.z);
-      navMeshAgent.CalculatePath(targetLocation, path);
+      path = new NavMeshPath();
+      NavMesh.SamplePosition(currentGoal.transform.position, out navHit, maxInteractionDistance, -1);
+      navMeshAgent.CalculatePath(navHit.position, path);
       navMeshAgent.SetPath(path);
     }
 
@@ -74,12 +78,17 @@ public class AgentController : MonoBehaviourPun
       animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
 
       if (currentGoal == null) {
+        Debug.Log("Searching for goal");
         currentGoal = SetGoal();
-      } else if(path.status != NavMeshPathStatus.PathComplete) {
+      } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
+        Debug.Log("Searching for path");
         CalculatePath(currentGoal);
-      } else if (!(GetDistance(currentGoal) > 3f) && !goalInProgress) {
+      } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
+        Debug.Log("Completeing goal");
         goalInProgress = true;
         StartCoroutine(CompleteGoal());
+      } else {
+        Debug.Log("Going towards the goal");
       }
     }
 
