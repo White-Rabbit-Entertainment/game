@@ -8,6 +8,9 @@ public class PlayerAnimation : MonoBehaviourPun {
     private Animator animator;
     public CharacterController playerController;
 
+    int crouchHash = Animator.StringToHash("Crouched");
+    int proneHash = Animator.StringToHash("Prone");
+
     void Awake() {
         // If the player is not me (ie not some other player on the network)
         // then destory this script
@@ -33,10 +36,10 @@ public class PlayerAnimation : MonoBehaviourPun {
             animator.SetTrigger("Talking");
         }
         if (Input.GetKeyDown(KeyCode.C)) {
-            animator.SetBool("Crouched", !animator.GetBool("Crouched"));
+            animator.SetBool(crouchHash, !animator.GetBool(crouchHash));
         }
         if (Input.GetKeyDown(KeyCode.V)) {
-            animator.SetBool("Prone", !animator.GetBool("Prone"));
+            animator.SetBool(proneHash, !animator.GetBool(proneHash));
         }
     }
 }
