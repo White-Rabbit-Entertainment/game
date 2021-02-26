@@ -139,4 +139,6 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual bool CanInteract(Character character) {
     return team.HasFlag(character.team);
   }
+  
+  public virtual void Reset() {}
 }

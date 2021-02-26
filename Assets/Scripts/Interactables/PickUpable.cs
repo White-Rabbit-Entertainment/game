@@ -9,7 +9,10 @@ public abstract class PickUpable : Interactable {
     
   private Transform pickupDestination;
   public bool isPickedUp = false;
-  public string playerAnimationTrigger = "PickUp";
+
+  public override void Reset() {
+    playerAnimationTrigger = "PickUp";
+  }
 
   public override void PrimaryInteraction(Character character) {
     if (!isPickedUp) {

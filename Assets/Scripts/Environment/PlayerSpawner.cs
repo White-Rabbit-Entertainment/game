@@ -10,6 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject seekerPrefab;
     public GameObject robberPrefab;
     public GameObject agentPrefab;
+    public GameObject interactablesGameObject;
     public int numberOfAgents = 3;
 
     void OnEnable() {
@@ -36,12 +37,15 @@ public class PlayerSpawner : MonoBehaviour {
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
     void LoadPlayer() {
+        // Load in the Agents (TODO It might actually be worth doing this all
+        // clients, this means that each client would spawn a few ais which
+        // they are in charge of contorlling. This would prenet the master
+        // client from having to deal with all the agents).
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-          // PhotonNetwork.Instantiate(agentPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
           for(int i = 0; i < numberOfAgents; i++){
-            PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+            agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
           }
-
         }
         if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
             PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
@@ -77,69 +81,3 @@ public class PlayerSpawner : MonoBehaviour {
         return finalPosition;
     }
 }
-//
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEngine.UI;
-// using UnityEngine.AI;
-// using Photon.Pun;
-// using Photon.Realtime;
-// using System;
-// using Hashtable = ExitGames.Client.Photon.Hashtable;
-//
-//
-// public class SpawnAgents : MonoBehaviour
-// {
-//     public GameObject agent;
-//     // private List<GameObject> agents;
-//
-//     [Range (0,100)]
-//     public int numberOfAgents = 6;
-//     private float range = 10.0f;
-//
-//     private NetworkManager networkManager;
-//     private GameManager gameManager;
-//     private string gameScene = "GameScene";
-//
-//     public Text agentList;
-//
-//
-//     void Start()
-//     {
-//         networkManager = new NetworkManager();
-//         gameManager = new GameManager();
-//         // networkManager.Start();
-//         // agents = new List<GameObject>(); // init as type
-//         networkManager.ChangeScene(gameScene);
-//         // for (int index = 0; index < numberOfAgents; index++)
-//         // {
-//         //     PhotonNetwork.Instantiate(agent.name, RandomNavmeshLocation(range), Quaternion.identity);
-//         //     // spawned;
-//         //     // agents.Add(spawned);
-//         // }
-//
-//         PhotonNetwork.Instantiate(agent.name, new Vector3(1,2,-10), Quaternion.identity);
-//         agent.SetActive(true);
-//         // PhotonNetwork.Instantiate(agent.name, RandomNavmeshLocation(range), Quaternion.identity);
-//         gameManager.OnStartGame();
-//     }
-//
-//     // void SetText() {
-//     //   agentList.text = networkManager.GetPlayers().Count.ToString();
-//     // }
-//
-//     public Vector3 RandomNavmeshLocation(float radius)
-//     {
-//         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-//         randomDirection += transform.position;
-//         NavMeshHit hit;
-//         Vector3 finalPosition = Vector3.zero;
-//         if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
-//         {
-//             finalPosition = hit.position;
-//         }
-//         return finalPosition;
-//     }
-// }
-//

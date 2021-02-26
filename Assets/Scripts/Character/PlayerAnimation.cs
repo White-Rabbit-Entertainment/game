@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerAnimation : MonoBehaviourPun
-{   
+public class PlayerAnimation : MonoBehaviourPun {   
 
     private Animator animator;
     public CharacterController playerController;
@@ -18,14 +17,12 @@ public class PlayerAnimation : MonoBehaviourPun
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
-    {      
+    void Update() {      
         animator.SetFloat("Walking", Input.GetAxis("Vertical"));
         if (Input.GetKeyDown(KeyCode.Z)) {
             animator.SetTrigger("Dancing");
