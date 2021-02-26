@@ -39,6 +39,6 @@ public abstract class Character : MonoBehaviour
     currentHeldItem = null;
     item.ResetItemConditions();
 
-    item.transform.parent = GameObject.Find("/Environment").transform;
+    item.transform.parent = GameObject.Find("/Environment/Interactables").transform;
   }
 }
