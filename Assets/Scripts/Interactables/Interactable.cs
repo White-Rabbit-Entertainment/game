@@ -113,7 +113,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void PlayItemAnimation() {
     Animator animator = GetComponent<Animator>();
     if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
-      PhotonView view = item.GetComponent<PhotonView>();
+      PhotonView view = GetComponent<PhotonView>();
       view.TransferOwnership(PhotonNetwork.LocalPlayer);
       Debug.Log("Playing item animation");
       animator.SetTrigger(itemAnimationTrigger);
