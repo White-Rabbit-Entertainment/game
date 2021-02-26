@@ -61,7 +61,7 @@ public class NpcMove : MonoBehaviourPun
         frames++;
         if(frames == 500){
           frames = 0;
-          currGoal.PrimaryInteraction(navMeshAgent.gameObject); //interact with interactable
+          currGoal.PrimaryInteraction(navMeshAgent.gameObject.GetComponent<Agent>()); //interact with interactable
           Debug.Log("interact");
           return true;
         } else {
