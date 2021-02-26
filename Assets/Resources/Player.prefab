@@ -528,6 +528,12 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: Walking
+  - Type: 4
+    SynchronizeType: 2
+    Name: Crouched
+  - Type: 4
+    SynchronizeType: 2
+    Name: Prone
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

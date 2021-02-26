@@ -19,6 +19,8 @@ public class PlayerAnimation : MonoBehaviourPun {
     // Start is called before the first frame update
     void Start() {
         animator = GetComponent<Animator>();
+        animator.SetBool("Crouched", false);
+        animator.SetBool("Prone", false);
     }
 
     // Update is called once per frame
@@ -29,6 +31,12 @@ public class PlayerAnimation : MonoBehaviourPun {
         }
         if (Input.GetKeyDown(KeyCode.X)) {
             animator.SetTrigger("Talking");
+        }
+        if (Input.GetKeyDown(KeyCode.C)) {
+            animator.SetBool("Crouched", !animator.GetBool("Crouched"));
+        }
+        if (Input.GetKeyDown(KeyCode.V)) {
+            animator.SetBool("Prone", !animator.GetBool("Prone"));
         }
     }
 }
