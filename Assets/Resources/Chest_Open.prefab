@@ -176,13 +176,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 255a98a7cc7d139dda73f56851acdd06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: 
+  taskDescription: Open the chest
   outlineWidth: 5
   singleUse: 0
   team: 3
   itemAnimationTrigger: 
   playerAnimationTrigger: 
-  itemAnimationBool: 
+  itemAnimationBool: Open
 --- !u!64 &3134961051796514602
 MeshCollider:
   m_ObjectHideFlags: 0
