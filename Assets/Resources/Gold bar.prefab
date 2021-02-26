@@ -100,8 +100,10 @@ MonoBehaviour:
   outlineWidth: 5
   singleUse: 0
   team: -1
-  itemAnimation: {fileID: 0}
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 
   isPickedUp: 0
+  playerAnimationTrigger: PickUp
 --- !u!114 &6724540497385013028
 MonoBehaviour:
   m_ObjectHideFlags: 0

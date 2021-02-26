@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour
 {
   public Transform pickupDestination; 
   public PickUpable currentHeldItem; 
+  public List<Pocketable> pocketedItems;
 
   public Team team;
   public bool HasItem() {
@@ -15,6 +16,7 @@ public abstract class Character : MonoBehaviour
   }
 
   public virtual void Start() {
+    pocketedItems = new List<Pocketable>();
   }
 
   public void PickUp(PickUpable item) {
@@ -40,5 +42,9 @@ public abstract class Character : MonoBehaviour
     item.ResetItemConditions();
 
     item.transform.parent = GameObject.Find("/Environment").transform;
+  }
+
+  public void AddItemToInventory(Pocketable item) {
+    pocketedItems.Add(item);
   }
 }

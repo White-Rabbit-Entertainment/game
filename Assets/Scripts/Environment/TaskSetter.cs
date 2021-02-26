@@ -21,8 +21,7 @@ public class TaskSetter : MonoBehaviour {
             // Get the number of tasks of each type which should be created
             int numberOfNonStealingTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfNonStealingTasks");
             int numberOfStealingTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfStealingTasks");
-
-            // Get all possible items to assign tasks to in the environment 
+// Get all possible items to assign tasks to in the environment 
             // We split this so we can assign the correct number of stealing
             // tasks.
             List<Transform> possibleTaskables = new List<Transform>();
