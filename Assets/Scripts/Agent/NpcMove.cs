@@ -61,7 +61,7 @@ public class NpcMove : MonoBehaviourPun
         frames++;
         if(frames == 500){
           frames = 0;
-          currGoal.PrimaryInteraction(navMeshAgent.gameObject.GetComponent<Agent>()); //interact with interactable
+          // currGoal.PrimaryInteraction(navMeshAgent.gameObject.GetComponent<Agent>()); //interact with interactable
           Debug.Log("interact");
           return true;
         } else {
@@ -79,7 +79,8 @@ public class NpcMove : MonoBehaviourPun
 
          NavMeshHit navHit;
          NavMesh.SamplePosition(currGoal.transform.position,out navHit,wanderRadius,-1);
-         Vector3 x = new Vector3(navHit.position.x,transform.position.y,navHit.position.z);
+        //  Vector3 x = new Vector3(navHit.position.x,transform.position.y,navHit.position.z);
+         Vector3 x = new Vector3(navHit.position.x,navHit.position.y,navHit.position.z);
          navMeshAgent.CalculatePath(x, path);
          print("New path calculated");
          if (path.status != NavMeshPathStatus.PathComplete) {

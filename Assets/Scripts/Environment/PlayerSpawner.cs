@@ -10,7 +10,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject seekerPrefab;
     public GameObject robberPrefab;
     public GameObject agentPrefab;
-    public int numberOfAgents = 3;
+    public int numberOfAgents = 10;
 
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
@@ -40,6 +40,7 @@ public class PlayerSpawner : MonoBehaviour {
           // PhotonNetwork.Instantiate(agentPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
           for(int i = 0; i < numberOfAgents; i++){
             PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+            Debug.Log("Instantiated agent");
           }
 
         }
