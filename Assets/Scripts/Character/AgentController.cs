@@ -24,19 +24,16 @@ public class AgentController : MonoBehaviourPun {
     private bool pathSet = false;
     private bool goalInProgress = false;
 
-    private bool controlledByMe = true;
-
     // The empty gameobject which holds all the interactables
     public GameObject interactablesGameObject;
     public List<Interactable> interactables;
 
     void Start() {
-        Debug.Log("Starting");
         // Only the owner of the AI should control the AI
         animator = this.GetComponentInChildren<Animator>();
         navMeshAgent = this.GetComponent<NavMeshAgent>();
         if (!GetComponent<PhotonView>().IsMine) {
-          controlledByMe = false;
+          Destroy(this);
         } else {
           path = new NavMeshPath();
           interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
@@ -80,11 +77,8 @@ public class AgentController : MonoBehaviourPun {
     }
 
     void Update(){
-      // Set the walking speed for the animator
-      Debug.Log(navMeshAgent.velocity.magnitude);
-      animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
-  
-      if (controlledByMe) {
+        // Set the walking speed for the animator
+        animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
         if (currentGoal == null) {
           // 80% of the time
           currentGoal = SetGoal();
@@ -96,7 +90,6 @@ public class AgentController : MonoBehaviourPun {
           goalInProgress = true;
           StartCoroutine(CompleteGoal());
         }
-      }
     }
 
     // public string get_animation_condition(){
