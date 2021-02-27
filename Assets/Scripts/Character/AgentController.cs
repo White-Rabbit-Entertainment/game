@@ -64,6 +64,11 @@ public class AgentController : MonoBehaviourPun {
       path = null;
     }
 
+    private IEnumerator EndGoal() {
+      yield return new WaitForSeconds(10);
+      currentGoal.PrimaryInteractionOff(GetComponent<Agent>()); //interact with interactable
+    }
+
     private float GetDistance(Interactable currGoal){
       return Vector3.Distance(currGoal.transform.position, transform.position);
     }
@@ -89,6 +94,7 @@ public class AgentController : MonoBehaviourPun {
         } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
           goalInProgress = true;
           StartCoroutine(CompleteGoal());
+          StartCoroutine(EndGoal());
         }
     }
 
