@@ -29,17 +29,16 @@ public class AgentController : MonoBehaviourPun {
     public List<Interactable> interactables;
 
     void Start() {
+        Debug.Log("Starting");
         // Only the owner of the AI should control the AI
         if (!GetComponent<PhotonView>().IsMine) {
-          Debug.Log("This is not mine");
           Destroy(this);
+        } else {
+          navMeshAgent = this.GetComponent<NavMeshAgent>();
+          path = new NavMeshPath();
+          interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
+          animator = this.GetComponentInChildren<Animator>();
         }
-        Debug.Log("UHOH Some are mine");
-
-        navMeshAgent = this.GetComponent<NavMeshAgent>();
-        path = new NavMeshPath();
-        interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
-        animator = this.GetComponentInChildren<Animator>();
         // currentAnimationState = "Idle";
     }
 
@@ -81,7 +80,6 @@ public class AgentController : MonoBehaviourPun {
     void Update(){
       // Set the walking speed for the animator
       animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
-      Debug.Log(navMeshAgent.velocity.magnitude);
 
       if (currentGoal == null) {
         // 80% of the time
