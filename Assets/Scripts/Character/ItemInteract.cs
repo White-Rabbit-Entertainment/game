@@ -6,7 +6,6 @@ using Photon.Pun;
 /// <summary><c>ItemInteract</c> is the class which defines the behaviour for
 /// how a player interacts with an <c>Interactable</c>. 
 /// E.g. Defines when to turn on glow and when to pickup a PickUpable
-[RequireComponent(typeof(Character))]
 public class ItemInteract : MonoBehaviourPun {
 
     public float maxInteractionDistance = 2f;

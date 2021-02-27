@@ -29,10 +29,15 @@ public class AgentController : MonoBehaviourPun {
     public List<Interactable> interactables;
 
     void Start() {
-        navMeshAgent = this.GetComponent<NavMeshAgent>();
-        path = new NavMeshPath();
-        interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
-        animator = this.GetComponentInChildren<Animator>();
+        // Only the owner of the AI should control the AI
+        animator = GetComponentInChildren<Animator>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        if (!GetComponent<PhotonView>().IsMine) {
+          Destroy(this);
+        } else {
+          path = new NavMeshPath();
+          interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
+        }
         // currentAnimationState = "Idle";
     }
 
@@ -59,6 +64,11 @@ public class AgentController : MonoBehaviourPun {
       path = null;
     }
 
+    private IEnumerator EndGoal() {
+      yield return new WaitForSeconds(10);
+      currentGoal.PrimaryInteractionOff(GetComponent<Agent>()); //interact with interactable
+    }
+
     private float GetDistance(Interactable currGoal){
       return Vector3.Distance(currGoal.transform.position, transform.position);
     }
@@ -72,21 +82,20 @@ public class AgentController : MonoBehaviourPun {
     }
 
     void Update(){
-      // Set the walking speed for the animator
-      animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
-      Debug.Log(navMeshAgent.velocity.magnitude);
-
-      if (currentGoal == null) {
-        // 80% of the time
-        currentGoal = SetGoal();
-        // 10% Do an animation
-        // 10% wander aimlessly
-      } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
-        CalculatePath(currentGoal);
-      } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
-        goalInProgress = true;
-        StartCoroutine(CompleteGoal());
-      }
+        // Set the walking speed for the animator
+        animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
+        if (currentGoal == null) {
+          // 80% of the time
+          currentGoal = SetGoal();
+          // 10% Do an animation
+          // 10% wander aimlessly
+        } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
+          CalculatePath(currentGoal);
+        } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
+          goalInProgress = true;
+          StartCoroutine(CompleteGoal());
+          StartCoroutine(EndGoal());
+        }
     }
 
     // public string get_animation_condition(){

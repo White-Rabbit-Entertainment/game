@@ -164,9 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73dc27066f8ff6482972dda264674272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: 
+  taskDescription: Steal this
   outlineWidth: 5
   singleUse: 0
   team: -1
-  itemAnimation: {fileID: 0}
+  itemAnimationTrigger: 
+  playerAnimationTrigger: Pickup
   isPickedUp: 0
