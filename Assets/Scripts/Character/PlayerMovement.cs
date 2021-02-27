@@ -5,7 +5,6 @@ using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviourPun
 {
-    public Transform groundCheck;
     public CharacterController playerController;
     public float speed = 5f;
     public float sprintFactor = 2f;
@@ -41,18 +40,13 @@ public class PlayerMovement : MonoBehaviourPun
 	    characterController.enabled = true;
     }
 
-    bool IsGrounded() {
-        float colliderHeight = GetComponent<Collider>().bounds.extents.y;
-        return Physics.Raycast(transform.position,Vector3.down, colliderHeight + 0.1f);
-    }
-
     // Update is called once per frame
     void Update() {
         //get user input
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         bool isJumping = Input.GetButtonDown("Jump");
-        bool isGrounded = IsGrounded();
+        bool isGrounded = GetComponent<CharacterController>().isGrounded;
         bool isSprinting = Input.GetKey("left shift");
         //apply movement
         Vector3 move = movement.Calculate(x, z, isJumping, isGrounded, isSprinting, Time.deltaTime);

@@ -30,8 +30,8 @@ public class AgentController : MonoBehaviourPun {
 
     void Start() {
         // Only the owner of the AI should control the AI
-        animator = this.GetComponentInChildren<Animator>();
-        navMeshAgent = this.GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
         if (!GetComponent<PhotonView>().IsMine) {
           Destroy(this);
         } else {

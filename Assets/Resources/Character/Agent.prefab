@@ -1,40 +1,60 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1596534037847780934
+--- !u!195 &-8680379171725117869
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8456182857689069985}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.25
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.7
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-1333472990880141416
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6809595694847979762}
+  m_GameObject: {fileID: 8456182857689069985}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb2bf8859422d849b551bbfd8bf3d88, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b1eca106d800012c8afcda0ca122957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: 
-  outlineWidth: 5
-  singleUse: 0
-  team: 2
-  itemAnimationTrigger: 
-  playerAnimationTrigger: 
-  destination: /Jail/JailSpawn
---- !u!114 &5177377172016824999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6809595694847979762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 928378c18302d836aa00475ab8a1aa9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pickupDestination: {fileID: 6809595694795437606}
+  pickupDestination: {fileID: 8456182857741844341}
   currentHeldItem: {fileID: 0}
-  team: 1
---- !u!1001 &6050403968897764889
+  team: 2
+--- !u!114 &2197168800728776343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8456182857689069985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d874aee8a7c8544ef8b8a942f4105163, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navMeshAgent: {fileID: -8680379171725117869}
+  maxInteractionDistance: 3
+  currentGoal: {fileID: 0}
+  interactablesGameObject: {fileID: 0}
+  interactables: []
+--- !u!1001 &8659776598351759178
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -96,82 +116,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 970474518700277478, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 00969848c7cb88372820a6bd0066dc77, type: 2}
     - target: {fileID: 970474518700277483, guid: d759674618dad8007acd33ec36b2e696,
         type: 3}
       propertyPath: m_Name
-      value: Robber
+      value: Agent
       objectReference: {fileID: 0}
-    - target: {fileID: 970474518700277483, guid: d759674618dad8007acd33ec36b2e696,
+    - target: {fileID: 1856372971256229053, guid: d759674618dad8007acd33ec36b2e696,
         type: 3}
-      propertyPath: m_TagString
-      value: robber
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[1].Name
-      value: Dummy1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[1].Type
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[2].Name
-      value: Dummy2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[2].Type
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[1].SynchronizeType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5699809430739474375, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[2].SynchronizeType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: ObservedComponents.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: ObservedComponents.Array.data[1]
-      value: 
+      propertyPath: m_LocalPosition.z
+      value: -0.014
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d759674618dad8007acd33ec36b2e696, type: 3}
---- !u!1 &6809595694847979762 stripped
+--- !u!1 &8456182857689069985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 970474518700277483, guid: d759674618dad8007acd33ec36b2e696,
     type: 3}
-  m_PrefabInstance: {fileID: 6050403968897764889}
+  m_PrefabInstance: {fileID: 8659776598351759178}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6809595694795437606 stripped
+--- !u!4 &8456182857741844341 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 970474518680991807, guid: d759674618dad8007acd33ec36b2e696,
     type: 3}
-  m_PrefabInstance: {fileID: 6050403968897764889}
+  m_PrefabInstance: {fileID: 8659776598351759178}
   m_PrefabAsset: {fileID: 0}
