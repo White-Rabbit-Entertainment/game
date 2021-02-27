@@ -24,6 +24,8 @@ public class AgentController : MonoBehaviourPun {
     private bool pathSet = false;
     private bool goalInProgress = false;
 
+    private bool controlledByMe = true;
+
     // The empty gameobject which holds all the interactables
     public GameObject interactablesGameObject;
     public List<Interactable> interactables;
@@ -32,7 +34,7 @@ public class AgentController : MonoBehaviourPun {
         Debug.Log("Starting");
         // Only the owner of the AI should control the AI
         if (!GetComponent<PhotonView>().IsMine) {
-          Destroy(this);
+          controlledByMe = false;
         } else {
           navMeshAgent = this.GetComponent<NavMeshAgent>();
           path = new NavMeshPath();
@@ -80,17 +82,19 @@ public class AgentController : MonoBehaviourPun {
     void Update(){
       // Set the walking speed for the animator
       animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
-
-      if (currentGoal == null) {
-        // 80% of the time
-        currentGoal = SetGoal();
-        // 10% Do an animation
-        // 10% wander aimlessly
-      } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
-        CalculatePath(currentGoal);
-      } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
-        goalInProgress = true;
-        StartCoroutine(CompleteGoal());
+  
+      if (controlledByMe) {
+        if (currentGoal == null) {
+          // 80% of the time
+          currentGoal = SetGoal();
+          // 10% Do an animation
+          // 10% wander aimlessly
+        } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
+          CalculatePath(currentGoal);
+        } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
+          goalInProgress = true;
+          StartCoroutine(CompleteGoal());
+        }
       }
     }
 

@@ -526,7 +526,7 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Pickup
   - Type: 1
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: Walking
   m_SynchronizeLayers:
   - SynchronizeType: 2
