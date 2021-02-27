@@ -34,10 +34,10 @@ public class AgentController : MonoBehaviourPun {
         Debug.Log("Starting");
         // Only the owner of the AI should control the AI
         animator = this.GetComponentInChildren<Animator>();
+        navMeshAgent = this.GetComponent<NavMeshAgent>();
         if (!GetComponent<PhotonView>().IsMine) {
           controlledByMe = false;
         } else {
-          navMeshAgent = this.GetComponent<NavMeshAgent>();
           path = new NavMeshPath();
           interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
         }
