@@ -81,6 +81,7 @@ public class AgentController : MonoBehaviourPun {
 
     void Update(){
       // Set the walking speed for the animator
+      Debug.Log(navMeshAgent.velocity.magnitude);
       animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
   
       if (controlledByMe) {
