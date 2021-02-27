@@ -34,6 +34,7 @@ MonoBehaviour:
   pickupDestination: {fileID: 6809595694795437606}
   currentHeldItem: {fileID: 0}
   pocketedItems: []
+  inventoryUI: {fileID: 0}
   team: 1
 --- !u!1001 &6050403968897764889
 PrefabInstance:

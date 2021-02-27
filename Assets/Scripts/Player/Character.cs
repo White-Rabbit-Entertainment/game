@@ -9,6 +9,7 @@ public abstract class Character : MonoBehaviour
   public Transform pickupDestination; 
   public PickUpable currentHeldItem; 
   public List<Pocketable> pocketedItems;
+  public InventoryUI inventoryUI;
 
   public Team team;
   public bool HasItem() {
@@ -46,5 +47,10 @@ public abstract class Character : MonoBehaviour
 
   public void AddItemToInventory(Pocketable item) {
     pocketedItems.Add(item);
+    inventoryUI.AddItem(item);
+  }
+
+  public List<Pocketable> GetItemsInInventory() {
+    return pocketedItems;
   }
 }

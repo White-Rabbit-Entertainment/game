@@ -8,6 +8,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     public GameObject seekerPrefab;
     public GameObject robberPrefab;
+    public InventoryUI inventoryUI;
 
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
@@ -33,11 +34,13 @@ public class PlayerSpawner : MonoBehaviour {
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
     void LoadPlayer() {
+        GameObject player;
         if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-            PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-        } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-            PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+            player = PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        } else {
+            player = PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
+        player.GetComponent<Character>().inventoryUI = inventoryUI;
     }
 
     void Update() {
