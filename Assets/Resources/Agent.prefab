@@ -22,24 +22,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-4065954162940679380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8456182857689069985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ce98b8e6ab0c04aca66a18475f2b003, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: 
-  outlineWidth: 5
-  singleUse: 0
-  team: 3
-  itemAnimationTrigger: Click
-  playerAnimationTrigger: 
 --- !u!114 &-1333472990880141416
 MonoBehaviour:
   m_ObjectHideFlags: 0

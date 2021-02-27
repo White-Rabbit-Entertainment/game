@@ -10,7 +10,7 @@ public class AgentController : MonoBehaviourPun {
     [SerializeField]
     NavMeshAgent navMeshAgent;
     public float maxInteractionDistance = 3f;
-    
+
     // public string currentAnimationState;
     // List<string> animationConditions = new List<string>() {
     //   "Talking","Dancing","Idle"
@@ -48,7 +48,7 @@ public class AgentController : MonoBehaviourPun {
 
       System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randIndex = r.Next(interactables.Count);
-  
+
       Interactable newInteractable = interactables[randIndex];
       if (!newInteractable.CanInteract(GetComponent<Agent>())) {
         return null;
