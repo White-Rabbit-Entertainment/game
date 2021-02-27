@@ -11,7 +11,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject robberPrefab;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
-    public int numberOfAgents = 3;
+    public int numberOfAgentsPerPlayer = 3;
 
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
@@ -36,17 +36,16 @@ public class PlayerSpawner : MonoBehaviour {
     // Each player runs this once all the players are in the scene.
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
-    void LoadPlayer() {
-        // Load in the Agents (TODO It might actually be worth doing this all
-        // clients, this means that each client would spawn a few ais which
-        // they are in charge of contorlling. This would prenet the master
-        // client from having to deal with all the agents).
-        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-          for(int i = 0; i < numberOfAgents; i++){
-            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
-            agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
-          }
+    void LoadAgents() {
+        // Load in the Agents
+        for(int i = 0; i < numberOfAgentsPerPlayer; i++){
+          GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+          agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
         }
+    }
+
+    void LoadPlayer() {
+        // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
             PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
@@ -60,6 +59,7 @@ public class PlayerSpawner : MonoBehaviour {
 
           // Then load in all the players
           LoadPlayer();
+          LoadAgents();
 
           // Then this script has done its job (loaded in the player) so we can
           // destory it.
