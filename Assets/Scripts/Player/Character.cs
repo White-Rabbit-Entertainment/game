@@ -58,6 +58,7 @@ public abstract class Character : MonoBehaviour
   public void AddItemToInventory(Pocketable item) {
     pocketedItems.Add(item);
     inventoryUI.AddItem(item);
+    view.RPC("SetItemPocketConditions", RpcTarget.All);
   }
 
   public List<Pocketable> GetItemsInInventory() {
