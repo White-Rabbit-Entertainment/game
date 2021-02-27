@@ -1,3 +1,5 @@
+using Photon.Pun;
+
 public class Pocketable : Interactable {
   public Task requirementOf;
 
