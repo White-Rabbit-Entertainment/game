@@ -16,6 +16,16 @@ public abstract class Character : MonoBehaviour
     return currentHeldItem != null; 
   }
 
+  public bool HasItem(Interactable item) {
+    if (item is PickUpable && currentHeldItem == (PickUpable)item) {
+      return true;
+    }
+    if (item is Pocketable && pocketedItems.Contains((Pocketable)item)) {
+      return true;
+    }
+    return false; 
+  }
+
   public virtual void Start() {
     pocketedItems = new List<Pocketable>();
   }

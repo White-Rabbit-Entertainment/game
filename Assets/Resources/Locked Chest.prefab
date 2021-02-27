@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3303148572912861506}
   - component: {fileID: 8843343324526537177}
   - component: {fileID: 1030361265906560054}
-  - component: {fileID: 2244035727389638681}
+  - component: {fileID: -4004697875201800293}
   m_Layer: 0
   m_Name: Chest_Open
   m_TagString: Untagged
@@ -142,7 +142,7 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2244035727389638681
+--- !u!114 &-4004697875201800293
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,15 +151,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3279212663829947662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b29118aae0d8affba72db8c04fcc856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: Open the chest
+  taskDescription: Open the chest with the key
   outlineWidth: 5
   singleUse: 0
   team: 3
   itemAnimationTrigger: Click
   playerAnimationTrigger: 
+  requiredItem: {fileID: 0}
 --- !u!64 &3134961051796514602
 MeshCollider:
   m_ObjectHideFlags: 0
