@@ -6,12 +6,12 @@ using Photon.Pun;
 [RequireComponent(typeof(Animator))]
 public abstract class Character : MonoBehaviour
 {
-  public Transform pickupDestination; 
-  public PickUpable currentHeldItem; 
+  public Transform pickupDestination;
+  public PickUpable currentHeldItem;
 
   public Team team;
   public bool HasItem() {
-    return currentHeldItem != null; 
+    return currentHeldItem != null;
   }
 
   public virtual void Start() {
@@ -29,12 +29,12 @@ public abstract class Character : MonoBehaviour
 
     // Move to players pickup destination.
     item.transform.position = pickupDestination.position;
-    
+
     // Set the parent of the object to the pickupDestination so that it moves
     // with the player.
     item.transform.parent = pickupDestination;
   }
-  
+
   public void PutDown(PickUpable item) {
     currentHeldItem = null;
     item.ResetItemConditions();
