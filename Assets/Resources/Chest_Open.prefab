@@ -658,6 +658,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gold bar
       objectReference: {fileID: 0}
+    - target: {fileID: 6724540497385013028, guid: beb753fd8f76b120a9299779f0895f76,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: beb753fd8f76b120a9299779f0895f76, type: 3}
 --- !u!4 &7378464417328397487 stripped
