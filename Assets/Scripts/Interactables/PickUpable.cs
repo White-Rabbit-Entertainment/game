@@ -54,11 +54,11 @@ public abstract class PickUpable : Interactable {
     GetComponent<Rigidbody>().useGravity = true;
   }
   
-  public void ResetItemConditions() {
+  public void ResetItemConditions(Character character) {
     GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.All);
     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
     // Set velocity of box after it is putdown to the speed to the character moving it
-    GetComponent<Rigidbody>().velocity = transform.parent.parent.GetComponent<Character>().Velocity() / 2;
+    GetComponent<Rigidbody>().velocity = character.Velocity() / 2;
   }
 }

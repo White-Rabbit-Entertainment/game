@@ -36,7 +36,7 @@ public abstract class Character : MonoBehaviour
 
   public void PutDown(PickUpable item) {
     currentHeldItem = null;
-    item.ResetItemConditions();
+    item.ResetItemConditions(this);
 
     item.transform.parent = GameObject.Find("/Environment/Interactables").transform;
   }
