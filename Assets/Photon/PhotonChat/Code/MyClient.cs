@@ -18,8 +18,8 @@ public class MyClient : MonoBehaviour, IChatClientListener
 
     public Text msgarea;
 
-    public GameObject intoPanel;
-    public GameObject msgPanel;
+    public GameObject chatBox;
+    public GameObject chatMessagePrefab;
 
     private string worldchat = "worldchat";
     
@@ -27,10 +27,8 @@ public class MyClient : MonoBehaviour, IChatClientListener
     {
         client = new ChatClient(this);
         AppVersion = "1.0.0";    
-
-       intoPanel.SetActive(true);
-        msgPanel.SetActive(false);
- 
+        // client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
+        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues("James"));
     }
  
     void Update()
@@ -44,20 +42,15 @@ public class MyClient : MonoBehaviour, IChatClientListener
 
     public void GetConnected(){
         Debug.Log("connecting...");
-        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues( localPlayerName.text));
-         
     }
     
-    public void sendmsg(){
-        client.PublishMessage(worldchat,msginput.text);
+    public void SendMsg(){
+        client.PublishMessage(worldchat, msginput.text);
     }
      
     public void OnConnected()
     {
-        Debug.Log("join in");
-        intoPanel.SetActive(false);
-        msgPanel.SetActive(true);
-         
+        Debug.Log("Connected!");
         client.Subscribe(new string[] { worldchat}); 
         client.SetOnlineStatus(ChatUserStatus.Online);
  
@@ -82,7 +75,8 @@ public class MyClient : MonoBehaviour, IChatClientListener
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
         for(int i = 0; i< senders.Length;i++){
-            msgarea.text += senders[i] + ":" + messages[i] + "\n";
+          GameObject item = Instantiate(chatMessagePrefab, chatBox.transform);
+          // msgarea.text += senders[i] + ":" + messages[i] + "\n";
         }
         Debug.Log("channel："+channelName+",sender："+senders[0]+", messages："+messages[0]);
     }
