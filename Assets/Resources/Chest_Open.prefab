@@ -157,7 +157,8 @@ MonoBehaviour:
   taskDescription: Open the chest
   outlineWidth: 5
   singleUse: 0
-  team: 3
+  team: 2
+  taskTeam: 0
   itemAnimationTrigger: Click
   playerAnimationTrigger: 
 --- !u!64 &3134961051796514602
@@ -657,6 +658,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Gold bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 6724540497385013028, guid: beb753fd8f76b120a9299779f0895f76,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: beb753fd8f76b120a9299779f0895f76, type: 3}
