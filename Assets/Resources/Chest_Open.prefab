@@ -157,7 +157,8 @@ MonoBehaviour:
   taskDescription: Open the chest
   outlineWidth: 5
   singleUse: 0
-  team: 3
+  team: 2
+  taskTeam: 0
   itemAnimationTrigger: Click
   playerAnimationTrigger: 
 --- !u!64 &3134961051796514602

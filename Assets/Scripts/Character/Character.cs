@@ -14,6 +14,8 @@ public abstract class Character : MonoBehaviour
   }
 
   public virtual void Start() {
+    //Puts the game object in the 'ignore ray cast' layer
+    gameObject.layer = 2;
   }
 
   public void PickUp(PickUpable item) {

@@ -16,8 +16,10 @@ public abstract class Interactable : MonoBehaviourPun {
   private Color taskColour;
   public float outlineWidth = 5f;
   
+
   public bool singleUse;
   public Team team = Team.All;
+  public Team taskTeam = Team.All;
   
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
@@ -137,7 +139,12 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    return team.HasFlag(character.team);
+    if (task == null) {
+      return team.HasFlag(character.team);
+    } else {
+      return taskTeam.HasFlag(character.team);
+    }
+    
   }
   
   public virtual void Reset() {}

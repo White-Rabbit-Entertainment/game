@@ -70,6 +70,7 @@ MonoBehaviour:
   outlineWidth: 5
   singleUse: 0
   team: 3
+  taskTeam: 3
   itemAnimationTrigger: Click
   playerAnimationTrigger: 
 --- !u!1001 &8659776598351759178
@@ -138,11 +139,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Agent
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856372971256229053, guid: d759674618dad8007acd33ec36b2e696,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.014
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5206915737222148019, guid: d759674618dad8007acd33ec36b2e696, type: 3}
