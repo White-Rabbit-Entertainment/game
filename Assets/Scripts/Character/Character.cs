@@ -35,9 +35,14 @@ public abstract class Character : MonoBehaviour
   }
 
   public void PutDown(PickUpable item) {
+    Debug.Log("Putting down item");
     currentHeldItem = null;
     item.ResetItemConditions();
 
     item.transform.parent = GameObject.Find("/Environment/Interactables").transform;
+  }
+
+  public virtual Vector3 Velocity() {
+    return GetComponent<CharacterController>().velocity;
   }
 }
