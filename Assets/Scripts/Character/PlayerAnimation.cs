@@ -28,7 +28,7 @@ public class PlayerAnimation : MonoBehaviourPun {
 
     // Update is called once per frame
     void Update() {      
-        animator.SetFloat("Walking", Input.GetAxis("Vertical"));
+        animator.SetFloat("Walking", GetComponent<Character>().Velocity().magnitude);
         if (Input.GetKeyDown(KeyCode.Z)) {
             animator.SetTrigger("Dancing");
         }
