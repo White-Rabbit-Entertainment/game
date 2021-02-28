@@ -144,7 +144,6 @@ public abstract class Interactable : MonoBehaviourPun {
     } else {
       return taskTeam.HasFlag(character.team);
     }
-    
   }
   
   public virtual void Reset() {}

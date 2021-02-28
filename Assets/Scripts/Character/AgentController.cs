@@ -64,9 +64,9 @@ public class AgentController : MonoBehaviourPun {
       path = null;
     }
 
-    private IEnumerator EndGoal() {
+    private IEnumerator EndGoal(Interactable goal) {
       yield return new WaitForSeconds(10);
-      currentGoal.PrimaryInteractionOff(GetComponent<Agent>()); //interact with interactable
+      goal.PrimaryInteractionOff(GetComponent<Agent>()); //interact with interactable
     }
 
     private float GetDistance(Interactable currGoal){
@@ -94,7 +94,7 @@ public class AgentController : MonoBehaviourPun {
         } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
           goalInProgress = true;
           StartCoroutine(CompleteGoal());
-          StartCoroutine(EndGoal());
+          StartCoroutine(EndGoal(currentGoal));
         }
     }
 
