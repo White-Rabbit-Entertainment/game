@@ -35,7 +35,6 @@ public abstract class Character : MonoBehaviour
   }
 
   public void PutDown(PickUpable item) {
-    Debug.Log("Putting down item");
     currentHeldItem = null;
     item.ResetItemConditions();
 
