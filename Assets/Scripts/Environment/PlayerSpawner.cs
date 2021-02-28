@@ -44,13 +44,16 @@ public class PlayerSpawner : MonoBehaviour {
         }
     }
 
-    void LoadPlayer() {
+    void LoadPlayer() { 
+        GameObject player;
         // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-            PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+            player = PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
-            PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+            player = PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
+        //sets player layer to "raycast ignore" layer
+        player.layer = 2;
     }
 
     void Update() {
