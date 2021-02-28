@@ -49,7 +49,7 @@ public class PlayerSpawner : MonoBehaviour {
         // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
             player = PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-        } else if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
+        } else {
             player = PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
         //sets player layer to "raycast ignore" layer
