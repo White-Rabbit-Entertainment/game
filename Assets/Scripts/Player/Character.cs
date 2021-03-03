@@ -7,7 +7,7 @@ using Photon.Pun;
 public abstract class Character : MonoBehaviour
 {
   public Transform pickupDestination; 
-  public PickUpable currentHeldItem; 
+  public Pickupable currentHeldItem; 
   public List<Pocketable> pocketedItems;
   public InventoryUI inventoryUI;
 
@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour
   }
 
   public bool HasItem(Interactable item) {
-    if (item is PickUpable && currentHeldItem == (PickUpable)item) {
+    if (item is Pickupable && currentHeldItem == (Pickupable)item) {
       return true;
     }
     if (item is Pocketable && pocketedItems.Contains((Pocketable)item)) {
@@ -30,7 +30,7 @@ public abstract class Character : MonoBehaviour
     pocketedItems = new List<Pocketable>();
   }
 
-  public void PickUp(PickUpable item) {
+  public void PickUp(Pickupable item) {
     currentHeldItem = item;
     // An item can only be moved by a player if they are the owner.
     // Therefore, give ownership of the item to the local player before
@@ -48,7 +48,7 @@ public abstract class Character : MonoBehaviour
     item.transform.parent = pickupDestination;
   }
   
-  public void PutDown(PickUpable item) {
+  public void PutDown(Pickupable item) {
     currentHeldItem = null;
     item.ResetItemConditions();
 

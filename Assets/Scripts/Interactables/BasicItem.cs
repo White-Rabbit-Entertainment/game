@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class BasicItem : PickUpable {
+public class BasicItem : Pickupable {
 
     [PunRPC]
     public void MakeStealable() {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-/// <summary><c>PickUpable</c> extends <c>Interactable</c> to allow the item to
+/// <summary><c>Pickupable</c> extends <c>Interactable</c> to allow the item to
 /// be picked up and put down. </summary>
-public abstract class PickUpable : Interactable {
+public abstract class Pickupable : Interactable {
     
   private Transform pickupDestination;
   public bool isPickedUp = false;
