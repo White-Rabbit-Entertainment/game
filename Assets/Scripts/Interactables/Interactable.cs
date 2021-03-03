@@ -15,6 +15,7 @@ public abstract class Interactable : MonoBehaviourPun {
   private Color interactionColour;
   private Color taskColour;
   public float outlineWidth = 5f;
+  public Interactable hardRequirement;
   
   public bool singleUse;
   public Team team = Team.All;
@@ -88,6 +89,10 @@ public abstract class Interactable : MonoBehaviourPun {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
+
+      if (hardRequirement != null) {
+        hardRequirement.AddTask();
+      }
   }
 
   [PunRPC]
@@ -137,6 +142,6 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    return team.HasFlag(character.team);
+    return team.HasFlag(character.team) && hardRequirement.isCompleted;
   }
 }
