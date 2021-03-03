@@ -6,18 +6,15 @@ using UnityEngine.UI;
 using Photon.Chat;     
 using Photon.Pun;     
 
-public class MyClient : MonoBehaviour, IChatClientListener 
+public class ChatManager : MonoBehaviour, IChatClientListener 
 {
     private ChatClient client;       
     private string AppID = "d0a5737b-396c-4990-8cde-19b4eadbd95e";            
     private string AppVersion;       
 
-    
-    public Text localPlayerName;
+    public InputField msgInput;
 
-    public InputField msginput;
-
-    public GameObject chatBox;
+    public GameObject chatArea;
     public GameObject chatMessagePrefab;
 
     private string worldchat = "worldchat";
@@ -43,7 +40,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
     }
     
     public void SendMsg(){
-        client.PublishMessage(worldchat, msginput.text);
+        client.PublishMessage(worldchat, msgInput.text);
     }
      
     public void OnConnected()
@@ -73,7 +70,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
         for(int i = 0; i< senders.Length;i++){
-          GameObject item = Instantiate(chatMessagePrefab, chatBox.transform);
+          GameObject item = Instantiate(chatMessagePrefab, chatArea.transform);
           Text text = item.GetComponentInChildren<Text>();
           text.text = senders[i] + ":" + messages[i] + "\n";
         }
