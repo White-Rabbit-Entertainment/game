@@ -2,6 +2,10 @@ using Photon.Pun;
 
 public class Pocketable : Interactable {
 
+  void Reset() {
+    canBeMasterTask = false;
+  }
+
   [PunRPC]
   public void SetItemPocketConditions() {
     gameObject.SetActive(false);

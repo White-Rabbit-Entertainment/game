@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: Open the chest
+  softRequirementTypes:
+  - GuidAssignmentFailed: 0
+    GUID: 8ebe4c1122cc615aeb4923899f5d287c
+    TypeNameAndAssembly: Pocketable, Scripts
+    _suppressLogs: 0
+  canBeMasterTask: 1
   outlineWidth: 5
+  hardRequirement: {fileID: 0}
   singleUse: 0
   team: 3
   itemAnimationTrigger: Click

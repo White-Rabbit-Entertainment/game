@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1384972617313755210}
   - component: {fileID: 1384972617313755204}
   - component: {fileID: 1384972617313755212}
-  - component: {fileID: -7912685742954480149}
+  - component: {fileID: 6167088710720542554}
   m_Layer: 0
   m_Name: Basic task
   m_TagString: interactable
@@ -152,7 +152,7 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-7912685742954480149
+--- !u!114 &6167088710720542554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,8 +164,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: Click on this
+  taskDescription: Click this
+  softRequirementTypes: []
+  canBeMasterTask: 1
   outlineWidth: 5
+  hardRequirement: {fileID: 0}
   singleUse: 0
-  team: -1
-  itemAnimation: {fileID: 0}
+  team: 3
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 

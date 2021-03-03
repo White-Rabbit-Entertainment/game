@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: 
+  softRequirementTypes: []
+  canBeMasterTask: 1
   outlineWidth: 5
   hardRequirement: {fileID: 0}
   singleUse: 0

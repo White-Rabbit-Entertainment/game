@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using TypeReferences;
+using System;
 using Photon.Pun;
 
 
@@ -14,6 +17,11 @@ public abstract class Interactable : MonoBehaviourPun {
   public string taskDescription;
   private Color interactionColour;
   private Color taskColour;
+
+  [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
+  public List<TypeReference> softRequirementTypes;
+
+  public bool canBeMasterTask = true;
   public float outlineWidth = 5f;
   public Interactable hardRequirement;
   
@@ -26,6 +34,53 @@ public abstract class Interactable : MonoBehaviourPun {
   protected Outline outline;
   protected PhotonView view;
   protected Task task;
+
+  [PunRPC]
+  public void AssignHardRequirement(int viewId) {
+    PhotonView itemView = PhotonView.Find(viewId);
+    hardRequirement = itemView.gameObject.GetComponent<Interactable>();
+  }
+
+  public void PickHardRequirement(List<Transform> interactables) {
+    List<Interactable> softRequirements = GetSoftRequirements(interactables);
+    if (hardRequirement == null && softRequirements.Count > 0) {
+      System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
+      int randomIndex = random.Next(softRequirements.Count);
+      view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
+    }
+  }
+
+  public virtual bool HasSoftRequirements() {
+    return softRequirementTypes != null && softRequirementTypes.Count != 0;
+  }
+
+  public virtual List<Interactable> GetSoftRequirements(List<Transform> interactables) {
+    List<Interactable> softRequirements = new List<Interactable>();
+    Debug.Log("started softies");
+    foreach (Transform interactable in interactables) {
+      bool hasCorrectType = false;
+      foreach(TypeReference type in softRequirementTypes) {
+        System.Type realType = type.Type;
+        var getComponentMethod = realType.GetMethod("GetComponent", new []{typeof(GameObject)});
+        var getComponentReference = getComponentMethod.MakeGenericMethod(new []{typeof(GameObject)});
+        var component = getComponentReference.Invoke(interactable, new object[]{new GameObject()});
+        if (component != null) hasCorrectType = true;
+        //if (interactable.GetComponent<realType>() == null) hasCorrectType = true;
+      }
+      Debug.Log("started for loop");
+      Debug.Log("1: " + (interactable.GetComponent<Interactable>() != null));
+      Debug.Log("2: " + hasCorrectType);
+      Debug.Log("3: " + !interactable.GetComponent<Interactable>().HasTask());
+      if (interactable.GetComponent<Interactable>() != null
+      && hasCorrectType
+      && !interactable.GetComponent<Interactable>().HasTask()) {
+        Debug.Log("in if statement");
+        softRequirements.Add(interactable.GetComponent<Interactable>());
+      }
+    }
+    Debug.Log("finished softies");
+    return softRequirements;
+  }
 
   public bool IsTaskable() {
     return taskDescription != null;

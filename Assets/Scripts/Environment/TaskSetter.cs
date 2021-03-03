@@ -21,13 +21,18 @@ public class TaskSetter : MonoBehaviour {
             // Get the number of tasks of each type which should be created
             int numberOfNonStealingTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfNonStealingTasks");
             int numberOfStealingTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfStealingTasks");
-// Get all possible items to assign tasks to in the environment 
+            // Get all possible items to assign tasks to in the environment 
             // We split this so we can assign the correct number of stealing
             // tasks.
+            List<Transform> possibleMasterTaskables = new List<Transform>();
             List<Transform> possibleTaskables = new List<Transform>();
             List<Transform> possibleStealables = new List<Transform>();
             foreach(Transform transform in taskables.transform) {
                 possibleTaskables.Add(transform);
+                if (transform.GetComponent<Interactable>().canBeMasterTask) {
+                    possibleMasterTaskables.Add(transform);
+                }
+         
             }
             foreach(Transform transform in stealables.transform) {
                 possibleStealables.Add(transform);
@@ -35,11 +40,15 @@ public class TaskSetter : MonoBehaviour {
 
             // Shuffle those lists randomly 
             Utils.Shuffle<Transform>(possibleStealables);
-            Utils.Shuffle<Transform>(possibleTaskables);
+            Utils.Shuffle<Transform>(possibleMasterTaskables);
 
             // Assign the first few itmes a Task
             for (int i = 0; i < numberOfNonStealingTasks; i++) {
-                PhotonView view = possibleTaskables[i].GetComponent<PhotonView>();
+                PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
+                if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
+                    Debug.Log("the item we are adding a task to has soft requirements");
+                    possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirement(possibleTaskables);
+                }
                 view.RPC("AddTaskRPC", RpcTarget.All);
             }
             for (int i = 0; i < numberOfStealingTasks; i++) {
