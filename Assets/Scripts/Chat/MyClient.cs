@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Chat;     
+using Photon.Pun;     
 
 public class MyClient : MonoBehaviour, IChatClientListener 
 {
@@ -16,8 +17,6 @@ public class MyClient : MonoBehaviour, IChatClientListener
 
     public InputField msginput;
 
-    public Text msgarea;
-
     public GameObject chatBox;
     public GameObject chatMessagePrefab;
 
@@ -27,8 +26,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
     {
         client = new ChatClient(this);
         AppVersion = "1.0.0";    
-        // client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
-        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues("James"));
+        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
     }
  
     void Update()
@@ -76,7 +74,8 @@ public class MyClient : MonoBehaviour, IChatClientListener
     {
         for(int i = 0; i< senders.Length;i++){
           GameObject item = Instantiate(chatMessagePrefab, chatBox.transform);
-          // msgarea.text += senders[i] + ":" + messages[i] + "\n";
+          Text text = item.GetComponentInChildren<Text>();
+          text.text = senders[i] + ":" + messages[i] + "\n";
         }
         Debug.Log("channel："+channelName+",sender："+senders[0]+", messages："+messages[0]);
     }

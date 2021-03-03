@@ -7,7 +7,8 @@
         "PhotonUnityNetworking.Utilities.PhotonPlayer.Editor",
         "PhotonRealtime",
         "Outline",
-        "QuantumUI"
+        "QuantumUI",
+        "PhotonChat"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
