@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +14,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public InputField msgInput;
 
     public GameObject chatArea;
+    public ScrollRect chatScrollRect;
     public GameObject chatMessagePrefab;
 
     private string worldchat = "worldchat";
@@ -34,38 +34,30 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         }
     }
 
-
-    public void GetConnected(){
+    public void GetConnected() {
         Debug.Log("connecting...");
     }
     
-    public void SendMsg(){
+    public void SendMsg() {
         client.PublishMessage(worldchat, msgInput.text);
+        msgInput.Clear();
     }
      
-    public void OnConnected()
-    {
+    public void OnConnected() {
         Debug.Log("Connected!");
         client.Subscribe(new string[] { worldchat}); 
         client.SetOnlineStatus(ChatUserStatus.Online);
- 
     }
- 
- 
    
     public void OnDisconnected()
     {
         Debug.Log("quit");
     }
- 
- 
    
     public void OnChatStateChange(ChatState state)
     {
         Debug.Log("statue：" + state);
     }
- 
- 
    
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
@@ -74,6 +66,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
           Text text = item.GetComponentInChildren<Text>();
           text.text = senders[i] + ":" + messages[i] + "\n";
         }
+        chatScrollRect.ScrollToBottom();
         Debug.Log("channel："+channelName+",sender："+senders[0]+", messages："+messages[0]);
     }
  
@@ -115,15 +108,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
  
     }
  
-    void OnGUI()
-    {
-        // if(GUI.Button(new Rect(100,100,100,100),"quit")) 
-        // {
-        //     client.Disconnect();
-        //     Application.Quit();
-        // }
-    }
-
     public void OnUserSubscribed(string channel, string user)
     {
         Debug.LogFormat("OnUserSubscribed: channel=\"{0}\" userId=\"{1}\"", channel, user);
