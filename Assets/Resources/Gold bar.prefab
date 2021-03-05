@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 2305875844104867459}
   - component: {fileID: 2339637025297916333}
   - component: {fileID: 2332235474238290017}
-  - component: {fileID: 7347558271227710498}
   - component: {fileID: 6724540497385013028}
   - component: {fileID: 8388924632959349574}
   - component: {fileID: 3404274876649142224}
   - component: {fileID: 8092459316962091024}
+  - component: {fileID: -2127752391093568637}
   m_Layer: 0
   m_Name: Gold bar
   m_TagString: Untagged
@@ -84,26 +84,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &7347558271227710498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2309103251000201219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73dc27066f8ff6482972dda264674272, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: 
-  outlineWidth: 5
-  singleUse: 0
-  team: -1
-  itemAnimationTrigger: 
-  playerAnimationTrigger: 
-  isPickedUp: 0
-  playerAnimationTrigger: PickUp
 --- !u!114 &6724540497385013028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,3 +152,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4980162, y: 0.22584872, z: 1.0338116}
   m_Center: {x: 0, y: 0.000000014901161, z: 0.000000029802322}
+--- !u!114 &-2127752391093568637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309103251000201219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73dc27066f8ff6482972dda264674272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: Steal the Gold bar
+  outlineWidth: 5
+  singleUse: 0
+  team: 3
+  itemAnimationTrigger: 
+  playerAnimationTrigger: PickUp
+  isPickedUp: 0

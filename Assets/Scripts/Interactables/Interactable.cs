@@ -27,6 +27,9 @@ public abstract class Interactable : MonoBehaviourPun {
   
   public bool singleUse;
   public Team team = Team.All;
+  public Team taskTeam = Team.All;
+  public float outlineWidth = 5f;
+  
   
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
@@ -34,44 +37,6 @@ public abstract class Interactable : MonoBehaviourPun {
   protected Outline outline;
   protected PhotonView view;
   protected Task task;
-
-  [PunRPC]
-  public void AssignHardRequirement(int viewId) {
-    PhotonView itemView = PhotonView.Find(viewId);
-    hardRequirement = itemView.gameObject.GetComponent<Interactable>();
-  }
-
-  public void PickHardRequirement(List<Transform> interactables) {
-    List<Interactable> softRequirements = GetSoftRequirements(interactables);
-    if (hardRequirement == null && softRequirements.Count > 0) {
-      System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
-      int randomIndex = random.Next(softRequirements.Count);
-      view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
-    }
-  }
-
-  public virtual bool HasSoftRequirements() {
-    return softRequirementTypes != null && softRequirementTypes.Count != 0;
-  }
-
-  public virtual List<Interactable> GetSoftRequirements(List<Transform> interactables) {
-    List<Interactable> softRequirements = new List<Interactable>();
-    Debug.Log("started softies");
-    foreach (Transform interactable in interactables) {
-      bool hasCorrectType = false;
-      foreach(TypeReference type in softRequirementTypes) {
-        if (interactable.GetComponent(type.Type) != null) hasCorrectType = true;
-      }
-      if (interactable.GetComponent<Interactable>() != null
-      && hasCorrectType
-      && !interactable.GetComponent<Interactable>().HasTask()) {
-        Debug.Log("in if statement");
-        softRequirements.Add(interactable.GetComponent<Interactable>());
-      }
-    }
-    Debug.Log("finished softies");
-    return softRequirements;
-  }
 
   public bool IsTaskable() {
     return taskDescription != null;
@@ -135,7 +100,6 @@ public abstract class Interactable : MonoBehaviourPun {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
-
       if (hardRequirement != null) {
         hardRequirement.AddTask();
       }
@@ -191,4 +155,47 @@ public abstract class Interactable : MonoBehaviourPun {
     if (hardRequirement != null && HasTask() && !hardRequirement.task.isCompleted) return false;
     return team.HasFlag(character.team);
   }
+  
+  public virtual void Reset() {}
+
+  //// Taks Requirements
+  
+  [PunRPC]
+  public void AssignHardRequirement(int viewId) {
+    PhotonView itemView = PhotonView.Find(viewId);
+    hardRequirement = itemView.gameObject.GetComponent<Interactable>();
+  }
+
+  public void PickHardRequirement(List<Transform> interactables) {
+    List<Interactable> softRequirements = GetSoftRequirements(interactables);
+    if (hardRequirement == null && softRequirements.Count > 0) {
+      System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
+      int randomIndex = random.Next(softRequirements.Count);
+      view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
+    }
+  }
+
+  public virtual bool HasSoftRequirements() {
+    return softRequirementTypes != null && softRequirementTypes.Count != 0;
+  }
+
+  public virtual List<Interactable> GetSoftRequirements(List<Transform> interactables) {
+    List<Interactable> softRequirements = new List<Interactable>();
+    Debug.Log("started softies");
+    foreach (Transform interactable in interactables) {
+      bool hasCorrectType = false;
+      foreach(TypeReference type in softRequirementTypes) {
+        if (interactable.GetComponent(type.Type) != null) hasCorrectType = true;
+      }
+      if (interactable.GetComponent<Interactable>() != null
+      && hasCorrectType
+      && !interactable.GetComponent<Interactable>().HasTask()) {
+        Debug.Log("in if statement");
+        softRequirements.Add(interactable.GetComponent<Interactable>());
+      }
+    }
+    Debug.Log("finished softies");
+    return softRequirements;
+  }
+
 }

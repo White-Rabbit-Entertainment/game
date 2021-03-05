@@ -5,21 +5,16 @@ using Photon.Pun;
 
 /// <summary><c>Stealable</c> extends <c>Pickupable</c> to allow the item to
 /// be picked up.</summary>
-public class Stealable : Pickupable {
+public class Stealable : PickUpable {
 
-  public override void Start() {
-      // If we create a stealable without a task description create a generic
-      // one.
-      if (taskDescription == null || taskDescription == "") {
-        taskDescription = "Steal the " + gameObject.name;
-      }
-
-      base.Start();
+    public override void Reset() {
+      taskDescription = "Steal the " + this.name;
+      base.Reset();
     }
-    
-  /// <summary> When a stealable item collides with the "endpoint" the item
-  /// should be stolen on all clients. </summary>
-  void OnCollisionEnter(Collision collision) {
+
+    /// <summary> When a stealable item collides with the "endpoint" the item
+    /// should be stolen on all clients. </summary>
+    void OnCollisionEnter(Collision collision) {
 	  if(collision.gameObject.tag == "endpoint" && PhotonNetwork.LocalPlayer.IsMasterClient) {
       // Calls the steal rpc on all clients
       GetComponent<PhotonView>().RPC("Steal", RpcTarget.All);

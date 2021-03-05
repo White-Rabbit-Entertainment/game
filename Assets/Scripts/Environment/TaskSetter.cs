@@ -49,6 +49,7 @@ public class TaskSetter : MonoBehaviour {
                     Debug.Log("the item we are adding a task to has soft requirements");
                     possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirement(possibleTaskables);
                 }
+                PhotonView view = possibleTaskables[i].GetComponent<PhotonView>();
                 view.RPC("AddTaskRPC", RpcTarget.All);
             }
             for (int i = 0; i < numberOfStealingTasks; i++) {
