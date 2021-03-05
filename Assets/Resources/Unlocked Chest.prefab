@@ -15,8 +15,8 @@ MonoBehaviour:
   taskDescription: Open the chest
   softRequirementTypes:
   - GuidAssignmentFailed: 0
-    GUID: 8ebe4c1122cc615aeb4923899f5d287c
-    TypeNameAndAssembly: Pocketable, Scripts
+    GUID: aabafa18701ff0058b61effccb63959e
+    TypeNameAndAssembly: Key, Scripts
     _suppressLogs: 0
   canBeMasterTask: 1
   outlineWidth: 5

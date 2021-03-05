@@ -60,17 +60,8 @@ public abstract class Interactable : MonoBehaviourPun {
     foreach (Transform interactable in interactables) {
       bool hasCorrectType = false;
       foreach(TypeReference type in softRequirementTypes) {
-        System.Type realType = type.Type;
-        var getComponentMethod = realType.GetMethod("GetComponent", new []{typeof(GameObject)});
-        var getComponentReference = getComponentMethod.MakeGenericMethod(new []{typeof(GameObject)});
-        var component = getComponentReference.Invoke(interactable, new object[]{new GameObject()});
-        if (component != null) hasCorrectType = true;
-        //if (interactable.GetComponent<realType>() == null) hasCorrectType = true;
+        if (interactable.GetComponent(type.Type) != null) hasCorrectType = true;
       }
-      Debug.Log("started for loop");
-      Debug.Log("1: " + (interactable.GetComponent<Interactable>() != null));
-      Debug.Log("2: " + hasCorrectType);
-      Debug.Log("3: " + !interactable.GetComponent<Interactable>().HasTask());
       if (interactable.GetComponent<Interactable>() != null
       && hasCorrectType
       && !interactable.GetComponent<Interactable>().HasTask()) {

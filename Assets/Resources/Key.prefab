@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aabafa18701ff0058b61effccb63959e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: 
-  softRequirementPrefabs: []
+  taskDescription: Get the key
+  softRequirementTypes: []
   canBeMasterTask: 0
   outlineWidth: 5
   hardRequirement: {fileID: 0}
