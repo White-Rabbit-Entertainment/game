@@ -160,13 +160,15 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void Reset() {}
 
   //// Taks Requirements
-  
+ 
   [PunRPC]
   public void AssignHardRequirement(int viewId) {
     PhotonView itemView = PhotonView.Find(viewId);
     hardRequirement = itemView.gameObject.GetComponent<Interactable>();
   }
 
+  // Picks one of the soft requirements for this task to be the hard
+  // requirement
   public void PickHardRequirement(List<Transform> interactables) {
     List<Interactable> softRequirements = GetSoftRequirements(interactables);
     if (hardRequirement == null && softRequirements.Count > 0) {
@@ -176,13 +178,15 @@ public abstract class Interactable : MonoBehaviourPun {
     }
   }
 
+  // Returns true is this task can have any soft requirements
   public virtual bool HasSoftRequirements() {
     return softRequirementTypes != null && softRequirementTypes.Count != 0;
   }
 
+  // Given a list of interactables returns a list of all interactbles which are
+  // allowed to be requirements for this task.
   public virtual List<Interactable> GetSoftRequirements(List<Transform> interactables) {
     List<Interactable> softRequirements = new List<Interactable>();
-    Debug.Log("started softies");
     foreach (Transform interactable in interactables) {
       bool hasCorrectType = false;
       foreach(TypeReference type in softRequirementTypes) {
@@ -191,7 +195,6 @@ public abstract class Interactable : MonoBehaviourPun {
       if (interactable.GetComponent<Interactable>() != null
       && hasCorrectType
       && !interactable.GetComponent<Interactable>().HasTask()) {
-        Debug.Log("in if statement");
         softRequirements.Add(interactable.GetComponent<Interactable>());
       }
     }
