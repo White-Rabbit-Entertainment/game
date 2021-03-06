@@ -38,7 +38,7 @@ MonoBehaviour:
   currentHeldItem: {fileID: 0}
   pocketedItems: []
   inventoryUI: {fileID: 0}
-  team: 2
+  team: 0
 --- !u!114 &2197168800728776343
 MonoBehaviour:
   m_ObjectHideFlags: 0

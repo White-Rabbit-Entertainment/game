@@ -3,9 +3,9 @@ using System;
 
 [Flags]
 public enum Team {
-    Robber,
-    Seeker,
-    Agent,
+    Robber = 0b0000001,
+    Seeker = 0b0000010,
+    Agent  = 0b0000100,
     Real = Robber | Seeker,
     AgentRobber = Agent | Robber,
     All = Robber | Seeker | Agent

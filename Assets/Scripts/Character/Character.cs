@@ -50,14 +50,16 @@ public abstract class Character : MonoBehaviour
   
   public void PutDown(Pickupable item) {
     currentHeldItem = null;
-    item.ResetItemConditions();
+    item.ResetItemConditions(this);
 
     item.transform.parent = GameObject.Find("/Environment").transform;
   }
 
   public void AddItemToInventory(Pocketable item) {
     pocketedItems.Add(item);
-    inventoryUI.AddItem(item);
+    if (!(this is Agent)) {
+      inventoryUI.AddItem(item);
+    }
     item.GetComponent<PhotonView>().RPC("SetItemPocketConditions", RpcTarget.All);
   }
 
@@ -66,6 +68,9 @@ public abstract class Character : MonoBehaviour
   }
 
   public virtual Vector3 Velocity() {
+    if (this is Agent) {
+      Debug.Log("UHOH");
+    }
     return GetComponent<CharacterController>().velocity;
   }
 }

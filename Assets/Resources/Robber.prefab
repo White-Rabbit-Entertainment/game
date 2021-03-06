@@ -39,7 +39,7 @@ MonoBehaviour:
   currentHeldItem: {fileID: 0}
   pocketedItems: []
   inventoryUI: {fileID: 0}
-  team: 0
+  team: 1
 --- !u!1001 &7098933628780144307
 PrefabInstance:
   m_ObjectHideFlags: 0

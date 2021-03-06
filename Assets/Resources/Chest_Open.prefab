@@ -155,10 +155,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: Open the chest
-  outlineWidth: 5
+  softRequirementTypes:
+  - GuidAssignmentFailed: 0
+    GUID: aabafa18701ff0058b61effccb63959e
+    TypeNameAndAssembly: Key, Scripts
+    _suppressLogs: 0
+  canBeMasterTask: 1
+  hardRequirement: {fileID: 0}
   singleUse: 0
-  team: 2
-  taskTeam: 0
+  team: 5
+  taskTeam: 1
+  outlineWidth: 5
   itemAnimationTrigger: Click
   playerAnimationTrigger: 
 --- !u!64 &3134961051796514602

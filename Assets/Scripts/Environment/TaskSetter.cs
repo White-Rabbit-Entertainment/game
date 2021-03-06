@@ -27,20 +27,26 @@ public class TaskSetter : MonoBehaviour {
             List<Transform> possibleMasterTaskables = new List<Transform>();
             List<Transform> possibleTaskables = new List<Transform>();
             List<Transform> possibleStealables = new List<Transform>();
+
+            // Creates a list of all item which can be assigned a task and
+            // seperate list for those which can be master tasks
             foreach(Transform transform in taskables.transform) {
                 possibleTaskables.Add(transform);
                 if (transform.GetComponent<Interactable>().canBeMasterTask) {
+                    Debug.Log("Adding item to possible master taskables");
                     possibleMasterTaskables.Add(transform);
                 }
          
             }
+
+            // Creates a list for all stealable items
             foreach(Transform transform in stealables.transform) {
                 possibleStealables.Add(transform);
             }
 
             // Shuffle those lists randomly 
-            Utils.Shuffle<Transform>(possibleStealables);
-            Utils.Shuffle<Transform>(possibleMasterTaskables);
+            possibleStealables.Shuffle();
+            possibleMasterTaskables.Shuffle();
 
             // Assign the first few itmes a Task
             for (int i = 0; i < numberOfNonStealingTasks; i++) {
@@ -48,7 +54,7 @@ public class TaskSetter : MonoBehaviour {
                     Debug.Log("the item we are adding a task to has soft requirements");
                     possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirement(possibleTaskables);
                 }
-                PhotonView view = possibleTaskables[i].GetComponent<PhotonView>();
+                PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
                 view.RPC("AddTaskRPC", RpcTarget.All);
             }
             for (int i = 0; i < numberOfStealingTasks; i++) {
