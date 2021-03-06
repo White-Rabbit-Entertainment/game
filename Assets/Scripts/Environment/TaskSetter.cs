@@ -44,7 +44,6 @@ public class TaskSetter : MonoBehaviour {
 
             // Assign the first few itmes a Task
             for (int i = 0; i < numberOfNonStealingTasks; i++) {
-                PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
                 if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
                     Debug.Log("the item we are adding a task to has soft requirements");
                     possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirement(possibleTaskables);

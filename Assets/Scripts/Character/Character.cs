@@ -64,4 +64,8 @@ public abstract class Character : MonoBehaviour
   public List<Pocketable> GetItemsInInventory() {
     return pocketedItems;
   }
+
+  public virtual Vector3 Velocity() {
+    return GetComponent<CharacterController>().velocity;
+  }
 }

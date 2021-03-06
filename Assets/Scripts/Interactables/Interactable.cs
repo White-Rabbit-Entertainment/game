@@ -22,7 +22,6 @@ public abstract class Interactable : MonoBehaviourPun {
   public List<TypeReference> softRequirementTypes;
 
   public bool canBeMasterTask = true;
-  public float outlineWidth = 5f;
   public Interactable hardRequirement;
   
   public bool singleUse;

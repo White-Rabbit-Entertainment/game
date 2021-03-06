@@ -5,7 +5,7 @@ using Photon.Pun;
 
 /// <summary><c>Stealable</c> extends <c>Pickupable</c> to allow the item to
 /// be picked up.</summary>
-public class Stealable : PickUpable {
+public class Stealable : Pickupable {
 
     public override void Reset() {
       taskDescription = "Steal the " + this.name;

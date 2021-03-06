@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: 
-  outlineWidth: 5
+  softRequirementTypes: []
+  canBeMasterTask: 1
+  hardRequirement: {fileID: 0}
   singleUse: 0
   team: 3
   taskTeam: 3
+  outlineWidth: 5
   itemAnimationTrigger: 
   playerAnimationTrigger: 
   destination: /Jail/JailSpawn
@@ -34,6 +37,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 4117370648762688828}
   currentHeldItem: {fileID: 0}
+  pocketedItems: []
+  inventoryUI: {fileID: 0}
   team: 0
 --- !u!1001 &7098933628780144307
 PrefabInstance:
