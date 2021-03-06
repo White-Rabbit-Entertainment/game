@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 public static class Utils {
-    private static Random rng = new Random();
+    private static System.Random rng = new System.Random();
 
     public static void Shuffle<T>(this IList<T> list) {  
         int n = list.Count;  
@@ -14,6 +16,18 @@ public static class Utils {
             list[k] = list[n];  
             list[n] = value;  
         }  
+    }
+    
+    // Scroll a scrollrect to the bottom
+    public static void ScrollToBottom(this ScrollRect scrollRect) {
+        scrollRect.verticalNormalizedPosition = 1f;
+    }
+
+    // Clear the text of an InputFiled
+    public static void Clear(this InputField inputfield)
+    {
+        inputfield.Select();
+        inputfield.text = "";
     }
 }
 

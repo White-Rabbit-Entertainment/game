@@ -1,25 +1,21 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Chat;     
+using Photon.Pun;     
 
-public class MyClient : MonoBehaviour, IChatClientListener 
+public class ChatManager : MonoBehaviour, IChatClientListener 
 {
     private ChatClient client;       
     private string AppID = "d0a5737b-396c-4990-8cde-19b4eadbd95e";            
     private string AppVersion;       
 
-    
-    public Text localPlayerName;
+    public InputField msgInput;
 
-    public InputField msginput;
-
-    public Text msgarea;
-
-    public GameObject intoPanel;
-    public GameObject msgPanel;
+    public GameObject chatArea;
+    public ScrollRect chatScrollRect;
+    public GameObject chatMessagePrefab;
 
     private string worldchat = "worldchat";
     
@@ -27,10 +23,7 @@ public class MyClient : MonoBehaviour, IChatClientListener
     {
         client = new ChatClient(this);
         AppVersion = "1.0.0";    
-
-       intoPanel.SetActive(true);
-        msgPanel.SetActive(false);
- 
+        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
     }
  
     void Update()
@@ -41,49 +34,39 @@ public class MyClient : MonoBehaviour, IChatClientListener
         }
     }
 
-
-    public void GetConnected(){
+    public void GetConnected() {
         Debug.Log("connecting...");
-        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues( localPlayerName.text));
-         
     }
     
-    public void sendmsg(){
-        client.PublishMessage(worldchat,msginput.text);
+    public void SendMsg() {
+        client.PublishMessage(worldchat, msgInput.text);
+        msgInput.Clear();
     }
      
-    public void OnConnected()
-    {
-        Debug.Log("join in");
-        intoPanel.SetActive(false);
-        msgPanel.SetActive(true);
-         
+    public void OnConnected() {
+        Debug.Log("Connected!");
         client.Subscribe(new string[] { worldchat}); 
         client.SetOnlineStatus(ChatUserStatus.Online);
- 
     }
- 
- 
    
     public void OnDisconnected()
     {
         Debug.Log("quit");
     }
- 
- 
    
     public void OnChatStateChange(ChatState state)
     {
         Debug.Log("statue：" + state);
     }
- 
- 
    
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
         for(int i = 0; i< senders.Length;i++){
-            msgarea.text += senders[i] + ":" + messages[i] + "\n";
+          GameObject item = Instantiate(chatMessagePrefab, chatArea.transform);
+          Text text = item.GetComponentInChildren<Text>();
+          text.text = senders[i] + ":" + messages[i] + "\n";
         }
+        chatScrollRect.ScrollToBottom();
         Debug.Log("channel："+channelName+",sender："+senders[0]+", messages："+messages[0]);
     }
  
@@ -125,15 +108,6 @@ public class MyClient : MonoBehaviour, IChatClientListener
  
     }
  
-    void OnGUI()
-    {
-        // if(GUI.Button(new Rect(100,100,100,100),"quit")) 
-        // {
-        //     client.Disconnect();
-        //     Application.Quit();
-        // }
-    }
-
     public void OnUserSubscribed(string channel, string user)
     {
         Debug.LogFormat("OnUserSubscribed: channel=\"{0}\" userId=\"{1}\"", channel, user);
