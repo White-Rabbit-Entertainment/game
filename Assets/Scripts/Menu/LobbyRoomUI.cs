@@ -7,7 +7,7 @@ using Photon.Realtime;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class LobbyRoomUI : MonoBehaviourPun {
+public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public Text playerCounter;
     public GameObject playerList;
     public Button toggleReadyButton;
@@ -22,6 +22,14 @@ public class LobbyRoomUI : MonoBehaviourPun {
     public Transform gridLayout;
 
     private Hashtable props;
+
+
+    // Clears a list by destorying all children 
+    public static void Clear(GameObject gameObject) {
+      foreach (Transform child in gameObject.transform) {
+        Destroy(child.gameObject);
+      }
+    }
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
@@ -41,9 +49,7 @@ public class LobbyRoomUI : MonoBehaviourPun {
     }
 
     void SetText() {
-      foreach (Transform child in playerList.transform) {
-        Destroy(child.gameObject);
-      }
+      Clear(playerList);
       foreach (Player player in NetworkManager.instance.GetPlayers()) {
         GameObject playerItemPrefab; 
         if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
@@ -68,34 +74,14 @@ public class LobbyRoomUI : MonoBehaviourPun {
     }
 
 
-    public class RoomListManager : MonoBehaviourPunCallbacks
-    {
-        public GameObject roomNamePrefab;
-        public Transform gridLayout;
+    public override void OnRoomListUpdate(List<RoomInfo> roomList) {
+        Debug.Log("ROOM LIST CHANGED");
+        Clear(gridLayout.gameObject);
+        foreach (RoomInfo room in roomList) {
+            GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
 
-        public override void OnRoomListUpdate(List<RoomInfo> roomList)
-        {
-            for (int i = 0; i < gridLayout.childCount; i++)
-            {
-                if (gridLayout.GetChild(i).gameObject.GetComponentInChildren<Text>().text == roomList[i].Name)
-                {
-                    Destroy(gridLayout.GetChild(i).gameObject);
-
-                    if (roomList[i].PlayerCount == 0)
-                    {
-                        roomList.Remove(roomList[i]);
-                    }
-                }
-            }
-
-
-            foreach (var room in roomList)
-            {
-                GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
-
-                newRoom.GetComponentInChildren<Text>().text = room.Name + "(" + room.PlayerCount + ")";
-                newRoom.transform.SetParent(gridLayout);
-            }
+            newRoom.GetComponentInChildren<Text>().text = room.Name + "(" + room.PlayerCount + ")";
+            newRoom.transform.SetParent(gridLayout);
         }
     }
 }

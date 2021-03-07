@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppSettings:
     AppIdRealtime: 9e2fab3d-7e8e-4826-9ddb-b3dc13b1d7f7
-    AppIdChat: d0a5737b-396c-4990-8cde-19b4eadbd95e
+    AppIdChat: 007157f9-d95f-4edb-ad77-6e17c05d9e89
     AppIdVoice: 
     AppVersion: 1
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: eu
     Server: 
     Port: 0
     ProxyServer: 

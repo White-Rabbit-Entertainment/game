@@ -740,7 +740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ea7b5c0f161493ba2bd680248c53d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomNamePrefab: {fileID: 1216403363719254358, guid: 57fd7795513cd4bc5bd6ab08dea409f3,
+  roomNamePrefab: {fileID: 7970467721140766123, guid: 7c789eaebe0634d6cba5dd4a849e5822,
     type: 3}
   gridLayout: {fileID: 183060622}
 --- !u!4 &996468396

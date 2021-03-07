@@ -43,6 +43,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
     }
+    
+    public override void OnRoomListUpdate(List<RoomInfo> rooms) {
+      Debug.Log("Network mangaer room list update");
+    }
 
     // Generic function to get property from CustomProperties (of Photon room or player)
     public T GetProperty<T>(string key, Hashtable properties, T defaultValue=default(T)) {
@@ -169,7 +173,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     public void CreateRoom (string roomName) {
-      PhotonNetwork.CreateRoom(roomName);
+      PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
     }
 
     public void JoinRoom(string roomName) {
