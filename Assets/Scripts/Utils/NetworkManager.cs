@@ -32,6 +32,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster() {
       Debug.Log("Connected to master server");
+      Debug.Log(PhotonNetwork.CloudRegion);
     }
     
     public override void OnCreatedRoom() {
