@@ -8,7 +8,7 @@
         "PhotonRealtime",
         "Outline",
         "QuantumUI",
-        "PhotonChat"
+        "PhotonChat",
         "TypeReferences"
     ],
     "includePlatforms": [],
