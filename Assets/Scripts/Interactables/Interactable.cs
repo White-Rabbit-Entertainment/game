@@ -104,9 +104,14 @@ public abstract class Interactable : MonoBehaviourPun {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
-      if (hardRequirements != null) {
+      if (hardRequirements != null && hardRequirements.Count > 0) {
         foreach(Interactable requirement in hardRequirements) {
+
+          // Assign a new task to the requirement
           requirement.AddTask(task);
+
+          // Add this as a requirement to the task. I.e. before this task can
+          // be completed this requirement must be done first.
           task.children.Add(requirement.task);
         }
       }
@@ -118,10 +123,10 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   [PunRPC]
-  public void AddTaskRPC() {
+  public void AddTaskRPC(PhotonView parentTask) {
     AddTask();
   }
-
+  
   public virtual void Start() {
     outline = gameObject.AddComponent<Outline>() as Outline;
     outline.OutlineWidth = outlineWidth;
