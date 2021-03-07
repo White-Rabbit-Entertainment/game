@@ -68,9 +68,6 @@ public abstract class Character : MonoBehaviour
   }
 
   public virtual Vector3 Velocity() {
-    if (this is Agent) {
-      Debug.Log("UHOH");
-    }
     return GetComponent<CharacterController>().velocity;
   }
 }

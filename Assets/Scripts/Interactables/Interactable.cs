@@ -198,7 +198,6 @@ public abstract class Interactable : MonoBehaviourPun {
         softRequirements.Add(interactable.GetComponent<Interactable>());
       }
     }
-    Debug.Log("finished softies");
     return softRequirements;
   }
 
