@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-/// <summary><c>PickUpable</c> extends <c>Interactable</c> to allow the item to
+/// <summary><c>Pickupable</c> extends <c>Interactable</c> to allow the item to
 /// be picked up and put down. </summary>
-public abstract class PickUpable : Interactable {
+public abstract class Pickupable : Interactable {
     
   private Transform pickupDestination;
   public bool isPickedUp = false;
-
-  public override void Reset() {
-    playerAnimationTrigger = "PickUp";
-  }
+  public string playerAnimationTrigger = "PickUp";
 
   public override void PrimaryInteraction(Character character) {
     if (!isPickedUp) {
@@ -59,6 +56,6 @@ public abstract class PickUpable : Interactable {
     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
     // Set velocity of box after it is putdown to the speed to the character moving it
-    GetComponent<Rigidbody>().velocity = character.Velocity() / 2;
+    GetComponent<Rigidbody>().velocity = character.Velocity(); 
   }
 }

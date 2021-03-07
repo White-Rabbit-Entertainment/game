@@ -1,3 +1,0 @@
-interface Taskable {
-  void AddTask();
-}

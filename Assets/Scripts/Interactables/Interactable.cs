@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using TypeReferences;
+using System;
 using Photon.Pun;
 
 
@@ -14,12 +17,20 @@ public abstract class Interactable : MonoBehaviourPun {
   public string taskDescription;
   private Color interactionColour;
   private Color taskColour;
-  public float outlineWidth = 5f;
-  
 
+  [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
+  public List<TypeReference> softRequirementTypes;
+
+  public bool canBeMasterTask = true;
+  public Interactable hardRequirement;
+  
   public bool singleUse;
+ 
   public Team team = Team.All;
   public Team taskTeam = Team.All;
+
+  public float outlineWidth = 5f;
+  
   
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
@@ -90,6 +101,9 @@ public abstract class Interactable : MonoBehaviourPun {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
+      if (hardRequirement != null) {
+        hardRequirement.AddTask();
+      }
   }
 
   [PunRPC]
@@ -139,12 +153,52 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (task == null) {
-      return team.HasFlag(character.team);
-    } else {
-      return taskTeam.HasFlag(character.team);
-    }
+    if (hardRequirement != null && HasTask() && !hardRequirement.task.isCompleted) return false;
+    return HasTask() ? taskTeam.HasFlag(character.team) : team.HasFlag(character.team);
   }
   
   public virtual void Reset() {}
+
+  //// Taks Requirements
+ 
+  [PunRPC]
+  public void AssignHardRequirement(int viewId) {
+    PhotonView itemView = PhotonView.Find(viewId);
+    hardRequirement = itemView.gameObject.GetComponent<Interactable>();
+  }
+
+  // Picks one of the soft requirements for this task to be the hard
+  // requirement
+  public void PickHardRequirement(List<Transform> interactables) {
+    List<Interactable> softRequirements = GetSoftRequirements(interactables);
+    if (hardRequirement == null && softRequirements.Count > 0) {
+      System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
+      int randomIndex = random.Next(softRequirements.Count);
+      view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
+    }
+  }
+
+  // Returns true is this task can have any soft requirements
+  public virtual bool HasSoftRequirements() {
+    return softRequirementTypes != null && softRequirementTypes.Count != 0;
+  }
+
+  // Given a list of interactables returns a list of all interactbles which are
+  // allowed to be requirements for this task.
+  public virtual List<Interactable> GetSoftRequirements(List<Transform> interactables) {
+    List<Interactable> softRequirements = new List<Interactable>();
+    foreach (Transform interactable in interactables) {
+      bool hasCorrectType = false;
+      foreach(TypeReference type in softRequirementTypes) {
+        if (interactable.GetComponent(type.Type) != null) hasCorrectType = true;
+      }
+      if (interactable.GetComponent<Interactable>() != null
+      && hasCorrectType
+      && !interactable.GetComponent<Interactable>().HasTask()) {
+        softRequirements.Add(interactable.GetComponent<Interactable>());
+      }
+    }
+    return softRequirements;
+  }
+
 }
