@@ -104,6 +104,7 @@ public abstract class Interactable : MonoBehaviourPun {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
+
       if (hardRequirements != null && hardRequirements.Count > 0) {
         foreach(Interactable requirement in hardRequirements) {
 
@@ -112,19 +113,25 @@ public abstract class Interactable : MonoBehaviourPun {
 
           // Add this as a requirement to the task. I.e. before this task can
           // be completed this requirement must be done first.
-          task.children.Add(requirement.task);
+          task.requirements.Add(requirement.task);
         }
       }
   }
 
+  // Adds a task and also sets the parent of the new task.
   public virtual void AddTask(Task parentTask) {
     AddTask();
     task.parent = parentTask;
   }
 
+  // This adds a task to the interactable on all clients. It can only be used
+  // for master tasks (tasks with no parents).
   [PunRPC]
-  public void AddTaskRPC(PhotonView parentTask) {
+  public void AddTaskRPC() {
     AddTask();
+    if (!task.IsMasterTask()) {
+      throw new Exception("AddTaskRPC cannot be used on a subtask.");
+    }
   }
   
   public virtual void Start() {
@@ -184,7 +191,7 @@ public abstract class Interactable : MonoBehaviourPun {
   // requirement
   public void PickHardRequirements(List<Transform> interactables) {
     List<Interactable> softRequirements = GetSoftRequirements(interactables);
-    if (hardRequirements == null && softRequirements.Count > 0) {
+    if (softRequirements.Count > 0) {
       System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randomIndex = random.Next(softRequirements.Count);
       view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);

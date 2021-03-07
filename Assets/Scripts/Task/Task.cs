@@ -9,7 +9,7 @@ public class Task : MonoBehaviour {
 
   // This is the list of requirements that must be completed before this task
   // can be completed 
-  public List<Task> children;
+  public List<Task> requirements = new List<Task>();
  
   // This is the task which depends on this being completed first. If this is
   // null then the task is a "master" task.
@@ -21,12 +21,12 @@ public class Task : MonoBehaviour {
     return parent == null;
   }
 
-  // Returns true if all the children of this task have been completed. If this
-  // is the case then this task can now be attempted. If false the children
+  // Returns true if all the requirements of this task have been completed. If this
+  // is the case then this task can now be attempted. If false the requirement
   // tasks must be completed first.
   public bool AllChildrenCompleted() {
-    foreach(Task child in children) {
-      if (!child.isCompleted) {
+    foreach(Task requirement in requirements) {
+      if (!requirement.isCompleted) {
         return false;
       }
     }
