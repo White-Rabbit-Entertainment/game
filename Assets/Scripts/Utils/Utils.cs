@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
 public static class Utils {
-    private static System.Random rng = new System.Random();
+    private static Random rng = new Random(System.Guid.NewGuid().GetHashCode());
 
     public static void Shuffle<T>(this IList<T> list) {  
         int n = list.Count;  
@@ -30,4 +34,3 @@ public static class Utils {
         inputfield.text = "";
     }
 }
-

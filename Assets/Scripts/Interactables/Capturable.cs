@@ -7,12 +7,12 @@ public class Capturable : Interactable {
 
   public string destination = "/Jail/JailSpawn";
 
-  public override void PrimaryInteraction() {
+  public override void PrimaryInteraction(Character player) {
     Capture();
   }
 
-  public override bool CanInteract() {
-    return NetworkManager.instance.LocalPlayerPropertyIs("Team", "Seeker");
+  public override bool CanInteract(Character character) {
+    return character is Seeker;
   }
 
   public void Capture() {
