@@ -9,6 +9,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     public GameObject seekerPrefab;
     public GameObject robberPrefab;
+    public InventoryUI inventoryUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
@@ -52,6 +53,7 @@ public class PlayerSpawner : MonoBehaviour {
         } else {
             player = PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
+        player.GetComponent<Character>().inventoryUI = inventoryUI;
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }

@@ -7,7 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 
 public static class Utils {
-    private static Random rng = new Random();
+    private static Random rng = new Random(System.Guid.NewGuid().GetHashCode());
 
     public static void Shuffle<T>(this IList<T> list) {  
         int n = list.Count;  
