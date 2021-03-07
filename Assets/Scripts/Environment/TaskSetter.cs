@@ -50,7 +50,7 @@ public class TaskSetter : MonoBehaviour {
             // Assign the first few itmes a Task
             for (int i = 0; i < numberOfNonStealingTasks; i++) {
                 if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
-                    possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirement(possibleTaskables);
+                    possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
                 }
                 PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
                 view.RPC("AddTaskRPC", RpcTarget.All);

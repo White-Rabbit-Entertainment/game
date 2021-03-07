@@ -22,7 +22,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public List<TypeReference> softRequirementTypes;
 
   public bool canBeMasterTask = true;
-  public Interactable hardRequirement;
+  public List<Interactable> hardRequirements;
   
   public bool singleUse;
  
@@ -38,6 +38,9 @@ public abstract class Interactable : MonoBehaviourPun {
   protected Outline outline;
   protected PhotonView view;
   protected Task task;
+  protected Interactable parentTaskInteractable;
+
+  public virtual void Reset() {}
 
   public bool IsTaskable() {
     return taskDescription != null;
@@ -101,9 +104,17 @@ public abstract class Interactable : MonoBehaviourPun {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
-      if (hardRequirement != null) {
-        hardRequirement.AddTask();
+      if (hardRequirements != null) {
+        foreach(Interactable requirement in hardRequirements) {
+          requirement.AddTask(task);
+          task.children.Add(requirement.task);
+        }
       }
+  }
+
+  public virtual void AddTask(Task parentTask) {
+    AddTask();
+    task.parent = parentTask;
   }
 
   [PunRPC]
@@ -153,25 +164,22 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (hardRequirement != null && HasTask() && !hardRequirement.task.isCompleted) return false;
+    if (HasTask() && task.AllChildrenCompleted()) return false;
     return HasTask() ? taskTeam.HasFlag(character.team) : team.HasFlag(character.team);
   }
   
-  public virtual void Reset() {}
-
   //// Taks Requirements
- 
   [PunRPC]
   public void AssignHardRequirement(int viewId) {
     PhotonView itemView = PhotonView.Find(viewId);
-    hardRequirement = itemView.gameObject.GetComponent<Interactable>();
+    hardRequirements.Add(itemView.gameObject.GetComponent<Interactable>());
   }
 
   // Picks one of the soft requirements for this task to be the hard
   // requirement
-  public void PickHardRequirement(List<Transform> interactables) {
+  public void PickHardRequirements(List<Transform> interactables) {
     List<Interactable> softRequirements = GetSoftRequirements(interactables);
-    if (hardRequirement == null && softRequirements.Count > 0) {
+    if (hardRequirements == null && softRequirements.Count > 0) {
       System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randomIndex = random.Next(softRequirements.Count);
       view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);

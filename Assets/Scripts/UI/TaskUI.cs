@@ -16,7 +16,9 @@ public class TaskUI : MonoBehaviour {
       
       // Add in all the current tasks
       foreach (Task task in GameManager.instance.GetTasks()) {
-        AddTask(task);
+        if (task.IsMasterTask()) {
+          AddTask(task);
+        }
       }
     }
 
