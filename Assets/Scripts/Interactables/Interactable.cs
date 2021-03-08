@@ -38,7 +38,6 @@ public abstract class Interactable : MonoBehaviourPun {
   protected Outline outline;
   protected PhotonView view;
   protected Task task;
-  protected Interactable parentTaskInteractable;
 
   public virtual void Reset() {}
 
@@ -182,7 +181,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   //// Taks Requirements
   [PunRPC]
-  public void AssignHardRequirement(int viewId) {
+  public void AddHardRequirement(int viewId) {
     PhotonView itemView = PhotonView.Find(viewId);
     hardRequirements.Add(itemView.gameObject.GetComponent<Interactable>());
   }
@@ -194,7 +193,7 @@ public abstract class Interactable : MonoBehaviourPun {
     if (softRequirements.Count > 0) {
       System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randomIndex = random.Next(softRequirements.Count);
-      view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
+      view.RPC("AddHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
     }
   }
 
