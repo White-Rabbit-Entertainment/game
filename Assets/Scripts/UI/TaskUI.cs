@@ -17,7 +17,10 @@ public class TaskUI : MonoBehaviour {
       // Add in all the current tasks
       foreach (Task task in GameManager.instance.GetTasks()) {
         if (task.IsMasterTask()) {
-          AddTask(task);
+          AddTask(task, masterTaskPrefab);
+          foreach(Task subTask in task.requirements) {
+            AddTask(subTask, subTaskPrefab);
+          }
         }
       }
     }
@@ -30,9 +33,9 @@ public class TaskUI : MonoBehaviour {
     }
   
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
-    void AddTask(Task task) {
+    void AddTask(Task task, GameObject taskPrefab) {
       // Instantiate a new task list item
-      GameObject item = Instantiate(masterTaskPrefab, tasksList.transform);
+      GameObject item = Instantiate(taskPrefab, tasksList.transform);
 
       // Get the togggle component 
       TMP_Text text = item.GetComponentInChildren<TMP_Text>();

@@ -176,7 +176,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (HasTask() && task.AllChildrenCompleted()) return false;
+    if (HasTask() && !task.AllChildrenCompleted()) return false;
     return HasTask() ? taskTeam.HasFlag(character.team) : team.HasFlag(character.team);
   }
   
