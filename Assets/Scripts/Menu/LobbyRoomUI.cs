@@ -12,8 +12,6 @@ public class LobbyRoomUI : MonoBehaviourPun {
 
     public GameObject playerList;
     public Button toggleReadyButton;
-    public GameObject robberPrefab;
-    public GameObject seekerPrefab;
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 

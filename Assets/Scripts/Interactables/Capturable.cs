@@ -12,7 +12,7 @@ public class Capturable : Interactable {
   }
 
   public override bool CanInteract(Character character) {
-    return character is Seeker;
+    return character is Traitor;
   }
 
   public void Capture() {

@@ -129,6 +129,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return GetProperty<T>(key, PhotonNetwork.CurrentRoom.CustomProperties, defaultValue);
     }
 
+    public T GetLocalPlayerProperty<T>(string key, T defaultValue = default(T)) {
+      return GetProperty<T>(key, PhotonNetwork.LocalPlayer.CustomProperties, defaultValue);
+    }
+
     public void SetRoomProperty(string key, object value) {
       SetProperty(key, value, PhotonNetwork.CurrentRoom.CustomProperties, PhotonNetwork.CurrentRoom.SetCustomProperties);
     }
@@ -176,12 +180,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     // Check all players in the room and returns whether all the robbers are captured
-    public bool AllRobbersCaught() {
+    public bool AllLoyalsKilled() {
       foreach (Player player in GetPlayers()) {
-          if (PlayerPropertyIs<string>("Team", "Robber", player) && (!PlayerPropertyIs<bool>("Captured", true, player))) {
+          if (PlayerPropertyIs<Team>("Team", Team.Loyal, player)) {
+            Debug.Log("Player is loyal");
+          }
+          if (!PlayerPropertyIs<bool>("Captured", true, player)) {
+            Debug.Log("Player has not been captured");
+          }
+          if (PlayerPropertyIs<Team>("Team", Team.Loyal, player) && (!PlayerPropertyIs<bool>("Captured", true, player))) {
               return false;
           }
       }
+      Debug.Log("all loyals have been killed");
       return true;
     }
 

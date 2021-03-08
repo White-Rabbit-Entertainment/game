@@ -3,12 +3,13 @@ using System;
 
 [Flags]
 public enum Team {
-    Robber = 0b0000001,
-    Seeker = 0b0000010,
+    None = 0b0000000,
+    Loyal = 0b0000001,
+    Traitor = 0b0000010,
     Agent  = 0b0000100,
-    Real = Robber | Seeker,
-    AgentRobber = Agent | Robber,
-    All = Robber | Seeker | Agent
+    Real = Loyal | Traitor,
+    AgentLoyal = Agent | Loyal,
+    All = Loyal | Traitor | Agent
 }
 
 public static class TeamUtils {
