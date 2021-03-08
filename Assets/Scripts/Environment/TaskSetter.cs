@@ -47,10 +47,13 @@ public class TaskSetter : MonoBehaviour {
             possibleStealables.Shuffle();
             possibleMasterTaskables.Shuffle();
 
-            // Assign the first few itmes a Task
+            // Assign the first few items a Task
             for (int i = 0; i < numberOfNonStealingTasks; i++) {
                 if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
-                    possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirement(possibleTaskables);
+                    int numberOfSubTasks = Random.Range(0, 2);
+                    if (numberOfSubTasks > 0) {
+                         possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
+                    }
                 }
                 PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
                 view.RPC("AddTaskRPC", RpcTarget.All);

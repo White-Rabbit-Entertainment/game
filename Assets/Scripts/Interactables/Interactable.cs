@@ -22,7 +22,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public List<TypeReference> softRequirementTypes;
 
   public bool canBeMasterTask = true;
-  public Interactable hardRequirement;
+  public List<Interactable> hardRequirements;
   
   public bool singleUse;
  
@@ -38,6 +38,8 @@ public abstract class Interactable : MonoBehaviourPun {
   protected Outline outline;
   protected PhotonView view;
   protected Task task;
+
+  public virtual void Reset() {}
 
   public bool IsTaskable() {
     return taskDescription != null;
@@ -101,16 +103,36 @@ public abstract class Interactable : MonoBehaviourPun {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
-      if (hardRequirement != null) {
-        hardRequirement.AddTask();
+
+      if (hardRequirements != null && hardRequirements.Count > 0) {
+        foreach(Interactable requirement in hardRequirements) {
+
+          // Assign a new task to the requirement
+          requirement.AddTask(task);
+
+          // Add this as a requirement to the task. I.e. before this task can
+          // be completed this requirement must be done first.
+          task.requirements.Add(requirement.task);
+        }
       }
   }
 
+  // Adds a task and also sets the parent of the new task.
+  public virtual void AddTask(Task parentTask) {
+    AddTask();
+    task.parent = parentTask;
+  }
+
+  // This adds a task to the interactable on all clients. It can only be used
+  // for master tasks (tasks with no parents).
   [PunRPC]
   public void AddTaskRPC() {
     AddTask();
+    if (!task.IsMasterTask()) {
+      throw new Exception("AddTaskRPC cannot be used on a subtask.");
+    }
   }
-
+  
   public virtual void Start() {
     outline = gameObject.AddComponent<Outline>() as Outline;
     outline.OutlineWidth = outlineWidth;
@@ -153,28 +175,25 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (hardRequirement != null && HasTask() && !hardRequirement.task.isCompleted) return false;
+    if (HasTask() && !task.AllChildrenCompleted()) return false;
     return HasTask() ? taskTeam.HasFlag(character.team) : team.HasFlag(character.team);
   }
   
-  public virtual void Reset() {}
-
   //// Taks Requirements
- 
   [PunRPC]
-  public void AssignHardRequirement(int viewId) {
+  public void AddHardRequirement(int viewId) {
     PhotonView itemView = PhotonView.Find(viewId);
-    hardRequirement = itemView.gameObject.GetComponent<Interactable>();
+    hardRequirements.Add(itemView.gameObject.GetComponent<Interactable>());
   }
 
   // Picks one of the soft requirements for this task to be the hard
   // requirement
-  public void PickHardRequirement(List<Transform> interactables) {
+  public void PickHardRequirements(List<Transform> interactables) {
     List<Interactable> softRequirements = GetSoftRequirements(interactables);
-    if (hardRequirement == null && softRequirements.Count > 0) {
+    if (softRequirements.Count > 0) {
       System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randomIndex = random.Next(softRequirements.Count);
-      view.RPC("AssignHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
+      view.RPC("AddHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
     }
   }
 

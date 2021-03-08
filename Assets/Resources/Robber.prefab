@@ -15,7 +15,7 @@ MonoBehaviour:
   taskDescription: 
   softRequirementTypes: []
   canBeMasterTask: 1
-  hardRequirement: {fileID: 0}
+  hardRequirements: []
   singleUse: 0
   team: 3
   taskTeam: 3
