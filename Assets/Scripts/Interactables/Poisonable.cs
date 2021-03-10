@@ -18,6 +18,7 @@ public class Poisonable : Interactable {
 
   public override void PrimaryInteraction(Character player) {
     view.RPC("Poison", RpcTarget.All);
+    ((Traitor)player).hasPoison = false;
   }
 
   public override bool CanInteract(Character character) {
