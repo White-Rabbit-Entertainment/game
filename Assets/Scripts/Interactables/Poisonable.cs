@@ -16,6 +16,7 @@ public class Poisonable : Interactable {
   public void Poison() {
     PhotonView view = GetComponent<PhotonView>();
     NetworkManager.instance.SetPlayerProperty("Poisoned", true, view.Owner);
+    Debug.Log("WARNING WARNING SOMEONE HAS BEEN POISONED");
   }
 
   public bool IsPoisoned() {
