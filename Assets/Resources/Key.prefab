@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3404274876649142224}
   - component: {fileID: 8092459316962091024}
   - component: {fileID: 8805901355671028098}
+  - component: {fileID: 8685803213303031568}
   m_Layer: 0
   m_Name: Key
   m_TagString: Untagged
@@ -167,9 +168,26 @@ MonoBehaviour:
   taskDescription: Get the key
   softRequirementTypes: []
   canBeMasterTask: 0
-  outlineWidth: 5
-  hardRequirement: {fileID: 0}
+  hardRequirements: []
   singleUse: 0
   team: 3
+  taskTeam: 7
+  outlineWidth: 5
   itemAnimationTrigger: 
   playerAnimationTrigger: 
+--- !u!208 &8685803213303031568
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309103251000201219}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.124000005, y: 0.022000002, z: 0.453}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
