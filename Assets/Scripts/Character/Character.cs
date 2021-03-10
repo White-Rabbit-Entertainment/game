@@ -4,8 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 [RequireComponent(typeof(Animator))]
-public abstract class Character : MonoBehaviour
-{
+public abstract class Character : MonoBehaviour {
   public Transform pickupDestination; 
   public Pickupable currentHeldItem; 
   public List<Pocketable> pocketedItems;

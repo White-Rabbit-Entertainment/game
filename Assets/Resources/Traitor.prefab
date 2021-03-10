@@ -17,6 +17,8 @@ MonoBehaviour:
   pocketedItems: []
   inventoryUI: {fileID: 0}
   team: 2
+  meal: {fileID: 1959794254359913997}
+  colour: {r: 0, g: 0, b: 0, a: 0}
   hasPoison: 1
 --- !u!1001 &4279859381422804174
 PrefabInstance:
@@ -99,3 +101,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4279859381422804174}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1959794254359913997 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2330484246674483907, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
+    type: 3}
+  m_PrefabInstance: {fileID: 4279859381422804174}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1b86e6e98833e19d9cd10280f8fcbe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

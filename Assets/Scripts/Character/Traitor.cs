@@ -1,4 +1,4 @@
-﻿public class Traitor : Character {
+﻿public class Traitor : PlayableCharacter {
 
   public bool hasPoison = true;
 
