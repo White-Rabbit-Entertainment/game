@@ -8,6 +8,7 @@ public abstract class PlayableCharacter : Character {
     [PunRPC]
     public void AssignColour(float r, float g, float b) {
         colour = new Color(r,g,b);
+        meal.colour = colour;
     }
 
     [PunRPC]
