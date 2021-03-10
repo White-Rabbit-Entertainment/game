@@ -55,6 +55,8 @@ public class PlayerSpawner : MonoBehaviour {
         } else {
             player = PhotonNetwork.Instantiate(loyalPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
+        PhotonView playerView = player.GetComponent<PhotonView>();
+        playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
         player.GetComponent<Character>().inventoryUI = inventoryUI;
         //sets player layer to "raycast ignore" layer
         player.layer = 2;

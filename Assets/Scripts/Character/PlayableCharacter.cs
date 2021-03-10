@@ -1,7 +1,14 @@
 using Photon.Pun;
+using UnityEngine;
 
 public abstract class PlayableCharacter : Character {
     public Meal meal;
+    public Color colour;
+
+    [PunRPC]
+    public void AssignColour(int r, int g, int b) {
+        colour = new Color(r,g,b);
+    }
 
     [PunRPC]
     public void SwapMeal(int playerViewId) {
