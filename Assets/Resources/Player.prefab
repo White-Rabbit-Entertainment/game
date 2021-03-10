@@ -162,6 +162,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxInteractionDistance: 2
   cameraTransform: {fileID: 3314237579269030611}
+--- !u!114 &-4284226939324308820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604436822466725211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b4ba61b966f0c2a5bb1db100b01224c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: 
+  softRequirementTypes: []
+  canBeMasterTask: 1
+  hardRequirements: []
+  singleUse: 1
+  team: 7
+  taskTeam: 7
+  outlineWidth: 5
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 
 --- !u!1001 &6255637469783473072
 PrefabInstance:
   m_ObjectHideFlags: 0
