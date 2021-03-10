@@ -66,7 +66,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
           Text text = item.GetComponentInChildren<Text>();
           text.text = senders[i] + ":" + messages[i] + "\n";
         }
-        chatScrollRect.ScrollToBottom();
         Debug.Log("channel："+channelName+",sender："+senders[0]+", messages："+messages[0]);
     }
  

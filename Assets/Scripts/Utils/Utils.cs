@@ -22,11 +22,6 @@ public static class Utils {
         }  
     }
     
-    // Scroll a scrollrect to the bottom
-    public static void ScrollToBottom(this ScrollRect scrollRect) {
-        scrollRect.verticalNormalizedPosition = 1f;
-    }
-
     // Clear the text of an InputFiled
     public static void Clear(this InputField inputfield)
     {

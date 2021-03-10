@@ -48,8 +48,6 @@ public class PlayerSpawner : MonoBehaviour {
     void LoadPlayer() { 
         GameObject player;
         Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
-        Debug.Log("when player spawns their team is");
-        Debug.Log(team);
  
         // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
