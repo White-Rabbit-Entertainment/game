@@ -41,6 +41,16 @@ public abstract class Interactable : MonoBehaviourPun {
 
   public virtual void Reset() {}
 
+  public virtual void Start() {
+    outline = gameObject.AddComponent<Outline>() as Outline;
+    outline.OutlineWidth = outlineWidth;
+    outline.enabled = false;
+    view = GetComponent<PhotonView>();
+
+    interactionColour = new Color(1f, 1f, 1f, 1f);
+    taskColour = new Color(0f, 1f, 0.3f, 1f);
+  }
+
   public bool IsTaskable() {
     return taskDescription != null;
   }
@@ -137,16 +147,6 @@ public abstract class Interactable : MonoBehaviourPun {
   public void Disable() {
     taskTeam = Team.None;
     team = Team.None;
-  }
-  
-  public virtual void Start() {
-    outline = gameObject.AddComponent<Outline>() as Outline;
-    outline.OutlineWidth = outlineWidth;
-    outline.enabled = false;
-    view = GetComponent<PhotonView>();
-
-    interactionColour = new Color(1f, 1f, 1f, 1f);
-    taskColour = new Color(0f, 1f, 0.3f, 1f);
   }
   
   [PunRPC]
