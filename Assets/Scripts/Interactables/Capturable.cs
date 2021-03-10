@@ -18,7 +18,7 @@ public class Capturable : Interactable {
   public void Capture() {
     PhotonView view = GetComponent<PhotonView>();
     GameObject jail = GameObject.Find(destination);
-    NetworkManager.instance.SetPlayerProperty("Captured", true, view.Owner);
+    NetworkManager.instance.SetPlayerProperty("Dead", true, view.Owner);
     view.RPC("MovePlayer", view.Owner, jail.transform.position);
   }
 }

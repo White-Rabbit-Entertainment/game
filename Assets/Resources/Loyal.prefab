@@ -105,7 +105,7 @@ PrefabInstance:
     - target: {fileID: 6604436822466725211, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
         type: 3}
       propertyPath: m_Name
-      value: Robber
+      value: Loyal
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}

@@ -72,6 +72,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     /// </example>
     public T GetProperty<T>(string key, Hashtable properties, T defaultValue=default(T)) {
       object temp;
+      if (typeof(T).IsEnum) {
+        if (properties.TryGetValue(key, out temp) && temp is int) {
+          T propertiesValue = (T)temp;
+          return propertiesValue;
+        }
+      }
       if (properties.TryGetValue(key, out temp) && temp is T) {
           T propertiesValue = (T)temp;
           return propertiesValue;
@@ -180,15 +186,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     // Check all players in the room and returns whether all the robbers are captured
-    public bool AllLoyalsKilled() {
+    public bool AllLoyalsDead() {
       foreach (Player player in GetPlayers()) {
-          if (PlayerPropertyIs<Team>("Team", Team.Loyal, player)) {
-            Debug.Log("Player is loyal");
-          }
-          if (!PlayerPropertyIs<bool>("Captured", true, player)) {
-            Debug.Log("Player has not been captured");
-          }
-          if (PlayerPropertyIs<Team>("Team", Team.Loyal, player) && (!PlayerPropertyIs<bool>("Captured", true, player))) {
+          if (PlayerPropertyIs<Team>("Team", Team.Loyal, player) && (!PlayerPropertyIs<bool>("Dead", true, player))) {
               return false;
           }
       }
@@ -227,7 +227,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       foreach(Player player in GetPlayers()) {
         SetPlayerProperty("Ready", false, player);
         SetPlayerProperty("InGameScene", false, player);
-        SetPlayerProperty("Captured", false, player);
+        SetPlayerProperty("Dead", false, player);
       }
     }
 
