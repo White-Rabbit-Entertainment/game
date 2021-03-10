@@ -17,28 +17,6 @@ MonoBehaviour:
   pocketedItems: []
   inventoryUI: {fileID: 0}
   team: 1
---- !u!114 &3620626351939535220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4117370648813134824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b4ba61b966f0c2a5bb1db100b01224c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: 
-  softRequirementTypes: []
-  canBeMasterTask: 1
-  hardRequirements: []
-  singleUse: 0
-  team: 7
-  taskTeam: 7
-  outlineWidth: 5
-  itemAnimationTrigger: 
-  playerAnimationTrigger: 
 --- !u!1001 &7098933628780144307
 PrefabInstance:
   m_ObjectHideFlags: 0

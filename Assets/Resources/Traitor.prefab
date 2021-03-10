@@ -17,6 +17,7 @@ MonoBehaviour:
   pocketedItems: []
   inventoryUI: {fileID: 0}
   team: 2
+  hasPoison: 1
 --- !u!1001 &4279859381422804174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82,7 +83,7 @@ PrefabInstance:
     - target: {fileID: 6604436822466725211, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
         type: 3}
       propertyPath: m_Name
-      value: Seeker
+      value: Traitor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}

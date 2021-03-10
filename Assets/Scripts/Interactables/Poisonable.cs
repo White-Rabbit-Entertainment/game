@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-[RequireComponent(typeof(Loyal), typeof(Traitor))]
 public class Poisonable : Interactable {
 
   public override void Reset() {
     singleUse = true;
   }
-  
+
   public override void PrimaryInteraction(Character player) {
     Poison(player);
   }
