@@ -62,7 +62,7 @@ public abstract class Interactable : MonoBehaviourPun {
     PlayCharacterAnimation(character);
 
     // Destory if single use
-    if (singleUse) Destroy(this);
+    if (singleUse) view.RPC("Disable", RpcTarget.All);
   }
   
   // The action to do when an interaction stops. Atm this when the mouse is
@@ -131,6 +131,12 @@ public abstract class Interactable : MonoBehaviourPun {
     if (!task.IsMasterTask()) {
       throw new Exception("AddTaskRPC cannot be used on a subtask.");
     }
+  }
+
+  [PunRPC]
+  public void Disable() {
+    taskTeam = Team.None;
+    team = Team.None;
   }
   
   public virtual void Start() {

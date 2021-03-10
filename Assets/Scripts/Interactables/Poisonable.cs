@@ -5,17 +5,23 @@ using Photon.Pun;
 
 [RequireComponent(typeof(Loyal), typeof(Traitor))]
 public class Poisonable : Interactable {
+
+  public override void Reset() {
+    singleUse = true;
+  }
+  
   public override void PrimaryInteraction(Character player) {
-    Poison();
+    Poison(player);
   }
 
   public override bool CanInteract(Character character) {
-    return character is Traitor;
+    return character is Traitor && ((Traitor)character).hasPoison;
   }
 
-  public void Poison() {
+  public void Poison(Character player) {
     PhotonView view = GetComponent<PhotonView>();
     NetworkManager.instance.SetPlayerProperty("Poisoned", true, view.Owner);
+    ((Traitor)player).hasPoison = false;
     Debug.Log("WARNING WARNING SOMEONE HAS BEEN POISONED");
   }
 
