@@ -53,7 +53,7 @@ public abstract class Interactable : MonoBehaviourPun {
   // The primary action to do when an item is interacted with. At the moment
   // this is when an item is clicked on.
   public virtual void PrimaryInteraction(Character character) {
-    if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Robber")) {
+    if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs("Team", Team.Loyal)) {
       view.RPC("CompleteTask", RpcTarget.All);
     }
     
@@ -62,7 +62,7 @@ public abstract class Interactable : MonoBehaviourPun {
     PlayCharacterAnimation(character);
 
     // Destory if single use
-    if (singleUse) Destroy(this);
+    if (singleUse) view.RPC("Disable", RpcTarget.All);
   }
   
   // The action to do when an interaction stops. Atm this when the mouse is
@@ -77,7 +77,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   /// <summary> Remove glow. </summary>
   public void GlowOff() {
-    if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
+    if (HasTask() && NetworkManager.instance.LocalPlayerPropertyIs("Team", Team.Loyal)) {
       outline.OutlineColor = taskColour;
     } else {
       outline.enabled = false;
@@ -99,7 +99,7 @@ public abstract class Interactable : MonoBehaviourPun {
       task.description = taskDescription;
 
       // Set outline colour and turn on
-      if (NetworkManager.instance.LocalPlayerPropertyIs("Team", "Robber")) {
+      if (NetworkManager.instance.LocalPlayerPropertyIs("Team", Team.Loyal)) {
         outline.OutlineColor = taskColour;
         outline.enabled = true;
       }
@@ -131,6 +131,12 @@ public abstract class Interactable : MonoBehaviourPun {
     if (!task.IsMasterTask()) {
       throw new Exception("AddTaskRPC cannot be used on a subtask.");
     }
+  }
+
+  [PunRPC]
+  public void Disable() {
+    taskTeam = Team.None;
+    team = Team.None;
   }
   
   public virtual void Start() {

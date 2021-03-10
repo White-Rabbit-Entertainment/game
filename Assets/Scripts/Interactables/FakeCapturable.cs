@@ -9,6 +9,6 @@ public class FakeCapturable : Interactable {
   }
 
   public override bool CanInteract(Character character) {
-    return character is Seeker;
+    return character is Traitor;
   }
 }
