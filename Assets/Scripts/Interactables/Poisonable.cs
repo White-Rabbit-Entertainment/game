@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+[RequireComponent(typeof(PlayableCharacter))]
 public class Poisonable : Interactable {
-  public Meal meal;
+  PlayableCharacter player;
+
+  public void Start() {
+    player = GetComponent<PlayableCharacter>();
+  }
 
   public override void Reset() {
     singleUse = true;
   }
 
-  public override void PrimaryInteraction(Character player) {
-    PhotonView mealView = meal.GetComponent<PhotonView>();
+  public override void PrimaryInteraction(Character poisoningPlayer) {
+    PhotonView mealView = player.meal.GetComponent<PhotonView>();
     mealView.RPC("Poison", RpcTarget.All);
-    ((Traitor)player).hasPoison = false;
+    ((Traitor)poisoningPlayer).hasPoison = false;
   }
 
   public override bool CanInteract(Character character) {
@@ -21,6 +26,6 @@ public class Poisonable : Interactable {
   }
 
   public bool IsPoisoned() {
-    return meal.isPoisoned;
+    return player.meal.isPoisoned;
   }
 }
