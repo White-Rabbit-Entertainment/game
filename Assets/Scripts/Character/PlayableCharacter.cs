@@ -6,7 +6,7 @@ public abstract class PlayableCharacter : Character {
     public Color colour;
 
     [PunRPC]
-    public void AssignColour(int r, int g, int b) {
+    public void AssignColour(float r, float g, float b) {
         colour = new Color(r,g,b);
     }
 
