@@ -20,7 +20,7 @@ public class Poisonable : Interactable {
     PhotonView mealView = player.meal.GetComponent<PhotonView>();
     mealView.RPC("Poison", RpcTarget.All);
     ((Traitor)poisoningPlayer).hasPoison = false;
-    player.Kill();
+    player.GetComponent<PhotonView>().RPC("Kill", player.GetComponent<PhotonView>());
   }
 
   public override bool CanInteract(Character character) {

@@ -6,6 +6,7 @@ public abstract class PlayableCharacter : Character {
     public Color colour;
     public GameObject ghostPrefab;
 
+    [PunRPC]
     public void Kill() {
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, GetComponent<PhotonView>().Owner);
         GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
