@@ -16,12 +16,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public GameObject unreadyPlayerItemPrefab;
 
 
-    //RoomList
-    //public GameObject roomNamePrefab;
-    //public Transform gridLayout;
-
     private Hashtable props;
-
 
     // Clears a list by destorying all children 
     public static void Clear(GameObject gameObject) {
@@ -72,49 +67,4 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }
-
-
-    // Updated upstream
-    //public override void OnRoomListUpdate(List<RoomInfo> roomList) {
-    //    Debug.Log("ROOM LIST CHANGED");
-    //    Clear(gridLayout.gameObject);
-    //    foreach (RoomInfo room in roomList) {
-    //        GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
-
-    //        newRoom.GetComponentInChildren<Text>().text = room.Name + "(" + room.PlayerCount + ")";
-    //        newRoom.transform.SetParent(gridLayout);
-    //    }
-    //}
-
-    //public class RoomListManager : MonoBehaviourPunCallbacks
-    //{
-    //    public GameObject roomNamePrefab;
-    //    public Transform gridLayout;
-
-    //    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    //    {
-    //        for (int i = 0; i < gridLayout.childCount; i++)
-    //        {
-    //            if (gridLayout.GetChild(i).gameObject.GetComponentInChildren<Text>().text == roomList[i].Name)
-    //            {
-    //                Destroy(gridLayout.GetChild(i).gameObject);
-
-    //                if (roomList[i].PlayerCount == 0)
-    //                {
-    //                    roomList.Remove(roomList[i]);
-    //                }
-    //            }
-    //        }
-
-
-    //        foreach (var room in roomList)
-    //        {
-    //            GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
-
-    //            newRoom.GetComponentInChildren<Text>().text = room.Name + "(" + room.PlayerCount + ")";
-    //            newRoom.transform.SetParent(gridLayout);
-    //        }
-    //    }
-    //}
-
 }
