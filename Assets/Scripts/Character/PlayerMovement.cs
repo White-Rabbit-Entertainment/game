@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviourPun
         bool isJumping = Input.GetButtonDown("Jump");
         bool isGrounded = GetComponent<CharacterController>().isGrounded;
         bool isSprinting = Input.GetKey("left shift");
+        
         //apply movement
         Vector3 move = movement.Calculate(x, z, isJumping, isGrounded, isSprinting, Time.deltaTime);
         Vector3 finalMove = move.x * transform.right + move.y * transform.up + move.z * transform.forward;

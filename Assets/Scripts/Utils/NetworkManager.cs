@@ -73,6 +73,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     /// </example>
     public T GetProperty<T>(string key, Hashtable properties, T defaultValue=default(T)) {
       object temp;
+      if (typeof(T).IsEnum) {
+        if (properties.TryGetValue(key, out temp) && temp is int) {
+          T propertiesValue = (T)temp;
+          return propertiesValue;
+        }
+      }
       if (properties.TryGetValue(key, out temp) && temp is T) {
           T propertiesValue = (T)temp;
           return propertiesValue;
@@ -130,6 +136,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return GetProperty<T>(key, PhotonNetwork.CurrentRoom.CustomProperties, defaultValue);
     }
 
+    public T GetPlayerProperty<T>(string key, Player player, T defaultValue = default(T)) {
+      return GetProperty<T>(key, player.CustomProperties, defaultValue);
+    }
+
+    public T GetLocalPlayerProperty<T>(string key, T defaultValue = default(T)) {
+      return GetProperty<T>(key, PhotonNetwork.LocalPlayer.CustomProperties, defaultValue);
+    }
+
     public void SetRoomProperty(string key, object value) {
       SetProperty(key, value, PhotonNetwork.CurrentRoom.CustomProperties, PhotonNetwork.CurrentRoom.SetCustomProperties);
     }
@@ -177,12 +191,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     // Check all players in the room and returns whether all the robbers are captured
-    public bool AllRobbersCaught() {
+    public bool NoLoyalsRemaining() {
       foreach (Player player in GetPlayers()) {
-          if (PlayerPropertyIs<string>("Team", "Robber", player) && (!PlayerPropertyIs<bool>("Captured", true, player))) {
+        Team playerTeam = GetPlayerProperty<Team>("Team", player);
+        if (Team.Loyal.HasFlag(playerTeam)) {
+          return false;
+        }
+      }
+      Debug.Log("all loyals have been killed");
+      return true;
+    }
+
+    public bool CaptainIsDead() {
+      foreach (Player player in GetPlayers()) {
+          if (PlayerPropertyIs<Team>("Team", Team.Captain, player)) {
               return false;
           }
       }
+      Debug.Log("the captain has been killed");
       return true;
     }
 
@@ -217,7 +243,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       foreach(Player player in GetPlayers()) {
         SetPlayerProperty("Ready", false, player);
         SetPlayerProperty("InGameScene", false, player);
-        SetPlayerProperty("Captured", false, player);
+        SetPlayerProperty("Dead", false, player);
       }
     }
 

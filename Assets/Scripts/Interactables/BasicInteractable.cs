@@ -1,4 +1,4 @@
 using UnityEngine;
 using Photon.Pun;
 
-class BasicInteractable : Interactable {}
+public class BasicInteractable : Interactable {}
