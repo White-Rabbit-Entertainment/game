@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -227,7 +228,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void JoinRoom(string roomName) {
       PhotonNetwork.JoinRoom(roomName);
     }
-    
+
     public void ChangeScene(string sceneName) {
       PhotonNetwork.LoadLevel(sceneName);
     }

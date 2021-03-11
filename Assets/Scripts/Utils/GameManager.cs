@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviourPun {
 
     // Current instance of the GameManager singleton
     public static GameManager instance;
+
   
     void Awake() {
       /// This is what makes this a singleton. This means we can do <code>
@@ -37,7 +38,13 @@ public class GameManager : MonoBehaviourPun {
 
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartRoundTimer(600);
+        NetworkManager.instance.StartRoundTimer(10);
+      }
+    }
+
+    public void StartMealSwapTimer() {
+      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+        NetworkManager.instance.StartRoundTimer(10);
       }
     }
 
@@ -77,9 +84,17 @@ public class GameManager : MonoBehaviourPun {
     }
 
     public void StartGame() {
+      NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
       NetworkManager.instance.ChangeScene("GameScene");
       StartRoundTimer();
     }
+
+      public void StartMealSwap() {
+      NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
+      NetworkManager.instance.ChangeScene("MealScene");
+      StartMealSwapTimer();
+    }
+
 
     /// <summary> This function handles the game over logic. It does 2 things:
     ///   <list> 
@@ -115,6 +130,18 @@ public class GameManager : MonoBehaviourPun {
       }  
     }
 
+    public void HandleSceneSwitch(){
+        int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
+        if (secondsLeft < 0) {
+        if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
+        StartMealSwap();
+        }
+        if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "MealScene") {
+        StartGame();
+        }
+        }
+    }
+
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
     // TODO Show some loading UI if the level isnt loaded yet.
@@ -143,7 +170,7 @@ public class GameManager : MonoBehaviourPun {
 
     void Update() {
       if (LevelLoaded()) {
-        HandleGameOver();
+        HandleSceneSwitch();
       }
-    }
-}
+      }
+}  
