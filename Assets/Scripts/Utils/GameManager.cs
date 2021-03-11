@@ -106,16 +106,17 @@ public class GameManager : MonoBehaviourPun {
         if (AllTasksCompleted()) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
-        // if (!NetworkManager.instance.RoomPropertyIs<Team>("WinningTeam", Team.None)) {
-        //   Team winner = NetworkManager.instance.GetRoomProperty<Team>("WinningTeam");
-        //   string winnerString;
-        //   if (winner == Team.Traitor) winnerString = "Traitor";
-        //   else winnerString = "Loyal";
-        //   Debug.Log("Game Over!");
-        //   Debug.Log($"{winnerString}'s have won!");
-        //   NetworkManager.instance.ResetRoom();
-        //   NetworkManager.instance.ChangeScene("LobbyScene");
-        // }
+        
+        if (!NetworkManager.instance.RoomPropertyIs<Team>("WinningTeam", Team.None)) {
+          Team winner = NetworkManager.instance.GetRoomProperty<Team>("WinningTeam");
+          string winnerString;
+          if (winner == Team.Traitor) winnerString = "Traitor";
+          else winnerString = "Loyal";
+          Debug.Log("Game Over!");
+          Debug.Log($"{winnerString}'s have won!");
+          NetworkManager.instance.ResetRoom();
+          NetworkManager.instance.ChangeScene("LobbyScene");
+        }
       }  
     }
 
