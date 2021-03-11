@@ -9,10 +9,9 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public Text playerCounter;
+
     public GameObject playerList;
     public Button toggleReadyButton;
-    public GameObject robberPrefab;
-    public GameObject seekerPrefab;
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
@@ -48,6 +47,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
       }
     }
 
+    
     void SetText() {
       Clear(playerList);
       foreach (Player player in NetworkManager.instance.GetPlayers()) {

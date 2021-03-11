@@ -6,10 +6,16 @@
         "PhotonUnityNetworking.Utilities",
         "PhotonUnityNetworking.Utilities.PhotonPlayer.Editor",
         "PhotonRealtime",
-        "Outline"
+        "Outline",
+        "QuantumUI",
+        "PhotonChat",
+        "TypeReferences",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [],
+    "excludePlatforms": [
+        "Android"
+    ],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
