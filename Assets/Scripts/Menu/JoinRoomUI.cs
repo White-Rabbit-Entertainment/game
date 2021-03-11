@@ -4,13 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class JoinRoomUI: MonoBehaviour {
+public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
     public InputField roomNameInput;
     public InputField playerNameInput;
     public Button createRoomButton; 
     public Button joinRoomButton;
     public Button createPrivateButton;
+    public Button startButton;
+
+    public GameObject NameUI;
+    public GameObject RoomUI;
+    
 
     public static JoinRoomUI Instance;
 
@@ -41,17 +46,35 @@ public class JoinRoomUI: MonoBehaviour {
     }
 
     void Start() {
-      createRoomButton.onClick.AddListener(OnClickCreateRoom);
-      joinRoomButton.onClick.AddListener(OnClickJoinRoom);
-      createPrivateButton.onClick.AddListener(OnClickCreatePrivateRoom);
-       
+        PhotonNetwork.ConnectUsingSettings();
+
+
+        createRoomButton.onClick.AddListener(OnClickCreateRoom);
+        joinRoomButton.onClick.AddListener(OnClickJoinRoom);
+        createPrivateButton.onClick.AddListener(OnClickCreatePrivateRoom);
+        startButton.onClick.AddListener(StartButton);
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        NameUI.SetActive(true);
+        Debug.Log("Connected to the Master");
+        PhotonNetwork.JoinLobby();
+
+    }
+
+    void StartButton()
+    {
+        NameUI.SetActive(false);
+        RoomUI.SetActive(true);
     }
 
     void OnClickCreateRoom() {
       NetworkManager.instance.CreateRoom(RoomName());
       PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
-    
+
+
     void OnClickJoinRoom() {
       NetworkManager.instance.JoinRoom(roomNameInput.text);
       PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
@@ -62,6 +85,14 @@ public class JoinRoomUI: MonoBehaviour {
         string PrivateRoom = 'p' + RoomName();
         NetworkManager.instance.CreateRoom(PrivateRoom);
     }
+
+
+    void OnClickJoinPrivateRoom()
+    {
+        NetworkManager.instance.JoinRoom('p' + RoomName());
+        PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
+    }
+
 
     public void JoinRoom(string room)
     {
