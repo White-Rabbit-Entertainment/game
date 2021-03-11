@@ -170,8 +170,8 @@ MonoBehaviour:
   canBeMasterTask: 1
   hardRequirements: []
   singleUse: 0
-  team: 3
-  taskTeam: 7
+  team: -1
+  taskTeam: -1
   outlineWidth: 5
   itemAnimationTrigger: 
   playerAnimationTrigger: PickUp

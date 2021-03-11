@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
 
-        if (NetworkManager.instance.AllLoyalsDead()) {
+        if (NetworkManager.instance.NoLoyalsRemaining()) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 

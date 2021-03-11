@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2244035727389638681}
   - component: {fileID: -2149960402478107961}
   m_Layer: 0
-  m_Name: Chest_Open
+  m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,8 +164,8 @@ MonoBehaviour:
   canBeMasterTask: 1
   hardRequirements: []
   singleUse: 0
-  team: 5
-  taskTeam: 1
+  team: -1
+  taskTeam: 3
   outlineWidth: 5
   itemAnimationTrigger: Click
   playerAnimationTrigger: 

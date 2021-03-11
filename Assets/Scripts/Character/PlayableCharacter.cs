@@ -4,6 +4,18 @@ using UnityEngine;
 public abstract class PlayableCharacter : Character {
     public Meal meal;
     public Color colour;
+    public GameObject ghostPrefab;
+
+    public void Kill() {
+        NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, GetComponent<PhotonView>().Owner);
+        GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
+        PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+    }
+
+    [PunRPC]
+    public void DestroyPlayer() {
+        Destroy(gameObject);
+    }
 
     [PunRPC]
     public void AssignColour(float r, float g, float b) {

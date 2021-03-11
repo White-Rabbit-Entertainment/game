@@ -186,9 +186,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     // Check all players in the room and returns whether all the robbers are captured
-    public bool AllLoyalsDead() {
+    public bool NoLoyalsRemaining() {
       foreach (Player player in GetPlayers()) {
-          if (PlayerPropertyIs<Team>("Team", Team.Loyal, player) && (!PlayerPropertyIs<bool>("Dead", true, player))) {
+          if (PlayerPropertyIs<Team>("Team", Team.Loyal, player)) {
               return false;
           }
       }
