@@ -63,8 +63,10 @@ public class GameManager : MonoBehaviourPun {
             NetworkManager.instance.SetPlayerProperty("Team", Team.Traitor, players[i]);
           }
 
-          for (int i = numberOfTraitors; i < players.Count; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", Team.Loyal, players[i]);
+          NetworkManager.instance.SetPlayerProperty("Team", Team.Captain, players[numberOfTraitors]);
+
+          for (int i = numberOfTraitors + 1; i < players.Count; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
           }
           NetworkManager.instance.SetRoomProperty("GameReady", true);
         }
@@ -93,13 +95,18 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
 
-        if (NetworkManager.instance.AllLoyalsDead()) {
+        if (NetworkManager.instance.NoLoyalsRemaining()) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
+        }
+
+        if (NetworkManager.instance.CaptainIsDead()) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
         if (AllTasksCompleted()) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
+        
         if (!NetworkManager.instance.RoomPropertyIs<Team>("WinningTeam", Team.None)) {
           Team winner = NetworkManager.instance.GetRoomProperty<Team>("WinningTeam");
           string winnerString;

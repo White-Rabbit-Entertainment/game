@@ -9,6 +9,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     public GameObject traitorPrefab;
     public GameObject loyalPrefab;
+    public GameObject captainPrefab;
     public InventoryUI inventoryUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
@@ -52,8 +53,10 @@ public class PlayerSpawner : MonoBehaviour {
         // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
             player = PhotonNetwork.Instantiate(traitorPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-        } else {
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
             player = PhotonNetwork.Instantiate(loyalPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+        } else {
+            player = PhotonNetwork.Instantiate(captainPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
         PhotonView playerView = player.GetComponent<PhotonView>();
         playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
