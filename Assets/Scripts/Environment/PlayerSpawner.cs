@@ -15,6 +15,8 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
 
+    public bool mealSwapping;
+
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
         //scene change as soon as this script is enabled.
@@ -71,7 +73,7 @@ public class PlayerSpawner : MonoBehaviour {
 
           // Then load in all the players
           LoadPlayer();
-          LoadAgents();
+          if (!mealSwapping) LoadAgents();
 
           // Then this script has done its job (loaded in the player) so we can
           // destory it.
