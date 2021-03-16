@@ -3,7 +3,8 @@
   public bool hasPoison = true;
 
   public override void Start() {
-    team = Team.Traitor;
     base.Start();
+    team = Team.Traitor;
+    canTask = false;
   }
 }

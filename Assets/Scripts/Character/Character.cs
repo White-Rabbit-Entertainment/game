@@ -10,6 +10,8 @@ public abstract class Character : MonoBehaviour {
   public List<Pocketable> pocketedItems;
   public InventoryUI inventoryUI;
 
+  public bool canTask;
+
   public Team team;
   public bool HasItem() {
     return currentHeldItem != null; 
@@ -26,6 +28,7 @@ public abstract class Character : MonoBehaviour {
   }
 
   public virtual void Start() {
+    canTask = false;
     pocketedItems = new List<Pocketable>();
   }
 
