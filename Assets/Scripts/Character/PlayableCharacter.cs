@@ -1,14 +1,46 @@
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public abstract class PlayableCharacter : Character {
-    public Meal meal;
     public Color colour;
+
     public GameObject ghostPrefab;
+    public GameObject mealPrefab;
+
+    public Player owner;
+
+    public override void Start() { 
+      owner = GetComponent<PhotonView>().Owner;
+      // If the player has not yet been assinged a meal
+      if (!NetworkManager.instance.PlayerHasProperty("MealId", owner)) {
+        int mealId =  NetworkManager.instance.GetPlayerProperty<int>("MealId", owner);
+        // Create a meal for them 
+        Meal meal = PhotonNetwork.Instantiate(mealPrefab.name, new Vector3(0,0,0), Quaternion.identity).GetComponent<Meal>();
+        // Set the colour of the meal to the player's colour
+        meal.GetComponent<PhotonView>().RPC("SetColour", RpcTarget.All, colour.r, colour.g, colour.b);
+        // Set their meal to this meal id
+        SetMeal(meal);
+      }
+
+      base.Start();
+    }
+
+
+    // Retrun the meal which this player owns
+    public Meal GetMeal() {
+      int mealId = NetworkManager.instance.GetPlayerProperty<int>("MealId", owner);
+      return PhotonView.Find(mealId).GetComponent<Meal>();
+    }
+
+    // Sets the players meal to a given meal
+    public void SetMeal(Meal meal) {
+      NetworkManager.instance.SetPlayerProperty("MealId", meal.GetComponent<PhotonView>().ViewID, owner);
+    }
 
     [PunRPC]
     public void Kill() {
-        NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, GetComponent<PhotonView>().Owner);
+        NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, owner);
         GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
         PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
     }
@@ -21,17 +53,12 @@ public abstract class PlayableCharacter : Character {
     [PunRPC]
     public void AssignColour(float r, float g, float b) {
         colour = new Color(r,g,b);
-        meal.colour = new Color(r,g,b);
     }
 
-    [PunRPC]
-    public void SwapMeal(int playerViewId) {
-        PhotonView playerView = PhotonView.Find(playerViewId);
-        PlayableCharacter player = playerView.GetComponent<PlayableCharacter>();
-        Meal tempMeal = player.meal;
-        player.meal = meal;
-        meal.transform.parent = player.transform;
-        meal = tempMeal;
-        meal.transform.parent = transform;
+    // Given a player to swap with, this player swaps meals with that player
+    public void SwapMeal(PlayableCharacter player) {
+        Meal tempMeal = player.GetMeal();
+        player.SetMeal(this.GetMeal());
+        this.SetMeal(tempMeal);
     }
 }

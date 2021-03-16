@@ -98,6 +98,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       return EqualityComparer<T>.Default.Equals(GetProperty<T>(key, properties), value);
     }
     
+    /// <summary> Function to check if a value is in a given hashset </summary>
+    /// <example> For example:
+    /// <code>
+    ///    NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", true);
+    /// </code>
+    /// This returns true if the game has started (ie gamestarted set to true
+    /// in room).
+    /// </example>
+    public bool HasProperty(string key, Hashtable properties) {
+      return properties.ContainsKey(key);
+    }
+    
     /// <summary> Function to set value in custom properties. </summary>
     /// <example> For example:
     /// <code>
@@ -176,6 +188,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public bool PlayerPropertyIs<T>(string key, T value, Player player) {
       return PropertyIs<T>(key, value, player.CustomProperties);
+    }
+    
+    public bool PlayerHasProperty(string key, Player player) {
+      return HasProperty(key, player.CustomProperties);
     }
 
     // Start the timer for the game, but assigning the start time and round length (which all clients use)
