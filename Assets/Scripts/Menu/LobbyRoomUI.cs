@@ -7,7 +7,7 @@ using Photon.Realtime;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class LobbyRoomUI : MonoBehaviourPun {
+public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public Text playerCounter;
 
     public GameObject playerList;
@@ -15,7 +15,15 @@ public class LobbyRoomUI : MonoBehaviourPun {
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
+
     private Hashtable props;
+
+    // Clears a list by destorying all children 
+    public static void Clear(GameObject gameObject) {
+      foreach (Transform child in gameObject.transform) {
+        Destroy(child.gameObject);
+      }
+    }
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
@@ -36,9 +44,7 @@ public class LobbyRoomUI : MonoBehaviourPun {
 
     
     void SetText() {
-      foreach (Transform child in playerList.transform) {
-        Destroy(child.gameObject);
-      }
+      Clear(playerList);
       foreach (Player player in NetworkManager.instance.GetPlayers()) {
         GameObject playerItemPrefab; 
         if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {

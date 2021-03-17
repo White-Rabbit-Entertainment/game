@@ -37,6 +37,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // A call back for when user connects to the server.
     public override void OnConnectedToMaster() {
       Debug.Log("Connected to master server");
+      Debug.Log(PhotonNetwork.CloudRegion);
     }
     
     // A call back for when user creates a room. 
@@ -48,6 +49,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public override void OnJoinedRoom() {
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
+    }
+    
+    public override void OnRoomListUpdate(List<RoomInfo> rooms) {
+      Debug.Log("Network mangaer room list update");
     }
 
     /* Helper to set custom properties, all examples are given for room
@@ -262,7 +267,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public void CreateRoom (string roomName) {
-      PhotonNetwork.CreateRoom(roomName);
+      PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
     }
 
     public void JoinRoom(string roomName) {
