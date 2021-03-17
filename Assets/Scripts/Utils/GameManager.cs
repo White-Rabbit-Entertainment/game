@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviourPun {
 
     // Instance
     public GameObject stealables;
-    public GameObject robberPrefab;
-    public GameObject seekerPrefab;
+    public GameObject loyalPrefab;
+    public GameObject traitorPrefab;
 
     // Current instance of the GameManager singleton
     public static GameManager instance;
@@ -56,20 +56,17 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.SetRoomProperty("NumberOfNonStealingTasks", 2);
           
           List<Player> players = NetworkManager.instance.GetPlayers();
-          int numberOfRobbers = NetworkManager.instance.GetRoomProperty<int>("NumberOfRobbers", (int)(players.Count/2));
-
-          // For now if there is only 1 player in the game it must be a seeker otherwise the game ends immediately
-          if (numberOfRobbers == 0) {
-            numberOfRobbers++;
-          }
+          int numberOfTraitors = NetworkManager.instance.GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
 
           players.Shuffle();
-          for (int i = 0; i < numberOfRobbers; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", "Robber", players[i]);
+          for (int i = 0; i < numberOfTraitors; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", Team.Traitor, players[i]);
           }
 
-          for (int i = numberOfRobbers; i < players.Count; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", "Seeker", players[i]);
+          NetworkManager.instance.SetPlayerProperty("Team", Team.Captain, players[numberOfTraitors]);
+
+          for (int i = numberOfTraitors + 1; i < players.Count; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
           }
           NetworkManager.instance.SetRoomProperty("GameReady", true);
         }
@@ -95,20 +92,28 @@ public class GameManager : MonoBehaviourPun {
 
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
         if (secondsLeft <= 0) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", "Seeker");
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
 
-        if (NetworkManager.instance.AllRobbersCaught()) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", "Seeker");
+        if (NetworkManager.instance.NoLoyalsRemaining()) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
+        }
+
+        if (NetworkManager.instance.CaptainIsDead()) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
         if (AllTasksCompleted()) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", "Robber");
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
-        if (!NetworkManager.instance.RoomPropertyIs<string>("WinningTeam", "None")) {
-          string winner = NetworkManager.instance.GetRoomProperty<string>("WinningTeam");
+        
+        if (!NetworkManager.instance.RoomPropertyIs<Team>("WinningTeam", Team.None)) {
+          Team winner = NetworkManager.instance.GetRoomProperty<Team>("WinningTeam");
+          string winnerString;
+          if (winner == Team.Traitor) winnerString = "Traitor";
+          else winnerString = "Loyal";
           Debug.Log("Game Over!");
-          Debug.Log($"{winner}'s have won!");
+          Debug.Log($"{winnerString}'s have won!");
           NetworkManager.instance.ResetRoom();
           NetworkManager.instance.ChangeScene("LobbyScene");
         }
@@ -125,13 +130,13 @@ public class GameManager : MonoBehaviourPun {
     }
 
     /// <summary> Return all the tasks in the scene. I.e. all the tasks the
-    /// robbers have to do to win the game. </summary> 
+    /// Loyals have to do to win the game. </summary> 
     public Task[] GetTasks() {
       Task[] tasks = FindObjectsOfType<Task>();
       return tasks;
     }
 
-    /// <summary> Return if all robber tasks have been completed. </summary> 
+    /// <summary> Return if all Loyal tasks have been completed. </summary> 
     public bool AllTasksCompleted() {
       foreach(Task task in GetTasks()) {
         if (!task.isCompleted) {

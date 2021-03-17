@@ -7,8 +7,10 @@ using Photon.Pun;
 
 public class PlayerSpawner : MonoBehaviour {
 
-    public GameObject seekerPrefab;
-    public GameObject robberPrefab;
+    public GameObject traitorPrefab;
+    public GameObject loyalPrefab;
+    public GameObject captainPrefab;
+    public InventoryUI inventoryUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
@@ -46,12 +48,19 @@ public class PlayerSpawner : MonoBehaviour {
 
     void LoadPlayer() { 
         GameObject player;
+        Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
+ 
         // Load in the local player 
-        if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Seeker")) {
-            player = PhotonNetwork.Instantiate(seekerPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
+            player = PhotonNetwork.Instantiate(traitorPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
+            player = PhotonNetwork.Instantiate(loyalPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         } else {
-            player = PhotonNetwork.Instantiate(robberPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+            player = PhotonNetwork.Instantiate(captainPrefab.name, new Vector3(1,2,10), Quaternion.identity);
         }
+        PhotonView playerView = player.GetComponent<PhotonView>();
+        playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        player.GetComponent<Character>().inventoryUI = inventoryUI;
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }

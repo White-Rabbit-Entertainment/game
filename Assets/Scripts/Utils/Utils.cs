@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
 public static class Utils {
-    private static Random rng = new Random();
+    private static System.Random rng = new System.Random(System.Guid.NewGuid().GetHashCode());
 
     public static void Shuffle<T>(this IList<T> list) {  
         int n = list.Count;  
@@ -19,5 +21,11 @@ public static class Utils {
             list[n] = value;  
         }  
     }
-
+    
+    // Clear the text of an InputFiled
+    public static void Clear(this InputField inputfield)
+    {
+        inputfield.Select();
+        inputfield.text = "";
+    }
 }

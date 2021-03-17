@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5002148565844352170}
   - component: {fileID: 5002148565844352162}
   - component: {fileID: -2952390499213649483}
+  - component: {fileID: -5318025020539030565}
   m_Layer: 0
   m_Name: StealableItem
   m_TagString: interactable
@@ -165,9 +166,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: Steal this
-  outlineWidth: 5
+  softRequirementTypes: []
+  canBeMasterTask: 1
+  hardRequirements: []
   singleUse: 0
   team: -1
+  taskTeam: 7
+  outlineWidth: 5
   itemAnimationTrigger: 
   playerAnimationTrigger: Pickup
   isPickedUp: 0
+--- !u!208 &-5318025020539030565
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5002148565844352172}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

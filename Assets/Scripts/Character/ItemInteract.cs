@@ -6,6 +6,7 @@ using Photon.Pun;
 /// <summary><c>ItemInteract</c> is the class which defines the behaviour for
 /// how a player interacts with an <c>Interactable</c>. 
 /// E.g. Defines when to turn on glow and when to pickup a PickUpable
+[RequireComponent(typeof(PlayableCharacter))]
 public class ItemInteract : MonoBehaviourPun {
 
     public float maxInteractionDistance = 2f;
@@ -14,13 +15,13 @@ public class ItemInteract : MonoBehaviourPun {
     private RaycastHit raycastFocus;
     private bool interactableInRange = false;
     private Interactable currentInteractable;
-    private Character character;
+    private PlayableCharacter character;
 
     private void Start() {
         if (!photonView.IsMine) {
             Destroy(this);
         }
-        character = GetComponent<Character>();
+        character = GetComponent<PlayableCharacter>();
     }
  
     private void Update() {
@@ -36,7 +37,7 @@ public class ItemInteract : MonoBehaviourPun {
             // trying to interact with something new, then we need to disable
             // the other interaction (turn off its glow).
             if (newInteractable != currentInteractable && currentInteractable != null) {
-                currentInteractable.GlowOff();
+                currentInteractable.GlowOff(character);
             }
             currentInteractable = newInteractable;
             
@@ -55,7 +56,7 @@ public class ItemInteract : MonoBehaviourPun {
         // interacting with something.
         else if (currentInteractable != null) {
             // Then turn off the glow of that thing
-            currentInteractable.GlowOff();
+            currentInteractable.GlowOff(character);
 
             // And if bring the mouse button up
             if (Input.GetButtonUp("Fire1")) {

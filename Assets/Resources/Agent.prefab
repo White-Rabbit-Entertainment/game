@@ -36,7 +36,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 8456182857741844341}
   currentHeldItem: {fileID: 0}
-  team: 2
+  pocketedItems: []
+  inventoryUI: {fileID: 0}
+  team: 0
 --- !u!114 &2197168800728776343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,10 +69,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: 
-  outlineWidth: 5
+  softRequirementTypes: []
+  canBeMasterTask: 1
+  hardRequirements: []
   singleUse: 0
   team: 3
   taskTeam: 3
+  outlineWidth: 5
   itemAnimationTrigger: Click
   playerAnimationTrigger: 
 --- !u!1001 &8659776598351759178

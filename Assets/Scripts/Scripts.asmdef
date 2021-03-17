@@ -7,7 +7,10 @@
         "PhotonUnityNetworking.Utilities.PhotonPlayer.Editor",
         "PhotonRealtime",
         "Outline",
-        "QuantumUI"
+        "QuantumUI",
+        "PhotonChat",
+        "TypeReferences",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
