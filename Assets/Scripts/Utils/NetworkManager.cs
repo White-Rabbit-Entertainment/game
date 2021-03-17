@@ -8,8 +8,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 /// <summary> <c>NetworkManager</c> handles logic to do with PhotonNetwork. It
 /// is also a singleton see <c>GameManager</c> <see cref="GameManager"></see>
 /// for more details. This is also initialized in the first scene. </summary>
-public class NetworkManager : MonoBehaviourPunCallbacks
-{
+public class NetworkManager : MonoBehaviourPunCallbacks {
     // Delegates to defined the required structure for functions to set room
     // properties.
     public delegate bool PhotonSetPropertyDelegate(Hashtable propertiesToSet, Hashtable expectedValues=null, WebFlags webFlags=null);
@@ -17,10 +16,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
+    public static PlayableCharacter myCharacter;
     private string lobbyScene = "LobbyScene";
 
-    void Awake()
-    {
+    void Awake() {
       // Singleton stuff see GameManager for details.
       if (instance != null && instance != this) {
         gameObject.SetActive(false);
@@ -282,5 +281,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       }
       Dictionary<int, Player> players = PhotonNetwork.CurrentRoom.Players;
       return new List<Player>(players.Values);
+    }
+
+    public PlayableCharacter GetMe() {
+      return myCharacter;
     }
 }
