@@ -12,28 +12,39 @@ public class SettingsMenu : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        mouseSensitivitySlider.onValueChanged.AddListener (delegate {ValueChangeCheck ();}); 
+      mouseSensitivitySlider.onValueChanged.AddListener (delegate {OnMouseSensitivitySliderChange ();}); 
+    }
+
+    public void ToggleMenu() {
+      if (menuOpen) {
+        CloseMenu();
+      } else {
+        OpenMenu();
+      }
     }
     
     public void OpenMenu() {
-      bool menuOpen = true;
+      menuOpen = true;
+      mouseSensitivitySlider.value = NetworkManager.instance.GetMe().GetComponentInChildren<CameraMouseLook>().mouseSensitivity;
+      NetworkManager.instance.GetMe().Freeze();
       settingsPanel.SetActive(true);
       Cursor.lockState = CursorLockMode.None;
     }
     
     public void CloseMenu() {
       settingsPanel.SetActive(false);
+      NetworkManager.instance.GetMe().Unfreeze();
       Cursor.lockState = CursorLockMode.Locked;
-      bool menuOpen = false;
+      menuOpen = false;
     }
     
-    public void ValueChangeCheck() {
-      Debug.Log(mouseSensitivitySlider.value);
+    public void OnMouseSensitivitySliderChange() {
+      NetworkManager.instance.GetMe().GetComponentInChildren<CameraMouseLook>().mouseSensitivity = mouseSensitivitySlider.value;
     }
 
     public void Update() {
-      if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.P)){
-        OpenMenu();
+      if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)){
+        ToggleMenu();
       }
     }
 }

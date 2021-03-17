@@ -26,6 +26,18 @@ public abstract class PlayableCharacter : Character {
       base.Start();
     }
 
+    public void Freeze() {
+      GetComponent<PlayerMovement>().enabled = false;
+      GetComponent<PlayerAnimation>().enabled = false;
+      GetComponentInChildren<CameraMouseLook>().enabled = false;
+    }
+
+    public void Unfreeze() {
+      GetComponent<PlayerMovement>().enabled = true;
+      GetComponent<PlayerAnimation>().enabled = true;
+      GetComponentInChildren<CameraMouseLook>().enabled = true;
+    }
+
 
     // Retrun the meal which this player owns
     public Meal GetMeal() {
