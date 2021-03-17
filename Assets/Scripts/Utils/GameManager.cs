@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviourPun {
 
     // Current instance of the GameManager singleton
     public static GameManager instance;
+
+    private List<string> playersLeft;
   
     void Awake() {
       /// This is what makes this a singleton. This means we can do <code>
@@ -41,9 +43,15 @@ public class GameManager : MonoBehaviourPun {
       }
     }
 
+    public void StartTurnTimer() {
+      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+        NetworkManager.instance.StartTurnTimer(20);
+      }
+    }
+
     public void StartMealSwapTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartRoundTimer(10);
+        NetworkManager.instance.StartRoundTimer(40);
       }
     }
 
@@ -87,8 +95,17 @@ public class GameManager : MonoBehaviourPun {
 
      public void StartMealSwap() {
       NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
+      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+      List<Player> players = NetworkManager.instance.GetPlayers();
+      playersLeft = new List<string>();
+      foreach (Player p in players) {
+        playersLeft.Add(p.NickName);
+      }
+      }
+      // NetworkManager.instance.SetRoomProperty("PlayersLeftToSwap", playerStrings);
       NetworkManager.instance.ChangeScene("MealScene");
       StartMealSwapTimer();
+      StartTurnTimer();
     }
 
     /// <summary> This function handles the game over logic. It does 2 things:
@@ -145,6 +162,17 @@ public class GameManager : MonoBehaviourPun {
         }
     }
 
+     public void CurrentPlayerSwitching(){
+        int secondsLeft = (int)NetworkManager.instance.GetTurnTimeRemaining();
+        // if (playersLeft.Count > 1) Debug.Log("BIGGER");
+        // List<string> playersLeft = NetworkManager.instance.GetRoomProperty<List<string>>("PlayersLeftToSwap");
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) NetworkManager.instance.SetRoomProperty("CurrentPlayer", playersLeft[0]);
+        if (secondsLeft < 0) {
+          StartTurnTimer();
+          if (PhotonNetwork.LocalPlayer.IsMasterClient) playersLeft.RemoveAt(0);
+        } 
+    }
+
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
     // TODO Show some loading UI if the level isnt loaded yet.
@@ -173,7 +201,8 @@ public class GameManager : MonoBehaviourPun {
 
     void Update() {
       if (LevelLoaded()) {
-        HandleGameOver();
+        HandleSceneSwitch();
+        if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "MealScene") CurrentPlayerSwitching();
       }
     }
 }

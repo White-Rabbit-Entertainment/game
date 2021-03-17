@@ -184,9 +184,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       SetRoomProperty("RoundTimerStart", PhotonNetwork.Time);
     }
 
+       public void StartTurnTimer(double TurnLength) {
+      SetRoomProperty("TurnLength", TurnLength);
+      SetRoomProperty("TurnTimerStart", PhotonNetwork.Time);
+    }
+
     // Returns round time remaining (or 0 if not started)
     public double GetRoundTimeRemaining() {
       return GetRoomProperty<double>("RoundLength", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>("RoundTimerStart", 0f));
+    }
+
+     public double GetTurnTimeRemaining() {
+      return GetRoomProperty<double>("TurnLength", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>("TurnTimerStart", 0f));
     }
 
     // Check all players in the room and returns whether all the robbers are captured
