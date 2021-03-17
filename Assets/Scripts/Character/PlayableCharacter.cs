@@ -67,6 +67,11 @@ public abstract class PlayableCharacter : Character {
         colour = new Color(r,g,b);
     }
 
+    [PunRPC]
+    public void AssignRole(Role role) {
+
+    }
+
     // Given a player to swap with, this player swaps meals with that player
     public void SwapMeal(PlayableCharacter player) {
         Meal tempMeal = player.GetMeal();

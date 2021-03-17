@@ -13,6 +13,12 @@ public abstract class Character : MonoBehaviour {
   public bool canTask;
 
   public Team team;
+  
+  public Role role;
+  string roleName;
+    
+  GameObject modelPrefab;
+
   public bool HasItem() {
     return currentHeldItem != null; 
   }
@@ -30,6 +36,7 @@ public abstract class Character : MonoBehaviour {
   public virtual void Start() {
     canTask = false;
     pocketedItems = new List<Pocketable>();
+    PhotonNetwork.Instantiate(modelPrefab.name, transform.position, transform.rotation);
   }
 
   public void PickUp(Pickupable item) {

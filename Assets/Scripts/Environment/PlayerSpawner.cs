@@ -15,6 +15,10 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
 
+    public List<GameObject> rolesPrefabs;
+
+    public RoleInfo roleInfo;
+
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
         //scene change as soon as this script is enabled.
@@ -49,18 +53,40 @@ public class PlayerSpawner : MonoBehaviour {
     void LoadPlayer() { 
         GameObject player;
         Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
+
+        Vector3 spawnPoint;
+        GameObject playerPrefab;
         // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
-            player = PhotonNetwork.Instantiate(traitorPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+            spawnPoint = new Vector3(1,2,-10);
+            playerPrefab = traitorPrefab;
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
-            player = PhotonNetwork.Instantiate(loyalPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+            spawnPoint = new Vector3(1,2,10);
+            playerPrefab = loyalPrefab;
         } else {
-            player = PhotonNetwork.Instantiate(captainPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+            spawnPoint = new Vector3(1,2,10);
+            playerPrefab = captainPrefab;
         }
+
+        // Spawn in the player at the spawn point
+        player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity);
+
+        // Grab some useful components
+        PlayableCharacter character = player.GetComponent<PlayableCharacter>();
         PhotonView playerView = player.GetComponent<PhotonView>();
+
+        // Set the player colour
         playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-        player.GetComponent<Character>().inventoryUI = inventoryUI;
-        NetworkManager.myCharacter = player.GetComponent<PlayableCharacter>();
+
+        // Assign a role
+        GameObject body = PhotonNetwork.Instantiate(rolesPrefabs[0].name, player.transform.position, Quaternion.identity);
+        body.transform.parent = player.transform; // Sets the parent of the body to the player
+        roleInfo = body.GetComponent<RoleInfo>(); 
+        
+        // Set the inventoryUI
+        character.inventoryUI = inventoryUI;
+        NetworkManager.myCharacter = character;
+
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }
