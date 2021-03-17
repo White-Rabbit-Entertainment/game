@@ -8,8 +8,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 /// <summary> <c>NetworkManager</c> handles logic to do with PhotonNetwork. It
 /// is also a singleton see <c>GameManager</c> <see cref="GameManager"></see>
 /// for more details. This is also initialized in the first scene. </summary>
-public class NetworkManager : MonoBehaviourPunCallbacks
-{
+public class NetworkManager : MonoBehaviourPunCallbacks {
     // Delegates to defined the required structure for functions to set room
     // properties.
     public delegate bool PhotonSetPropertyDelegate(Hashtable propertiesToSet, Hashtable expectedValues=null, WebFlags webFlags=null);
@@ -17,10 +16,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
+    public static PlayableCharacter myCharacter;
     private string lobbyScene = "LobbyScene";
 
-    void Awake()
-    {
+    void Awake() {
       // Singleton stuff see GameManager for details.
       if (instance != null && instance != this) {
         gameObject.SetActive(false);
@@ -38,6 +37,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // A call back for when user connects to the server.
     public override void OnConnectedToMaster() {
       Debug.Log("Connected to master server");
+      Debug.Log(PhotonNetwork.CloudRegion);
     }
     
     // A call back for when user creates a room. 
@@ -49,6 +49,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom() {
       Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
+    }
+    
+    public override void OnRoomListUpdate(List<RoomInfo> rooms) {
+      Debug.Log("Network mangaer room list update");
     }
 
     /* Helper to set custom properties, all examples are given for room
@@ -96,6 +100,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     /// </example>
     public bool PropertyIs<T>(string key, T value, Hashtable properties) {
       return EqualityComparer<T>.Default.Equals(GetProperty<T>(key, properties), value);
+    }
+    
+    /// <summary> Function to check if a value is in a given hashset </summary>
+    /// <example> For example:
+    /// <code>
+    ///    NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", true);
+    /// </code>
+    /// This returns true if the game has started (ie gamestarted set to true
+    /// in room).
+    /// </example>
+    public bool HasProperty(string key, Hashtable properties) {
+      return properties.ContainsKey(key);
     }
     
     /// <summary> Function to set value in custom properties. </summary>
@@ -177,6 +193,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public bool PlayerPropertyIs<T>(string key, T value, Player player) {
       return PropertyIs<T>(key, value, player.CustomProperties);
     }
+    
+    public bool PlayerHasProperty(string key, Player player) {
+      return HasProperty(key, player.CustomProperties);
+    }
 
     // Start the timer for the game, but assigning the start time and round length (which all clients use)
     public void StartRoundTimer(double roundLength) {
@@ -256,7 +276,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     public void CreateRoom (string roomName) {
-      PhotonNetwork.CreateRoom(roomName);
+      PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
     }
 
     public void JoinRoom(string roomName) {
@@ -275,5 +295,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
       }
       Dictionary<int, Player> players = PhotonNetwork.CurrentRoom.Players;
       return new List<Player>(players.Values);
+    }
+
+    public PlayableCharacter GetMe() {
+      return myCharacter;
     }
 }

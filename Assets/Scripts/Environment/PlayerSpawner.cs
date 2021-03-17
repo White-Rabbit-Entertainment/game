@@ -51,7 +51,6 @@ public class PlayerSpawner : MonoBehaviour {
     void LoadPlayer() { 
         GameObject player;
         Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
- 
         // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
             player = PhotonNetwork.Instantiate(traitorPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
@@ -63,6 +62,7 @@ public class PlayerSpawner : MonoBehaviour {
         PhotonView playerView = player.GetComponent<PhotonView>();
         playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
         player.GetComponent<Character>().inventoryUI = inventoryUI;
+        NetworkManager.myCharacter = player.GetComponent<PlayableCharacter>();
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }
