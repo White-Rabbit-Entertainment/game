@@ -13,12 +13,9 @@ public abstract class Character : MonoBehaviour {
   public bool canTask;
 
   public Team team;
-  
-  public Role role;
-  string roleName;
-    
-  GameObject modelPrefab;
 
+  public RoleInfo roleInfo;
+    
   public bool HasItem() {
     return currentHeldItem != null; 
   }
@@ -36,7 +33,6 @@ public abstract class Character : MonoBehaviour {
   public virtual void Start() {
     canTask = false;
     pocketedItems = new List<Pocketable>();
-    PhotonNetwork.Instantiate(modelPrefab.name, transform.position, transform.rotation);
   }
 
   public void PickUp(Pickupable item) {
@@ -78,5 +74,17 @@ public abstract class Character : MonoBehaviour {
 
   public virtual Vector3 Velocity() {
     return GetComponent<CharacterController>().velocity;
+  }
+
+  [PunRPC]
+  public void AssignRole (Role role) {
+      string prefabName = role.ToString();
+      Debug.Log("Loading in");
+      Debug.Log(prefabName);
+      GameObject prefab = (GameObject)Resources.Load("Roles/" + prefabName, typeof(GameObject));
+      GameObject body = Instantiate(prefab, new Vector3(0,0,0), Quaternion.identity);
+      body.transform.parent = transform; // Sets the parent of the body to the player
+      body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
+      roleInfo = body.GetComponent<RoleInfo>();
   }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -58,17 +60,24 @@ public class GameManager : MonoBehaviourPun {
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfTraitors = NetworkManager.instance.GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
 
+          List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+          roles.Remove(Role.Captain); // We dont want to assing anyone (expect the capatian) the capatian role
+
           players.Shuffle();
           for (int i = 0; i < numberOfTraitors; i++) {
             NetworkManager.instance.SetPlayerProperty("Team", Team.Traitor, players[i]);
+            NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
 
           NetworkManager.instance.SetPlayerProperty("Team", Team.Captain, players[numberOfTraitors]);
+          NetworkManager.instance.SetPlayerProperty("Role", Role.Captain, players[numberOfTraitors]);
 
           for (int i = numberOfTraitors + 1; i < players.Count; i++) {
             NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
+            NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
           NetworkManager.instance.SetRoomProperty("GameReady", true);
+
         }
       }
     }

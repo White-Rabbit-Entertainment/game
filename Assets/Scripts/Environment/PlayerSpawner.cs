@@ -78,10 +78,9 @@ public class PlayerSpawner : MonoBehaviour {
         // Set the player colour
         playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 
-        // Assign a role
-        GameObject body = PhotonNetwork.Instantiate(rolesPrefabs[0].name, player.transform.position, Quaternion.identity);
-        body.transform.parent = player.transform; // Sets the parent of the body to the player
-        roleInfo = body.GetComponent<RoleInfo>(); 
+        // Assign a role prefab
+        Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
+        playerView.RPC("AssignRole", RpcTarget.All, role);
         
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
@@ -90,6 +89,7 @@ public class PlayerSpawner : MonoBehaviour {
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }
+    
 
     void Update() {
         // Wait till all players are in the scene.
