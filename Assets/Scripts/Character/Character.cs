@@ -60,7 +60,9 @@ public abstract class Character : MonoBehaviour {
   }
 
   public void AddItemToInventory(Pocketable item) {
-    RemoveItemFromInventory();
+    if (pocketedItem != null) {
+      RemoveItemFromInventory();
+    }
     pocketedItem = item;
     if (!(this is Agent)) {
       inventoryUI.AddItem(item);
