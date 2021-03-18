@@ -20743,7 +20743,7 @@ GameObject:
   - component: {fileID: 6532996293266029528}
   - component: {fileID: 3187106759406177987}
   m_Layer: 0
-  m_Name: Cook 1
+  m_Name: Captain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20781,8 +20781,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34e0849acb71140daaeecf23d602c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Cook
-  role: 1
+  name: Captain
+  role: 0
 --- !u!1 &5907728127149899393
 GameObject:
   m_ObjectHideFlags: 0

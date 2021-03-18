@@ -43,10 +43,21 @@ public class PlayerSpawner : MonoBehaviour {
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
     void LoadAgents() {
-        // Load in the Agents
+
+        // If the player is the capatian then they should have no clones
+        if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Captain)) {
+            return;
+        }
+
+        // Otherwise load in n agents which have the same role as the player 
         for(int i = 0; i < numberOfAgentsPerPlayer; i++){
-          GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
-          agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
+            // Spawn in the agent
+            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+            agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
+
+            // Assign the same role as the player to the agent 
+            Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
+            agent.GetComponent<PhotonView>().RPC("AssignRole", RpcTarget.All, role);
         }
     }
 
