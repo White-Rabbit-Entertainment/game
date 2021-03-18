@@ -79,8 +79,6 @@ public abstract class Character : MonoBehaviour {
   [PunRPC]
   public void AssignRole (Role role) {
       string prefabName = role.ToString();
-      Debug.Log("Loading in");
-      Debug.Log(prefabName);
       GameObject prefab = (GameObject)Resources.Load("Roles/" + prefabName, typeof(GameObject));
       GameObject body = Instantiate(prefab, new Vector3(0,0,0), Quaternion.identity);
       body.transform.parent = transform; // Sets the parent of the body to the player
