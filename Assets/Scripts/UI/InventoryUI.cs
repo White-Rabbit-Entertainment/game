@@ -10,6 +10,9 @@ public class InventoryUI : MonoBehaviour {
 
     /// <summary> Adds an item to the player inventory in the UI. </summary>
     public void AddItem(Pocketable item) {
+      foreach (Transform child in inventory.transform) {
+        Destroy(child.gameObject);
+      }
       // Instantiate a new inventory item
       GameObject uiItem = Instantiate(inventoryItemPrefab, inventory.transform);
       uiItem.GetComponentInChildren<Text>().text = item.name;
