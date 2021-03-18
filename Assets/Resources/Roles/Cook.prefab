@@ -22699,12 +22699,12 @@ GameObject:
   - component: {fileID: 7745575462183607195}
   - component: {fileID: 2156928373574200960}
   m_Layer: 0
-  m_Name: Chef
+  m_Name: Cook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7745575462183607195
 Transform:
   m_ObjectHideFlags: 0
