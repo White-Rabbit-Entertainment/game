@@ -24,6 +24,7 @@ MonoBehaviour:
     type: 3}
   mealPrefab: {fileID: 2319903354798947482, guid: 9554ae519922e64a5a8aa76beba06462,
     type: 3}
+  contextTaskUI: {fileID: 0}
 --- !u!1001 &5464766139727672961
 PrefabInstance:
   m_ObjectHideFlags: 0

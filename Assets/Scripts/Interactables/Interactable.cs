@@ -35,7 +35,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
 
-  protected Outline outline;
+  private Outline outline;
   
   public Task task;
   public PhotonView view;
@@ -88,7 +88,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   /// <summary> Remove glow. </summary>
   public void GlowOff(PlayableCharacter character) {
-    if (HasTask() && character.canTask) {
+    if (HasTask()) {
       TaskGlowOn();
     } else {
       outline.enabled = false;
@@ -98,7 +98,17 @@ public abstract class Interactable : MonoBehaviourPun {
   /// <summary> Turn on the task glow. </summary>
   [PunRPC]
   public void TaskGlowOn() {
+    Debug.Log(HasTask());
+    Debug.Log(task.AllChildrenCompleted());
+    if (HasTask() && task.AllChildrenCompleted() && NetworkManager.instance.GetMe().canTask) {
+      outline.enabled = true;
       outline.OutlineColor = taskColour;
+    }
+  }
+  
+  [PunRPC]
+  public void TaskGlowOff() {
+    outline.enabled = false;
   }
 
   // When we remove iteractablility from an item it should stop glowing.
@@ -115,12 +125,6 @@ public abstract class Interactable : MonoBehaviourPun {
       // All stealing tasks should have the same kind of description
       task.description = taskDescription;
 
-      // Set outline colour and turn on
-      if (Team.Loyal.HasFlag(NetworkManager.instance.GetLocalPlayerProperty<Team>("Team"))) {
-        outline.OutlineColor = taskColour;
-        outline.enabled = true;
-      }
-
       if (hardRequirements != null && hardRequirements.Count > 0) {
         foreach(Interactable requirement in hardRequirements) {
 
@@ -132,6 +136,12 @@ public abstract class Interactable : MonoBehaviourPun {
           task.requirements.Add(requirement.task);
         }
       }
+      
+      // Set outline colour and turn on
+      if (Team.Loyal.HasFlag(NetworkManager.instance.GetLocalPlayerProperty<Team>("Team"))) {
+        TaskGlowOn();
+      }
+
   }
 
   // Adds a task and also sets the parent of the new task.

@@ -1,29 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
-/// <summary> UI to show tasks in the GameScene </summary>
-public class TaskUI : MonoBehaviour {
-    
+public abstract class TaskUI : MonoBehaviour {
     public GameObject masterTaskPrefab;
     public GameObject subTaskPrefab;
     public GameObject tasksList;
 
-    void Update() {
-      tasksList.DestroyChildren();
-      
-      // Add in all the current tasks
-      foreach (Task task in GameManager.instance.GetTasks()) {
-        if (task.AllChildrenCompleted() && !task.isCompleted) {
-          AddTask(task, masterTaskPrefab);
-        }
-      }
-    }
-
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
-    void AddTask(Task task, GameObject taskPrefab) {
+    public void AddTask(Task task, GameObject taskPrefab) {
       // Instantiate a new task list item
       GameObject item = Instantiate(taskPrefab, tasksList.transform);
 

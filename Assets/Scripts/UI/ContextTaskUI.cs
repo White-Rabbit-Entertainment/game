@@ -5,28 +5,14 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary> UI to show tasks in the GameScene </summary>
-public class ContextTaskUI : MonoBehaviour {
-    
-    public GameObject taskItemPrefab;
-    public GameObject tasksList;
+public class ContextTaskUI : TaskUI {
 
-    public Task task;
+    private Task task;
   
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
     public void ShowTask() {
       UnshowTask(); 
-      Debug.Log("In AddingTask");
-      // Instantiate a new task list item
-      GameObject item = Instantiate(taskItemPrefab, tasksList.transform);
-
-      // Get the togggle component 
-      TMP_Text text = item.GetComponentInChildren<TMP_Text>();
-      // Set the toggle text
-      text.text = task.description;
-      // Set the toggle on/off depending of if task is completed 
-      if (task.isCompleted) {
-        text.fontStyle = FontStyles.Strikethrough;
-      }
+      AddTask(task, masterTaskPrefab);
     }
 
     public void SetTask(Task task) {
