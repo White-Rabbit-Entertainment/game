@@ -20,7 +20,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
-      toggleReadyButton.onClick.AddListener(()=>toggleReady());
+      toggleReadyButton.onClick.AddListener(()=>ToggleReady());
     }
 
     void Update() {
@@ -53,7 +53,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
       playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
     }
 
-    void toggleReady() {
+    void ToggleReady() {
       if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
         NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       } else {
