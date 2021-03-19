@@ -26,8 +26,7 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
 
-    public string RoomName()
-    {
+    public string RoomName() {
         int number;
         char code;
         string roomString = string.Empty;
@@ -46,25 +45,22 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     void Start() {
+        Debug.Log("Starting");
+        // Error NOT here I dont think maybe
         PhotonNetwork.ConnectUsingSettings();
-
-
         createRoomButton.onClick.AddListener(OnClickCreateRoom);
         joinRoomButton.onClick.AddListener(OnClickJoinRoom);
         createPrivateButton.onClick.AddListener(OnClickCreatePrivateRoom);
         startButton.onClick.AddListener(StartButton);
     }
 
-    public override void OnConnectedToMaster()
-    {
+    public override void OnConnectedToMaster() {
         NameUI.SetActive(true);
         Debug.Log("Connected to the Master");
         PhotonNetwork.JoinLobby();
-
     }
 
-    void StartButton()
-    {
+    void StartButton() {
         NameUI.SetActive(false);
         RoomUI.SetActive(true);
     }
@@ -80,22 +76,19 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
       PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
 
-    void OnClickCreatePrivateRoom()
-    {
+    void OnClickCreatePrivateRoom() {
         string PrivateRoom = 'p' + RoomName();
         NetworkManager.instance.CreateRoom(PrivateRoom);
     }
 
 
-    void OnClickJoinPrivateRoom()
-    {
+    void OnClickJoinPrivateRoom() {
         NetworkManager.instance.JoinRoom('p' + RoomName());
         PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
 
 
-    public void JoinRoom(string room)
-    {
+    public void JoinRoom(string room) {
         PhotonNetwork.JoinRoom(room);
     }
 }

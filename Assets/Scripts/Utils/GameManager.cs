@@ -166,28 +166,31 @@ public class GameManager : MonoBehaviourPun {
      public void HandleSceneSwitch(){
         int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
         if (secondsLeft < 0) {
-        if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
-        StartMealSwap();
+          // Store scene in the master client
+          if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
+            StartMealSwap();
+          }
         }
-        if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "MealScene") {
-        StartGame();
-        }
+        if (SceneManager.GetActiveScene().name == "MealScene" && NetworkManager.instance.RoomPropertyIs<string>("CurrentScene", "GameScene")) {
+          StartGame();
         }
     }
 
      public void CurrentPlayerSwitching(){
-        int secondsLeft = (int)NetworkManager.instance.GetTurnTimeRemaining();
         // if (playersLeft.Count > 1) Debug.Log("BIGGER");
         // List<string> playersLeft = NetworkManager.instance.GetRoomProperty<List<string>>("PlayersLeftToSwap");
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient && playersLeft.Count > 0) NetworkManager.instance.SetRoomProperty("CurrentPlayer", playersLeft[0]);
-        if (secondsLeft < 0 || (NetworkManager.instance.GetRoomProperty<bool>("CurrentPlayerGuessed"))) {
-          Debug.Log("Next");
-          NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false); 
-          StartTurnTimer();
-          if (PhotonNetwork.LocalPlayer.IsMasterClient) playersLeft.RemoveAt(0);
-          if (PhotonNetwork.LocalPlayer.IsMasterClient && playersLeft.Count == 0) StartGame();
-        } 
+          int secondsLeft = (int)NetworkManager.instance.GetTurnTimeRemaining();
+          if (playersLeft.Count > 0) NetworkManager.instance.SetRoomProperty("CurrentPlayer", playersLeft[0]);
+          if (secondsLeft < 0 || (NetworkManager.instance.GetRoomProperty<bool>("CurrentPlayerGuessed"))) {
+            Debug.Log("Next");
+            NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false); 
+            StartTurnTimer();
+            playersLeft.RemoveAt(0);
+            if (playersLeft.Count == 0) {
+              NetworkManager.instance.SetRoomProperty("CurrentScene", "GameScene");
+            }
+          } 
         }
     }
 

@@ -6,8 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 
 
-public class MealUI : MonoBehaviourPunCallbacks
-{   
+public class MealUI : MonoBehaviourPunCallbacks {   
     public Text playerListText;
 
     private List<string> playerList;
@@ -24,23 +23,20 @@ public class MealUI : MonoBehaviourPunCallbacks
 
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         swapped = false;
         Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame
-    void Update()
-    {               
+    void Update() {               
         playableCharacters = FindObjectsOfType<PlayableCharacter>();
         InitializeButtons();
         PlayableCharacter me = NetworkManager.instance.GetMe();
         PresentMenu(); 
     }
 
-    void InitializeButtons() 
-    {
+    void InitializeButtons() {
          List<Player> players  = NetworkManager.instance.GetPlayers(); 
          int count = players.Count;
         //  Debug.Log(players.Count);
@@ -58,12 +54,9 @@ public class MealUI : MonoBehaviourPunCallbacks
             if (count > 7) buttons[7].onClick.AddListener(() => SwapMeal(NetworkManager.instance.GetPlayers()[7]));
             if (count > 8) buttons[8].onClick.AddListener(() => SwapMeal(NetworkManager.instance.GetPlayers()[8]));
             if (count > 9) buttons[9].onClick.AddListener(() => SwapMeal(NetworkManager.instance.GetPlayers()[9]));
-
-
     }
 
-    void PresentMenu()
-    {
+    void PresentMenu() {
         header.text = "Who's meal would you like to swap with " + NetworkManager.instance.GetRoomProperty<string>("CurrentPlayer") + " ? (If not " + NetworkManager.instance.GetRoomProperty<string>("CurrentPlayer") + " buttons don't do anything.)";
         List<Player> players  = NetworkManager.instance.GetPlayers();
         PlayableCharacter me = NetworkManager.instance.GetMe();
