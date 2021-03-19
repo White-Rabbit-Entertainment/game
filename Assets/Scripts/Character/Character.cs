@@ -7,7 +7,8 @@ using Photon.Pun;
 public abstract class Character : MonoBehaviour {
   public Transform pickupDestination; 
   public Pickupable currentHeldItem; 
-  public List<Pocketable> pocketedItems;
+  public Pocketable pocketedItem;
+  
   public InventoryUI inventoryUI;
 
   public bool canTask;
@@ -24,7 +25,7 @@ public abstract class Character : MonoBehaviour {
     if (item is Pickupable && currentHeldItem == (Pickupable)item) {
       return true;
     }
-    if (item is Pocketable && pocketedItems.Contains((Pocketable)item)) {
+    if (item is Pocketable && pocketedItem == (Pocketable)item) {
       return true;
     }
     return false; 
@@ -32,7 +33,6 @@ public abstract class Character : MonoBehaviour {
 
   public virtual void Start() {
     canTask = false;
-    pocketedItems = new List<Pocketable>();
   }
 
   public void PickUp(Pickupable item) {
@@ -61,15 +61,27 @@ public abstract class Character : MonoBehaviour {
   }
 
   public void AddItemToInventory(Pocketable item) {
-    pocketedItems.Add(item);
+    if (pocketedItem != null) {
+      RemoveItemFromInventory();
+    }
+    pocketedItem = item;
     if (!(this is Agent)) {
       inventoryUI.AddItem(item);
     }
     item.GetComponent<PhotonView>().RPC("SetItemPocketConditions", RpcTarget.All);
   }
 
-  public List<Pocketable> GetItemsInInventory() {
-    return pocketedItems;
+  public void RemoveItemFromInventory() {
+    pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+    if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {
+      pocketedItem.task.GetComponent<PhotonView>().RPC("Uncomplete", RpcTarget.All);
+      pocketedItem.view.RPC("TaskGlowOn", RpcTarget.All);
+    }
+    pocketedItem = null;
+  }
+
+  public Pocketable GetItemsInInventory() {
+    return pocketedItem;
   }
 
   public virtual Vector3 Velocity() {

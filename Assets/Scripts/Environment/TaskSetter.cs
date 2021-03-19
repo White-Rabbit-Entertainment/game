@@ -10,7 +10,7 @@ public class TaskSetter : MonoBehaviour {
     public GameObject stealables;
 
     void Update() {
-        if (NetworkManager.instance.AllPlayersInGame()) {
+        if (NetworkManager.instance.AllPlayersInGame() && NetworkManager.instance.AllCharactersSpawned()) {
           CreateTasks();
           Destroy(this);
         }
@@ -50,7 +50,7 @@ public class TaskSetter : MonoBehaviour {
             // Assign the first few items a Task
             for (int i = 0; i < numberOfNonStealingTasks; i++) {
                 if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
-                    int numberOfSubTasks = Random.Range(0, 2);
+                    int numberOfSubTasks = Random.Range(1, 2);
                     if (numberOfSubTasks > 0) {
                          possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
                     }

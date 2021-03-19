@@ -11,6 +11,8 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject loyalPrefab;
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
+    public PoisonUI poisonUI;
+    public ContextTaskUI contextTaskUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
@@ -18,6 +20,21 @@ public class PlayerSpawner : MonoBehaviour {
     public List<GameObject> rolesPrefabs;
 
     public RoleInfo roleInfo;
+
+    void Update() {
+        // Wait till all players are in the scene.
+        if (NetworkManager.instance.AllPlayersInGame()) {
+
+            // Then load in all the players
+            LoadPlayer();
+            LoadAgents();
+            NetworkManager.instance.SetLocalPlayerProperty("Spawned", true); 
+            // Then this script has done its job (loaded in the player) so we can
+            // destory it.
+            Destroy(this);
+            Destroy(gameObject);
+        }
+    }
 
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
@@ -95,27 +112,18 @@ public class PlayerSpawner : MonoBehaviour {
         
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
+        character.contextTaskUI = contextTaskUI;
         NetworkManager.myCharacter = character;
 
+        //Set the poisonUI
+        if (character is Traitor) {
+            ((Traitor)character).poisonUI = poisonUI;
+        }
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }
     
 
-    void Update() {
-        // Wait till all players are in the scene.
-        if (NetworkManager.instance.AllPlayersInGame()) {
-
-          // Then load in all the players
-          LoadPlayer();
-          LoadAgents();
-
-          // Then this script has done its job (loaded in the player) so we can
-          // destory it.
-          Destroy(this);
-          Destroy(gameObject);
-        }
-    }
 
     public Vector3 RandomNavmeshLocation(float radius)
     {

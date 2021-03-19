@@ -19,8 +19,6 @@ public class CameraMouseLook : MonoBehaviourPun
 
           // Also destory the camera object
           Destroy(gameObject);
-        } else {
-          Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
