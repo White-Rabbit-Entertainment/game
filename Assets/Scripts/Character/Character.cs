@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour {
   public Transform pickupDestination; 
   public Pickupable currentHeldItem; 
   public Pocketable pocketedItem;
+  
   public InventoryUI inventoryUI;
 
   public bool canTask;
