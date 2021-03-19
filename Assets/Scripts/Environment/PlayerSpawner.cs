@@ -12,6 +12,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
     public PoisonUI poisonUI;
+    public ContextTaskUI contextTaskUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
@@ -111,6 +112,7 @@ public class PlayerSpawner : MonoBehaviour {
         
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
+        character.contextTaskUI = contextTaskUI;
         NetworkManager.myCharacter = character;
 
         //Set the poisonUI
