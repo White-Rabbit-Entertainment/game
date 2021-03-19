@@ -18,13 +18,6 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
 
     private Hashtable props;
 
-    // Clears a list by destorying all children 
-    public static void Clear(GameObject gameObject) {
-      foreach (Transform child in gameObject.transform) {
-        Destroy(child.gameObject);
-      }
-    }
-
     void Start() {
       Cursor.lockState = CursorLockMode.None;
       toggleReadyButton.onClick.AddListener(()=>toggleReady());
@@ -44,7 +37,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
 
     
     void SetText() {
-      Clear(playerList);
+      playerList.DestroyChildren();
       foreach (Player player in NetworkManager.instance.GetPlayers()) {
         GameObject playerItemPrefab; 
         if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
