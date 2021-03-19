@@ -12,7 +12,7 @@ public class TaskUI : MonoBehaviour {
     public GameObject tasksList;
 
     void Update() {
-      EmptyList();
+      tasksList.DestroyChildren();
       
       // Add in all the current tasks
       foreach (Task task in GameManager.instance.GetTasks()) {
@@ -22,13 +22,6 @@ public class TaskUI : MonoBehaviour {
       }
     }
 
-    /// <summary> Removes all tasks from the list. </summary>
-    void EmptyList() {
-      foreach (Transform child in tasksList.transform) {
-        Destroy(child.gameObject);
-      }
-    }
-  
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
     void AddTask(Task task, GameObject taskPrefab) {
       // Instantiate a new task list item
