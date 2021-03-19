@@ -37,4 +37,13 @@ public class Task : MonoBehaviour {
   public void Complete() {
     isCompleted = true;
   }
+  
+  [PunRPC]
+  public void Uncomplete() {
+    isCompleted = false;
+  }
+
+  public bool IsRequired() {
+    return !IsMasterTask() && !parent.isCompleted;
+  }
 }

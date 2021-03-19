@@ -36,8 +36,9 @@ public abstract class Interactable : MonoBehaviourPun {
   public string playerAnimationTrigger;
 
   protected Outline outline;
-  protected PhotonView view;
-  protected Task task;
+  
+  public Task task;
+  public PhotonView view;
 
   public virtual void Reset() {}
 
@@ -88,10 +89,16 @@ public abstract class Interactable : MonoBehaviourPun {
   /// <summary> Remove glow. </summary>
   public void GlowOff(PlayableCharacter character) {
     if (HasTask() && character.canTask) {
-      outline.OutlineColor = taskColour;
+      TaskGlowOn();
     } else {
       outline.enabled = false;
     }
+  }
+  
+  /// <summary> Turn on the task glow. </summary>
+  [PunRPC]
+  public void TaskGlowOn() {
+      outline.OutlineColor = taskColour;
   }
 
   // When we remove iteractablility from an item it should stop glowing.

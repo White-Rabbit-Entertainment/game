@@ -72,6 +72,10 @@ public abstract class Character : MonoBehaviour {
 
   public void RemoveItemFromInventory() {
     pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+    if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {
+      pocketedItem.task.GetComponent<PhotonView>().RPC("Uncomplete", RpcTarget.All);
+      pocketedItem.view.RPC("TaskGlowOn", RpcTarget.All);
+    }
     pocketedItem = null;
   }
 

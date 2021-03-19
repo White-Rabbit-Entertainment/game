@@ -16,11 +16,8 @@ public class TaskUI : MonoBehaviour {
       
       // Add in all the current tasks
       foreach (Task task in GameManager.instance.GetTasks()) {
-        if (task.IsMasterTask()) {
+        if (task.AllChildrenCompleted() && !task.isCompleted) {
           AddTask(task, masterTaskPrefab);
-          foreach(Task subTask in task.requirements) {
-            AddTask(subTask, subTaskPrefab);
-          }
         }
       }
     }
