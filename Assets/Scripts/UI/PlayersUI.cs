@@ -12,33 +12,20 @@ public class PlayersUI : MonoBehaviourPun {
   public GameObject deadPlayerTile;
   public GameObject playerList;
 
-  void Update() {
-    EmptyList();
-
-    foreach (Player player in NetworkManager.instance.GetPlayers()) {
-      if (NetworkManager.instance.PlayerPropertyIs<Team>("Team", Team.Ghost, player)) {
-        AddDeadPlayer(player);
-      } else {
-        AddLivingPlayer(player);
-      }
+  public void Init() {
+    foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
+      AddPlayerTile(player);
     }
   }
 
-  void EmptyList() {
-    foreach (Transform child in playerList.transform) {
-      Destroy(child.gameObject);
+  void AddPlayerTile(PlayableCharacter player) {
+    GameObject item;
+    if (player is Ghost) {
+      item = Instantiate(deadPlayerTile, playerList.transform);
+    } else {
+      item = Instantiate(livingPlayerTile, playerList.transform);
     }
-  }
-
-  void AddLivingPlayer(Player player) {
-    GameObject item = Instantiate(livingPlayerTile, playerList.transform);
     TMP_Text text = item.GetComponentInChildren<TMP_Text>();
-    text.text = player.NickName;
-  }
-
-  void AddDeadPlayer(Player player) {
-    GameObject item = Instantiate(deadPlayerTile, playerList.transform);
-    TMP_Text text = item.GetComponentInChildren<TMP_Text>();
-    text.text = player.NickName;
+    text.text = player.owner.NickName + " (" + player.roleInfo.name + ")";
   }
 }

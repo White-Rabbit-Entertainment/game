@@ -137,8 +137,8 @@ public class GameManager : MonoBehaviourPun {
     // TODO Show some loading UI if the level isnt loaded yet.
     // TODO Check players are loaded in.
     // TODO Check AIs are loaded in.
-    public bool LevelLoaded() {
-      return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true);
+    public bool SceneLoaded() {
+      return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
     }
 
     /// <summary> Return all the tasks in the scene. I.e. all the tasks the
@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      if (LevelLoaded()) {
+      if (SceneLoaded()) {
         HandleGameOver();
       }
     }

@@ -20,6 +20,21 @@ public class PlayerSpawner : MonoBehaviour {
 
     public RoleInfo roleInfo;
 
+    void Update() {
+        // Wait till all players are in the scene.
+        if (NetworkManager.instance.AllPlayersInGame()) {
+
+            // Then load in all the players
+            LoadPlayer();
+            LoadAgents();
+            NetworkManager.instance.SetLocalPlayerProperty("Spawned", true); 
+            // Then this script has done its job (loaded in the player) so we can
+            // destory it.
+            Destroy(this);
+            Destroy(gameObject);
+        }
+    }
+
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
         //scene change as soon as this script is enabled.
@@ -107,20 +122,6 @@ public class PlayerSpawner : MonoBehaviour {
     }
     
 
-    void Update() {
-        // Wait till all players are in the scene.
-        if (NetworkManager.instance.AllPlayersInGame()) {
-
-          // Then load in all the players
-          LoadPlayer();
-          LoadAgents();
-
-          // Then this script has done its job (loaded in the player) so we can
-          // destory it.
-          Destroy(this);
-          Destroy(gameObject);
-        }
-    }
 
     public Vector3 RandomNavmeshLocation(float radius)
     {
