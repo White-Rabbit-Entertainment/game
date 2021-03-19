@@ -45,13 +45,13 @@ public class GameManager : MonoBehaviourPun {
 
     public void StartTurnTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartTurnTimer(20);
+        NetworkManager.instance.StartTurnTimer(5);
       }
     }
 
     public void StartMealSwapTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartRoundTimer(40);
+        NetworkManager.instance.StartRoundTimer(NetworkManager.instance.GetPlayers().Count * 5 + 10);
       }
     }
 
@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviourPun {
      public void StartMealSwap() {
       NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+      NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false);    
       List<Player> players = NetworkManager.instance.GetPlayers();
       playersLeft = new List<string>();
       foreach (Player p in players) {
@@ -166,11 +167,16 @@ public class GameManager : MonoBehaviourPun {
         int secondsLeft = (int)NetworkManager.instance.GetTurnTimeRemaining();
         // if (playersLeft.Count > 1) Debug.Log("BIGGER");
         // List<string> playersLeft = NetworkManager.instance.GetRoomProperty<List<string>>("PlayersLeftToSwap");
-        if (PhotonNetwork.LocalPlayer.IsMasterClient) NetworkManager.instance.SetRoomProperty("CurrentPlayer", playersLeft[0]);
-        if (secondsLeft < 0) {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient && playersLeft.Count > 0) NetworkManager.instance.SetRoomProperty("CurrentPlayer", playersLeft[0]);
+        if (secondsLeft < 0 || (NetworkManager.instance.GetRoomProperty<bool>("CurrentPlayerGuessed"))) {
+          Debug.Log("Next");
+          NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false); 
           StartTurnTimer();
           if (PhotonNetwork.LocalPlayer.IsMasterClient) playersLeft.RemoveAt(0);
+          if (PhotonNetwork.LocalPlayer.IsMasterClient && playersLeft.Count == 0) StartGame();
         } 
+        }
     }
 
     /// <summary> Check if the level has finished loading. It does this by
@@ -203,6 +209,7 @@ public class GameManager : MonoBehaviourPun {
       if (LevelLoaded()) {
         HandleSceneSwitch();
         if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "MealScene") CurrentPlayerSwitching();
+        // HandleGameOver();
       }
     }
 }
