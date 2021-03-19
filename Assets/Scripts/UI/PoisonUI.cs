@@ -15,13 +15,7 @@ public class PoisonUI : MonoBehaviour {
   }
   
   public void UsePoison() {
-    EmptyList();
+    poisonIndicator.DestroyChildren();
     Instantiate(emptyPoisonPrefab, poisonIndicator.transform);
-  }
-
-  public void EmptyList() {
-    foreach (Transform child in poisonIndicator.transform) {
-      Destroy(child.gameObject);
-    }
   }
 }
