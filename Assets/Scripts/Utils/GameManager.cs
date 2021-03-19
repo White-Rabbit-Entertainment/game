@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -72,17 +74,27 @@ public class GameManager : MonoBehaviourPun {
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfTraitors = NetworkManager.instance.GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
 
+          List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+          roles.Remove(Role.Captain); // We dont want to assing anyone (expect the capatian) the capatian role
+
+          // Shuffle players and roles to ensure random team and role are assigned
+          roles.Shuffle();
           players.Shuffle();
+
           for (int i = 0; i < numberOfTraitors; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", Team.Traitor, players[i]);
+            NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
+            NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
 
           NetworkManager.instance.SetPlayerProperty("Team", Team.Captain, players[numberOfTraitors]);
+          NetworkManager.instance.SetPlayerProperty("Role", Role.Captain, players[numberOfTraitors]);
 
           for (int i = numberOfTraitors + 1; i < players.Count; i++) {
             NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
+            NetworkManager.instance.SetPlayerProperty("Role", roles[(i - 1) % roles.Count], players[i]);
           }
           NetworkManager.instance.SetRoomProperty("GameReady", true);
+
         }
       }
     }
@@ -184,8 +196,8 @@ public class GameManager : MonoBehaviourPun {
     // TODO Show some loading UI if the level isnt loaded yet.
     // TODO Check players are loaded in.
     // TODO Check AIs are loaded in.
-    public bool LevelLoaded() {
-      return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true);
+    public bool SceneLoaded() {
+      return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
     }
 
     /// <summary> Return all the tasks in the scene. I.e. all the tasks the
@@ -206,10 +218,10 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      if (LevelLoaded()) {
+      if (SceneLoaded()) {
         HandleSceneSwitch();
         if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "MealScene") CurrentPlayerSwitching();
         // HandleGameOver();
       }
-    }
+  }
 }

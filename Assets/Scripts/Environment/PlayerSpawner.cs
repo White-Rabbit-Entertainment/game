@@ -11,11 +11,33 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject loyalPrefab;
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
+    public PoisonUI poisonUI;
+    public ContextTaskUI contextTaskUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
 
     public bool mealSwapping;
+
+    public List<GameObject> rolesPrefabs;
+
+    public RoleInfo roleInfo;
+
+    void Update() {
+        // Wait till all players are in the scene.
+        if (NetworkManager.instance.AllPlayersInGame()) {
+
+            // Then load in all the players
+            LoadPlayer();
+            if (!mealSwapping) LoadAgents();
+
+            NetworkManager.instance.SetLocalPlayerProperty("Spawned", true); 
+            // Then this script has done its job (loaded in the player) so we can
+            // destory it.
+            Destroy(this);
+            Destroy(gameObject);
+        }
+    }
 
     void OnEnable() {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a
@@ -41,46 +63,70 @@ public class PlayerSpawner : MonoBehaviour {
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
     void LoadAgents() {
-        // Load in the Agents
+
+        // If the player is the capatian then they should have no clones
+        if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Captain)) {
+            return;
+        }
+
+        // Otherwise load in n agents which have the same role as the player 
         for(int i = 0; i < numberOfAgentsPerPlayer; i++){
-          GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
-          agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
+            // Spawn in the agent
+            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+            agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
+
+            // Assign the same role as the player to the agent 
+            Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
+            agent.GetComponent<PhotonView>().RPC("AssignRole", RpcTarget.All, role);
         }
     }
 
     void LoadPlayer() { 
         GameObject player;
         Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
+
+        Vector3 spawnPoint;
+        GameObject playerPrefab;
         // Load in the local player 
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
-            player = PhotonNetwork.Instantiate(traitorPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+            spawnPoint = new Vector3(1,2,-10);
+            playerPrefab = traitorPrefab;
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
-            player = PhotonNetwork.Instantiate(loyalPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+            spawnPoint = new Vector3(1,2,10);
+            playerPrefab = loyalPrefab;
         } else {
-            player = PhotonNetwork.Instantiate(captainPrefab.name, new Vector3(1,2,10), Quaternion.identity);
+            spawnPoint = new Vector3(1,2,10);
+            playerPrefab = captainPrefab;
         }
+
+        // Spawn in the player at the spawn point
+        player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity);
+
+        // Grab some useful components
+        PlayableCharacter character = player.GetComponent<PlayableCharacter>();
         PhotonView playerView = player.GetComponent<PhotonView>();
+
+        // Set the player colour
         playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-        player.GetComponent<Character>().inventoryUI = inventoryUI;
-        NetworkManager.myCharacter = player.GetComponent<PlayableCharacter>();
+
+        // Assign a role
+        Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
+        playerView.RPC("AssignRole", RpcTarget.All, role);
+        
+        // Set the inventoryUI
+        character.inventoryUI = inventoryUI;
+        character.contextTaskUI = contextTaskUI;
+        NetworkManager.myCharacter = character;
+
+        //Set the poisonUI
+        if (character is Traitor) {
+            ((Traitor)character).poisonUI = poisonUI;
+        }
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }
+    
 
-    void Update() {
-        // Wait till all players are in the scene.
-        if (NetworkManager.instance.AllPlayersInGame()) {
-
-          // Then load in all the players
-          LoadPlayer();
-          if (!mealSwapping) LoadAgents();
-
-          // Then this script has done its job (loaded in the player) so we can
-          // destory it.
-          Destroy(this);
-          Destroy(gameObject);
-        }
-    }
 
     public Vector3 RandomNavmeshLocation(float radius)
     {

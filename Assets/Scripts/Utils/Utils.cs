@@ -28,4 +28,11 @@ public static class Utils {
         inputfield.Select();
         inputfield.text = "";
     }
+    
+    public static void DestroyChildren(this GameObject gameObject) {
+      foreach (Transform child in gameObject.transform) {
+        UnityEngine.Object.Destroy(child.gameObject);
+      }
+    }
+
 }
