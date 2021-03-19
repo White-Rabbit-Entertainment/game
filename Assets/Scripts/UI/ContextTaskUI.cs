@@ -10,15 +10,12 @@ public class ContextTaskUI : MonoBehaviour {
     public GameObject taskItemPrefab;
     public GameObject tasksList;
 
-    /// <summary> Removes all tasks from the list. </summary>
-    void EmptyList() {
-      foreach (Transform child in tasksList.transform) {
-        Destroy(child.gameObject);
-      }
-    }
+    public Task task;
   
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
-    void AddTask(Task task) {
+    public void ShowTask() {
+      UnshowTask(); 
+      Debug.Log("In AddingTask");
       // Instantiate a new task list item
       GameObject item = Instantiate(taskItemPrefab, tasksList.transform);
 
@@ -30,5 +27,21 @@ public class ContextTaskUI : MonoBehaviour {
       if (task.isCompleted) {
         text.fontStyle = FontStyles.Strikethrough;
       }
+    }
+
+    public void SetTask(Task task) {
+      if (task != this.task) {
+        this.task = task;
+        ShowTask();
+      }
+    }
+    
+    public void RemoveTask() {
+      this.task = null;
+      UnshowTask();
+    }
+    
+    public void UnshowTask() {
+      tasksList.DestroyChildren();
     }
 }
