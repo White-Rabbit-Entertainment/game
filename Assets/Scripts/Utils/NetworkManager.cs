@@ -233,24 +233,27 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     // Return true is all players have readied up.
     public bool AllPlayersReady() {
-      foreach (Player player in GetPlayers()) {
-          if (!PlayerPropertyIs<bool>("Ready", true, player)) {
-              return false;
-          }
-      }
-      return true;
+      return CheckAllPlayers<bool>("Ready", true);
     }
 
     // Return true is all players are in the game.
     public bool AllPlayersInGame() {
+      return CheckAllPlayers<bool>("InGameScene", true);
+    }
+
+    //Return true if all players have been spawned into the game.
+    public bool AllCharactersSpawned() {
+      return CheckAllPlayers<bool>("Spawned", true);
+    }
+
+    public bool CheckAllPlayers<T>(string key, T expectedValue) {
       foreach (Player player in GetPlayers()) {
-          if (!PlayerPropertyIs<bool>("InGameScene", true, player)) {
+          if (!PlayerPropertyIs<T>(key, expectedValue, player)) {
               return false;
           }
       }
       return true;
     }
-
     // After a game resets various room and player properties. Not all
     // properties can be reset here (the game must still be over) so that the
     // other players leave the room. The other properties are set in SetupGame

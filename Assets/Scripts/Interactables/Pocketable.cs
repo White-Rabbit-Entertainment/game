@@ -1,4 +1,5 @@
 using Photon.Pun;
+using UnityEngine;
 
 public class Pocketable : Interactable {
 
@@ -9,6 +10,12 @@ public class Pocketable : Interactable {
   [PunRPC]
   public void SetItemPocketConditions() {
     gameObject.SetActive(false);
+  }
+
+  [PunRPC]
+  public void SetItemDropConditions(Vector3 position) {
+    gameObject.SetActive(true);
+    transform.position = position;
   }
 
   public override void PrimaryInteraction(Character character) {

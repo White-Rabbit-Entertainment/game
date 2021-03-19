@@ -36,5 +36,21 @@ public class Task : MonoBehaviour {
   [PunRPC]
   public void Complete() {
     isCompleted = true;
+    if (parent !=  null) {
+      parent.GetComponent<PhotonView>().RPC("TaskGlowOn", RpcTarget.All);
+    }
   }
+  
+  [PunRPC]
+  public void Uncomplete() {
+    isCompleted = false;
+    if (parent !=  null) {
+      parent.GetComponent<PhotonView>().RPC("TaskGlowOff", RpcTarget.All);
+    }
+  }
+
+  public bool IsRequired() {
+    return !IsMasterTask() && !parent.isCompleted;
+  }
+  
 }

@@ -14,15 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 6972329936430894913}
   currentHeldItem: {fileID: 0}
-  pocketedItems: []
+  pocketedItem: {fileID: 0}
   inventoryUI: {fileID: 0}
+  canTask: 0
   team: 2
+  roleInfo: {fileID: 0}
   colour: {r: 0, g: 0, b: 0, a: 0}
   ghostPrefab: {fileID: 4526113177046596534, guid: c96196bf82892b5ffa5f3feca403ff92,
     type: 3}
   mealPrefab: {fileID: 2319903354798947482, guid: 9554ae519922e64a5a8aa76beba06462,
     type: 3}
   hasPoison: 1
+  poisonUI: {fileID: 0}
 --- !u!1001 &4279859381422804174
 PrefabInstance:
   m_ObjectHideFlags: 0

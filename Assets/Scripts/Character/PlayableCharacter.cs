@@ -8,6 +8,8 @@ public abstract class PlayableCharacter : Character {
     public GameObject ghostPrefab;
     public GameObject mealPrefab;
 
+    public ContextTaskUI contextTaskUI;
+
     public Player owner;
 
     public override void Start() { 
