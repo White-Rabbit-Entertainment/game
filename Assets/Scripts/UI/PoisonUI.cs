@@ -8,15 +8,15 @@ public class PoisonUI : MonoBehaviour {
   public GameObject fullPoisonPrefab;
   public GameObject emptyPoisonPrefab;
 
-  public void Update() {
-  EmptyList();
+  public void Start() {
     if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
-      if (((Traitor)NetworkManager.instance.GetMe()).hasPoison) {
-        Instantiate(fullPoisonPrefab, poisonIndicator.transform);
-      } else {
-        Instantiate(emptyPoisonPrefab, poisonIndicator.transform);
-      }
+      Instantiate(fullPoisonPrefab, poisonIndicator.transform);
     }
+  }
+  
+  public void UsePoison() {
+    EmptyList();
+    Instantiate(emptyPoisonPrefab, poisonIndicator.transform);
   }
 
   public void EmptyList() {

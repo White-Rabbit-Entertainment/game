@@ -11,6 +11,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject loyalPrefab;
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
+    public PoisonUI poisonUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
@@ -97,6 +98,10 @@ public class PlayerSpawner : MonoBehaviour {
         character.inventoryUI = inventoryUI;
         NetworkManager.myCharacter = character;
 
+        //Set the poisonUI
+        if (character is Traitor) {
+            ((Traitor)character).poisonUI = poisonUI;
+        }
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }
