@@ -22,6 +22,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     private bool isMyTurn;
     private bool initalized = false;
+    private bool started = false;
 
     private int numberOfPlayers = 0;
     
@@ -33,15 +34,10 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     // Called once all playable characters have spawned 
     void Init() {
         initalized = true;
+        NetworkManager.instance.SetLocalPlayerProperty("MealSceneInitalized", true);
         Cursor.lockState = CursorLockMode.None;
         InitializeButtons();
        
-        // Set up the scene
-        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-          NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
-          playersLeft = NetworkManager.instance.GetPlayers();
-          InitNextTurn();
-        }
     }
 
     [PunRPC]
@@ -83,6 +79,17 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
             Debug.Log($"Found {characters.Count} characters");
             Init();
         }
+        
+        if (!started && NetworkManager.instance.CheckAllPlayers<bool>("MealSceneInitalized", true)) {
+            // Set up the scene
+            if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+              NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
+              playersLeft = NetworkManager.instance.GetPlayers();
+              InitNextTurn();
+            }
+            started = true;
+        }
+
         if (isMyTurn && !HasTurnTimeRemaining()) {
             EndTurn();
         }
