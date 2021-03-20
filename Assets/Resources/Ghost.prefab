@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 3535059180210411922}
   - component: {fileID: 3481532321224613800}
   - component: {fileID: 5513510054677823959}
+  - component: {fileID: -7170074885266061504}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -223,6 +224,28 @@ MonoBehaviour:
   staminaRegenerationRate: 2
   gravity: -19.62
   jumpHeight: 3
+--- !u!114 &-7170074885266061504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7463885005024221200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd7af67a36132c24b760e89bfb9e38e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickupDestination: {fileID: 0}
+  currentHeldItem: {fileID: 0}
+  pocketedItem: {fileID: 0}
+  inventoryUI: {fileID: 0}
+  canTask: 0
+  team: 0
+  roleInfo: {fileID: 0}
+  ghostPrefab: {fileID: 0}
+  mealPrefab: {fileID: 0}
+  contextTaskUI: {fileID: 0}
 --- !u!1 &7463885005076012741
 GameObject:
   m_ObjectHideFlags: 0
