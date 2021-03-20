@@ -8,8 +8,6 @@ using Photon.Realtime;
 
 public class MealSceneManager: MonoBehaviourPunCallbacks {   
 
-    private List<string> playerList;
-
     public GameObject buttonPrefab;
     public GameObject buttonsGO;
 
@@ -75,12 +73,32 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         GetComponent<PhotonView>().RPC("InitNextTurn", PhotonNetwork.MasterClient);
     }
 
+    PlayableCharacter GetPlayerCharacter(Player player) {
+        foreach (PlayableCharacter character in characters) {
+            if (character.GetComponent<PhotonView>().Owner == player) {
+                return character;
+            }
+        }
+        return characters[0];
+    }
+
+    Player FindCaptainPlayer() {
+        foreach (Player player in playersLeft) {
+            if (GetPlayerCharacter(player) is Captain) {
+                return player;
+            }
+        }
+        return playersLeft[0];
+    }
+
     // Update is called once per frame
     void Update() {               
-        characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
-        if (!initalized && characters.Count == NetworkManager.instance.GetPlayers().Count) {
-            Debug.Log($"Found {characters.Count} characters");
-            Init();
+        if (!initalized) {
+            characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
+            if (characters.Count == NetworkManager.instance.GetPlayers().Count) {
+                Debug.Log($"Found {characters.Count} characters");
+                Init();
+            }
         }
         
         if (!started && NetworkManager.instance.CheckAllPlayers<bool>("MealSceneInitalized", true)) {
@@ -88,6 +106,13 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
             if (PhotonNetwork.LocalPlayer.IsMasterClient) {
               NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
               playersLeft = NetworkManager.instance.GetPlayers();
+              playersLeft.Shuffle();
+
+              // Move capatin to the end of the list (ie go last)
+              Player captainPlayer = FindCaptainPlayer(); 
+              playersLeft.Remove(captainPlayer);
+              playersLeft.Add(captainPlayer);
+
               InitNextTurn();
             }
             started = true;
@@ -117,8 +142,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     }
 
     void PresentMenu() {
-        header.text = "Who's meal would you like to swap with " + NetworkManager.instance.GetRoomProperty<string>("CurrentPlayer") + " ? (If not " + NetworkManager.instance.GetRoomProperty<string>("CurrentPlayer") + " buttons don't do anything.)";
-
+        header.text = $"Who's meal would you like to swap with {PhotonNetwork.LocalPlayer.NickName}?";
         buttonsGO.SetActive(true);
     }
 
