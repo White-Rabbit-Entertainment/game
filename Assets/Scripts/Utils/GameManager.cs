@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviourPun {
 
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartTimer(2, Timer.RoundTimer);
+        NetworkManager.instance.StartTimer(10, Timer.RoundTimer);
       }
     }
 
@@ -93,17 +93,7 @@ public class GameManager : MonoBehaviourPun {
 
      public void StartMealSwap() {
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
-        // Set the players to not in game scene for player spawner 
         NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
-
-        // if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        //   NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false);    
-        //   NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
-        //   
-        //   playersLeft = NetworkManager.instance.GetPlayers();
-        //   NetworkManager.instance.SetRoomProperty("CurrentPlayerId", playersLeft[0].UserId);
-        // }
-        // NetworkManager.instance.SetRoomProperty("PlayersLeftToSwap", playerStrings);
         NetworkManager.instance.ChangeScene("MealScene");
     }
 

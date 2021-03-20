@@ -22,7 +22,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     private bool initalized = false;
     
 
-    public bool HasRoundTimeRemaining() {
+    public bool HasTurnTimeRemaining() {
         return NetworkManager.instance.GetTimeRemaining(Timer.TurnTimer) > 0;
     }
 
@@ -54,7 +54,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     [PunRPC]
     void StartTurn() {
         // Start round timer
-        NetworkManager.instance.StartTimer(5, Timer.TurnTimer);
+        NetworkManager.instance.StartTimer(20, Timer.TurnTimer);
         PresentMenu(); 
         isMyTurn = true;
     }
@@ -70,7 +70,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         if (!initalized && NetworkManager.instance.AllCharactersSpawned()) {
             Init();
         }
-        if (isMyTurn && !HasRoundTimeRemaining()) {
+        if (isMyTurn && !HasTurnTimeRemaining()) {
             EndTurn();
         }
     }
