@@ -41,11 +41,11 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     [PunRPC]
     void EndMealScene() {
+        PlayableCharacter me = NetworkManager.instance.GetMe();
         if (me.GetMeal().isPoisoned) {
             me.Kill();
         }
         GameManager.instance.StartGame();
-        PlayableCharacter me = NetworkManager.instance.GetMe();
     }
 
     [PunRPC]
