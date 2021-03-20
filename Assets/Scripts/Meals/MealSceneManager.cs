@@ -102,6 +102,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
                 Button button = Instantiate(buttonPrefab, buttonsGO.transform).GetComponent<Button>();
                 button.onClick.AddListener(() => SwapMeal(character));
                 button.GetComponentInChildren<Text>().text = character.GetComponent<PhotonView>().Owner.NickName;
+                button.GetComponent<Image>().color = character.GetMeal().colour;
             }
         }
     }
