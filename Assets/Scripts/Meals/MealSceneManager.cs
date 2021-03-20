@@ -36,8 +36,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         initalized = true;
         NetworkManager.instance.SetLocalPlayerProperty("MealSceneInitalized", true);
         Cursor.lockState = CursorLockMode.None;
-        InitializeButtons();
-       
+        DrawButtons();
     }
 
     [PunRPC]
@@ -95,7 +94,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         }
     }
 
-    void InitializeButtons() {
+    [PunRPC]
+    void DrawButtons() {
         buttonsGO.DestroyChildren();
         foreach (PlayableCharacter character in characters) {
             if (!(character is Ghost)) {
@@ -121,6 +121,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     void SwapMeal(PlayableCharacter player) {
         PlayableCharacter me = NetworkManager.instance.GetMe();
         me.SwapMeal(player);
+        GetComponent<PhotonView>().RPC("DrawButtons", PhotonNetwork.MasterClient);
         EndTurn();
     }
 }
