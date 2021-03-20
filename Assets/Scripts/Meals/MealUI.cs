@@ -20,7 +20,10 @@ public class MealUI : MonoBehaviourPunCallbacks {
     private PlayableCharacter[] playableCharacters;
 
     private bool swapped;
-
+    
+    bool IsMyTurn() {
+        return NetworkManager.instance.RoomPropertyIs("CurrentPlayerId", PhotonNetwork.LocalPlayer.UserId);
+    }
 
     // Start is called before the first frame update
     void Start() {
@@ -33,7 +36,11 @@ public class MealUI : MonoBehaviourPunCallbacks {
         playableCharacters = FindObjectsOfType<PlayableCharacter>();
         InitializeButtons();
         PlayableCharacter me = NetworkManager.instance.GetMe();
-        PresentMenu(); 
+        if (IsMyTurn()) {
+            PresentMenu(); 
+        } else {
+            DisableMenu();
+        }
     }
 
     void InitializeButtons() {
@@ -54,6 +61,13 @@ public class MealUI : MonoBehaviourPunCallbacks {
             if (count > 7) buttons[7].onClick.AddListener(() => SwapMeal(NetworkManager.instance.GetPlayers()[7]));
             if (count > 8) buttons[8].onClick.AddListener(() => SwapMeal(NetworkManager.instance.GetPlayers()[8]));
             if (count > 9) buttons[9].onClick.AddListener(() => SwapMeal(NetworkManager.instance.GetPlayers()[9]));
+    }
+    
+    void DisableMenu() {
+        header.text = "Not your turn";
+        for (int i = 0; i < 10; i++) {
+            buttons[i].gameObject.SetActive(false);
+        }        
     }
 
     void PresentMenu() {

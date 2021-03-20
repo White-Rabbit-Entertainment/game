@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviourPun {
     // Current instance of the GameManager singleton
     public static GameManager instance;
 
-    private List<string> playersLeft;
+    private List<Player> playersLeft;
   
     void Awake() {
       /// This is what makes this a singleton. This means we can do <code>
@@ -106,19 +106,20 @@ public class GameManager : MonoBehaviourPun {
     }
 
      public void StartMealSwap() {
-      NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
-      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-      NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false);    
-      List<Player> players = NetworkManager.instance.GetPlayers();
-      playersLeft = new List<string>();
-      foreach (Player p in players) {
-        playersLeft.Add(p.NickName);
-      }
-      }
-      // NetworkManager.instance.SetRoomProperty("PlayersLeftToSwap", playerStrings);
-      NetworkManager.instance.ChangeScene("MealScene");
-      StartMealSwapTimer();
-      StartTurnTimer();
+        // Set the players to not in game scene for player spawner 
+        NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false);    
+          NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
+          
+          playersLeft = NetworkManager.instance.GetPlayers();
+          NetworkManager.instance.SetRoomProperty("CurrentPlayerId", playersLeft[0].UserId);
+        }
+        // NetworkManager.instance.SetRoomProperty("PlayersLeftToSwap", playerStrings);
+        NetworkManager.instance.ChangeScene("MealScene");
+        StartMealSwapTimer();
+        StartTurnTimer();
     }
 
     /// <summary> This function handles the game over logic. It does 2 things:
@@ -180,15 +181,26 @@ public class GameManager : MonoBehaviourPun {
         // if (playersLeft.Count > 1) Debug.Log("BIGGER");
         // List<string> playersLeft = NetworkManager.instance.GetRoomProperty<List<string>>("PlayersLeftToSwap");
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          
+          // How long left does the current player have in their turn
           int secondsLeft = (int)NetworkManager.instance.GetTurnTimeRemaining();
-          if (playersLeft.Count > 0) NetworkManager.instance.SetRoomProperty("CurrentPlayer", playersLeft[0]);
+         
+          // If their round has now ended
           if (secondsLeft < 0 || (NetworkManager.instance.GetRoomProperty<bool>("CurrentPlayerGuessed"))) {
-            Debug.Log("Next");
-            NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false); 
+
+            // Start a new round
             StartTurnTimer();
+
+            // Pop the player who just had a round
             playersLeft.RemoveAt(0);
+           
+            // If there are no players left the meal scene is over
             if (playersLeft.Count == 0) {
               NetworkManager.instance.SetRoomProperty("CurrentScene", "GameScene");
+            } else {
+            // Otherwise Assign the correct player to that round
+              NetworkManager.instance.SetRoomProperty("CurrentPlayerId", playersLeft[0]);
+              NetworkManager.instance.SetRoomProperty("CurrentPlayerGuessed", false); 
             }
           } 
         }
