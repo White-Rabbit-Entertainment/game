@@ -74,6 +74,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     // Update is called once per frame
     void Update() {               
+        InitializeButtons();
         if (!initalized && NetworkManager.instance.AllCharactersSpawned()) {
             List<PlayableCharacter> characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
             Debug.Log($"Found {characters.Count} characters");
@@ -85,6 +86,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     }
 
     void InitializeButtons() {
+        buttonsGO.DestroyChildren();
         foreach (PlayableCharacter character in FindObjectsOfType<PlayableCharacter>()) {
             Button button = Instantiate(buttonPrefab, buttonsGO.transform).GetComponent<Button>();
             button.onClick.AddListener(() => SwapMeal(character));
