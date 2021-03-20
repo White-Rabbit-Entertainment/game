@@ -93,6 +93,10 @@ public class GameManager : MonoBehaviourPun {
     }
 
      public void StartMealSwap() {
+        Debug.Log("Starting meal swap");
+        // foreach (Player player in NetworkManager.instance.GetPlayers()) {
+        //   NetworkManager.instance.SetPlayerProperty("Spawned", false, player); 
+        // }
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
         NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
         NetworkManager.instance.ChangeScene("MealScene");
@@ -147,9 +151,6 @@ public class GameManager : MonoBehaviourPun {
           if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
             StartMealSwap();
           }
-        }
-        if (SceneManager.GetActiveScene().name == "MealScene" && NetworkManager.instance.RoomPropertyIs<string>("CurrentScene", "GameScene")) {
-          StartGame();
         }
     }
 
