@@ -8,6 +8,7 @@ using Photon.Pun;
 public class PlayerSpawner : MonoBehaviour {
 
     public GameObject traitorPrefab;
+    public GameObject ghostPrefab;
     public GameObject loyalPrefab;
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
@@ -91,9 +92,12 @@ public class PlayerSpawner : MonoBehaviour {
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.NonCaptainLoyal)) {
             spawnPoint = new Vector3(1,2,10);
             playerPrefab = loyalPrefab;
-        } else {
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Captain)) {
             spawnPoint = new Vector3(1,2,10);
             playerPrefab = captainPrefab;
+        } else {
+            spawnPoint = new Vector3(1,4,10);
+            playerPrefab = ghostPrefab;
         }
 
         // Spawn in the player at the spawn point
