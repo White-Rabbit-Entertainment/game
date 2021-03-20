@@ -4,6 +4,12 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+    
+public enum Timer {
+  RoundTimer,
+  TurnTimer,
+}
+
 
 /// <summary> <c>NetworkManager</c> handles logic to do with PhotonNetwork. It
 /// is also a singleton see <c>GameManager</c> <see cref="GameManager"></see>
@@ -199,23 +205,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     // Start the timer for the game, but assigning the start time and round length (which all clients use)
-    public void StartRoundTimer(double roundLength) {
-      SetRoomProperty("RoundLength", roundLength);
-      SetRoomProperty("RoundTimerStart", PhotonNetwork.Time);
-    }
-
-       public void StartTurnTimer(double TurnLength) {
-      SetRoomProperty("TurnLength", TurnLength);
-      SetRoomProperty("TurnTimerStart", PhotonNetwork.Time);
+    public void StartTimer(double roundLength, Timer timer) {
+      SetRoomProperty(timer.ToString() + "length", roundLength);
+      SetRoomProperty(timer.ToString() + "start", PhotonNetwork.Time);
     }
 
     // Returns round time remaining (or 0 if not started)
-    public double GetRoundTimeRemaining() {
-      return GetRoomProperty<double>("RoundLength", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>("RoundTimerStart", 0f));
-    }
-
-     public double GetTurnTimeRemaining() {
-      return GetRoomProperty<double>("TurnLength", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>("TurnTimerStart", 0f));
+    public double GetTimeRemaining(Timer timer) {
+      return GetRoomProperty<double>(timer.ToString() + "length", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>(timer.ToString() + "start", 0f));
     }
 
     // Check all players in the room and returns whether all the robbers are captured
