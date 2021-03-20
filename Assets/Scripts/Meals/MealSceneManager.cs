@@ -78,11 +78,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     // Update is called once per frame
     void Update() {               
-        InitializeButtons();
-
         characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
-
-
         if (!initalized && characters.Count == NetworkManager.instance.GetPlayers().Count) {
             Debug.Log($"Found {characters.Count} characters");
             Init();
