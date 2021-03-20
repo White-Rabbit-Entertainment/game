@@ -103,9 +103,6 @@ public class PlayerSpawner : MonoBehaviour {
         PlayableCharacter character = player.GetComponent<PlayableCharacter>();
         PhotonView playerView = player.GetComponent<PhotonView>();
 
-        // Set the player colour
-        playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-
         // Assign a role
         Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
         playerView.RPC("AssignRole", RpcTarget.All, role);

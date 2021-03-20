@@ -1,12 +1,22 @@
 fileFormatVersion: 2
-guid: 7631775752c9a4409bcfc5ec50684652
+guid: d0a6a212442e5abe2a313bd6db38bc35
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
       74: -203655887218126122
     second: mixamo.com
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Alpha_Body_MAT
+    second: {fileID: 2100000, guid: 08383afdf5e4c7f4aa3b1158056238b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Alpha_Joints_MAT
+    second: {fileID: 2100000, guid: 581bcb63dc607ec4ebc2a6d2096dfc92, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -100,19 +110,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 4652ffb9134524b86afe87dab5593fb3
-  - 70eeaa391b8494ef39eeaef2b1b46855
-  - f947dc2172d214d7ab8ca1101e2782be
-  - f4c9d2514e3ed4d3b8edf0f1ca7e319f
-  - 73fdd3ce556db4a5b95ac92d75679021
-  - ab8d49d4692014e7d9d93eac86b477d0
-  - 9cd06d3d4f520481b8ce2639eee6251e
-  - daa5b66c98f134895b7d023e8f51b11e
-  - 31fa99cafe6fa47db8e5bf787431abf4
-  - b5f35f62be6784871ac8443825bed941
-  - 438c2bdb05a3447458723f76c503ae93
-  - 9f88663fcf9914a9c89621538d17a10c
+  referencedClips: []
   importAnimation: 0
   humanDescription:
     serializedVersion: 3
