@@ -121,7 +121,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     void SwapMeal(PlayableCharacter player) {
         PlayableCharacter me = NetworkManager.instance.GetMe();
         me.SwapMeal(player);
-        GetComponent<PhotonView>().RPC("DrawButtons", PhotonNetwork.MasterClient);
+        GetComponent<PhotonView>().RPC("DrawButtons", RpcTarget.All);
         EndTurn();
     }
 }
