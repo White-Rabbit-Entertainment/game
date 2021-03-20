@@ -13,6 +13,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     public GameObject buttonPrefab;
     public GameObject buttonsGO;
 
+    private List<PlayableCharacter> characters;
+
     [SerializeField]
     private Text header;
 
@@ -20,6 +22,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     private bool isMyTurn;
     private bool initalized = false;
+
+    private int numberOfPlayers = 0;
     
 
     public bool HasTurnTimeRemaining() {
@@ -75,8 +79,11 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     // Update is called once per frame
     void Update() {               
         InitializeButtons();
-        if (!initalized && NetworkManager.instance.AllCharactersSpawned()) {
-            List<PlayableCharacter> characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
+
+        characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
+
+
+        if (!initalized && characters.Count == NetworkManager.instance.GetPlayers().Count) {
             Debug.Log($"Found {characters.Count} characters");
             Init();
         }
@@ -87,10 +94,12 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     void InitializeButtons() {
         buttonsGO.DestroyChildren();
-        foreach (PlayableCharacter character in FindObjectsOfType<PlayableCharacter>()) {
-            Button button = Instantiate(buttonPrefab, buttonsGO.transform).GetComponent<Button>();
-            button.onClick.AddListener(() => SwapMeal(character));
-            button.GetComponentInChildren<Text>().text = character.GetComponent<PhotonView>().Owner.NickName;
+        foreach (PlayableCharacter character in characters) {
+            if (!(character is Ghost)) {
+                Button button = Instantiate(buttonPrefab, buttonsGO.transform).GetComponent<Button>();
+                button.onClick.AddListener(() => SwapMeal(character));
+                button.GetComponentInChildren<Text>().text = character.GetComponent<PhotonView>().Owner.NickName;
+            }
         }
     }
     
