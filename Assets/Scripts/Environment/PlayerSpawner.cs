@@ -88,7 +88,7 @@ public class PlayerSpawner : MonoBehaviour {
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
             spawnPoint = new Vector3(1,2,-10);
             playerPrefab = traitorPrefab;
-        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.NonCaptainLoyal)) {
             spawnPoint = new Vector3(1,2,10);
             playerPrefab = loyalPrefab;
         } else {

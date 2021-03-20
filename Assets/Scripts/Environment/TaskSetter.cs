@@ -41,7 +41,7 @@ public class TaskSetter : MonoBehaviour {
             // Assign the first few items a Task
             for (int i = 0; i < numberOfTasks; i++) {
                 if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
-                    int numberOfSubTasks = Random.Range(1, 2);
+                    int numberOfSubTasks = Random.Range(0, 2);
                     if (numberOfSubTasks > 0) {
                          possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
                     }
