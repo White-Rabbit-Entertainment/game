@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Captain
   role: 0
   avatar: {fileID: 9000000, guid: d0a6a212442e5abe2a313bd6db38bc35, type: 3}
-  colour: {r: 0.990566, g: 0.7297876, b: 0, a: 0}
+  colour: {r: 0.990566, g: 0.7297876, b: 0, a: 1}
 --- !u!1001 &6429171320383892322
 PrefabInstance:
   m_ObjectHideFlags: 0

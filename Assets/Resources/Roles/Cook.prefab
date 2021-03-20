@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Cook
   role: 1
   avatar: {fileID: 9000000, guid: 7631775752c9a4409bcfc5ec50684652, type: 3}
-  colour: {r: 1, g: 1, b: 1, a: 0}
+  colour: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &7843323068306382686
 PrefabInstance:
   m_ObjectHideFlags: 0
