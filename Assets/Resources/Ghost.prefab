@@ -236,15 +236,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cd7af67a36132c24b760e89bfb9e38e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDestination: {fileID: 0}
+  pickupDestination: {fileID: 7463885005076012740}
   currentHeldItem: {fileID: 0}
   pocketedItem: {fileID: 0}
   inventoryUI: {fileID: 0}
   canTask: 0
-  team: 0
+  team: 16
   roleInfo: {fileID: 0}
-  ghostPrefab: {fileID: 0}
-  mealPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 7463885005024221200}
+  mealPrefab: {fileID: 2319903354798947482, guid: 9554ae519922e64a5a8aa76beba06462,
+    type: 3}
   contextTaskUI: {fileID: 0}
 --- !u!1 &7463885005076012741
 GameObject:
