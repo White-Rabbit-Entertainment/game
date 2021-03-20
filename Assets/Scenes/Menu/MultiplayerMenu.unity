@@ -704,7 +704,7 @@ GameObject:
   - component: {fileID: 752800900}
   - component: {fileID: 752800904}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1081,10 +1081,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7bda9c32ef9698bd8c462b34e39df44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  robberPrefab: {fileID: 6809595694847979762, guid: 53562f569106608ac8347e95c06e0600,
-    type: 3}
-  seekerPrefab: {fileID: 1784732065346499672, guid: 08bec8ebd599e47c8a6d9d16c6f13ce4,
-    type: 3}
+  stealables: {fileID: 0}
+  loyalPrefab: {fileID: 0}
+  traitorPrefab: {fileID: 0}
 --- !u!4 &815166467
 Transform:
   m_ObjectHideFlags: 0

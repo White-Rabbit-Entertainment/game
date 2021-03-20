@@ -41,11 +41,16 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     }
 
     [PunRPC]
+    void EndMealScene() {
+        GameManager.instance.StartGame();
+    }
+
+    [PunRPC]
     // This is the master clients function inorder to setup the next turn
     void InitNextTurn() {
         if (playersLeft.Count == 0) {
-          // Switch back to gamescene
-          GameManager.instance.StartGame();
+            // Switch back to gamescene
+            GetComponent<PhotonView>().RPC("EndMealScene", RpcTarget.All);
         }
         GetComponent<PhotonView>().RPC("StartTurn", playersLeft[0]);
         playersLeft.RemoveAt(0);
@@ -62,6 +67,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     void EndTurn() {
         isMyTurn = false;
         DisableMenu();
+
+        // Tell the master client to star the next turn
         GetComponent<PhotonView>().RPC("InitNextTurn", PhotonNetwork.MasterClient);
     }
 
