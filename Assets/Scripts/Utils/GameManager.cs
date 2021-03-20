@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviourPun {
 
     public void StartGame() {
       NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
+      NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
       NetworkManager.instance.ChangeScene("GameScene");
       StartRoundTimer();
     }

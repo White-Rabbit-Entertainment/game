@@ -26,7 +26,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         return NetworkManager.instance.GetTimeRemaining(Timer.TurnTimer) > 0;
     }
 
-    // Start is called before the first frame update
+    // Called once all playable characters have spawned 
     void Init() {
         initalized = true;
         Cursor.lockState = CursorLockMode.None;
@@ -75,6 +75,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     // Update is called once per frame
     void Update() {               
         if (!initalized && NetworkManager.instance.AllCharactersSpawned()) {
+            List<PlayableCharacter> characters = new List(FindObjectsOfType<PlayableCharacter>());
+            Debug.Log($"Found {characters.Count} characters");
             Init();
         }
         if (isMyTurn && !HasTurnTimeRemaining()) {
