@@ -16,6 +16,7 @@ public abstract class PlayableCharacter : Character {
       // If the player has not yet been assinged a meal
       if (!NetworkManager.instance.PlayerHasProperty("MealId", Owner)) {
         int mealId =  NetworkManager.instance.GetPlayerProperty<int>("MealId", Owner);
+        Debug.Log($"Found a meal with id {mealId}");
         // Create a meal for them 
         Meal meal = PhotonNetwork.Instantiate(mealPrefab.name, new Vector3(0,0,0), Quaternion.identity).GetComponent<Meal>();
 
@@ -41,6 +42,7 @@ public abstract class PlayableCharacter : Character {
       GetComponentInChildren<CameraMouseLook>().enabled = true;
     }
 
+    [PunRPC]
     public void GoToMealSwap() {
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneRoundStarted", false);

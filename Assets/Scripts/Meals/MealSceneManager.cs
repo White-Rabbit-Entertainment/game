@@ -96,12 +96,23 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         }
         return playersLeft[0];
     }
+    
+    // 
+    public bool AllPlayableCharactersSpawned() {
+        foreach(PlayableCharacter character in characters) {
+            if (!character.Spawned()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     // Update is called once per frame
     void Update() {               
         if (!initialized) {
             characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
-            if (characters.Count == NetworkManager.instance.GetPlayers().Count) {
+
+            if (characters.Count == NetworkManager.instance.GetPlayers().Count && AllPlayableCharactersSpawned()) {
                 Debug.Log("Inited game");
                 Debug.Log($"Found {characters.Count} characters");
                 Init();
@@ -137,6 +148,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
             if (!(character is Ghost)) {
                 GameObject playerInfo = Instantiate(playerInfoPrefab, playerInfoGO.transform);
                 Image[] images = playerInfo.GetComponentsInChildren<Image>();
+                Debug.Log(character.roleInfo);
+                Debug.Log(character.roleInfo.colour);
                 images[0].color = character.roleInfo.colour;
                 images[1].color = character.GetMeal().colour;
                 Text text = playerInfo.GetComponentInChildren<Text>();

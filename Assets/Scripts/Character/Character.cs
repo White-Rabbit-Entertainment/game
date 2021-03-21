@@ -88,6 +88,10 @@ public abstract class Character : MonoBehaviour {
     return GetComponent<CharacterController>().velocity;
   }
 
+  public bool Spawned() {
+    return roleInfo != null;
+  } 
+
   [PunRPC]
   public void AssignRole (Role role) {
       string prefabName = role.ToString();
