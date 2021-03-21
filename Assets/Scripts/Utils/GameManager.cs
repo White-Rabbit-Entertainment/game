@@ -150,11 +150,14 @@ public class GameManager : MonoBehaviourPun {
           }
         }
         string currentScene = NetworkManager.instance.GetRoomProperty<string>("CurrentScene");
+        Debug.Log(currentScene);
         if (SceneManager.GetActiveScene().name != currentScene) {
           if (currentScene == "MealScene") {
+              Debug.Log("Current scene is meal scene");
               StartMealSwap();
           }
-          if (currentScene == "GameScene") {
+          else if (currentScene == "GameScene") {
+              Debug.Log("Current scene is game scene");
               StartGame();
           }
         }
@@ -187,9 +190,6 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      if (SceneLoaded()) {
-        HandleSceneSwitch();
-        // HandleGameOver();
-      }
-  }
+      HandleSceneSwitch();
+    }
 }

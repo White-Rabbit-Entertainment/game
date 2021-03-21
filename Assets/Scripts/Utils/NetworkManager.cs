@@ -158,9 +158,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public T GetPlayerProperty<T>(string key, Player player, T defaultValue = default(T)) {
-      Debug.Log(key);
-      Debug.Log(player);
-      Debug.Log(defaultValue);
       return GetProperty<T>(key, player.CustomProperties, defaultValue);
     }
 
