@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Musician
   role: 2
   avatar: {fileID: 9000000, guid: 73a48139ac238b9259421e65fbdb2770, type: 3}
-  colour: {r: 1, g: 0, b: 0.819077, a: 0}
+  colour: {r: 1, g: 0, b: 0.819077, a: 1}
 --- !u!1001 &2156648591594008068
 PrefabInstance:
   m_ObjectHideFlags: 0
