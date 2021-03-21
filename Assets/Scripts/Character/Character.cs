@@ -35,10 +35,6 @@ public abstract class Character : MonoBehaviour {
     canTask = false;
   }
 
-  public virtual bool IsInitalized() {
-    return roleInfo != null;
-  }
-
   public void PickUp(Pickupable item) {
     currentHeldItem = item;
     // An item can only be moved by a player if they are the owner.
