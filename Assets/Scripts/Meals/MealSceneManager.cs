@@ -10,6 +10,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     public GameObject buttonPrefab;
     public GameObject buttonsGO;
+    public GameObject playerInfoPrefab;
+    public GameObject playerInfoGO;
 
     private List<PlayableCharacter> characters;
 
@@ -120,6 +122,21 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
         if (isMyTurn && !HasTurnTimeRemaining()) {
             EndTurn();
+        }
+    }
+    
+    [PunRPC]
+    void DrawPlayerInfo() {
+        playerInfoGO.DestroyChildren();
+        foreach (PlayableCharacter character in characters) {
+            if (!(character is Ghost)) {
+                GameObject playerInfo = Instantiate(playerInfoPrefab, playerInfoGO.transform);
+                Image[] images = playerInfo.GetComponentsInChildren<Image>();
+                images[0].color = character.colour;
+                images[1].color = character.GetMeal().colour;
+                Text text = playerInfo.GetComponentinChildren<Text>();
+                text.text = $"{player.GetComponent<PhotonView>().Owner.NickName} ({character.roleInfo.name})";
+            }
         }
     }
 
