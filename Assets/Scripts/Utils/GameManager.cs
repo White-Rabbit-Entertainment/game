@@ -96,14 +96,17 @@ public class GameManager : MonoBehaviourPun {
         // }
 
         if (NetworkManager.instance.NoLoyalsRemaining()) {
+          Debug.Log("All loyals dead");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
         if (NetworkManager.instance.CaptainIsDead()) {
+          Debug.Log("Captain dead");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
         if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && AllTasksCompleted()) {
+          Debug.Log("Tasks not set");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
         
