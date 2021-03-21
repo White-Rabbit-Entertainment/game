@@ -100,8 +100,7 @@ public class PlayerSpawner : MonoBehaviour {
             playerPrefab = loyalPrefab;
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Captain)) {
             spawnPoint = new Vector3(1,2,10);
-            // TODO undo
-            playerPrefab = ghostPrefab;
+            playerPrefab = captainPrefab;
         } else {
             spawnPoint = new Vector3(1,4,10);
             playerPrefab = ghostPrefab;
