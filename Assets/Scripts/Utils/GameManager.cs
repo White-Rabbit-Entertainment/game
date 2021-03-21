@@ -91,9 +91,9 @@ public class GameManager : MonoBehaviourPun {
       int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
 
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
-        if (secondsLeft <= 0) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
-        }
+        // if (secondsLeft <= 0) {
+        //   NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+        // }
 
         if (NetworkManager.instance.NoLoyalsRemaining()) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
-        if (AllTasksCompleted()) {
+        if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && AllTasksCompleted()) {
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
         
@@ -138,8 +138,6 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      // if (SceneLoaded()) {
-      //   // HandleGameOver();
-      // }
-  }
+      HandleGameOver();
+    }
 }

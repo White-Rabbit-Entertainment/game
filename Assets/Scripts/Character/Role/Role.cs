@@ -5,7 +5,7 @@ using UnityEngine;
 public enum Role {
     Captain,
     Cook,
-    // Musician,
+    Musician,
     // Swabby,
     // Lookout,
     // Mate,
