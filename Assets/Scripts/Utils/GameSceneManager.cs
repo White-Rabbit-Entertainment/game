@@ -8,12 +8,15 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
     private bool started = false;
 
+    public InteractableList interactablesList;
+
     public LoadingScreen loadingScreen;
 
     // Start is called before the first frame update
     void Init() {
         initialized = true;
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", true);
+        interactablesList.Unfreeze();
     }
     
     public void HandleSceneSwitch(){
@@ -68,6 +71,8 @@ public class GameSceneManager : MonoBehaviour {
 
     [PunRPC]
     void SwitchToMealScene() {
+        // Disable all interactables
+        interactablesList.Freeze();
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", false);
         NetworkManager.instance.ChangeScene("MealScene");
     }

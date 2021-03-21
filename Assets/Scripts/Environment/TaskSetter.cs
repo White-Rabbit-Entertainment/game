@@ -8,8 +8,14 @@ public class TaskSetter : MonoBehaviour {
 
     public GameObject taskables;
 
+    void Awake () {
+        if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
+          Destroy(this);
+        }
+    }
+
     void Update() {
-        if (NetworkManager.instance.CheckAllPlayers<string>("CurrentScene", "GameScene") && NetworkManager.instance.AllCharactersSpawned()) {
+        if (NetworkManager.instance.CheckAllPlayers<string>("CurrentScene", "GameScene") && NetworkManager.instance.AllCharactersSpawned() && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", false)) {
           CreateTasks();
           Destroy(this);
         }
