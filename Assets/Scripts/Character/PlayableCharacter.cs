@@ -8,13 +8,14 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
-    public Player owner;
+    public Player Owner {
+      get { return GetComponent<PhotonView>().Owner; }
+    }
 
     public override void Start() { 
-      owner = GetComponent<PhotonView>().Owner;
       // If the player has not yet been assinged a meal
-      if (!NetworkManager.instance.PlayerHasProperty("MealId", owner)) {
-        int mealId =  NetworkManager.instance.GetPlayerProperty<int>("MealId", owner);
+      if (!NetworkManager.instance.PlayerHasProperty("MealId", Owner)) {
+        int mealId =  NetworkManager.instance.GetPlayerProperty<int>("MealId", Owner);
         // Create a meal for them 
         Meal meal = PhotonNetwork.Instantiate(mealPrefab.name, new Vector3(0,0,0), Quaternion.identity).GetComponent<Meal>();
 
@@ -43,18 +44,18 @@ public abstract class PlayableCharacter : Character {
 
     // Retrun the meal which this player owns
     public Meal GetMeal() {
-      int mealId = NetworkManager.instance.GetPlayerProperty<int>("MealId", owner);
+      int mealId = NetworkManager.instance.GetPlayerProperty<int>("MealId", Owner);
       return PhotonView.Find(mealId).GetComponent<Meal>();
     }
 
     // Sets the players meal to a given meal
     public void SetMeal(Meal meal) {
-      NetworkManager.instance.SetPlayerProperty("MealId", meal.GetComponent<PhotonView>().ViewID, owner);
+      NetworkManager.instance.SetPlayerProperty("MealId", meal.GetComponent<PhotonView>().ViewID, Owner);
     }
 
     [PunRPC]
     public void Kill() {
-        NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, owner);
+        NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
         GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
         PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
     }

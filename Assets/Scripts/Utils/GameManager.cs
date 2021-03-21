@@ -87,17 +87,18 @@ public class GameManager : MonoBehaviourPun {
     public void StartGame() {
       NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
       NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
+      if (PhotonNetwork.IsMasterClient) {
+        StartRoundTimer();
+      }
       NetworkManager.instance.ChangeScene("GameScene");
-      StartRoundTimer();
     }
 
      public void StartMealSwap() {
         Debug.Log("Starting meal swap");
-        // foreach (Player player in NetworkManager.instance.GetPlayers()) {
-        //   NetworkManager.instance.SetPlayerProperty("Spawned", false, player); 
-        // }
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
         NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
+        NetworkManager.instance.SetLocalPlayerProperty("GameSceneRoundStarted", false);
+        NetworkManager.instance.EndTimer(Timer.RoundTimer);
         NetworkManager.instance.ChangeScene("MealScene");
     }
 
@@ -143,12 +144,20 @@ public class GameManager : MonoBehaviourPun {
       }  
     }
 
-     public void HandleSceneSwitch(){
-        int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
-        if (secondsLeft < 0) {
-          // Store scene in the master client
-          if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
-            StartMealSwap();
+    public void HandleSceneSwitch(){
+        if (PhotonNetwork.IsMasterClient) {
+          int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
+          if (secondsLeft < 0 && NetworkManager.instance.IsTimerStarted(Timer.RoundTimer)) {
+              NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
+          }
+        }
+        string currentScene = NetworkManager.instance.GetRoomProperty<string>("CurrentScene");
+        if (SceneManager.GetActiveScene().name != currentScene) {
+          if (currentScene == "MealScene") {
+              StartMealSwap();
+          }
+          if (currentScene == "GameScene") {
+              StartGame();
           }
         }
     }

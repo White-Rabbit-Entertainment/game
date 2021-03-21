@@ -158,6 +158,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public T GetPlayerProperty<T>(string key, Player player, T defaultValue = default(T)) {
+      Debug.Log(key);
+      Debug.Log(player);
+      Debug.Log(defaultValue);
       return GetProperty<T>(key, player.CustomProperties, defaultValue);
     }
 
@@ -208,7 +211,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void StartTimer(double roundLength, Timer timer) {
       SetRoomProperty(timer.ToString() + "length", roundLength);
       SetRoomProperty(timer.ToString() + "start", PhotonNetwork.Time);
+      SetRoomProperty(timer.ToString() + "started", true);
     }
+
+    public void EndTimer(Timer timer) {
+      SetRoomProperty(timer.ToString() + "started", false);
+    }
+    
+    public bool IsTimerStarted(Timer timer) {
+      return RoomPropertyIs<bool>(timer.ToString() + "started", true);
+    }
+    
 
     // Returns round time remaining (or 0 if not started)
     public double GetTimeRemaining(Timer timer) {

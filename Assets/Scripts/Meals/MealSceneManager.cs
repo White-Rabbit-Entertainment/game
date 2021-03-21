@@ -54,6 +54,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     void InitNextTurn() {
         if (playersLeft.Count == 0) {
             // Switch back to gamescene
+            NetworkManager.instance.SetRoomProperty("CurrentScene", "GameScene");
             GetComponent<PhotonView>().RPC("EndMealScene", RpcTarget.All);
         }
         GetComponent<PhotonView>().RPC("StartTurn", playersLeft[0]);
@@ -107,7 +108,6 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         if (!started && NetworkManager.instance.CheckAllPlayers<bool>("MealSceneInitalized", true)) {
             // Set up the scene
             if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-              NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
               playersLeft = NetworkManager.instance.GetPlayers();
               playersLeft.Shuffle();
 
@@ -136,7 +136,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
                 images[0].color = character.roleInfo.colour;
                 images[1].color = character.GetMeal().colour;
                 Text text = playerInfo.GetComponentInChildren<Text>();
-                text.text = $"{character.GetComponent<PhotonView>().Owner.NickName} ({character.roleInfo.name})";
+                text.text = $"{character.Owner.NickName} ({character.roleInfo.name})";
             }
         }
     }
@@ -148,7 +148,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
             if (!(character is Ghost)) {
                 Button button = Instantiate(buttonPrefab, buttonsGO.transform).GetComponent<Button>();
                 button.onClick.AddListener(() => SwapMeal(character));
-                button.GetComponentInChildren<Text>().text = character.GetComponent<PhotonView>().Owner.NickName;
+                button.GetComponentInChildren<Text>().text = character.Owner.NickName;
                 button.GetComponent<Image>().color = character.GetMeal().colour;
             }
         }

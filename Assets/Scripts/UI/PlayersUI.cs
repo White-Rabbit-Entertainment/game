@@ -25,7 +25,7 @@ public class PlayersUI : MonoBehaviourPun {
 
     // Set text to name
     TMP_Text text = item.GetComponentInChildren<TMP_Text>();
-    text.text = player.owner.NickName + " (" + player.roleInfo.name + ")";
+    text.text = player.Owner.NickName + " (" + player.roleInfo.name + ")";
    
     // If the player is dead cross them out
     if (player is Ghost) {
