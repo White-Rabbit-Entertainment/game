@@ -29,7 +29,7 @@ public class PlayersUI : MonoBehaviourPun {
    
     // If the player is dead cross them out
     if (player is Ghost) {
-      Transform cross = transform.FindChild("Cross");
+      Transform cross = item.transform.Find("Cross");
       cross.gameObject.SetActive(true);
     }
   }
