@@ -54,8 +54,7 @@ public class GameManager : MonoBehaviourPun {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
           NetworkManager.instance.SetRoomProperty("TasksSet", false);
           NetworkManager.instance.SetRoomProperty("WinningTeam", "None");
-          NetworkManager.instance.SetRoomProperty("NumberOfStealingTasks", 2);
-          NetworkManager.instance.SetRoomProperty("NumberOfNonStealingTasks", 2);
+          NetworkManager.instance.SetRoomProperty("NumberOfTasks", 10);
           
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfTraitors = NetworkManager.instance.GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
@@ -68,7 +67,7 @@ public class GameManager : MonoBehaviourPun {
           players.Shuffle();
 
           for (int i = 0; i < numberOfTraitors; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
+            NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost , players[i]);
             NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
 

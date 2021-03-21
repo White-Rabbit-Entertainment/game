@@ -96,5 +96,6 @@ public abstract class Character : MonoBehaviour {
       body.transform.parent = transform; // Sets the parent of the body to the player
       body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
       roleInfo = body.GetComponent<RoleInfo>();
+      GetComponent<Animator>().avatar = roleInfo.avatar;
   }
 }

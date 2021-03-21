@@ -3,8 +3,6 @@ using Photon.Realtime;
 using UnityEngine;
 
 public abstract class PlayableCharacter : Character {
-    public Color colour;
-
     public GameObject ghostPrefab;
     public GameObject mealPrefab;
 
@@ -19,6 +17,8 @@ public abstract class PlayableCharacter : Character {
         int mealId =  NetworkManager.instance.GetPlayerProperty<int>("MealId", owner);
         // Create a meal for them 
         Meal meal = PhotonNetwork.Instantiate(mealPrefab.name, new Vector3(0,0,0), Quaternion.identity).GetComponent<Meal>();
+
+        Color colour = roleInfo.colour;
         // Set the colour of the meal to the player's colour
         meal.GetComponent<PhotonView>().RPC("SetColour", RpcTarget.All, colour.r, colour.g, colour.b);
         // Set their meal to this meal id
@@ -62,11 +62,6 @@ public abstract class PlayableCharacter : Character {
     [PunRPC]
     public void DestroyPlayer() {
         Destroy(gameObject);
-    }
-
-    [PunRPC]
-    public void AssignColour(float r, float g, float b) {
-        colour = new Color(r,g,b);
     }
 
     // Given a player to swap with, this player swaps meals with that player

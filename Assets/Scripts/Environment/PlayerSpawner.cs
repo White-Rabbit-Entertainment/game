@@ -8,6 +8,7 @@ using Photon.Pun;
 public class PlayerSpawner : MonoBehaviour {
 
     public GameObject traitorPrefab;
+    public GameObject ghostPrefab;
     public GameObject loyalPrefab;
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
@@ -91,12 +92,15 @@ public class PlayerSpawner : MonoBehaviour {
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
             spawnPoint = new Vector3(1,2,-10);
             playerPrefab = traitorPrefab;
-        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.NonCaptainLoyal)) {
             spawnPoint = new Vector3(1,2,10);
             playerPrefab = loyalPrefab;
-        } else {
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Captain)) {
             spawnPoint = new Vector3(1,2,10);
             playerPrefab = captainPrefab;
+        } else {
+            spawnPoint = new Vector3(1,4,10);
+            playerPrefab = ghostPrefab;
         }
 
         // Spawn in the player at the spawn point
@@ -105,9 +109,6 @@ public class PlayerSpawner : MonoBehaviour {
         // Grab some useful components
         PlayableCharacter character = player.GetComponent<PlayableCharacter>();
         PhotonView playerView = player.GetComponent<PhotonView>();
-
-        // Set the player colour
-        playerView.RPC("AssignColour", RpcTarget.All, Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 
         // Assign a role
         Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
