@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviourPun {
           players.Shuffle();
 
           for (int i = 0; i < numberOfTraitors; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost , players[i]);
+            NetworkManager.instance.SetPlayerProperty("Team", Team.Traitor, players[i]);
             NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
 
