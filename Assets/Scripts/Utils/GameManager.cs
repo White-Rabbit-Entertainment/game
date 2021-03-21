@@ -37,12 +37,6 @@ public class GameManager : MonoBehaviourPun {
       }
     }
 
-    public void StartRoundTimer() {
-      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartTimer(10, Timer.RoundTimer);
-      }
-    }
-
     public double TimeRemaining() {
       return NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
     }
@@ -82,23 +76,6 @@ public class GameManager : MonoBehaviourPun {
 
         }
       }
-    }
-
-    public void StartGame() {
-      NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
-      if (PhotonNetwork.IsMasterClient) {
-        StartRoundTimer();
-      }
-      NetworkManager.instance.ChangeScene("GameScene");
-    }
-
-    [PunRPC]
-    public void StartMealSwap() {
-        Debug.Log("Starting meal swap");
-        NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
-        NetworkManager.instance.SetLocalPlayerProperty("GameSceneRoundStarted", false);
-        NetworkManager.instance.EndTimer(Timer.RoundTimer);
-        NetworkManager.instance.ChangeScene("MealScene");
     }
 
     /// <summary> This function handles the game over logic. It does 2 things:
@@ -143,25 +120,6 @@ public class GameManager : MonoBehaviourPun {
       }  
     }
 
-    public void HandleSceneSwitch(){
-        if (PhotonNetwork.IsMasterClient) {
-          int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
-          if (secondsLeft <= 0 && NetworkManager.instance.IsTimerStarted(Timer.RoundTimer)) {
-              NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
-              GetComponent<PhotonView>().RPC("StartMealSwap", RpcTarget.All);
-          }
-        }
-    }
-
-    /// <summary> Check if the level has finished loading. It does this by
-    /// checking if all items, players and AIs are spawned in. </summary> 
-    // TODO Show some loading UI if the level isnt loaded yet.
-    // TODO Check players are loaded in.
-    // TODO Check AIs are loaded in.
-    public bool SceneLoaded() {
-      return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
-    }
-
     /// <summary> Return all the tasks in the scene. I.e. all the tasks the
     /// Loyals have to do to win the game. </summary> 
     public Task[] GetTasks() {
@@ -180,11 +138,8 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      if (SceneLoaded()) {
-        if (PhotonNetwork.IsMasterClient) {
-          HandleSceneSwitch();
-        }
-        // HandleGameOver();
-      }
+      // if (SceneLoaded()) {
+      //   // HandleGameOver();
+      // }
   }
 }

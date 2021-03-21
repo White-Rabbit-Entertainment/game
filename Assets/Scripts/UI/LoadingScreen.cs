@@ -30,10 +30,8 @@ public class LoadingScreen : MonoBehaviour {
     closeButton.onClick.AddListener(()=>CloseMenu());
   }
 
-  void Update() {
-    if (GameManager.instance.SceneLoaded()) {
-      closeButton.interactable = true;
-    }
+  public void EnableButton() {
+    closeButton.interactable = true;
   }
 
   void CloseMenu() {

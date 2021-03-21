@@ -29,7 +29,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
         GameManager.instance.SetupGame();
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
           NetworkManager.instance.SetRoomProperty("GameStarted", true);
-          GameManager.instance.StartGame();
+          NetworkManager.instance.ChangeScene("GameScene");
           Destroy(this);
         }
       }

@@ -21,7 +21,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     private List<Player> playersLeft;
 
     private bool isMyTurn;
-    private bool initalized = false;
+    private bool initialized = false;
     private bool started = false;
 
     private int numberOfPlayers = 0;
@@ -33,7 +33,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     // Called once all playable characters have spawned 
     void Init() {
-        initalized = true;
+        initialized = true;
         NetworkManager.instance.SetLocalPlayerProperty("MealSceneInitalized", true);
         Cursor.lockState = CursorLockMode.None;
         DrawButtons();
@@ -47,7 +47,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         if (me.GetMeal().isPoisoned) {
             me.Kill();
         }
-        GameManager.instance.StartGame();
+        NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
+        NetworkManager.instance.ChangeScene("GameScene");
     }
 
     [PunRPC]
@@ -98,7 +99,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     // Update is called once per frame
     void Update() {               
-        if (!initalized) {
+        if (!initialized) {
             characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
             if (characters.Count == NetworkManager.instance.GetPlayers().Count) {
                 Debug.Log("Inited game");

@@ -41,6 +41,13 @@ public abstract class PlayableCharacter : Character {
       GetComponentInChildren<CameraMouseLook>().enabled = true;
     }
 
+    public void GoToMealSwap() {
+        NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
+        NetworkManager.instance.SetLocalPlayerProperty("GameSceneRoundStarted", false);
+        NetworkManager.instance.EndTimer(Timer.RoundTimer);
+        NetworkManager.instance.ChangeScene("MealScene");
+    }
+
 
     // Retrun the meal which this player owns
     public Meal GetMeal() {
