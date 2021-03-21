@@ -42,6 +42,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     [PunRPC]
     void EndMealScene() {
+        NetworkManager.instance.SetLocalPlayerProperty("MealSceneInitalized", false);
         PlayableCharacter me = NetworkManager.instance.GetMe();
         if (me.GetMeal().isPoisoned) {
             me.Kill();
