@@ -101,12 +101,14 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         if (!initalized) {
             characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
             if (characters.Count == NetworkManager.instance.GetPlayers().Count) {
+                Debug.Log("Inited game");
                 Debug.Log($"Found {characters.Count} characters");
                 Init();
             }
         }
         
         if (!started && NetworkManager.instance.CheckAllPlayers<bool>("MealSceneInitalized", true)) {
+            Debug.Log("Started game");
             // Set up the scene
             if (PhotonNetwork.LocalPlayer.IsMasterClient) {
               playersLeft = NetworkManager.instance.GetPlayers();
