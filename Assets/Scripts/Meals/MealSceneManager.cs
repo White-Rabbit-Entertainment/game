@@ -12,6 +12,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     public GameObject buttonsGO;
     public GameObject playerInfoPrefab;
     public GameObject playerInfoGO;
+    public GameObject mealSceneUI;
 
     private List<PlayableCharacter> characters;
 
@@ -23,6 +24,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     private bool isMyTurn;
     private bool initialized = false;
     private bool started = false;
+    private bool active = false;
 
     private int numberOfPlayers = 0;
     
@@ -32,12 +34,19 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     }
 
     // Called once all playable characters have spawned 
-    void Init() {
-        initialized = true;
+    public void Init() {
+        active = true;
+        characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
         NetworkManager.instance.SetLocalPlayerProperty("MealSceneInitalized", true);
         Cursor.lockState = CursorLockMode.None;
         DrawButtons();
         DrawPlayerInfo();
+        mealSceneUI.SetActive(true);
+    }
+
+    public void Reset() {
+        active = false;
+        started = false;
     }
 
     [PunRPC]
@@ -48,7 +57,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
             me.Kill();
         }
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
-        NetworkManager.instance.ChangeScene("GameScene");
+        mealSceneUI.SetActive(false);
+        Reset();
     }
 
     [PunRPC]
@@ -109,35 +119,27 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
 
     // Update is called once per frame
     void Update() {               
-        if (!initialized) {
-            characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
+        if (active) {
+            if (!started && NetworkManager.instance.CheckAllPlayers<bool>("MealSceneInitalized", true)) {
+                Debug.Log("Started game");
+                // Set up the scene
+                if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+                  playersLeft = NetworkManager.instance.GetPlayers();
+                  playersLeft.Shuffle();
 
-            if (characters.Count == NetworkManager.instance.GetPlayers().Count && AllPlayableCharactersSpawned()) {
-                Debug.Log("Inited game");
-                Debug.Log($"Found {characters.Count} characters");
-                Init();
+                  // Move capatin to the end of the list (ie go last)
+                  Player captainPlayer = FindCaptainPlayer(); 
+                  playersLeft.Remove(captainPlayer);
+                  playersLeft.Add(captainPlayer);
+
+                  InitNextTurn();
+                }
+                started = true;
             }
-        }
-        
-        if (!started && NetworkManager.instance.CheckAllPlayers<bool>("MealSceneInitalized", true)) {
-            Debug.Log("Started game");
-            // Set up the scene
-            if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-              playersLeft = NetworkManager.instance.GetPlayers();
-              playersLeft.Shuffle();
 
-              // Move capatin to the end of the list (ie go last)
-              Player captainPlayer = FindCaptainPlayer(); 
-              playersLeft.Remove(captainPlayer);
-              playersLeft.Add(captainPlayer);
-
-              InitNextTurn();
+            if (isMyTurn && !HasTurnTimeRemaining()) {
+                EndTurn();
             }
-            started = true;
-        }
-
-        if (isMyTurn && !HasTurnTimeRemaining()) {
-            EndTurn();
         }
     }
     

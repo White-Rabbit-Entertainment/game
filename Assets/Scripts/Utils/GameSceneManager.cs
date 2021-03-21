@@ -12,11 +12,18 @@ public class GameSceneManager : MonoBehaviour {
 
     public LoadingScreen loadingScreen;
 
+    public MealSceneManager mealSceneManager;
+
     // Start is called before the first frame update
     void Init() {
         initialized = true;
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", true);
         interactablesList.Unfreeze();
+    }
+
+    void Reset() {
+        initialized = false;
+        started = false;
     }
     
     public void HandleSceneSwitch(){
@@ -48,10 +55,8 @@ public class GameSceneManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (!initialized) {
-
             // We have all the playable characters in the scene
-            List<PlayableCharacter> characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
-            if (characters.Count == NetworkManager.instance.GetPlayers().Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
+            if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
                 Init();
             }
         }
@@ -74,6 +79,7 @@ public class GameSceneManager : MonoBehaviour {
         // Disable all interactables
         interactablesList.Freeze();
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", false);
-        NetworkManager.instance.ChangeScene("MealScene");
+        mealSceneManager.Init();
+        Reset();
     }
 }
