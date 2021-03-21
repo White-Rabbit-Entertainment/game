@@ -56,6 +56,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         if (playersLeft.Count == 0) {
             // Switch back to gamescene
             NetworkManager.instance.SetRoomProperty("CurrentScene", "GameScene");
+            NetworkManager.instance.SetRoomProperty("InMealScene", false);
             GetComponent<PhotonView>().RPC("EndMealScene", RpcTarget.All);
         }
         GetComponent<PhotonView>().RPC("StartTurn", playersLeft[0]);

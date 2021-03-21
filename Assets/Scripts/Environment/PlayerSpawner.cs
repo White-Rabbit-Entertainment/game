@@ -18,6 +18,8 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 3;
 
+    public string sceneName;
+
     public bool mealSwapping;
 
     public List<GameObject> rolesPrefabs;
@@ -56,7 +58,8 @@ public class PlayerSpawner : MonoBehaviour {
     // This set the player as "InGameScene" so that we can wait till all the
     // players are in the scene before spawninng any objects.
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
-        NetworkManager.instance.SetLocalPlayerProperty("InGameScene", true);
+        // Set meal scene to true when swtiching to meal scene
+        NetworkManager.instance.SetLocalPlayerProperty($"In{sceneName}", true);
     }
 
     // Spawn in a player prefab (of the correct team) for the local players.
