@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviourPun {
 
         if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && AllTasksCompleted()) {
           Debug.Log("Tasks not set");
-          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+          // NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
         
         if (!NetworkManager.instance.RoomPropertyIs<Team>("WinningTeam", Team.None)) {
