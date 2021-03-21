@@ -92,7 +92,8 @@ public class GameManager : MonoBehaviourPun {
       NetworkManager.instance.ChangeScene("GameScene");
     }
 
-     public void StartMealSwap() {
+    [PunRPC]
+    public void StartMealSwap() {
         Debug.Log("Starting meal swap");
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneRoundStarted", false);
@@ -145,20 +146,9 @@ public class GameManager : MonoBehaviourPun {
     public void HandleSceneSwitch(){
         if (PhotonNetwork.IsMasterClient) {
           int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
-          if (secondsLeft < 0 && NetworkManager.instance.IsTimerStarted(Timer.RoundTimer)) {
+          if (secondsLeft <= 0 && NetworkManager.instance.IsTimerStarted(Timer.RoundTimer)) {
               NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
-          }
-        }
-        string currentScene = NetworkManager.instance.GetRoomProperty<string>("CurrentScene");
-        Debug.Log(currentScene);
-        if (SceneManager.GetActiveScene().name != currentScene) {
-          if (currentScene == "MealScene") {
-              Debug.Log("Current scene is meal scene");
-              StartMealSwap();
-          }
-          else if (currentScene == "GameScene") {
-              Debug.Log("Current scene is game scene");
-              StartGame();
+              GetComponent<PhotonView>().RPC("StartMealSwap", RpcTarget.All);
           }
         }
     }
@@ -190,6 +180,11 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      HandleSceneSwitch();
-    }
+      if (SceneLoaded()) {
+        if (PhotonNetwork.IsMasterClient) {
+          HandleSceneSwitch();
+        }
+        // HandleGameOver();
+      }
+  }
 }
