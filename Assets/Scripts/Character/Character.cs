@@ -16,7 +16,7 @@ public abstract class Character : MonoBehaviour {
   public Team team;
 
   public RoleInfo roleInfo;
-    
+
   public bool HasItem() {
     return currentHeldItem != null; 
   }
@@ -33,6 +33,10 @@ public abstract class Character : MonoBehaviour {
 
   public virtual void Start() {
     canTask = false;
+  }
+
+  public virtual bool IsInitalized() {
+    return roleInfo != null;
   }
 
   public void PickUp(Pickupable item) {

@@ -96,11 +96,20 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         return playersLeft[0];
     }
 
+    public bool AllCharactersInitalized() {
+        foreach (PlayableCharacter character in characters) {
+            if (!character.IsInitalized()) {
+                return false;
+            }
+        }
+        return true;
+    } 
+
     // Update is called once per frame
     void Update() {               
         if (!initalized) {
             characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
-            if (characters.Count == NetworkManager.instance.GetPlayers().Count) {
+            if (characters.Count == NetworkManager.instance.GetPlayers().Count && AllCharactersInitalized()) {
                 Debug.Log("Inited game");
                 Debug.Log($"Found {characters.Count} characters");
                 Init();
