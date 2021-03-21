@@ -14,6 +14,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     public GameObject playerInfoGO;
     public GameObject mealSceneUI;
 
+    public GameSceneManager gameSceneManager;
+
     private List<PlayableCharacter> characters;
 
     [SerializeField]
@@ -58,6 +60,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         }
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
         mealSceneUI.SetActive(false);
+        gameSceneManager.Init();
         Reset();
     }
 

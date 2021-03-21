@@ -5,24 +5,23 @@ using Photon.Pun;
 
 public class GameSceneManager : MonoBehaviour {
     
-    private bool initialized = false;
+    private bool enabled = true;
     private bool started = false;
-
-    public InteractableList interactablesList;
+    private bool initialized = false;
 
     public LoadingScreen loadingScreen;
 
     public MealSceneManager mealSceneManager;
 
     // Start is called before the first frame update
-    void Init() {
-        initialized = true;
+    public void Init() {
+        enabled = true;
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", true);
-        interactablesList.Unfreeze();
+        NetworkManager.instance.GetMe().Unfreeze();
     }
 
     void Reset() {
-        initialized = false;
+        enabled = false;
         started = false;
     }
     
@@ -54,22 +53,24 @@ public class GameSceneManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (!initialized) {
-            // We have all the playable characters in the scene
-            if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
-                Init();
+        if (enabled) {
+            if (!initialized) {
+                // We have all the playable characters in the scene
+                if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
+                    Init();
+                }
             }
-        }
-        if (!started && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
-            loadingScreen.EnableButton();
-            if (PhotonNetwork.IsMasterClient) {
-              StartRoundTimer();
+            if (!started && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
+                loadingScreen.EnableButton();
+                if (PhotonNetwork.IsMasterClient) {
+                  StartRoundTimer();
+                }
+                started = true;
             }
-            started = true;
-        }
-        if (started) {
-            if (PhotonNetwork.IsMasterClient) {
-                HandleSceneSwitch();
+            if (started) {
+                if (PhotonNetwork.IsMasterClient) {
+                    HandleSceneSwitch();
+                }
             }
         }
     }
@@ -77,9 +78,9 @@ public class GameSceneManager : MonoBehaviour {
     [PunRPC]
     void SwitchToMealScene() {
         // Disable all interactables
-        interactablesList.Freeze();
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", false);
         mealSceneManager.Init();
+        NetworkManager.instance.GetMe().Freeze();
         Reset();
     }
 }
