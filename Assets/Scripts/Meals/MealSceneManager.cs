@@ -132,10 +132,10 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
             if (!(character is Ghost)) {
                 GameObject playerInfo = Instantiate(playerInfoPrefab, playerInfoGO.transform);
                 Image[] images = playerInfo.GetComponentsInChildren<Image>();
-                images[0].color = character.colour;
+                images[0].color = character.roleInfo.colour;
                 images[1].color = character.GetMeal().colour;
-                Text text = playerInfo.GetComponentinChildren<Text>();
-                text.text = $"{player.GetComponent<PhotonView>().Owner.NickName} ({character.roleInfo.name})";
+                Text text = playerInfo.GetComponentInChildren<Text>();
+                text.text = $"{character.GetComponent<PhotonView>().Owner.NickName} ({character.roleInfo.name})";
             }
         }
     }
