@@ -85,7 +85,6 @@ public class GameManager : MonoBehaviourPun {
     }
 
     public void StartGame() {
-      NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
       NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
       if (PhotonNetwork.IsMasterClient) {
         StartRoundTimer();
@@ -96,7 +95,6 @@ public class GameManager : MonoBehaviourPun {
      public void StartMealSwap() {
         Debug.Log("Starting meal swap");
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false); 
-        NetworkManager.instance.SetLocalPlayerProperty("InGameScene", false);
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneRoundStarted", false);
         NetworkManager.instance.EndTimer(Timer.RoundTimer);
         NetworkManager.instance.ChangeScene("MealScene");

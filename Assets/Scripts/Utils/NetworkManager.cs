@@ -255,11 +255,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       return CheckAllPlayers<bool>("Ready", true);
     }
 
-    // Return true is all players are in the game.
-    public bool AllPlayersInGame() {
-      return CheckAllPlayers<bool>("InGameScene", true);
-    }
-
     //Return true if all players have been spawned into the game.
     public bool AllCharactersSpawned() {
       return CheckAllPlayers<bool>("Spawned", true);

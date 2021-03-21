@@ -9,7 +9,7 @@ public class TaskSetter : MonoBehaviour {
     public GameObject taskables;
 
     void Update() {
-        if (NetworkManager.instance.AllPlayersInGame() && NetworkManager.instance.AllCharactersSpawned()) {
+        if (NetworkManager.instance.CheckAllPlayers<string>("CurrentScene", "GameScene") && NetworkManager.instance.AllCharactersSpawned()) {
           CreateTasks();
           Destroy(this);
         }
