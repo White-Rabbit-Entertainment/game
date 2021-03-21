@@ -37,6 +37,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         NetworkManager.instance.SetLocalPlayerProperty("MealSceneInitalized", true);
         Cursor.lockState = CursorLockMode.None;
         DrawButtons();
+        DrawPlayerInfo();
     }
 
     [PunRPC]
@@ -167,6 +168,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         PlayableCharacter me = NetworkManager.instance.GetMe();
         me.SwapMeal(player);
         GetComponent<PhotonView>().RPC("DrawButtons", RpcTarget.All);
+        GetComponent<PhotonView>().RPC("DrawPlayerInfo", RpcTarget.All);
         EndTurn();
     }
 }
