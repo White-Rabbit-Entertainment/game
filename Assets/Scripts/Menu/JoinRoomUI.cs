@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
@@ -13,18 +14,13 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     public Button createPrivateButton;
     public Button startButton;
 
+    List<RoomInfo> roomList;
+
     public GameObject NameUI;
     public GameObject RoomUI;
-    
 
-    public static JoinRoomUI Instance;
-
-
-    void Awake()
-    {
-        Instance = this;
-    }
-
+    public GameObject roomNamePrefab;
+    public Transform gridLayout;
 
     public string RoomName() {
         int number;
@@ -45,8 +41,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     void Start() {
-        Debug.Log("Starting");
-        // Error NOT here I dont think maybe
         PhotonNetwork.ConnectUsingSettings();
         createRoomButton.onClick.AddListener(OnClickCreateRoom);
         joinRoomButton.onClick.AddListener(OnClickJoinRoom);
@@ -63,6 +57,8 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     void StartButton() {
         NameUI.SetActive(false);
         RoomUI.SetActive(true);
+        OnRoomListUpdate(roomList);
+
     }
 
     void OnClickCreateRoom() {
@@ -72,8 +68,8 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
 
     void OnClickJoinRoom() {
-      NetworkManager.instance.JoinRoom(roomNameInput.text);
-      PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
+      Debug.Log(playerNameInput.text); 
+      NetworkManager.instance.JoinRoom(roomNameInput.text, playerNameInput.text);
     }
 
     void OnClickCreatePrivateRoom() {
@@ -83,12 +79,33 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
 
     void OnClickJoinPrivateRoom() {
-        NetworkManager.instance.JoinRoom('p' + RoomName());
-        PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
+        NetworkManager.instance.JoinRoom('p' + RoomName(), playerNameInput.text);
     }
 
+    public override void OnRoomListUpdate(List<RoomInfo> roomList) {
+        this.roomList = roomList;
+        for (int i = 0; i < gridLayout.childCount; i++) {
+            if (gridLayout.GetChild(i).gameObject.GetComponentInChildren<Text>().text == roomList[i].Name) {
+                Destroy(gridLayout.GetChild(i).gameObject);
 
-    public void JoinRoom(string room) {
-        PhotonNetwork.JoinRoom(room);
+                if (roomList[i].PlayerCount == 0) {
+                    roomList.Remove(roomList[i]);
+                }
+            }
+        }
+
+
+        foreach (var room in roomList) {
+            if (room.Name.StartsWith("p")) {
+                continue;
+            }
+            
+            GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
+
+            newRoom.GetComponent<RoomListItem>().playerName = playerNameInput.text;
+
+            newRoom.GetComponentInChildren<Text>().text = room.Name; //+ "(" + room.PlayerCount + ")";
+            newRoom.transform.SetParent(gridLayout);
+        }
     }
 }

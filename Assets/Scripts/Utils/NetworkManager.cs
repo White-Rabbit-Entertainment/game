@@ -58,7 +58,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> rooms) {
-      Debug.Log("Network mangaer room list update");
+      Debug.Log("Network manager room list update");
     }
 
     /* Helper to set custom properties, all examples are given for room
@@ -284,7 +284,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
     }
 
-    public void JoinRoom(string roomName) {
+    public void JoinRoom(string roomName, string playerName) {
+      PhotonNetwork.LocalPlayer.NickName = playerName;
       PhotonNetwork.JoinRoom(roomName);
     }
     
