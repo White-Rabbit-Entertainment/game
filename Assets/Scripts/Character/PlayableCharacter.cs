@@ -66,7 +66,8 @@ public abstract class PlayableCharacter : Character {
     public void Kill() {
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
         GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
-        PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        NetworkManager.instance.myCharacter = newPlayer.GetComponent<PlayableCharacter>();
     }
 
     [PunRPC]
