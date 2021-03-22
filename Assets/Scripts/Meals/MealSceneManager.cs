@@ -82,7 +82,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
     [PunRPC]
     void StartTurn() {
         // Start round timer
-        NetworkManager.instance.StartTimer(20, Timer.TurnTimer);
+        NetworkManager.instance.StartTimer(1000, Timer.TurnTimer);
         PresentMenu(); 
         isMyTurn = true;
     }
