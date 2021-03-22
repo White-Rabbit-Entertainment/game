@@ -811,6 +811,9 @@ MonoBehaviour:
   startButton: {fileID: 65877135}
   NameUI: {fileID: 929795184}
   RoomUI: {fileID: 1444104897}
+  roomNamePrefab: {fileID: 7714565041424849157, guid: 572a2ad50758d48cc94bcbb373d3951f,
+    type: 3}
+  gridLayout: {fileID: 1848763007}
 --- !u!1 &783362585
 GameObject:
   m_ObjectHideFlags: 0

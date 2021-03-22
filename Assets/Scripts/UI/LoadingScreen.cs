@@ -18,6 +18,7 @@ public class LoadingScreen : MonoBehaviour {
 
   void Start() {
     Cursor.lockState = CursorLockMode.None;
+    Cursor.visible = true;
     Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
 
     descriptions = new Dictionary<Team, string>();
@@ -37,6 +38,7 @@ public class LoadingScreen : MonoBehaviour {
   void CloseMenu() {
     playersUI.Init();
     Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
     Destroy(loadingScreen);
     Destroy(this);
   }

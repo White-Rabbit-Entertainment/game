@@ -41,6 +41,7 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         characters = new List<PlayableCharacter>(FindObjectsOfType<PlayableCharacter>());
         NetworkManager.instance.SetLocalPlayerProperty("MealSceneInitalized", true);
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         DrawButtons();
         DrawPlayerInfo();
         mealSceneUI.SetActive(true);
@@ -61,6 +62,8 @@ public class MealSceneManager: MonoBehaviourPunCallbacks {
         NetworkManager.instance.SetLocalPlayerProperty("Spawned", false);
         mealSceneUI.SetActive(false);
         gameSceneManager.Init();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         Reset();
     }
 

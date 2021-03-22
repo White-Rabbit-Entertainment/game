@@ -16,7 +16,6 @@ public class GameSceneManager : MonoBehaviour {
     // Start is called before the first frame update
     public void Init() {
         enabled = true;
-        Cursor.lockState = CursorLockMode.Locked;
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", true);
         NetworkManager.instance.GetMe().Unfreeze();
     }

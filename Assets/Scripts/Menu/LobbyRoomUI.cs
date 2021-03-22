@@ -20,6 +20,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
+      Cursor.visible = true;
       toggleReadyButton.onClick.AddListener(ToggleReady);
     }
 
