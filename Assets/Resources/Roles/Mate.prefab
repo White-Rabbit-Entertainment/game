@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Mate
   role: 5
   avatar: {fileID: 9000000, guid: fb0a02704d73d640e802ddb9dd8e55c8, type: 3}
-  colour: {r: 0.2830189, g: 0, b: 0, a: 0}
+  colour: {r: 0.2830189, g: 0, b: 0, a: 1}
 --- !u!1001 &6277761495655828422
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81,7 +81,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: fb0a02704d73d640e802ddb9dd8e55c8,
         type: 3}
       propertyPath: m_Name
-      value: Brown Variant
+      value: Mate
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: fb0a02704d73d640e802ddb9dd8e55c8, type: 3}

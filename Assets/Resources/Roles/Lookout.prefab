@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Lookout
   role: 4
   avatar: {fileID: 9000000, guid: 6fb761da9f52234b6b6e9bda091db757, type: 3}
-  colour: {r: 0.03592075, g: 0.42352942, b: 0, a: 0}
+  colour: {r: 0.03592075, g: 0.42352942, b: 0, a: 1}
 --- !u!1001 &6286047228275484188
 PrefabInstance:
   m_ObjectHideFlags: 0
