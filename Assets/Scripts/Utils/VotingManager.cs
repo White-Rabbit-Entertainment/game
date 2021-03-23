@@ -1,6 +1,8 @@
 using UnityEngine;
 using Photon.Pun;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public enum Vote {
   Skip,
@@ -11,19 +13,17 @@ public enum Vote {
 public class VotingManager : MonoBehaviour {
   bool voteStarted = false;
   GameObject votingUI;
-  int votesFor;
-  int votesAgainst;
+  List<PlayableCharacter> playersVotingFor;
+  List<PlayableCharacter> playersVotingAgainst;
+  List<PlayableCharacter> playersVotingSkip;
   PlayableCharacter suspectedPlayer;
   PlayableCharacter voteLeader;
 
-  public void InitVote(PlayableCharacter suspectedPlayer) {
-    votesFor = 0;
-    votesAgainst = 0;
-    view.RPC("StartVote", RpcTarget.All, suspectedPlayer.view.id, NetworkManager.instance.GetMe().view.id);
-  } 
-
   [PunRPC]
   public void StartVote(int suspectedPlayerId, int voteLeaderId) {
+    playersVotingFor = new List<PlayableCharacter>();
+    playersVotingAgainst = new List<PlayableCharacter>();
+    playersVotingSkip = new List<PlayableCharacter>();
     suspectedPlayer = PhotonView.Find(suspectedPlayerId).GetComponent<PlayableCharacter>();
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
@@ -31,17 +31,23 @@ public class VotingManager : MonoBehaviour {
   } 
 
   [PunRPC]
-  public void SetVote(Vote vote) {
+  public void SetVote(Vote vote, int votingPlayerId) {
+    PlayableCharacter votingPlayer = PhotonView.Find(votingPlayerId).GetComponent<PlayableCharacter>();
     if (vote == Vote.For) {
-      votesFor++;
+      playersVotingFor.Add(votingPlayer);
     }
     if (vote == Vote.Against) {
-      votesAgainst++;
+      playersVotingAgainst.Add(votingPlayer);
+    }
+    if (vote == Vote.Skip) {
+      playersVotingSkip.Add(votingPlayer);
+    }
+    if (playersVotingFor.Count + playersVotingAgainst.Count + playersVotingSkip.Count == NetworkManager.instance.GetPlayers().Count) {
+      votingUI.SetActive(false);
     }
   }
   
   public void SubmitVote(Vote vote) {
-    view.RPC("SetVote", voteLeader.Owner, vote);
-    votingUI.SetActive(false);
+    GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>());
   }
 }
