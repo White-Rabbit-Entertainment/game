@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+
  
 /// <summary><c>ItemInteract</c> is the class which defines the behaviour for
 /// how a player interacts with an <c>Interactable</c>. 
@@ -18,7 +20,7 @@ public class ItemInteract : MonoBehaviourPun {
     private PlayableCharacter character;
 
     private void Start() {
-        if (!photonView.IsMine) {
+        if (!photonView.IsMine || SceneManager.GetActiveScene().name == "MealScene") {
             Destroy(this);
         }
         character = GetComponent<PlayableCharacter>();

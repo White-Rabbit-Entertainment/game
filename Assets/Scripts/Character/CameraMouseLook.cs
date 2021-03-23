@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+
 
 public class CameraMouseLook : MonoBehaviourPun
 {
@@ -14,7 +16,7 @@ public class CameraMouseLook : MonoBehaviourPun
 
     // Start is called before the first frame update
     void Start() {
-        if (!photonView.IsMine) {
+        if (!photonView.IsMine || SceneManager.GetActiveScene().name == "MealScene") {
           Destroy(this);
 
           // Also destory the camera object

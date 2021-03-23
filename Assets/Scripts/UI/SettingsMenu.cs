@@ -29,12 +29,14 @@ public class SettingsMenu : MonoBehaviour {
       NetworkManager.instance.GetMe().Freeze();
       settingsPanel.SetActive(true);
       Cursor.lockState = CursorLockMode.None;
+      Cursor.visible = true;
     }
     
     public void CloseMenu() {
       settingsPanel.SetActive(false);
       NetworkManager.instance.GetMe().Unfreeze();
       Cursor.lockState = CursorLockMode.Locked;
+      Cursor.visible = false;
       menuOpen = false;
     }
     

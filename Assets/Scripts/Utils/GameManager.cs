@@ -37,14 +37,8 @@ public class GameManager : MonoBehaviourPun {
       }
     }
 
-    public void StartRoundTimer() {
-      if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartRoundTimer(600);
-      }
-    }
-
     public double TimeRemaining() {
-      return NetworkManager.instance.GetRoundTimeRemaining();
+      return NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
     }
 
     /// <summary> Before a game is able to start various things need to be
@@ -54,8 +48,7 @@ public class GameManager : MonoBehaviourPun {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
           NetworkManager.instance.SetRoomProperty("TasksSet", false);
           NetworkManager.instance.SetRoomProperty("WinningTeam", "None");
-          NetworkManager.instance.SetRoomProperty("NumberOfStealingTasks", 2);
-          NetworkManager.instance.SetRoomProperty("NumberOfNonStealingTasks", 2);
+          NetworkManager.instance.SetRoomProperty("NumberOfTasks", 10);
           
           List<Player> players = NetworkManager.instance.GetPlayers();
           int numberOfTraitors = NetworkManager.instance.GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
@@ -68,7 +61,7 @@ public class GameManager : MonoBehaviourPun {
           players.Shuffle();
 
           for (int i = 0; i < numberOfTraitors; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
+            NetworkManager.instance.SetPlayerProperty("Team", Team.Traitor, players[i]);
             NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
 
@@ -85,11 +78,6 @@ public class GameManager : MonoBehaviourPun {
       }
     }
 
-    public void StartGame() {
-      NetworkManager.instance.ChangeScene("GameScene");
-      StartRoundTimer();
-    }
-
     /// <summary> This function handles the game over logic. It does 2 things:
     ///   <list> 
     ///     <item> Check if it thinks any team has won. If so it sets that team
@@ -100,23 +88,26 @@ public class GameManager : MonoBehaviourPun {
     ///   <list> 
     /// </summary>
     public void HandleGameOver() {
-      int secondsLeft = (int)NetworkManager.instance.GetRoundTimeRemaining();
+      int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
 
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
-        if (secondsLeft <= 0) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
-        }
+        // if (secondsLeft <= 0) {
+        //   NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+        // }
 
         if (NetworkManager.instance.NoLoyalsRemaining()) {
+          Debug.Log("All loyals dead");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
         if (NetworkManager.instance.CaptainIsDead()) {
+          Debug.Log("Captain dead");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
-        if (AllTasksCompleted()) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+        if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && AllTasksCompleted()) {
+          Debug.Log("Tasks not set");
+          // NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
         
         if (!NetworkManager.instance.RoomPropertyIs<Team>("WinningTeam", Team.None)) {
@@ -130,15 +121,6 @@ public class GameManager : MonoBehaviourPun {
           NetworkManager.instance.ChangeScene("LobbyScene");
         }
       }  
-    }
-
-    /// <summary> Check if the level has finished loading. It does this by
-    /// checking if all items, players and AIs are spawned in. </summary> 
-    // TODO Show some loading UI if the level isnt loaded yet.
-    // TODO Check players are loaded in.
-    // TODO Check AIs are loaded in.
-    public bool SceneLoaded() {
-      return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
     }
 
     /// <summary> Return all the tasks in the scene. I.e. all the tasks the
@@ -159,8 +141,6 @@ public class GameManager : MonoBehaviourPun {
     }
 
     void Update() {
-      if (SceneLoaded()) {
-        HandleGameOver();
-      }
+      HandleGameOver();
     }
 }

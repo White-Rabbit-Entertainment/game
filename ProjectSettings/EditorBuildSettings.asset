@@ -14,10 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/Scenes/64/Login.unity
-    guid: 9f90d213d559845bb8a139696f482150
-  - enabled: 0
-    path: Assets/Scenes/64/Hall.unity
-    guid: 13cff4a88c3f0414dbc07fc05c5d722b
+  - enabled: 1
+    path: Assets/Scenes/MealScene.unity
+    guid: f6bf4803db674459f906509be75afd95
   m_configObjects: {}

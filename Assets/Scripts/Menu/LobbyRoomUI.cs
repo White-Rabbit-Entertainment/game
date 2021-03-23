@@ -20,7 +20,8 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
-      toggleReadyButton.onClick.AddListener(()=>ToggleReady());
+      Cursor.visible = true;
+      toggleReadyButton.onClick.AddListener(ToggleReady);
     }
 
     void Update() {
@@ -29,7 +30,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
         GameManager.instance.SetupGame();
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
           NetworkManager.instance.SetRoomProperty("GameStarted", true);
-          GameManager.instance.StartGame();
+          NetworkManager.instance.ChangeScene("GameScene");
           Destroy(this);
         }
       }
