@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -11,8 +12,11 @@ public enum Vote {
 }
 
 public class VotingManager : MonoBehaviour {
+  public GameObject votingUI;
+  public Text votingUIText;
+  public PlayersUI playersUI;
+
   bool voteStarted = false;
-  GameObject votingUI;
   List<PlayableCharacter> playersVotingFor;
   List<PlayableCharacter> playersVotingAgainst;
   List<PlayableCharacter> playersVotingSkip;
@@ -28,6 +32,7 @@ public class VotingManager : MonoBehaviour {
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
     votingUI.SetActive(true);
+    votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
 
   [PunRPC]
@@ -42,6 +47,7 @@ public class VotingManager : MonoBehaviour {
     if (vote == Vote.Skip) {
       playersVotingSkip.Add(votingPlayer);
     }
+    playersUI.SetPlayerVote(vote, votingPlayer);
     if (playersVotingFor.Count + playersVotingAgainst.Count + playersVotingSkip.Count == NetworkManager.instance.GetPlayers().Count) {
       votingUI.SetActive(false);
     }
