@@ -18,6 +18,7 @@ public class LoadingScreen : MonoBehaviour {
 
   void Start() {
     Cursor.lockState = CursorLockMode.None;
+    Cursor.visible = true;
     Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
 
     descriptions = new Dictionary<Team, string>();
@@ -30,15 +31,14 @@ public class LoadingScreen : MonoBehaviour {
     closeButton.onClick.AddListener(()=>CloseMenu());
   }
 
-  void Update() {
-    if (GameManager.instance.SceneLoaded()) {
-      closeButton.interactable = true;
-    }
+  public void EnableButton() {
+    closeButton.interactable = true;
   }
 
   void CloseMenu() {
     playersUI.Init();
     Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
     Destroy(loadingScreen);
     Destroy(this);
   }

@@ -4,6 +4,12 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+    
+public enum Timer {
+  RoundTimer,
+  TurnTimer,
+}
+
 
 /// <summary> <c>NetworkManager</c> handles logic to do with PhotonNetwork. It
 /// is also a singleton see <c>GameManager</c> <see cref="GameManager"></see>
@@ -52,7 +58,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> rooms) {
-      Debug.Log("Network mangaer room list update");
+      Debug.Log("Network manager room list update");
     }
 
     /* Helper to set custom properties, all examples are given for room
@@ -199,14 +205,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     // Start the timer for the game, but assigning the start time and round length (which all clients use)
-    public void StartRoundTimer(double roundLength) {
-      SetRoomProperty("RoundLength", roundLength);
-      SetRoomProperty("RoundTimerStart", PhotonNetwork.Time);
+    public void StartTimer(double roundLength, Timer timer) {
+      SetRoomProperty(timer.ToString() + "length", roundLength);
+      SetRoomProperty(timer.ToString() + "start", PhotonNetwork.Time);
+      SetRoomProperty(timer.ToString() + "started", true);
     }
 
+    public void EndTimer(Timer timer) {
+      SetRoomProperty(timer.ToString() + "started", false);
+    }
+    
+    public bool IsTimerStarted(Timer timer) {
+      return RoomPropertyIs<bool>(timer.ToString() + "started", true);
+    }
+    
+
     // Returns round time remaining (or 0 if not started)
-    public double GetRoundTimeRemaining() {
-      return GetRoomProperty<double>("RoundLength", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>("RoundTimerStart", 0f));
+    public double GetTimeRemaining(Timer timer) {
+      return GetRoomProperty<double>(timer.ToString() + "length", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>(timer.ToString() + "start", 0f));
     }
 
     // Check all players in the room and returns whether all the robbers are captured
@@ -234,11 +250,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // Return true is all players have readied up.
     public bool AllPlayersReady() {
       return CheckAllPlayers<bool>("Ready", true);
-    }
-
-    // Return true is all players are in the game.
-    public bool AllPlayersInGame() {
-      return CheckAllPlayers<bool>("InGameScene", true);
     }
 
     //Return true if all players have been spawned into the game.
@@ -273,7 +284,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
     }
 
-    public void JoinRoom(string roomName) {
+    public void JoinRoom(string roomName, string playerName) {
+      PhotonNetwork.LocalPlayer.NickName = playerName;
       PhotonNetwork.JoinRoom(roomName);
     }
     

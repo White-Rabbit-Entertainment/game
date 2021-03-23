@@ -8,8 +8,7 @@ using Photon.Realtime;
 
 public class PlayersUI : MonoBehaviourPun {
 
-  public GameObject livingPlayerTile;
-  public GameObject deadPlayerTile;
+  public GameObject playerTile;
   public GameObject playerList;
 
   public void Init() {
@@ -19,13 +18,19 @@ public class PlayersUI : MonoBehaviourPun {
   }
 
   void AddPlayerTile(PlayableCharacter player) {
-    GameObject item;
-    if (player is Ghost) {
-      item = Instantiate(deadPlayerTile, playerList.transform);
-    } else {
-      item = Instantiate(livingPlayerTile, playerList.transform);
-    }
+    GameObject item = Instantiate(playerTile, playerList.transform);
+
+    // Set colour of tile to match player role
+    item.GetComponent<Image>().color = player.roleInfo.colour; 
+
+    // Set text to name
     TMP_Text text = item.GetComponentInChildren<TMP_Text>();
-    text.text = player.owner.NickName + " (" + player.roleInfo.name + ")";
+    text.text = player.Owner.NickName + " (" + player.roleInfo.name + ")";
+   
+    // If the player is dead cross them out
+    if (player is Ghost) {
+      Transform cross = item.transform.Find("Cross");
+      cross.gameObject.SetActive(true);
+    }
   }
 }
