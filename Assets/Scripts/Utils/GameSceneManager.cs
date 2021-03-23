@@ -11,8 +11,6 @@ public class GameSceneManager : MonoBehaviour {
 
     public LoadingScreen loadingScreen;
 
-    public MealSceneManager mealSceneManager;
-
     // Start is called before the first frame update
     public void Init() {
         enabled = true;
@@ -24,17 +22,7 @@ public class GameSceneManager : MonoBehaviour {
         enabled = false;
         started = false;
     }
-    
-    public void HandleSceneSwitch(){
-        if (PhotonNetwork.IsMasterClient) {
-          int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
-          if (secondsLeft <= 0 && NetworkManager.instance.IsTimerStarted(Timer.RoundTimer)) {
-              NetworkManager.instance.SetRoomProperty("CurrentScene", "MealScene");
-              NetworkManager.instance.EndTimer(Timer.RoundTimer);
-              GetComponent<PhotonView>().RPC("SwitchToMealScene", RpcTarget.All);
-          }
-        }
-    }
+
 
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
@@ -47,7 +35,7 @@ public class GameSceneManager : MonoBehaviour {
     
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartTimer(30, Timer.RoundTimer);
+        NetworkManager.instance.StartTimer(1000, Timer.RoundTimer);
       }
     }
 
@@ -67,20 +55,7 @@ public class GameSceneManager : MonoBehaviour {
                 }
                 started = true;
             }
-            if (started) {
-                if (PhotonNetwork.IsMasterClient) {
-                    HandleSceneSwitch();
-                }
-            }
+           
         }
-    }
-
-    [PunRPC]
-    void SwitchToMealScene() {
-        // Disable all interactables
-        NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", false);
-        mealSceneManager.Init();
-        NetworkManager.instance.GetMe().Freeze();
-        Reset();
     }
 }
