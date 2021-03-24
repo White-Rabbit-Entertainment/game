@@ -13,6 +13,7 @@ public enum Vote {
 
 public class VotingManager : MonoBehaviour {
   public GameObject votingUI;
+  public GameObject voteInProgress;
   public Text votingUIText;
   public PlayersUI playersUI;
 
@@ -39,6 +40,8 @@ public class VotingManager : MonoBehaviour {
   public void InitVote(int suspectedPlayerId, int voteLeaderId) {
     if (!voteStarted) {
       GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, suspectedPlayerId, voteLeaderId);
+    } else {
+      voteInProgress.SetActive(false);
     }
   }
 
