@@ -42,9 +42,18 @@ public class PlayersUI : MonoBehaviourPun {
     GameObject item = playerTiles[player];
     if (vote == Vote.For) {
       item.transform.Find("VoteFor").gameObject.SetActive(true);
-    }
-    else if (vote == Vote.Against) {
+    } else if (vote == Vote.Against) {
       item.transform.Find("VoteAgainst").gameObject.SetActive(true);
+    } else if (vote == Vote.Skip) {
+      item.transform.Find("VoteSkip").gameObject.SetActive(true);
+    }
+  }
+
+  public void ClearVote() {
+    foreach(GameObject item in playerTiles.Values) {
+      item.transform.Find("VoteFor").gameObject.SetActive(false);
+      item.transform.Find("VoteAgainst").gameObject.SetActive(false);
+      item.transform.Find("VoteSkip").gameObject.SetActive(false);
     }
   }
 }

@@ -63,7 +63,7 @@ public class VotingManager : MonoBehaviour {
     }
     playersUI.SetPlayerVote(vote, votingPlayer);
     if (playersVotingFor.Count + playersVotingAgainst.Count + playersVotingSkip.Count == NetworkManager.instance.GetPlayers().Count) {
-      votingUI.SetActive(false);
+      playersUI.ClearVote();
     }
   }
   
