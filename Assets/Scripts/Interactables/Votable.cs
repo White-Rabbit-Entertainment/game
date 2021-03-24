@@ -7,6 +7,7 @@ public class Votable : Interactable {
   public GameObject votingManager;
 
   public void Start() {
+    base.Start();
     votingManager = GameObject.Find("/VotingManager");
   }
 
