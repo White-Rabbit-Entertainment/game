@@ -11,6 +11,10 @@ public abstract class PlayableCharacter : Character {
       base.Start();
     }
 
+    public void IsMe() {
+      return Owner == PhotonNetwork.LocalPlayer;
+    }
+
     public void Freeze() {
       GetComponent<PlayerMovement>().enabled = false;
       GetComponent<PlayerAnimation>().enabled = false;
