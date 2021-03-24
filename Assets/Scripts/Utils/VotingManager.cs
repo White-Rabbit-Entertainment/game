@@ -68,7 +68,7 @@ public class VotingManager : MonoBehaviour {
   }
   
   public void SubmitVote(Vote vote) {
-    GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>());
+    GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID);
     hasVoted = true;
     votingUI.SetActive(false);
   }
