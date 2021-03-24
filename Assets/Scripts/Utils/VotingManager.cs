@@ -15,6 +15,7 @@ public class VotingManager : MonoBehaviour {
   public GameObject voteInProgress;
   public Text votingUIText;
   public PlayersUI playersUI;
+  public GameSceneManager gameSceneManager;
 
   bool hasVoted = false;
   bool voteStarted = false;
@@ -66,10 +67,10 @@ public class VotingManager : MonoBehaviour {
       if (suspectedPlayer.IsMe()) {
         suspectedPlayer.Kill();
         if (NetworkManager.instance.NoLoyalsRemaining()) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
+          gameSceneManager.EndGame(Team.Traitor);
         }
         if (NetworkManager.instance.NoTraitorsRemaining()) {
-          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+          gameSceneManager.EndGame(Team.Loyal);;
         }
       }
       Debug.Log("The player has been voted off");

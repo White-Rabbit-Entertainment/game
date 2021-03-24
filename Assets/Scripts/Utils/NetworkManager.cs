@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -19,6 +21,43 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public static PlayableCharacter myCharacter;
     private string lobbyScene = "LobbyScene";
 
+    void Start() {
+      PhotonNetwork.ConnectUsingSettings();
+    }
+
+    /// <summary> Before a game is able to start various things need to be
+    /// setup. Such as which team each player is on. </summary>
+    public void SetupGame() {
+      if (RoomPropertyIs<bool>("GameStarted", false)) {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          SetRoomProperty("TasksSet", false);
+          SetRoomProperty("WinningTeam", "None");
+          SetRoomProperty("NumberOfTasks", 1);
+          
+          List<Player> players = GetPlayers();
+          int numberOfTraitors = GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
+
+          List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+
+          // Shuffle players and roles to ensure random team and role are assigned
+          roles.Shuffle();
+          players.Shuffle();
+
+          for (int i = 0; i < numberOfTraitors; i++) {
+            SetPlayerProperty("Team", Team.Traitor, players[i]);
+            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+          }
+
+          for (int i = numberOfTraitors; i < players.Count; i++) {
+            SetPlayerProperty("Team", Team.Loyal, players[i]);
+            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+          }
+          SetRoomProperty("GameReady", true);
+
+        }
+      }
+    }
+
     void Awake() {
       // Singleton stuff see GameManager for details.
       if (instance != null && instance != this) {
@@ -28,10 +67,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         instance = this;
         DontDestroyOnLoad(gameObject);
       }
-    }
-
-    void Start() {
-      PhotonNetwork.ConnectUsingSettings();
     }
 
     // A call back for when user connects to the server.
@@ -61,14 +96,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <summary> Function to get a value in custom properties. </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.GetRoomProperty<bool>("GameStarted");
+    ///    GetRoomProperty<bool>("GameStarted");
     /// </code>
     /// This returns the boolean value for GameStarted in the room
     /// custom properties. If it is not set it returns the default for boolean.
     /// </example>
     /// <example> A custom value can also be specified:
     /// <code>
-    ///    NetworkManager.instance.GetRoomProperty<bool>("GameStarted", false);
+    ///    GetRoomProperty<bool>("GameStarted", false);
     /// </code>
     /// This returns the boolean value for GameStarted in the room
     /// custom properties. In this case though if it is not set it will return
@@ -93,7 +128,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// to a given value.</summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", true);
+    ///    RoomPropertyIs<bool>("GameStarted", true);
     /// </code>
     /// This returns true if the game has started (ie gamestarted set to true
     /// in room).
@@ -105,7 +140,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <summary> Function to check if a value is in a given hashset </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", true);
+    ///    RoomPropertyIs<bool>("GameStarted", true);
     /// </code>
     /// This returns true if the game has started (ie gamestarted set to true
     /// in room).
@@ -117,7 +152,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <summary> Function to set value in custom properties. </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.SetRoomProperty("GameStarted", true);
+    ///    SetRoomProperty("GameStarted", true);
     /// </code>
     /// This sets the room property "GameStarted" to true for all clients.
     /// </example>
@@ -130,7 +165,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// set it to 1. </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.IncrementRoomProperty("NumberOfRobbers");
+    ///    IncrementRoomProperty("NumberOfRobbers");
     /// </code>
     /// If the number of robbers is currently 2, the number will become 3.
     /// If the number of robbers is not set, the number will become 1.

@@ -139,7 +139,6 @@ public abstract class Interactable : MonoBehaviourPun {
       if (Team.Loyal.HasFlag(NetworkManager.instance.GetLocalPlayerProperty<Team>("Team"))) {
         TaskGlowOn();
       }
-
   }
 
   // Adds a task and also sets the parent of the new task.
@@ -167,10 +166,6 @@ public abstract class Interactable : MonoBehaviourPun {
   [PunRPC]
   public void CompleteTask() {
     task.Complete();
-    if (GameManager.instance.AllTasksCompleted()) {
-      Debug.Log("All tasks have been completed");
-      NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
-    }
   }
 
   [PunRPC]

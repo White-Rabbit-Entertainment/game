@@ -24,7 +24,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     void Update() {
       SetText();
       if (NetworkManager.instance.AllPlayersReady()) {
-        GameManager.instance.SetupGame();
+        NetworkManager.instance.SetupGame();
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
           NetworkManager.instance.SetRoomProperty("GameStarted", true);
           NetworkManager.instance.ChangeScene("GameScene");
