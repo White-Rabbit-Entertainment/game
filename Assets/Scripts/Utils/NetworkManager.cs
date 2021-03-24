@@ -227,14 +227,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     // Check all players in the room and returns whether all the robbers are captured
     public bool NoLoyalsRemaining() {
-      foreach (Player player in GetPlayers()) {
-        Team playerTeam = GetPlayerProperty<Team>("Team", player);
-        if (Team.Loyal.HasFlag(playerTeam)) {
-          return false;
-        }
-      }
-      Debug.Log("all loyals have been killed");
-      return true;
+      return !CheckAnyPlayers<Team>("Team", Team.Loyal);
+    }
+
+    public bool NoTraitorsRemaining() {
+      return !CheckAnyPlayers<Team>("Team", Team.Traitor);
     }
 
     // Return true is all players have readied up.
@@ -245,6 +242,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //Return true if all players have been spawned into the game.
     public bool AllCharactersSpawned() {
       return CheckAllPlayers<bool>("Spawned", true);
+    }
+
+    public bool CheckAnyPlayers<T>(string key, T expectedValue) {
+      foreach (Player player in GetPlayers()) {
+          if (PlayerPropertyIs<T>(key, expectedValue, player)) {
+              return true;
+          }
+      }
+      return false;
     }
 
     public bool CheckAllPlayers<T>(string key, T expectedValue) {

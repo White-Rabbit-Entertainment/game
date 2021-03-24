@@ -87,18 +87,22 @@ public class GameManager : MonoBehaviourPun {
       int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
 
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
-        // if (secondsLeft <= 0) {
-        //   NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
-        // }
+        if (secondsLeft <= 0) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
+        }
 
         if (NetworkManager.instance.NoLoyalsRemaining()) {
           Debug.Log("All loyals dead");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
+        if (NetworkManager.instance.NoTraitorsRemaining()) {
+          Debug.Log("All traitors dead");
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+        }
+
         if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && AllTasksCompleted()) {
-          Debug.Log("Tasks not set");
-          // NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
         
         if (!NetworkManager.instance.RoomPropertyIs<Team>("WinningTeam", Team.None)) {
