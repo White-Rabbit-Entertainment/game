@@ -12,18 +12,11 @@ public class RoomListItem : MonoBehaviour {
     public string playerName;
     public RoomInfo info;
 
-    // public void Start() {
-    //     info = _info;
-    //     text.text = _info.Name;
-    // }
-
     public void Start() {
-        Debug.Log("Start");
         GetComponent<Button>().onClick.AddListener(OnClick);
     }
 
     public void OnClick() {
-        Debug.Log("Click");
         NetworkManager.instance.JoinRoom(text.text, playerName);   
     }
 }
