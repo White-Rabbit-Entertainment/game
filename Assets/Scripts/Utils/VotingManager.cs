@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public enum Vote {
-  Skip,
   For,
   Against,
 }
@@ -21,7 +20,6 @@ public class VotingManager : MonoBehaviour {
   bool voteStarted = false;
   List<PlayableCharacter> playersVotingFor;
   List<PlayableCharacter> playersVotingAgainst;
-  List<PlayableCharacter> playersVotingSkip;
   PlayableCharacter suspectedPlayer;
   PlayableCharacter voteLeader;
 
@@ -31,8 +29,6 @@ public class VotingManager : MonoBehaviour {
         SubmitVote(Vote.For);
       } else if (Input.GetKeyDown(KeyCode.P)) {
         SubmitVote(Vote.Against);
-      } else if (Input.GetKeyDown(KeyCode.L)) {
-        SubmitVote(Vote.Skip);
       }
     }
   }      
@@ -55,7 +51,6 @@ public class VotingManager : MonoBehaviour {
   public void StartVote(int suspectedPlayerId, int voteLeaderId) {
     playersVotingFor = new List<PlayableCharacter>();
     playersVotingAgainst = new List<PlayableCharacter>();
-    playersVotingSkip = new List<PlayableCharacter>();
     suspectedPlayer = PhotonView.Find(suspectedPlayerId).GetComponent<PlayableCharacter>();
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
@@ -63,6 +58,16 @@ public class VotingManager : MonoBehaviour {
     votingUI.SetActive(true);
     votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
+
+  public void EndVote() {
+    playersUI.ClearVote();
+    voteStarted = false;
+    if (playersVotingFor.Count > playersVotingAgainst.Count) {
+      Debug.Log("The player has been voted off");
+    } else {
+      Debug.Log("The player survived the vote");
+    }
+  }
 
   [PunRPC]
   public void SetVote(Vote vote, int votingPlayerId) {
@@ -73,12 +78,9 @@ public class VotingManager : MonoBehaviour {
     if (vote == Vote.Against) {
       playersVotingAgainst.Add(votingPlayer);
     }
-    if (vote == Vote.Skip) {
-      playersVotingSkip.Add(votingPlayer);
-    }
     playersUI.SetPlayerVote(vote, votingPlayer);
-    if (playersVotingFor.Count + playersVotingAgainst.Count + playersVotingSkip.Count == NetworkManager.instance.GetPlayers().Count) {
-      playersUI.ClearVote();
+    if (playersVotingFor.Count + playersVotingAgainst.Count == NetworkManager.instance.GetPlayers().Count) {
+      EndVote();
     }
   }
   

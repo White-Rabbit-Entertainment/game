@@ -44,8 +44,6 @@ public class PlayersUI : MonoBehaviourPun {
       item.transform.Find("VoteFor").gameObject.SetActive(true);
     } else if (vote == Vote.Against) {
       item.transform.Find("VoteAgainst").gameObject.SetActive(true);
-    } else if (vote == Vote.Skip) {
-      item.transform.Find("VoteSkip").gameObject.SetActive(true);
     }
   }
 
