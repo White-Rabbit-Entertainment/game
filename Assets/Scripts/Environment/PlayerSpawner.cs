@@ -67,12 +67,6 @@ public class PlayerSpawner : MonoBehaviour {
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
     void LoadAgents() {
-
-        // If the player is the capatian then they should have no clones
-        if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Captain)) {
-            return;
-        }
-
         // Otherwise load in n agents which have the same role as the player 
         for(int i = 0; i < numberOfAgentsPerPlayer; i++){
             // Spawn in the agent
@@ -95,12 +89,9 @@ public class PlayerSpawner : MonoBehaviour {
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
             spawnPoint = new Vector3(1,2,-10);
             playerPrefab = traitorPrefab;
-        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.NonCaptainLoyal)) {
+        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
             spawnPoint = new Vector3(1,2,10);
             playerPrefab = loyalPrefab;
-        } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Captain)) {
-            spawnPoint = new Vector3(1,2,10);
-            playerPrefab = captainPrefab;
         } else {
             spawnPoint = new Vector3(1,4,10);
             playerPrefab = ghostPrefab;

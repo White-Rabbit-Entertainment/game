@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviourPun {
           int numberOfTraitors = NetworkManager.instance.GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
 
           List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
-          roles.Remove(Role.Captain); // We dont want to assing anyone (expect the capatian) the capatian role
 
           // Shuffle players and roles to ensure random team and role are assigned
           roles.Shuffle();
@@ -65,11 +64,8 @@ public class GameManager : MonoBehaviourPun {
             NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
 
-          NetworkManager.instance.SetPlayerProperty("Team", Team.Captain, players[numberOfTraitors]);
-          NetworkManager.instance.SetPlayerProperty("Role", Role.Captain, players[numberOfTraitors]);
-
-          for (int i = numberOfTraitors + 1; i < players.Count; i++) {
-            NetworkManager.instance.SetPlayerProperty("Team", Team.NonCaptainLoyal, players[i]);
+          for (int i = numberOfTraitors; i < players.Count; i++) {
+            NetworkManager.instance.SetPlayerProperty("Team", Team.Loyal, players[i]);
             NetworkManager.instance.SetPlayerProperty("Role", roles[(i - 1) % roles.Count], players[i]);
           }
           NetworkManager.instance.SetRoomProperty("GameReady", true);
@@ -97,11 +93,6 @@ public class GameManager : MonoBehaviourPun {
 
         if (NetworkManager.instance.NoLoyalsRemaining()) {
           Debug.Log("All loyals dead");
-          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
-        }
-
-        if (NetworkManager.instance.CaptainIsDead()) {
-          Debug.Log("Captain dead");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
