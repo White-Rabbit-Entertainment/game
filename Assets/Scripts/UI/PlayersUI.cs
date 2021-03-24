@@ -51,7 +51,6 @@ public class PlayersUI : MonoBehaviourPun {
     foreach(GameObject item in playerTiles.Values) {
       item.transform.Find("VoteFor").gameObject.SetActive(false);
       item.transform.Find("VoteAgainst").gameObject.SetActive(false);
-      item.transform.Find("VoteSkip").gameObject.SetActive(false);
     }
   }
 }

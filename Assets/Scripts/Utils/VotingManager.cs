@@ -25,9 +25,9 @@ public class VotingManager : MonoBehaviour {
 
   public void Update() {
     if (voteStarted && !hasVoted) {
-      if (Input.GetKeyDown(KeyCode.O)) {
+      if (Input.GetKeyDown(KeyCode.K)) {
         SubmitVote(Vote.For);
-      } else if (Input.GetKeyDown(KeyCode.P)) {
+      } else if (Input.GetKeyDown(KeyCode.L)) {
         SubmitVote(Vote.Against);
       }
     }
