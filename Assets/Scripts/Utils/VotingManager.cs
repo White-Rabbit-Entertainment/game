@@ -16,12 +16,25 @@ public class VotingManager : MonoBehaviour {
   public Text votingUIText;
   public PlayersUI playersUI;
 
+  bool hasVoted = false;
   bool voteStarted = false;
   List<PlayableCharacter> playersVotingFor;
   List<PlayableCharacter> playersVotingAgainst;
   List<PlayableCharacter> playersVotingSkip;
   PlayableCharacter suspectedPlayer;
   PlayableCharacter voteLeader;
+
+  public void Update() {
+    if (voteStarted && !hasVoted) {
+      if (Input.GetKeyDown(KeyCode.O)) {
+        SubmitVote(Vote.For);
+      } else if (Input.GetKeyDown(KeyCode.P)) {
+        SubmitVote(Vote.Against);
+      } else if (Input.GetKeyDown(KeyCode.L)) {
+        SubmitVote(Vote.Skip);
+      }
+    }
+  }      
 
   [PunRPC]
   public void StartVote(int suspectedPlayerId, int voteLeaderId) {
@@ -31,6 +44,7 @@ public class VotingManager : MonoBehaviour {
     suspectedPlayer = PhotonView.Find(suspectedPlayerId).GetComponent<PlayableCharacter>();
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
+    hasVoted = false;
     votingUI.SetActive(true);
     votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
@@ -55,5 +69,7 @@ public class VotingManager : MonoBehaviour {
   
   public void SubmitVote(Vote vote) {
     GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>());
+    hasVoted = true;
+    votingUI.SetActive(false);
   }
 }
