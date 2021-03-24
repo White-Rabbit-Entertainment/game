@@ -21,8 +21,6 @@ MonoBehaviour:
   roleInfo: {fileID: 0}
   ghostPrefab: {fileID: 7463885005024221200, guid: 124a97d11974cb6d7a5fc46a0873b674,
     type: 3}
-  mealPrefab: {fileID: 2319903354798947482, guid: 9554ae519922e64a5a8aa76beba06462,
-    type: 3}
   contextTaskUI: {fileID: 0}
 --- !u!1001 &5464766139727672961
 PrefabInstance:
