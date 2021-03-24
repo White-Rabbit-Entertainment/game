@@ -219,10 +219,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       return RoomPropertyIs<bool>(timer.ToString() + "started", true);
     }
     
-
     // Returns round time remaining (or 0 if not started)
     public double GetTimeRemaining(Timer timer) {
       return GetRoomProperty<double>(timer.ToString() + "length", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>(timer.ToString() + "start", 0f));
+    }
+
+    public bool TimerIsCompleted(Timer timer) {
+      return IsTimerStarted(timer) && TimerIsCompleted(timer);
     }
 
     // Check all players in the room and returns whether all the robbers are captured
