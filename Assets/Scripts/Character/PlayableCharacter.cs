@@ -7,12 +7,12 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
-    public Player Owner {
-      get { return GetComponent<PhotonView>().Owner; }
-    }
-
     public override void Start() { 
       base.Start();
+    }
+
+    public bool IsMe() {
+      return Owner == PhotonNetwork.LocalPlayer;
     }
 
     public void Freeze() {

@@ -10,6 +10,7 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
+    public PhotonView votingManager;
 
     // Start is called before the first frame update
     public void Init() {

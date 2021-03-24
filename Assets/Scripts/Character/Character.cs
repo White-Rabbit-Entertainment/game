@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 [RequireComponent(typeof(Animator))]
 public abstract class Character : MonoBehaviour {
@@ -16,6 +17,10 @@ public abstract class Character : MonoBehaviour {
   public Team team;
 
   public RoleInfo roleInfo;
+
+  public Player Owner {
+      get { return GetComponent<PhotonView>().Owner; }
+    }
 
   public bool HasItem() {
     return currentHeldItem != null; 

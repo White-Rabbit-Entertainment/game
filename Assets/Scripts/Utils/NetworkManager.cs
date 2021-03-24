@@ -237,16 +237,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       return true;
     }
 
-    public bool CaptainIsDead() {
-      foreach (Player player in GetPlayers()) {
-          if (PlayerPropertyIs<Team>("Team", Team.Captain, player)) {
-              return false;
-          }
-      }
-      Debug.Log("the captain has been killed");
-      return true;
-    }
-
     // Return true is all players have readied up.
     public bool AllPlayersReady() {
       return CheckAllPlayers<bool>("Ready", true);

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public Text playerCounter;
@@ -15,8 +14,6 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
-
-    private Hashtable props;
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
