@@ -30,6 +30,6 @@ public static class TimerUtils
     }
 
     public static bool IsComplete(this Timer timer) {
-      return timer.IsStarted() && timer.IsComplete();
+      return timer.IsStarted() && timer.TimeRemaining() <= 0;
     }
 }
