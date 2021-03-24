@@ -10,7 +10,6 @@ public class LoadingScreen : MonoBehaviour {
   public Text text; 
   public Button closeButton;
 
-  public string capatianDescription;
   public string traitorDescription;
   public string loyalDescription;
 
@@ -22,8 +21,7 @@ public class LoadingScreen : MonoBehaviour {
     Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
 
     descriptions = new Dictionary<Team, string>();
-    descriptions.Add(Team.Captain, capatianDescription);
-    descriptions.Add(Team.NonCaptainLoyal, loyalDescription);
+    descriptions.Add(Team.Loyal, loyalDescription);
     descriptions.Add(Team.Traitor, traitorDescription);
 
     text.text = $"Welcome {PhotonNetwork.LocalPlayer.NickName}! You are a {team}. {descriptions[team]}";
