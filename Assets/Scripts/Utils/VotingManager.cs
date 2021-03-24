@@ -36,6 +36,12 @@ public class VotingManager : MonoBehaviour {
     }
   }      
 
+  public void InitVote(int suspectedPlayerId, int voteLeaderId) {
+    if (!voteStarted) {
+      GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, suspectedPlayerId, voteLeaderId);
+    }
+  }
+
   [PunRPC]
   public void StartVote(int suspectedPlayerId, int voteLeaderId) {
     playersVotingFor = new List<PlayableCharacter>();
