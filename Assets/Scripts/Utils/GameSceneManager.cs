@@ -36,7 +36,7 @@ public class GameSceneManager : MonoBehaviour {
     
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        NetworkManager.instance.StartTimer(600, Timer.RoundTimer);
+        Timer.RoundTimer.Start(600);
       }
     }
 

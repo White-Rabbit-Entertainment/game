@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviourPun {
     }
 
     public double TimeRemaining() {
-      return NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
+      return Timer.RoundTimer.TimeRemaining();
     }
 
     /// <summary> Before a game is able to start various things need to be
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviourPun {
     ///   <list> 
     /// </summary>
     public void HandleGameOver() {
-      int secondsLeft = (int)NetworkManager.instance.GetTimeRemaining(Timer.RoundTimer);
+      int secondsLeft = (int)Timer.RoundTimer.TimeRemaining();
 
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
         if (secondsLeft <= 0) {

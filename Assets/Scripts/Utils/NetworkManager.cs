@@ -5,12 +5,6 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
     
-public enum Timer {
-  RoundTimer,
-  TurnTimer,
-}
-
-
 /// <summary> <c>NetworkManager</c> handles logic to do with PhotonNetwork. It
 /// is also a singleton see <c>GameManager</c> <see cref="GameManager"></see>
 /// for more details. This is also initialized in the first scene. </summary>
@@ -203,31 +197,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public bool PlayerHasProperty(string key, Player player) {
       return HasProperty(key, player.CustomProperties);
     }
-
-    // Start the timer for the game, but assigning the start time and round length (which all clients use)
-    public void StartTimer(double roundLength, Timer timer) {
-      SetRoomProperty(timer.ToString() + "length", roundLength);
-      SetRoomProperty(timer.ToString() + "start", PhotonNetwork.Time);
-      SetRoomProperty(timer.ToString() + "started", true);
-    }
-
-    public void EndTimer(Timer timer) {
-      SetRoomProperty(timer.ToString() + "started", false);
-    }
     
-    public bool IsTimerStarted(Timer timer) {
-      return RoomPropertyIs<bool>(timer.ToString() + "started", true);
-    }
-    
-    // Returns round time remaining (or 0 if not started)
-    public double GetTimeRemaining(Timer timer) {
-      return GetRoomProperty<double>(timer.ToString() + "length", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>(timer.ToString() + "start", 0f));
-    }
-
-    public bool TimerIsCompleted(Timer timer) {
-      return IsTimerStarted(timer) && TimerIsCompleted(timer);
-    }
-
     // Check all players in the room and returns whether all the robbers are captured
     public bool NoLoyalsRemaining() {
       return !CheckAnyPlayers<Team>("Team", Team.Loyal);
