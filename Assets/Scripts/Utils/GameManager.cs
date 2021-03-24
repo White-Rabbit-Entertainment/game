@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviourPun {
 
           for (int i = numberOfTraitors; i < players.Count; i++) {
             NetworkManager.instance.SetPlayerProperty("Team", Team.Loyal, players[i]);
-            NetworkManager.instance.SetPlayerProperty("Role", roles[(i - 1) % roles.Count], players[i]);
+            NetworkManager.instance.SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
           }
           NetworkManager.instance.SetRoomProperty("GameReady", true);
 
