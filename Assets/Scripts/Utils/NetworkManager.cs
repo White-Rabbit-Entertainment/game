@@ -242,6 +242,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
       SetRoomProperty("ItemsStolen", 0);
+      Timer.RoundTimer.End();
       foreach(Player player in GetPlayers()) {
         SetPlayerProperty("Ready", false, player);
         SetPlayerProperty("InGameScene", false, player);

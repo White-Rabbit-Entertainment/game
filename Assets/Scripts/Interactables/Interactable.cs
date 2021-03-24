@@ -167,6 +167,10 @@ public abstract class Interactable : MonoBehaviourPun {
   [PunRPC]
   public void CompleteTask() {
     task.Complete();
+    if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && AllTasksCompleted()) {
+      Debug.Log("All tasks have been completed");
+      NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+    }
   }
 
   [PunRPC]

@@ -65,6 +65,12 @@ public class VotingManager : MonoBehaviour {
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
         suspectedPlayer.Kill();
+        if (NetworkManager.instance.NoLoyalsRemaining()) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
+        }
+        if (NetworkManager.instance.NoTraitorsRemaining()) {
+          NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+        }
       }
       Debug.Log("The player has been voted off");
     } else {

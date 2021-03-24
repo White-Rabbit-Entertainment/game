@@ -39,6 +39,9 @@ public class Task : MonoBehaviour {
     if (parent !=  null) {
       parent.GetComponent<PhotonView>().RPC("TaskGlowOn", RpcTarget.All);
     }
+    if (GameManager.instance.AllTasksCompleted()) {
+      NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
+    }
   }
   
   [PunRPC]
