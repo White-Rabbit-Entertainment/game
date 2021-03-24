@@ -63,6 +63,9 @@ public class VotingManager : MonoBehaviour {
     playersUI.ClearVote();
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
+      if (suspectedPlayer.IsMe()) {
+        suspectedPlayer.Kill();
+      }
       Debug.Log("The player has been voted off");
     } else {
       Debug.Log("The player survived the vote");

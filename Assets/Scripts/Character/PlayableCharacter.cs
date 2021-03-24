@@ -11,7 +11,7 @@ public abstract class PlayableCharacter : Character {
       base.Start();
     }
 
-    public void IsMe() {
+    public bool IsMe() {
       return Owner == PhotonNetwork.LocalPlayer;
     }
 
