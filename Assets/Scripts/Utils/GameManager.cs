@@ -84,10 +84,9 @@ public class GameManager : MonoBehaviourPun {
     ///   <list> 
     /// </summary>
     public void HandleGameOver() {
-      int secondsLeft = (int)Timer.RoundTimer.TimeRemaining();
-
       if (PhotonNetwork.CurrentRoom != null && SceneManager.GetActiveScene().name == "GameScene") {
-        if (secondsLeft <= 0) {
+        if (Timer.RoundTimer.IsComplete()) {
+          Debug.Log("Time has run out");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Traitor);
         }
 
@@ -102,6 +101,7 @@ public class GameManager : MonoBehaviourPun {
         }
 
         if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && AllTasksCompleted()) {
+          Debug.Log("All tasks have been completed");
           NetworkManager.instance.SetRoomProperty("WinningTeam", Team.Loyal);
         }
         

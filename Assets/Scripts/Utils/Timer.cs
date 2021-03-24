@@ -29,7 +29,7 @@ public static class TimerUtils
       return NetworkManager.instance.GetRoomProperty<double>(timer.ToString() + "length", 0f) - (PhotonNetwork.Time - NetworkManager.instance.GetRoomProperty<double>(timer.ToString() + "start", 0f));
     }
 
-    public static bool IsCompleted(this Timer timer) {
+    public static bool IsComplete(this Timer timer) {
       return timer.IsStarted() && timer.IsCompleted();
     }
 }
