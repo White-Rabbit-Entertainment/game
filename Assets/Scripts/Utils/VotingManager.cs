@@ -41,8 +41,14 @@ public class VotingManager : MonoBehaviour {
     if (!voteStarted) {
       GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, suspectedPlayerId, voteLeaderId);
     } else {
-      voteInProgress.SetActive(false);
+      StartCoroutine(ShowVoteInProgress());
     }
+  }
+
+  IEnumerator ShowVoteInProgress() {
+    voteInProgress.SetActive(true);
+    yield return new WaitForSeconds(2);
+    voteInProgress.SetActive(false);
   }
 
   [PunRPC]
