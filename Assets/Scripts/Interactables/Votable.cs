@@ -4,10 +4,13 @@ using Photon.Pun;
 
 public class Votable : Interactable {
 
+  public GameObject votingManager;
+
+  public void Start() {
+    votingManager = GameObject.Find("/VotingManager");
+  }
+
   public override void PrimaryInteraction(Character voteLeader) {
-    GameObject votingManager = GameObject.Find("/VotingManager");
-    Debug.Log(votingManager);
-    votingManager.GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, view.ViewID, voteLeader.GetComponent<PhotonView>().ViewID);
+    votingManager.GetComponent<VotingManager>().InitVote(view.ViewID, voteLeader.GetComponent<PhotonView>().ViewID);
   }
 }
-    
