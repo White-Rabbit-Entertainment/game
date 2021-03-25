@@ -8,41 +8,39 @@ using System;
 
 public class GameSceneManager : MonoBehaviour {
     
-    private bool enabled = true;
     private bool started = false;
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
 
     void Update() {
-        if (enabled) {
-            if (!initialized) {
-                // We have all the playable characters in the scene
-                if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
-                    Init();
-                }
+        if (!initialized) {
+            // We have all the playable characters in the scene
+            if (NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
+                Init();
             }
-            if (!started && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
-                loadingScreen.EnableButton();
-                NetworkManager.instance.SetLocalPlayerProperty("Ready", "false");
-                Debug.Log("BIIIG");
-                Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
-                if (PhotonNetwork.IsMasterClient) {
-                  StartRoundTimer();
-                }
-                started = true;
+        }
+        if (initialized && !started && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
+            loadingScreen.EnableButton();
+            NetworkManager.instance.SetLocalPlayerProperty("Ready", "false");
+            Debug.Log("BIIIG");
+            Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
+            if (PhotonNetwork.IsMasterClient) {
+              StartRoundTimer();
             }
+            started = true;
         }
 
         if (started) {
+            // Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
+            Debug.Log("Checking timer");
             CheckTimer();
-            Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
         }
     }
 
     // Start is called before the first frame update
     public void Init() {
-        enabled = true;
+        initialized = true;
         NetworkManager.instance.SetLocalPlayerProperty("GameSceneInitalized", true);
         NetworkManager.instance.GetMe().Unfreeze();
     }
