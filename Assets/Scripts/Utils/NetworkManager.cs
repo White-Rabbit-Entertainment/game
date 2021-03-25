@@ -20,6 +20,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
     private string lobbyScene = "LobbyScene";
+    private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     void Start() {
       PhotonNetwork.ConnectUsingSettings();
@@ -57,6 +58,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
       }
     }
+    
+    public string GenerateRoomName() {
+        string roomString = string.Empty;
+        for (int i = 0; i < 8; i++) {
+            roomString += roomNameChars[UnityEngine.Random.Range(0, roomNameChars.Length)].ToString();
+        }
+        return roomString;
+    }
+    
 
     void Awake() {
       // Singleton stuff see GameManager for details.
@@ -71,24 +81,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     // A call back for when user connects to the server.
     public override void OnConnectedToMaster() {
-      Debug.Log("Connected to master server");
-      Debug.Log(PhotonNetwork.CloudRegion);
+      // Debug.Log(PhotonNetwork.CloudRegion);
     }
     
     // A call back for when user creates a room. 
-    public override void OnCreatedRoom() {
-      Debug.Log("Room created: " + PhotonNetwork.CurrentRoom.Name);
-    }
+    public override void OnCreatedRoom() {}
     
     // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
-      Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
     }
     
-    public override void OnRoomListUpdate(List<RoomInfo> rooms) {
-      Debug.Log("Network manager room list update");
-    }
+    public override void OnRoomListUpdate(List<RoomInfo> rooms) {}
 
     /* Helper to set custom properties, all examples are given for room
      * properties, but functions also exist for local player and player. */
@@ -157,7 +161,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// This sets the room property "GameStarted" to true for all clients.
     /// </example>
     public void SetProperty(string key, object value, Hashtable currentProperties, PhotonSetPropertyDelegate setProperties) {
-      Debug.Log($"Settting {key} to {value}");
       currentProperties[key] = value;
       setProperties(currentProperties);
     }

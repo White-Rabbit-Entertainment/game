@@ -8,6 +8,7 @@ using System;
 
 public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public Text playerCounter;
+    public Text roomName;
 
     public GameObject playerList;
     public Button toggleReadyButton;
@@ -20,6 +21,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
       NetworkManager.instance.ResetRoom();
+      roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
     }
 
     void Update() {

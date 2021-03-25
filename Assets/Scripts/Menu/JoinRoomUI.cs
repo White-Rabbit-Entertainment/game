@@ -50,7 +50,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
     public override void OnConnectedToMaster() {
         NameUI.SetActive(true);
-        Debug.Log("Connected to the Master");
         PhotonNetwork.JoinLobby();
     }
 
@@ -68,7 +67,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
 
     void OnClickJoinRoom() {
-      Debug.Log(playerNameInput.text); 
       NetworkManager.instance.JoinRoom(roomNameInput.text, playerNameInput.text);
     }
 

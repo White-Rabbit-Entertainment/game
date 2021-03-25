@@ -31,14 +31,11 @@ public class GameSceneManager : MonoBehaviour {
 
         if (starting) {
             if (Timer.RoundTimer.IsStarted()) {
-                Debug.Log("Started");
                 started = true;
             } 
         }
 
         if (started) {
-            // Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
-            Debug.Log("Checking timer");
             CheckTimer();
         }
     }
@@ -59,11 +56,7 @@ public class GameSceneManager : MonoBehaviour {
     ///     lobby. 
     ///   <list>     
     public void CheckTimer() {
-      Debug.Log($"Time remaining: {Timer.RoundTimer.TimeRemaining()}");
-      Debug.Log($"Timer is started: {Timer.RoundTimer.IsStarted()}");
-      Debug.Log($"Timer is completed: {Timer.RoundTimer.IsComplete()}");
       if (Timer.RoundTimer.IsComplete()) {
-        Debug.Log("Time has run out");
         EndGame(Team.Traitor);
       } 
     }
@@ -74,7 +67,6 @@ public class GameSceneManager : MonoBehaviour {
 
     [PunRPC]
     public void EndGameRPC(Team winningTeam) {
-        Debug.Log($"Game Over!\n{winningTeam.ToString()}'s have won!");
         NetworkManager.instance.ChangeScene("LobbyScene");
     }
 
