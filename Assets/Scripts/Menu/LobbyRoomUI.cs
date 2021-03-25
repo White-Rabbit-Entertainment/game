@@ -14,22 +14,28 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
+    bool initialized = false; 
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
       toggleReadyButton.onClick.AddListener(ToggleReady);
+      NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
     }
 
     void Update() {
-      SetText();
-      Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
-      if (NetworkManager.instance.AllPlayersReady()) {
-        NetworkManager.instance.SetupGame();
-        if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
-          NetworkManager.instance.SetRoomProperty("GameStarted", true);
-          NetworkManager.instance.ChangeScene("GameScene");
-          Destroy(this);
+      if (!initialized && NetworkManager.instance.CheckAnyPlayers("Ready", false)) {
+        initialized = true;
+      }
+      if (initialized) {
+        SetText();
+        if (NetworkManager.instance.AllPlayersReady()) {
+          NetworkManager.instance.SetupGame();
+          if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
+            NetworkManager.instance.SetRoomProperty("GameStarted", true);
+            NetworkManager.instance.ChangeScene("GameScene");
+            Destroy(this);
+          }
         }
       }
     }
@@ -53,10 +59,10 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     }
 
     void ToggleReady() {
-      if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Ready", "true")) {
-        NetworkManager.instance.SetLocalPlayerProperty("Ready", "false");
+      if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       } else {
-        NetworkManager.instance.SetLocalPlayerProperty("Ready", "true");
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }
 }

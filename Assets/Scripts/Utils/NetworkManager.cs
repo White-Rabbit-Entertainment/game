@@ -244,7 +244,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     // Return true is all players have readied up.
     public bool AllPlayersReady() {
-      return CheckAllPlayers<string>("Ready", "true");
+      return CheckAllPlayers<bool>("Ready", true);
     }
 
     //Return true if all players have been spawned into the game.
