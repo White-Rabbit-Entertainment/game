@@ -1,16 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
     
-public enum Timer {
-  RoundTimer,
-  TurnTimer,
-}
-
-
 /// <summary> <c>NetworkManager</c> handles logic to do with PhotonNetwork. It
 /// is also a singleton see <c>GameManager</c> <see cref="GameManager"></see>
 /// for more details. This is also initialized in the first scene. </summary>
@@ -24,6 +20,53 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
     private string lobbyScene = "LobbyScene";
+    private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    void Start() {
+      PhotonNetwork.ConnectUsingSettings();
+    }
+
+    /// <summary> Before a game is able to start various things need to be
+    /// setup. Such as which team each player is on. </summary>
+    public void SetupGame() {
+      if (RoomPropertyIs<bool>("GameStarted", false)) {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          SetRoomProperty("TasksSet", false);
+          SetRoomProperty("WinningTeam", "None");
+          SetRoomProperty("NumberOfTasks", 1);
+          
+          List<Player> players = GetPlayers();
+          int numberOfTraitors = GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
+
+          List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+
+          // Shuffle players and roles to ensure random team and role are assigned
+          roles.Shuffle();
+          players.Shuffle();
+
+          for (int i = 0; i < numberOfTraitors; i++) {
+            SetPlayerProperty("Team", Team.Traitor, players[i]);
+            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+          }
+
+          for (int i = numberOfTraitors; i < players.Count; i++) {
+            SetPlayerProperty("Team", Team.Loyal, players[i]);
+            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+          }
+          SetRoomProperty("GameReady", true);
+
+        }
+      }
+    }
+    
+    public string GenerateRoomName() {
+        string roomString = string.Empty;
+        for (int i = 0; i < 8; i++) {
+            roomString += roomNameChars[UnityEngine.Random.Range(0, roomNameChars.Length)].ToString();
+        }
+        return roomString;
+    }
+    
 
     void Awake() {
       // Singleton stuff see GameManager for details.
@@ -36,30 +79,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       }
     }
 
-    void Start() {
-      PhotonNetwork.ConnectUsingSettings();
-    }
-
     // A call back for when user connects to the server.
     public override void OnConnectedToMaster() {
-      Debug.Log("Connected to master server");
-      Debug.Log(PhotonNetwork.CloudRegion);
+      // Debug.Log(PhotonNetwork.CloudRegion);
     }
     
     // A call back for when user creates a room. 
-    public override void OnCreatedRoom() {
-      Debug.Log("Room created: " + PhotonNetwork.CurrentRoom.Name);
-    }
+    public override void OnCreatedRoom() {}
     
     // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
-      Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
       ChangeScene(lobbyScene);
     }
     
-    public override void OnRoomListUpdate(List<RoomInfo> rooms) {
-      Debug.Log("Network manager room list update");
-    }
+    public override void OnRoomListUpdate(List<RoomInfo> rooms) {}
 
     /* Helper to set custom properties, all examples are given for room
      * properties, but functions also exist for local player and player. */
@@ -67,14 +100,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <summary> Function to get a value in custom properties. </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.GetRoomProperty<bool>("GameStarted");
+    ///    GetRoomProperty<bool>("GameStarted");
     /// </code>
     /// This returns the boolean value for GameStarted in the room
     /// custom properties. If it is not set it returns the default for boolean.
     /// </example>
     /// <example> A custom value can also be specified:
     /// <code>
-    ///    NetworkManager.instance.GetRoomProperty<bool>("GameStarted", false);
+    ///    GetRoomProperty<bool>("GameStarted", false);
     /// </code>
     /// This returns the boolean value for GameStarted in the room
     /// custom properties. In this case though if it is not set it will return
@@ -99,7 +132,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// to a given value.</summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", true);
+    ///    RoomPropertyIs<bool>("GameStarted", true);
     /// </code>
     /// This returns true if the game has started (ie gamestarted set to true
     /// in room).
@@ -111,7 +144,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <summary> Function to check if a value is in a given hashset </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.RoomPropertyIs<bool>("GameStarted", true);
+    ///    RoomPropertyIs<bool>("GameStarted", true);
     /// </code>
     /// This returns true if the game has started (ie gamestarted set to true
     /// in room).
@@ -123,7 +156,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// <summary> Function to set value in custom properties. </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.SetRoomProperty("GameStarted", true);
+    ///    SetRoomProperty("GameStarted", true);
     /// </code>
     /// This sets the room property "GameStarted" to true for all clients.
     /// </example>
@@ -136,7 +169,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// set it to 1. </summary>
     /// <example> For example:
     /// <code>
-    ///    NetworkManager.instance.IncrementRoomProperty("NumberOfRobbers");
+    ///    IncrementRoomProperty("NumberOfRobbers");
     /// </code>
     /// If the number of robbers is currently 2, the number will become 3.
     /// If the number of robbers is not set, the number will become 1.
@@ -203,38 +236,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public bool PlayerHasProperty(string key, Player player) {
       return HasProperty(key, player.CustomProperties);
     }
-
-    // Start the timer for the game, but assigning the start time and round length (which all clients use)
-    public void StartTimer(double roundLength, Timer timer) {
-      SetRoomProperty(timer.ToString() + "length", roundLength);
-      SetRoomProperty(timer.ToString() + "start", PhotonNetwork.Time);
-      SetRoomProperty(timer.ToString() + "started", true);
-    }
-
-    public void EndTimer(Timer timer) {
-      SetRoomProperty(timer.ToString() + "started", false);
-    }
     
-    public bool IsTimerStarted(Timer timer) {
-      return RoomPropertyIs<bool>(timer.ToString() + "started", true);
-    }
-    
-
-    // Returns round time remaining (or 0 if not started)
-    public double GetTimeRemaining(Timer timer) {
-      return GetRoomProperty<double>(timer.ToString() + "length", 0f) - (PhotonNetwork.Time - GetRoomProperty<double>(timer.ToString() + "start", 0f));
-    }
-
     // Check all players in the room and returns whether all the robbers are captured
     public bool NoLoyalsRemaining() {
-      foreach (Player player in GetPlayers()) {
-        Team playerTeam = GetPlayerProperty<Team>("Team", player);
-        if (Team.Loyal.HasFlag(playerTeam)) {
-          return false;
-        }
-      }
-      Debug.Log("all loyals have been killed");
-      return true;
+      return !CheckAnyPlayers<Team>("Team", Team.Loyal);
+    }
+
+    public bool NoTraitorsRemaining() {
+      return !CheckAnyPlayers<Team>("Team", Team.Traitor);
     }
 
     // Return true is all players have readied up.
@@ -245,6 +254,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     //Return true if all players have been spawned into the game.
     public bool AllCharactersSpawned() {
       return CheckAllPlayers<bool>("Spawned", true);
+    }
+
+    public bool CheckAnyPlayers<T>(string key, T expectedValue) {
+      foreach (Player player in GetPlayers()) {
+          if (PlayerPropertyIs<T>(key, expectedValue, player)) {
+              return true;
+          }
+      }
+      return false;
     }
 
     public bool CheckAllPlayers<T>(string key, T expectedValue) {
@@ -262,13 +280,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void ResetRoom() {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
-      SetRoomProperty("ItemsStolen", 0);
-      foreach(Player player in GetPlayers()) {
-        SetPlayerProperty("Ready", false, player);
-        SetPlayerProperty("InGameScene", false, player);
-        SetPlayerProperty("Dead", false, player);
-      }
+      Timer.RoundTimer.End();
+
+      SetLocalPlayerProperty("CurrentScene", "LobbyScene");
+      SetLocalPlayerProperty("Ready", false);
+      SetLocalPlayerProperty("Spawned", false);
     }
+
+    public bool IsRoomReset() {
+      return CheckAnyPlayers("Ready", false) 
+        && RoomPropertyIs<bool>("GameReady", false)
+        && RoomPropertyIs<bool>("GameStarted", false)
+        && CheckAllPlayers<string>("CurrentScene", "LobbyScene")
+        && CheckAllPlayers<bool>("Spawned", false)
+        && !Timer.RoundTimer.IsStarted();
+    } 
 
     public void CreateRoom (string roomName) {
       PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});

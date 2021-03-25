@@ -12,79 +12,18 @@ public class NetworkLauncher : MonoBehaviourPunCallbacks
     public GameObject loginUI;
     public GameObject nameUI;
     public InputField playerName;
-    //public InputField roomName;
 
     public GameObject roomListUI;
-    //public GameObject chatUI;
 
-
-
-    public string roomName()
-    {
-        int number;
-        char code;
-        string roomString = string.Empty;
-        //Random random = new Random();
-        for (int i = 0; i < 8; i++)
-        {
-            number = Random.Range(0, 10);
-                if (number % 2 == 0)
-                code = (char)('0' + (char)(number % 10));
-            else
-                code = (char)('A' + (char)(number % 26));
-            roomString += code.ToString();
-        }
-
-        return roomString;
-    }
-    
-
-    private void Start()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-    }
-
-    public override void OnConnectedToMaster()
-    {
+    public override void OnConnectedToMaster() {
         nameUI.SetActive(true);
-        Debug.Log("Connected to the Master");
         PhotonNetwork.JoinLobby();
-
     }
 
-    public void PlayButtom()
-    {
-        nameUI.SetActive(false);
-        PhotonNetwork.NickName = playerName.text;
-        loginUI.SetActive(true);
-        if (PhotonNetwork.InLobby)
-        {
-            roomListUI.SetActive(true);
-        }
-    }
-
-
-    public void JoinOrCreateButton()
-    {
-        //if (roomName.text.Length < 2)
-        //    return;
-
-
+    public void JoinOrCreateButton() {
         roomListUI.SetActive(false);
         loginUI.SetActive(false);
 
-        RoomOptions options = new RoomOptions { MaxPlayers = 6 };
-        //PhotonNetwork.JoinOrCreateRoom(roomName.text, options, default);
-        PhotonNetwork.JoinOrCreateRoom(roomName(), options, default);
-
-        //chatUI.SetActive(true);
-
-
+        PhotonNetwork.JoinOrCreateRoom(NetworkManager.instance.GenerateRoomName(), new RoomOptions {}, default);
     }
-
-    //public override void OnJoinedRoom()
-    //{
-    //    PhotonNetwork.LoadLevel(1);
-    //}
-
 }

@@ -20,7 +20,7 @@ public class ItemInteract : MonoBehaviourPun {
     private PlayableCharacter character;
 
     private void Start() {
-        if (!photonView.IsMine || SceneManager.GetActiveScene().name == "MealScene") {
+        if (!photonView.IsMine) {
             Destroy(this);
         }
         character = GetComponent<PlayableCharacter>();
