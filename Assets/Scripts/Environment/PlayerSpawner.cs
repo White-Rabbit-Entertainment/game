@@ -23,7 +23,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     public RoleInfo roleInfo;
 
-    void LateUpdate() {
+    void Update() {
         // Wait till all players are in the scene.
         if (NetworkManager.instance.CheckAllPlayers<string>("CurrentScene", SceneManager.GetActiveScene().name)) {
 
