@@ -5,6 +5,7 @@ public abstract class TaskUI : MonoBehaviour {
     public GameObject masterTaskPrefab;
     public GameObject subTaskPrefab;
     public GameObject tasksList;
+    public TaskManager taskManager;
 
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
     public void AddTask(Task task, GameObject taskPrefab) {

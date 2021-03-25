@@ -34,9 +34,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         }
     }
 
-    public void GetConnected() {
-        Debug.Log("connecting...");
-    }
+    public void GetConnected() {}
     
     public void SendMsg() {
         client.PublishMessage(worldchat, msgInput.text);
@@ -44,78 +42,43 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     }
      
     public void OnConnected() {
-        Debug.Log("Connected!");
         client.Subscribe(new string[] { worldchat}); 
         client.SetOnlineStatus(ChatUserStatus.Online);
     }
    
-    public void OnDisconnected()
-    {
-        Debug.Log("quit");
-    }
+    public void OnDisconnected() {}
    
-    public void OnChatStateChange(ChatState state)
-    {
-        Debug.Log("statue：" + state);
-    }
+    public void OnChatStateChange(ChatState state) {}
    
-    public void OnGetMessages(string channelName, string[] senders, object[] messages)
-    {
+    public void OnGetMessages(string channelName, string[] senders, object[] messages) {
         for(int i = 0; i< senders.Length;i++){
           GameObject item = Instantiate(chatMessagePrefab, chatArea.transform);
           Text text = item.GetComponentInChildren<Text>();
           text.text = senders[i] + ":" + messages[i] + "\n";
         }
-        Debug.Log("channel："+channelName+",sender："+senders[0]+", messages："+messages[0]);
     }
  
-    public void OnPrivateMessage(string sender, object message, string channelName)
-    {
-        Debug.Log("channel：" + channelName + ",sender" + sender + ", messages：" + message);
-    }
+    public void OnPrivateMessage(string sender, object message, string channelName) {}
  
  
-    public void OnSubscribed(string[] channels, bool[] results)
-    {
+    public void OnSubscribed(string[] channels, bool[] results) {
         foreach(var channel in channels){
             this.client.PublishMessage(channel,"joined");
         }
-      
-        Debug.Log("channel" + channels[0] + "result：" + results[0]);
     }
  
  
-    public void OnUnsubscribed(string[] channels)
-    {
+    public void OnUnsubscribed(string[] channels) {
         Debug.Log(channels[0] + "fail to join in ");
     }
  
-    public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
-    {
+    public void OnStatusUpdate(string user, int status, bool gotMessage, object message) {} 
  
-    }
+    public void DebugReturn(ExitGames.Client.Photon.DebugLevel level, string message) {}
  
-    public void Test()
-    {
-        client.AddFriends(new string[] { "fu", "zhu" }); 
-        client.SetOnlineStatus(1); 
-    }
- 
- 
-    public void DebugReturn(ExitGames.Client.Photon.DebugLevel level, string message)
-    {
- 
-    }
- 
-    public void OnUserSubscribed(string channel, string user)
-    {
-        Debug.LogFormat("OnUserSubscribed: channel=\"{0}\" userId=\"{1}\"", channel, user);
-    }
+    public void OnUserSubscribed(string channel, string user) {}
 
-    public void OnUserUnsubscribed(string channel, string user)
-    {
-        Debug.LogFormat("OnUserUnsubscribed: channel=\"{0}\" userId=\"{1}\"", channel, user);
-    }
+    public void OnUserUnsubscribed(string channel, string user) {}
 
-    }
+}
 

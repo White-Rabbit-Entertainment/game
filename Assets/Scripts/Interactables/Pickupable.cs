@@ -11,7 +11,7 @@ public abstract class Pickupable : Interactable {
   public bool isPickedUp = false;
 
   public override void Reset() {
-    playerAnimationTrigger = "PickUp";
+    playerAnimationTrigger = "Pickup";
   }
   
 

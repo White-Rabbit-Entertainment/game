@@ -174,7 +174,9 @@ MonoBehaviour:
   taskTeam: -1
   outlineWidth: 5
   itemAnimationTrigger: 
-  playerAnimationTrigger: PickUp
+  playerAnimationTrigger: Pickup
+  task: {fileID: 0}
+  view: {fileID: 0}
   isPickedUp: 0
 --- !u!208 &4876101927155672708
 NavMeshObstacle:

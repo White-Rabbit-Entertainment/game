@@ -132,8 +132,8 @@ MonoBehaviour:
   canBeMasterTask: 1
   hardRequirements: []
   singleUse: 0
-  team: 36
-  taskTeam: 36
+  team: 6
+  taskTeam: 6
   outlineWidth: 5
   itemAnimationTrigger: 
   playerAnimationTrigger: 
