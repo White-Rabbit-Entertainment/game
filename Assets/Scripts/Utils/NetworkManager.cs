@@ -276,13 +276,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void ResetRoom() {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
-      SetRoomProperty("ItemsStolen", 0);
       Timer.RoundTimer.End();
       foreach(Player player in GetPlayers()) {
         SetPlayerProperty("InGameScene", false, player);
-        SetPlayerProperty("Dead", false, player);
+        SetLocalPlayerProperty("Ready", false);
       }
     }
+
+    public bool IsRoomReset() {
+      return CheckAnyPlayers("Ready", false) 
+        && RoomPropertyIs<bool>("GameReady", false)
+        && RoomPropertyIs<bool>("GameStarted", false)
+        && CheckAllPlayers<bool>("InGameScene", false)
+        && !Timer.RoundTimer.IsStarted();
+    } 
 
     public void CreateRoom (string roomName) {
       PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
