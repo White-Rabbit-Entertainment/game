@@ -7,6 +7,7 @@ public class Task : MonoBehaviour {
   public bool isCompleted = false;
   public string description;
   public TaskManager taskManager;
+  public bool isUndoable = true;
 
   // This is the list of requirements that must be completed before this task
   // can be completed 

@@ -17,6 +17,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public string taskDescription;
   private Color interactionColour;
   private Color taskColour;
+  private Color undoTaskColour;
 
   [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
   public List<TypeReference> softRequirementTypes;
@@ -50,6 +51,7 @@ public abstract class Interactable : MonoBehaviourPun {
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
+    undoTaskColour = new Color(1f, 0f, 0f, 1f);
   }
 
   public bool IsTaskable() {
@@ -60,25 +62,40 @@ public abstract class Interactable : MonoBehaviourPun {
   public bool HasTask() {
     return task != null && !task.isCompleted;
   }
+  
+  public bool HasCompletedUndoableTask() {
+    return task != null && task.isCompleted && task.isUndoable;
+  }
 
   // The primary action to do when an item is interacted with. At the moment
   // this is when an item is clicked on.
   public virtual void PrimaryInteraction(Character character) {
-    if (HasTask() && character.canTask) {
-      view.RPC("CompleteTask", RpcTarget.All);
-    }
-    
-    // Animation
-    PlayItemAnimation();
-    PlayCharacterAnimation(character);
+    // If this task is done and can be undone then set the traitors primary
+    // interaction to traitor undo.
+    if (HasCompletedUndoableTask() && character is Traitor) {
+      TraitorUndo(character);
+    } 
+    else {
+      if (HasTask() && character.canTask) {
+        view.RPC("CompleteTask", RpcTarget.All);
+      }
+      
+      // Animation
+      PlayItemAnimation();
+      PlayCharacterAnimation(character);
 
-    // Destory if single use
-    if (singleUse) view.RPC("Disable", RpcTarget.All);
+      // Destory if single use
+      if (singleUse) view.RPC("Disable", RpcTarget.All);
+    }
   }
-  
+
   // The action to do when an interaction stops. Atm this when the mouse is
   // released.
   public virtual void PrimaryInteractionOff(Character character) {}
+  
+  public virtual void TraitorUndo(Character character) {
+    task.GetComponent<PhotonView>().RPC("Uncomplete", RpcTarget.All);
+  }
 
   /// <summary> Apply glow around item to show it is interactable. </summary>
   public void GlowOn() {
@@ -90,7 +107,10 @@ public abstract class Interactable : MonoBehaviourPun {
   public void GlowOff(PlayableCharacter character) {
     if (HasTask()) {
       TaskGlowOn();
-    } else {
+    } else if (HasCompletedUndoableTask() && team is Traitor) {
+      TraitorUndoGlowOn(); 
+    }
+    else {
       outline.enabled = false;
     }
   }
@@ -102,6 +122,12 @@ public abstract class Interactable : MonoBehaviourPun {
       outline.enabled = true;
       outline.OutlineColor = taskColour;
     }
+  }
+  
+  [PunRPC]
+  public void TraitorUndoGlowOn() {
+    outline.enabled = true;
+    outline.OutlineColor = undoTaskColour;
   }
   
   [PunRPC]
