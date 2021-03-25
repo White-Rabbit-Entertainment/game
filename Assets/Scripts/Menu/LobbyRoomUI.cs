@@ -19,13 +19,15 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     void Start() {
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
-      toggleReadyButton.onClick.AddListener(ToggleReady);
-      NetworkManager.instance.ResetRoom();
+      if (NetworkManager.instance.IsMasterClient) {
+        NetworkManager.instance.ResetRoom();
+      }
     }
 
     void Update() {
       if (!initialized && NetworkManager.instance.IsRoomReset()) {
         initialized = true;
+        toggleReadyButton.onClick.AddListener(ToggleReady);
       }
       if (initialized) {
         SetText();

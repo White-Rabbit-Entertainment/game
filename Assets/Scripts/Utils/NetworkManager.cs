@@ -157,6 +157,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// This sets the room property "GameStarted" to true for all clients.
     /// </example>
     public void SetProperty(string key, object value, Hashtable currentProperties, PhotonSetPropertyDelegate setProperties) {
+      Debug.Log($"Settting {key} to {value}");
       currentProperties[key] = value;
       setProperties(currentProperties);
     }
