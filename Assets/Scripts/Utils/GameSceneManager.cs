@@ -9,6 +9,7 @@ using System;
 public class GameSceneManager : MonoBehaviour {
     
     private bool started = false;
+    private bool starting = false;
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
@@ -20,13 +21,19 @@ public class GameSceneManager : MonoBehaviour {
                 Init();
             }
         }
-        if (initialized && !started && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
+        if (initialized && !starting && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
             loadingScreen.EnableButton();
-            NetworkManager.instance.SetLocalPlayerProperty("Ready", "false");
             if (PhotonNetwork.IsMasterClient) {
               StartRoundTimer();
             }
-            started = true;
+            starting = true;
+        }
+
+        if (starting) {
+            if (Timer.RoundTimer.IsStarted()) {
+                Debug.Log("Started");
+                started = true;
+            } 
         }
 
         if (started) {
@@ -68,7 +75,6 @@ public class GameSceneManager : MonoBehaviour {
     [PunRPC]
     public void EndGameRPC(Team winningTeam) {
         Debug.Log($"Game Over!\n{winningTeam.ToString()}'s have won!");
-        NetworkManager.instance.ResetRoom();
         NetworkManager.instance.ChangeScene("LobbyScene");
     }
 
