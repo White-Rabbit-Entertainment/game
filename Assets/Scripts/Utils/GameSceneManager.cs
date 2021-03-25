@@ -23,8 +23,6 @@ public class GameSceneManager : MonoBehaviour {
         if (initialized && !started && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
             loadingScreen.EnableButton();
             NetworkManager.instance.SetLocalPlayerProperty("Ready", "false");
-            Debug.Log("BIIIG");
-            Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
             if (PhotonNetwork.IsMasterClient) {
               StartRoundTimer();
             }
@@ -54,6 +52,9 @@ public class GameSceneManager : MonoBehaviour {
     ///     lobby. 
     ///   <list>     
     public void CheckTimer() {
+      Debug.Log($"Time remaining: {Timer.RoundTimer.TimeRemaining()}");
+      Debug.Log($"Timer is started: {Timer.RoundTimer.IsStarted()}");
+      Debug.Log($"Timer is started: {Timer.RoundTimer.IsComplete()}");
       if (Timer.RoundTimer.IsComplete()) {
         Debug.Log("Time has run out");
         EndGame(Team.Traitor);
