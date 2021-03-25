@@ -278,17 +278,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
       Timer.RoundTimer.End();
-      foreach(Player player in GetPlayers()) {
-        SetPlayerProperty("InGameScene", false, player);
-        SetLocalPlayerProperty("Ready", false);
-      }
+
+      SetLocalPlayerProperty("CurrentScene", "LobbyScene");
+      SetLocalPlayerProperty("Ready", false);
+      SetLocalPlayerProperty("Spawned", false);
     }
 
     public bool IsRoomReset() {
       return CheckAnyPlayers("Ready", false) 
         && RoomPropertyIs<bool>("GameReady", false)
         && RoomPropertyIs<bool>("GameStarted", false)
-        && CheckAllPlayers<bool>("InGameScene", false)
+        && CheckAllPlayers<string>("CurrentScene", "LobbyScene")
+        && CheckAllPlayers<bool>("Spawned", false)
         && !Timer.RoundTimer.IsStarted();
     } 
 
