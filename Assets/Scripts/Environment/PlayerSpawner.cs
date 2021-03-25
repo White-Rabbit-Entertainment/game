@@ -12,7 +12,6 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject loyalPrefab;
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
-    public PoisonUI poisonUI;
     public ContextTaskUI contextTaskUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
@@ -20,19 +19,17 @@ public class PlayerSpawner : MonoBehaviour {
 
     public string sceneName;
 
-    public bool mealSwapping;
-
     public List<GameObject> rolesPrefabs;
 
     public RoleInfo roleInfo;
 
-    void Update() {
+    void LateUpdate() {
         // Wait till all players are in the scene.
         if (NetworkManager.instance.CheckAllPlayers<string>("CurrentScene", SceneManager.GetActiveScene().name)) {
 
             // Then load in all the players
             LoadPlayer();
-            if (!mealSwapping) LoadAgents();
+            LoadAgents();
 
             NetworkManager.instance.SetLocalPlayerProperty("Spawned", true); 
             // Then this script has done its job (loaded in the player) so we can
@@ -113,10 +110,6 @@ public class PlayerSpawner : MonoBehaviour {
         character.contextTaskUI = contextTaskUI;
         NetworkManager.myCharacter = character;
 
-        //Set the poisonUI
-        if (character is Traitor) {
-            ((Traitor)character).poisonUI = poisonUI;
-        }
         //sets player layer to "raycast ignore" layer
         player.layer = 2;
     }

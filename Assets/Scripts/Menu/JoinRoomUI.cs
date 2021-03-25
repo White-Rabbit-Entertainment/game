@@ -41,7 +41,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     void Start() {
-        PhotonNetwork.ConnectUsingSettings();
         createRoomButton.onClick.AddListener(OnClickCreateRoom);
         joinRoomButton.onClick.AddListener(OnClickJoinRoom);
         createPrivateButton.onClick.AddListener(OnClickCreatePrivateRoom);

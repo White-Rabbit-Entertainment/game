@@ -36,9 +36,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 8456182857741844341}
   currentHeldItem: {fileID: 0}
-  pocketedItems: []
+  pocketedItem: {fileID: 0}
   inventoryUI: {fileID: 0}
+  canTask: 0
   team: 0
+  roleInfo: {fileID: 0}
 --- !u!114 &2197168800728776343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56,28 +58,6 @@ MonoBehaviour:
   currentGoal: {fileID: 0}
   interactablesGameObject: {fileID: 0}
   interactables: []
---- !u!114 &8595795582493338933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8456182857689069985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ce98b8e6ab0c04aca66a18475f2b003, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: 
-  softRequirementTypes: []
-  canBeMasterTask: 1
-  hardRequirements: []
-  singleUse: 0
-  team: 3
-  taskTeam: 3
-  outlineWidth: 5
-  itemAnimationTrigger: Click
-  playerAnimationTrigger: 
 --- !u!1001 &8659776598351759178
 PrefabInstance:
   m_ObjectHideFlags: 0
