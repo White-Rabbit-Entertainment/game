@@ -19,7 +19,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     void Start() {
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
-      if (NetworkManager.instance.IsMasterClient) {
+      if (PhotonNetwork.IsMasterClient) {
         NetworkManager.instance.ResetRoom();
       }
     }
