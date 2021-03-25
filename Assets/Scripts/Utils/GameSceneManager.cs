@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameSceneManager : MonoBehaviour {
     
@@ -22,6 +24,9 @@ public class GameSceneManager : MonoBehaviour {
             }
             if (!started && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
                 loadingScreen.EnableButton();
+                NetworkManager.instance.SetLocalPlayerProperty("Ready", "false");
+                Debug.Log("BIIIG");
+                Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
                 if (PhotonNetwork.IsMasterClient) {
                   StartRoundTimer();
                 }
@@ -31,6 +36,7 @@ public class GameSceneManager : MonoBehaviour {
 
         if (started) {
             CheckTimer();
+            Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
         }
     }
 
@@ -67,11 +73,6 @@ public class GameSceneManager : MonoBehaviour {
         NetworkManager.instance.ChangeScene("LobbyScene");
     }
 
-    // void Reset() {
-    //     enabled = false;
-    //     started = false;
-    // }
-
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
     // TODO Show some loading UI if the level isnt loaded yet.
@@ -83,7 +84,7 @@ public class GameSceneManager : MonoBehaviour {
     
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        Timer.RoundTimer.Start(60);
+        Timer.RoundTimer.Start(10);
       }
     }
 }

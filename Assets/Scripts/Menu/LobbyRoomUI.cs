@@ -23,6 +23,7 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
 
     void Update() {
       SetText();
+      Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
       if (NetworkManager.instance.AllPlayersReady()) {
         NetworkManager.instance.SetupGame();
         if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
@@ -52,10 +53,10 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     }
 
     void ToggleReady() {
-      if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
-        NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
+      if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Ready", "true")) {
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", "false");
       } else {
-        NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
+        NetworkManager.instance.SetLocalPlayerProperty("Ready", "true");
       }
     }
 }

@@ -244,7 +244,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     // Return true is all players have readied up.
     public bool AllPlayersReady() {
-      return CheckAllPlayers<bool>("Ready", true);
+      return CheckAllPlayers<string>("Ready", "true");
     }
 
     //Return true if all players have been spawned into the game.
@@ -279,7 +279,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       SetRoomProperty("ItemsStolen", 0);
       Timer.RoundTimer.End();
       foreach(Player player in GetPlayers()) {
-        SetPlayerProperty("Ready", false, player);
         SetPlayerProperty("InGameScene", false, player);
         SetPlayerProperty("Dead", false, player);
       }
