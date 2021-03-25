@@ -54,7 +54,7 @@ public class GameSceneManager : MonoBehaviour {
     public void CheckTimer() {
       Debug.Log($"Time remaining: {Timer.RoundTimer.TimeRemaining()}");
       Debug.Log($"Timer is started: {Timer.RoundTimer.IsStarted()}");
-      Debug.Log($"Timer is started: {Timer.RoundTimer.IsComplete()}");
+      Debug.Log($"Timer is completed: {Timer.RoundTimer.IsComplete()}");
       if (Timer.RoundTimer.IsComplete()) {
         Debug.Log("Time has run out");
         EndGame(Team.Traitor);
