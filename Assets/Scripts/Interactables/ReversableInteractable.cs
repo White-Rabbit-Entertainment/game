@@ -7,7 +7,7 @@ class ReversableInteractable: Interactable {
   public string itemAnimationBool;
 
   public override void PlayItemAnimation() {
-    view.TransferOwnership(PhotonNetwork.LocalPlayer);
+    View.TransferOwnership(PhotonNetwork.LocalPlayer);
     Animator animator = GetComponentInChildren<Animator>();
     if (itemAnimationBool != null && itemAnimationBool != "" && animator != null) {
       if (animator.GetBool(itemAnimationBool)) {
