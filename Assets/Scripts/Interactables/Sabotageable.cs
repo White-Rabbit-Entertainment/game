@@ -6,9 +6,10 @@ using Photon.Pun;
 public class Sabotageable : Interactable {
 
     public bool isSabotaged;
-    public int initialNumberOfPlayersToFix;
-    public int numberOfPlayersToFix;
-
+    public int numberOfPlayersToFix = 1;
+    
+    public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -25,42 +26,30 @@ public class Sabotageable : Interactable {
     public override void PrimaryInteraction(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
             Timer.SabotageTimer.Start(30);
-            Sabotage();
-            SetTaskDesc();
-            View.RPC("AddTaskWithTimerRPC", RpcTarget.All, Timer.SabotageTimer);
-        } else if (isSabotaged && !(character.team == Team.Traitor)) {
-            Fix();
-            View.RPC("CompleteTask", RpcTarget.All);
+            View.RPC("Sabotage", RpcTarget.All);
+        } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
+            task.CompleteRPC();
+            View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID);
             Timer.SabotageTimer.End();
             Reset();
         }
     }
+
+    [PunRPC]
     void Sabotage() {
-        GetComponent<PhotonView>().RPC("SabotageRPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-	void SabotageRPC() {
+        AddTaskWithTimerRPC(Timer.SabotageTimer);
+        task.description = "Fix the " + this.name + "";
         isSabotaged = true;
-	}
-
-    void Fix() {
-        GetComponent<PhotonView>().RPC("FixRPC", RpcTarget.All);
     }
 
     [PunRPC]
-	void FixRPC() {
-        numberOfPlayersToFix--;  
-        if (numberOfPlayersToFix == 0) isSabotaged = false;
-	}
-
-    void SetTaskDesc() {
-        View.RPC("SetTaskDescRPC", RpcTarget.All);
+    void Fix(int fixPlayerViewId) {
+        PlayableCharacter fixPlayer = PhotonView.Find(fixPlayerViewId).GetComponent<PlayableCharacter>();
+        playersThatFixed.Add(fixPlayer);
+        if (numberOfPlayersToFix - playersThatFixed.Count <= 0) {
+            isSabotaged = false;
+            // Tell everyone that the task is now completed
+            task.Complete();
+        }
     }
-
-    [PunRPC]
-	void SetTaskDescRPC() {
-        taskDescription = "Fix the " + this.name;
-	}
-
 }
