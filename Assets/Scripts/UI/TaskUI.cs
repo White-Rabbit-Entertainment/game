@@ -16,7 +16,10 @@ public abstract class TaskUI : MonoBehaviour {
       TMP_Text text = item.GetComponentInChildren<TMP_Text>();
       // Set the toggle text
       text.text = task.description;
-      if (task.description.Contains("Fix ") && !task.isCompleted) text.text = text.text + Timer.SabotageTimer.TimeRemaining();
+
+      if (task.timer != null && task.timer.IsStarted()) {
+        text.text += Timer.SabotageTimer.TimeRemaining();
+      }
       // Set the toggle on/off depending of if task is completed 
       if (task.isCompleted) {
         text.fontStyle = FontStyles.Strikethrough;

@@ -8,6 +8,8 @@ public class Task : MonoBehaviour {
   public string description;
   public TaskManager taskManager;
 
+  public Timer timer;
+
   // This is the list of requirements that must be completed before this task
   // can be completed 
   public List<Task> requirements = new List<Task>();

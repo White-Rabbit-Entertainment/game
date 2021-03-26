@@ -6,12 +6,8 @@ using Photon.Pun;
 public class Sabotageable : Interactable {
 
     public bool isSabotaged;
-
     public int initialNumberOfPlayersToFix;
-
     public int numberOfPlayersToFix;
-
-    // private void Dictionary<string, string> openWith = new Dictionary<string, string>();
 
     // Start is called before the first frame update
     void Start()
@@ -19,11 +15,6 @@ public class Sabotageable : Interactable {
         isSabotaged = false;
         base.Start();
     }
-
-    // public override bool CanInteract(Character character) {
-    //     if (character is Traitor && Timer.Sabotage.IsStarted()) return false;
-    //     return base.CanInteract(character);
-    // }
 
     private void Reset() {
         team = Team.Traitor;
@@ -36,7 +27,7 @@ public class Sabotageable : Interactable {
             Timer.SabotageTimer.Start(30);
             Sabotage();
             SetTaskDesc();
-            view.RPC("AddTaskRPC", RpcTarget.All);
+            view.RPC("AddTaskWithTimerRPC", RpcTarget.All, Timer.SabotageTimer);
         } else if (isSabotaged && !(character.team == Team.Traitor)) {
             Fix();
             view.RPC("CompleteTask", RpcTarget.All);
@@ -50,7 +41,7 @@ public class Sabotageable : Interactable {
 
     [PunRPC]
 	void SabotageRPC() {
-      isSabotaged = true;
+        isSabotaged = true;
 	}
 
     void Fix() {
@@ -59,16 +50,17 @@ public class Sabotageable : Interactable {
 
     [PunRPC]
 	void FixRPC() {
-      numberOfPlayersToFix--;  
-      if (numberOfPlayersToFix == 0) isSabotaged = false;
+        numberOfPlayersToFix--;  
+        if (numberOfPlayersToFix == 0) isSabotaged = false;
 	}
 
-     void SetTaskDesc() {
+    void SetTaskDesc() {
         GetComponent<PhotonView>().RPC("SetTaskDescRPC", RpcTarget.All);
     }
-     [PunRPC]
+
+    [PunRPC]
 	void SetTaskDescRPC() {
-      taskDescription = "Fix the " + this.name;
+        taskDescription = "Fix the " + this.name;
 	}
 
 }
