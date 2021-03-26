@@ -15,7 +15,7 @@ public class PlayerSpawner : MonoBehaviour {
     public ContextTaskUI contextTaskUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
-    public int numberOfAgentsPerPlayer = 3;
+    public int numberOfAgentsPerPlayer = 0;
 
     public string sceneName;
 

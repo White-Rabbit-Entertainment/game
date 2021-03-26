@@ -32,6 +32,7 @@ public abstract class Interactable : MonoBehaviourPun {
 
   public float outlineWidth = 5f;
   
+  public bool inRange = false;
   
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
@@ -100,16 +101,25 @@ public abstract class Interactable : MonoBehaviourPun {
 
   [PunRPC]
   public void SetTaskGlow() {
-    if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor) && HasUndoTask()) {
-      SetGlow(undoTaskColour);
-    } else if (HasTask() && task.AllChildrenCompleted()) {
-      SetGlow(taskColour);
+    if (inRange) {
+      Debug.Log("In range");
+      if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor) && HasUndoTask()) {
+        SetGlow(undoTaskColour);
+      } else if (HasTask() && task.AllChildrenCompleted()) {
+        Debug.Log("The glow is reaalllly turning on");
+        SetGlow(taskColour);
+      } else {
+        Debug.Log("Nope");
+        Debug.Log(HasTask());
+        outline.enabled = false;
+      }
     } else {
       outline.enabled = false;
     }
   }
 
   public void SetGlow(Color colour) {
+    Debug.Log("Setting glow");
     outline.OutlineColor = colour;
     outline.enabled = true;
   }
@@ -123,33 +133,6 @@ public abstract class Interactable : MonoBehaviourPun {
   public void InteractionGlowOff() {
     SetTaskGlow();
   }
-  
-  // /// <summary> Turn on the task glow. </summary>
-  // [PunRPC]
-  // public void TaskGlowOn() {
-  //   if (HasTask() && task.AllChildrenCompleted()) {
-  //     outline.enabled = true;
-  //     outline.OutlineColor = taskColour;
-  //   }
-  // }
-
-  // [PunRPC]
-  // public void TaskGlowOff() {
-  //   outline.enabled = false;
-  // }
-  
-  // [PunRPC]
-  // public void TraitorUndoGlowOn() {
-  //   outline.enabled = true;
-  //   outline.OutlineColor = undoTaskColour;
-  // }
-
-  // [PunRPC]
-  // public void TraitorUndoGlowOff() {
-  //   outline.enabled = false;
-  // }
-  
-  
 
   // When we remove iteractablility from an item it should stop glowing.
   void OnDestroy() {

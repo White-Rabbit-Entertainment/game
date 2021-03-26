@@ -107,6 +107,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: -0.19, z: 0}
+--- !u!135 &3229952636936988353
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604436822466725211}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 13
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!81 &892351142922846947
 AudioListener:
   m_ObjectHideFlags: 0
@@ -135,10 +148,10 @@ MonoBehaviour:
   team: 6
   taskTeam: 6
   outlineWidth: 5
+  inRange: 0
   itemAnimationTrigger: 
   playerAnimationTrigger: 
   task: {fileID: 0}
-  view: {fileID: 0}
   votingManager: {fileID: 0}
 --- !u!114 &2557896737765151930
 MonoBehaviour:
@@ -187,6 +200,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxInteractionDistance: 2
   cameraTransform: {fileID: 3314237579269030611}
+  itemCollider: {fileID: 3229952636936988353}
+  interactablesInRange: []
 --- !u!1001 &6255637469783473072
 PrefabInstance:
   m_ObjectHideFlags: 0

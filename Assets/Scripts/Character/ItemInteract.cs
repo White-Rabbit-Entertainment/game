@@ -19,12 +19,16 @@ public class ItemInteract : MonoBehaviourPun {
     private Interactable currentInteractable;
     private PlayableCharacter character;
 
+    public SphereCollider itemCollider;
+
     private void Start() {
         if (!photonView.IsMine) {
             Destroy(this);
         }
         character = GetComponent<PlayableCharacter>();
     }
+
+    public List<Interactable> interactablesInRange = new List<Interactable>();
  
     private void Update() {
         
@@ -45,10 +49,9 @@ public class ItemInteract : MonoBehaviourPun {
             
             if (currentInteractable != null && currentInteractable.CanInteract(character)) {
                 // If we are able to interact with the new interactable then turn on its glow
-                currentInteractable.InteractionGlowOn();
+                newInteractable.InteractionGlowOn();
 
                 if (currentInteractable.HasTask()) {
-                    Debug.Log("Attempting to add task");
                     character.contextTaskUI.SetTask(currentInteractable.task);
                 }
                 // If we are pressing mouse down then do the interaction
@@ -93,4 +96,20 @@ public class ItemInteract : MonoBehaviourPun {
             interactableInRange = false;
         }
     }
+
+     public void OnTriggerEnter(Collider collider){
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null) {
+            interactable.inRange = true;
+            interactable.SetTaskGlow();
+        }
+     }
+
+     public void OnTriggerExit(Collider collider){
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null) {
+            interactable.inRange = false;
+            interactable.SetTaskGlow();
+        }
+     }
 }
