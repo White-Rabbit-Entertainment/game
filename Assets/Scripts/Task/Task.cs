@@ -9,6 +9,8 @@ public class Task : MonoBehaviour {
   public TaskManager taskManager;
   public bool isUndoable = true;
 
+  public Timer timer;
+
   // This is the list of requirements that must be completed before this task
   // can be completed 
   public List<Task> requirements = new List<Task>();

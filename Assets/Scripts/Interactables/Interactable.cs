@@ -179,6 +179,12 @@ public abstract class Interactable : MonoBehaviourPun {
       throw new Exception("AddTaskRPC cannot be used on a subtask.");
     }
   }
+  
+  [PunRPC]
+  public void AddTaskWihtTimerRPC(Timer timer) {
+    AddTaskRPC();
+    task.timer = timer;
+  }
 
   [PunRPC]
   public void Disable() {

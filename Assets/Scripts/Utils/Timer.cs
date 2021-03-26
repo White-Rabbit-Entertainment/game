@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public enum Timer {
   RoundTimer,
+  SabotageTimer,
 }
 
 public static class TimerUtils {
