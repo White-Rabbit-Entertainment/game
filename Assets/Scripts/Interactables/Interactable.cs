@@ -94,7 +94,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void PrimaryInteractionOff(Character character) {}
   
   public virtual void TraitorUndo(Character character) {
-    task.Uncomplete;
+    task.Uncomplete();
   }
 
   /// <summary> Apply glow around item to show it is interactable. </summary>
