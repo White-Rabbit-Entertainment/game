@@ -55,7 +55,7 @@ public class Sabotageable : Interactable {
 	}
 
     void SetTaskDesc() {
-        GetComponent<PhotonView>().RPC("SetTaskDescRPC", RpcTarget.All);
+        View.RPC("SetTaskDescRPC", RpcTarget.All);
     }
 
     [PunRPC]

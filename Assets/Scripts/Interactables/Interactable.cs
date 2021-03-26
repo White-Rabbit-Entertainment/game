@@ -181,7 +181,7 @@ public abstract class Interactable : MonoBehaviourPun {
   }
   
   [PunRPC]
-  public void AddTaskWihtTimerRPC(Timer timer) {
+  public void AddTaskWithTimerRPC(Timer timer) {
     AddTaskRPC();
     task.timer = timer;
   }

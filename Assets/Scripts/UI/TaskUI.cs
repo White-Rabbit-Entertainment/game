@@ -18,7 +18,7 @@ public abstract class TaskUI : MonoBehaviour {
       text.text = task.description;
 
       if (task.timer != Timer.None && task.timer.IsStarted()) {
-        text.text += task.timer.TimeRemaining();
+        text.text += task.timer.FormatTime();
       }
       // Set the toggle on/off depending of if task is completed 
       if (task.isCompleted) {
