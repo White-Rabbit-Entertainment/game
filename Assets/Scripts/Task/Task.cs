@@ -46,6 +46,9 @@ public class Task : MonoBehaviour {
   [PunRPC]
   public void CompleteRPC() {
     isCompleted = true;
+    if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor) && isUndoable) {
+      GetComponent<Interactable>().TraitorUndoGlowOn();
+    }
     if (parent !=  null) {
       parent.GetComponent<PhotonView>().RPC("TaskGlowOn", RpcTarget.All);
     }
