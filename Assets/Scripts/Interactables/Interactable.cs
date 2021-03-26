@@ -63,7 +63,8 @@ public abstract class Interactable : MonoBehaviourPun {
     return task != null && !task.isCompleted;
   }
   
-  public bool HasCompletedUndoableTask() {
+  // Returns true if the task has been completed and can be undone
+  public bool HasUndoTask() {
     return task != null && task.isCompleted && task.isUndoable;
   }
 
@@ -72,12 +73,11 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void PrimaryInteraction(Character character) {
     // If this task is done and can be undone then set the traitors primary
     // interaction to traitor undo.
-    if (HasCompletedUndoableTask() && character is Traitor) {
+    if (HasUndoTask() && character is Traitor) {
       TraitorUndo(character);
-    } 
-    else {
+    } else {
       if (HasTask() && character.canTask) {
-        view.RPC("CompleteTask", RpcTarget.All);
+        task.Complete();
       }
       
       // Animation
@@ -94,7 +94,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void PrimaryInteractionOff(Character character) {}
   
   public virtual void TraitorUndo(Character character) {
-    task.GetComponent<PhotonView>().RPC("Uncomplete", RpcTarget.All);
+    task.Uncomplete;
   }
 
   /// <summary> Apply glow around item to show it is interactable. </summary>
@@ -107,7 +107,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public void GlowOff(PlayableCharacter character) {
     if (HasTask()) {
       TaskGlowOn();
-    } else if (HasCompletedUndoableTask() && team is Traitor) {
+    } else if (HasUndoTask() && team is Traitor) {
       TraitorUndoGlowOn(); 
     }
     else {
@@ -189,10 +189,9 @@ public abstract class Interactable : MonoBehaviourPun {
     team = Team.None;
   }
   
-  [PunRPC]
-  public void CompleteTask() {
-    task.Complete();
-  }
+  //  public void CompleteTask() {
+  //   task.Complete();
+  // }
 
   [PunRPC]
   public void PlayerAnimationTrigger() {

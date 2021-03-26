@@ -28,7 +28,7 @@ public class Stealable : Pickupable {
       // If there is a task associated with stealing
       if (task != null) {
         // Then after stealing mark as completed 
-        CompleteTask();
+        task.Complete();
         
         // Then make it so the item cant be moved 
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
