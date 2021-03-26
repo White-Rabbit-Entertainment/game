@@ -13,6 +13,7 @@ public class Sabotageable : Interactable {
     // Start is called before the first frame update
     void Start()
     {
+        // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
         base.Start();
     }
@@ -45,10 +46,12 @@ public class Sabotageable : Interactable {
     [PunRPC]
     void Fix(int fixPlayerViewId) {
         PlayableCharacter fixPlayer = PhotonView.Find(fixPlayerViewId).GetComponent<PlayableCharacter>();
+        // TODO Show in UI that given character has fixed (same as voting)
         playersThatFixed.Add(fixPlayer);
         if (numberOfPlayersToFix - playersThatFixed.Count <= 0) {
             isSabotaged = false;
             // Tell everyone that the task is now completed
+            // TODO Delete the task for everyone
             task.Complete();
         }
     }
