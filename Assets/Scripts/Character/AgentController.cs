@@ -91,9 +91,14 @@ public class AgentController : MonoBehaviourPun {
         } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
           CalculatePath(currentGoal);
         } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
-          goalInProgress = true;
-          StartCoroutine(CompleteGoal());
-          StartCoroutine(EndGoal(currentGoal));
+          if (currentGoal is Pickupable && ((Pickupable)currentGoal).isPickedUp) {
+            currentGoal = null;
+            path = null;
+          } else {
+            goalInProgress = true;
+            StartCoroutine(CompleteGoal());
+            StartCoroutine(EndGoal(currentGoal));
+          }
         }
     }
 
