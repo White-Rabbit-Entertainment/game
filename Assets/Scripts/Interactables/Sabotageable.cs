@@ -17,6 +17,7 @@ public class Sabotageable : Interactable {
     void Start()
     {
         isSabotaged = false;
+        base.Start();
     }
 
     // public override bool CanInteract(Character character) {
@@ -27,13 +28,14 @@ public class Sabotageable : Interactable {
     private void Reset() {
         team = Team.Traitor;
         taskTeam = Team.Real;
-        taskDescription = "Fix the " + this.name;
         base.Reset();
     }
+    
     public override void PrimaryInteraction(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
             Timer.SabotageTimer.Start(30);
             Sabotage();
+            SetTaskDesc();
             view.RPC("AddTaskRPC", RpcTarget.All);
         } else if (isSabotaged && !(character.team == Team.Traitor)) {
             Fix();
@@ -60,4 +62,13 @@ public class Sabotageable : Interactable {
       numberOfPlayersToFix--;  
       if (numberOfPlayersToFix == 0) isSabotaged = false;
 	}
+
+     void SetTaskDesc() {
+        GetComponent<PhotonView>().RPC("SetTaskDescRPC", RpcTarget.All);
+    }
+     [PunRPC]
+	void SetTaskDescRPC() {
+      taskDescription = "Fix the " + this.name;
+	}
+
 }
