@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+
  
 /// <summary><c>ItemInteract</c> is the class which defines the behaviour for
 /// how a player interacts with an <c>Interactable</c>. 
@@ -45,6 +47,10 @@ public class ItemInteract : MonoBehaviourPun {
                 // If we are able to interact with the new interactable then turn on its glow
                 currentInteractable.GlowOn();
 
+                if (currentInteractable.HasTask() && character.canTask) {
+                    Debug.Log("Attempting to add task");
+                    character.contextTaskUI.SetTask(currentInteractable.task);
+                }
                 // If we are pressing mouse down then do the interaction
                 if (Input.GetButtonDown("Fire1")) {
                   // Do whatever the primary interaction of this interactable is.
@@ -58,6 +64,7 @@ public class ItemInteract : MonoBehaviourPun {
             // Then turn off the glow of that thing
             currentInteractable.GlowOff(character);
 
+            character.contextTaskUI.RemoveTask();
             // And if bring the mouse button up
             if (Input.GetButtonUp("Fire1")) {
               // Some item have a primary interaction off method, eg drop the

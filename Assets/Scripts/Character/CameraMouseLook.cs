@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+
 
 public class CameraMouseLook : MonoBehaviourPun
 {
@@ -19,8 +21,6 @@ public class CameraMouseLook : MonoBehaviourPun
 
           // Also destory the camera object
           Destroy(gameObject);
-        } else {
-          Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Task : MonoBehaviour {
   public bool isCompleted = false;
   public string description;
+  public TaskManager taskManager;
 
   // This is the list of requirements that must be completed before this task
   // can be completed 
@@ -15,6 +16,10 @@ public class Task : MonoBehaviour {
   // null then the task is a "master" task.
   public Task parent;
 
+  void Start() {
+    taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
+    taskManager.AddTask(this);
+  }
 
   // Returns if the task is a master task, i.e. no tasks depend on this task
   public bool IsMasterTask() {
@@ -36,5 +41,22 @@ public class Task : MonoBehaviour {
   [PunRPC]
   public void Complete() {
     isCompleted = true;
+    if (parent !=  null) {
+      parent.GetComponent<PhotonView>().RPC("TaskGlowOn", RpcTarget.All);
+    }
+    taskManager.CheckAllTasksCompleted();
   }
+  
+  [PunRPC]
+  public void Uncomplete() {
+    isCompleted = false;
+    if (parent !=  null) {
+      parent.GetComponent<PhotonView>().RPC("TaskGlowOff", RpcTarget.All);
+    }
+  }
+
+  public bool IsRequired() {
+    return !IsMasterTask() && !parent.isCompleted;
+  }
+  
 }
