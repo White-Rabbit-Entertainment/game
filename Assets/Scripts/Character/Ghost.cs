@@ -1,7 +1,6 @@
 public class Ghost : PlayableCharacter {
-  public override void Start() {
+  protected override void Start() {
     team = Team.Ghost;
-    base.Start();
   }
 }
                                          

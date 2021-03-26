@@ -7,7 +7,7 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
-    public override void Start() { 
+    protected override void Start() { 
       base.Start();
     }
 

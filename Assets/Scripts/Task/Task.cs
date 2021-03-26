@@ -50,8 +50,9 @@ public class Task : MonoBehaviour {
       GetComponent<Interactable>().TraitorUndoGlowOn();
     }
     if (parent !=  null) {
-      parent.GetComponent<PhotonView>().RPC("TaskGlowOn", RpcTarget.All);
+      parent.View.RPC("SetTaskGlow", RpcTarget.All);
     }
+    View.RPC("SetTaskGlow", RpcTarget.All);
     taskManager.CheckAllTasksCompleted();
   }
     
@@ -63,8 +64,9 @@ public class Task : MonoBehaviour {
   public void UncompleteRPC() {
     isCompleted = false;
     if (parent !=  null) {
-      parent.GetComponent<PhotonView>().RPC("TaskGlowOff", RpcTarget.All);
+      parent.View.RPC("SetTaskGlow", RpcTarget.All);
     }
+    View.RPC("SetTaskGlow", RpcTarget.All);
   }
 
   public void Uncomplete() {

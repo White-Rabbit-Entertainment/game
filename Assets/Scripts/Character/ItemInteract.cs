@@ -39,15 +39,15 @@ public class ItemInteract : MonoBehaviourPun {
             // trying to interact with something new, then we need to disable
             // the other interaction (turn off its glow).
             if (newInteractable != currentInteractable && currentInteractable != null) {
-                currentInteractable.GlowOff(character);
+                currentInteractable.InteractionGlowOff();
             }
             currentInteractable = newInteractable;
             
             if (currentInteractable != null && currentInteractable.CanInteract(character)) {
                 // If we are able to interact with the new interactable then turn on its glow
-                currentInteractable.GlowOn();
+                currentInteractable.InteractionGlowOn();
 
-                if (currentInteractable.HasTask() && character.canTask) {
+                if (currentInteractable.HasTask()) {
                     Debug.Log("Attempting to add task");
                     character.contextTaskUI.SetTask(currentInteractable.task);
                 }
@@ -62,7 +62,7 @@ public class ItemInteract : MonoBehaviourPun {
         // interacting with something.
         else if (currentInteractable != null) {
             // Then turn off the glow of that thing
-            currentInteractable.GlowOff(character);
+            currentInteractable.InteractionGlowOff();
 
             character.contextTaskUI.RemoveTask();
             // And if bring the mouse button up

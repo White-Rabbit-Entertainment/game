@@ -76,7 +76,7 @@ public abstract class Interactable : MonoBehaviourPun {
     if (HasUndoTask() && character is Traitor) {
       TraitorUndo(character);
     } else {
-      if (HasTask() && character.canTask) {
+      if (HasTask()) {
         task.Complete();
       }
       
@@ -97,43 +97,58 @@ public abstract class Interactable : MonoBehaviourPun {
     task.Uncomplete();
   }
 
-  /// <summary> Apply glow around item to show it is interactable. </summary>
-  public void GlowOn() {
-    outline.OutlineColor = interactionColour;
-    outline.enabled = true;
-  }
-  
-  /// <summary> Remove glow. </summary>
-  public void GlowOff(PlayableCharacter character) {
-    if (HasTask()) {
-      TaskGlowOn();
-    } else if (HasUndoTask() && team is Traitor) {
-      TraitorUndoGlowOn(); 
-    }
-    else {
+  [PunRPC]
+  public void SetTaskGlow() {
+    if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor) && HasUndoTask()) {
+      SetGlow(undoTaskColour);
+    } else if (HasTask() && task.AllChildrenCompleted()) {
+      SetGlow(taskColour);
+    } else {
       outline.enabled = false;
     }
   }
-  
-  /// <summary> Turn on the task glow. </summary>
-  [PunRPC]
-  public void TaskGlowOn() {
-    if (HasTask() && task.AllChildrenCompleted() && NetworkManager.instance.GetMe().canTask) {
-      outline.enabled = true;
-      outline.OutlineColor = taskColour;
-    }
-  }
-  
-  [PunRPC]
-  public void TraitorUndoGlowOn() {
+
+  public void SetGlow(Color colour) {
+    outline.OutlineColor = colour;
     outline.enabled = true;
-    outline.OutlineColor = undoTaskColour;
+  }
+
+  /// <summary> Apply glow around item to show it is interactable. </summary>
+  public void InteractionGlowOn() {
+    SetGlow(interactionColour);
   }
   
-  [PunRPC]
-  public void TaskGlowOff() {
-    outline.enabled = false;
+  /// <summary> Remove glow. </summary>
+  public void InteractionGlowOff() {
+    SetTaskGlow();
   }
+  
+  // /// <summary> Turn on the task glow. </summary>
+  // [PunRPC]
+  // public void TaskGlowOn() {
+  //   if (HasTask() && task.AllChildrenCompleted()) {
+  //     outline.enabled = true;
+  //     outline.OutlineColor = taskColour;
+  //   }
+  // }
+
+  // [PunRPC]
+  // public void TaskGlowOff() {
+  //   outline.enabled = false;
+  // }
+  
+  // [PunRPC]
+  // public void TraitorUndoGlowOn() {
+  //   outline.enabled = true;
+  //   outline.OutlineColor = undoTaskColour;
+  // }
+
+  // [PunRPC]
+  // public void TraitorUndoGlowOff() {
+  //   outline.enabled = false;
+  // }
+  
+  
 
   // When we remove iteractablility from an item it should stop glowing.
   void OnDestroy() {
@@ -162,9 +177,7 @@ public abstract class Interactable : MonoBehaviourPun {
       }
       
       // Set outline colour and turn on
-      if (Team.Loyal.HasFlag(NetworkManager.instance.GetLocalPlayerProperty<Team>("Team"))) {
-        TaskGlowOn();
-      }
+      View.RPC("SetTaskGlow", RpcTarget.All);
   }
 
   // Adds a task and also sets the parent of the new task.
