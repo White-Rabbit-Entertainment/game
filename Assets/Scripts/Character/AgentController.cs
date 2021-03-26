@@ -57,7 +57,9 @@ public class AgentController : MonoBehaviourPun {
 
     private IEnumerator CompleteGoal() {
       yield return new WaitForSeconds(5);
-      currentGoal.PrimaryInteraction(GetComponent<Agent>()); //interact with interactable
+      if (currentGoal is Pickupable && ((Pickupable)currentGoal).isPickedUp) {
+        currentGoal.PrimaryInteraction(GetComponent<Agent>()); //interact with interactable
+      }
       currentGoal = null;
       goalInProgress = false;
       path = null;
@@ -65,7 +67,9 @@ public class AgentController : MonoBehaviourPun {
 
     private IEnumerator EndGoal(Interactable goal) {
       yield return new WaitForSeconds(10);
-      goal.PrimaryInteractionOff(GetComponent<Agent>()); //interact with interactable
+      if (GetComponent<Agent>().currentHeldItem != null) {
+        goal.PrimaryInteractionOff(GetComponent<Agent>()); //interact with interactable
+      }
     }
 
     private float GetDistance(Interactable currGoal){
