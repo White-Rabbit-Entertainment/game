@@ -27,10 +27,10 @@ public class Sabotageable : Interactable {
             Timer.SabotageTimer.Start(30);
             Sabotage();
             SetTaskDesc();
-            view.RPC("AddTaskWithTimerRPC", RpcTarget.All, Timer.SabotageTimer);
+            View.RPC("AddTaskWithTimerRPC", RpcTarget.All, Timer.SabotageTimer);
         } else if (isSabotaged && !(character.team == Team.Traitor)) {
             Fix();
-            view.RPC("CompleteTask", RpcTarget.All);
+            View.RPC("CompleteTask", RpcTarget.All);
             Timer.SabotageTimer.End();
             Reset();
         }
