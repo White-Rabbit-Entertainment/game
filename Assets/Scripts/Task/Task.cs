@@ -42,22 +42,30 @@ public class Task : MonoBehaviour {
     }
     return true;
   }
-    
+
   [PunRPC]
-  public void Complete() {
+  public void CompleteRPC() {
     isCompleted = true;
     if (parent !=  null) {
       parent.GetComponent<PhotonView>().RPC("TaskGlowOn", RpcTarget.All);
     }
     taskManager.CheckAllTasksCompleted();
   }
+    
+  public void Complete() {
+    View.RPC("CompleteRPC", RpcTarget.All);
+  }
   
   [PunRPC]
-  public void Uncomplete() {
+  public void UncompleteRPC() {
     isCompleted = false;
     if (parent !=  null) {
       parent.GetComponent<PhotonView>().RPC("TaskGlowOff", RpcTarget.All);
     }
+  }
+
+  public void Uncomplete() {
+    View.RPC("UncompleteRPC", RpcTarget.All);
   }
 
   public bool IsRequired() {
