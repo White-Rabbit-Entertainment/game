@@ -169,6 +169,7 @@ MonoBehaviour:
   outlineWidth: 5
   itemAnimationTrigger: Click
   playerAnimationTrigger: 
+  task: {fileID: 0}
 --- !u!208 &-2149960402478107961
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -623,6 +624,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1137258933042995782}
     m_Modifications:
+    - target: {fileID: -2127752391093568637, guid: beb753fd8f76b120a9299779f0895f76,
+        type: 3}
+      propertyPath: team
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -2127752391093568637, guid: beb753fd8f76b120a9299779f0895f76,
+        type: 3}
+      propertyPath: taskTeam
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2305875844104867459, guid: beb753fd8f76b120a9299779f0895f76,
         type: 3}
       propertyPath: m_RootOrder

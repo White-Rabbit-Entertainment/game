@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 
 
+[RequireComponent(typeof(Agent))]
 public class AgentController : MonoBehaviourPun {
     [SerializeField]
     NavMeshAgent navMeshAgent;
@@ -22,6 +23,7 @@ public class AgentController : MonoBehaviourPun {
     private NavMeshPath path;
     private bool pathSet = false;
     private bool goalInProgress = false;
+    private Agent character;
 
     // The empty gameobject which holds all the interactables
     public GameObject interactablesGameObject;
@@ -31,6 +33,7 @@ public class AgentController : MonoBehaviourPun {
         // Only the owner of the AI should control the AI
         animator = GetComponentInChildren<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        character = GetComponent<Agent>();
         if (!GetComponent<PhotonView>().IsMine) {
           Destroy(this);
         } else {
@@ -49,7 +52,11 @@ public class AgentController : MonoBehaviourPun {
       int randIndex = r.Next(interactables.Count);
 
       Interactable newInteractable = interactables[randIndex];
-      if (!newInteractable.CanInteract(GetComponent<Agent>())) {
+      if (!newInteractable.CanInteract(character)) {
+        return null;
+      }
+      if (newInteractable.task != null) {
+        Debug.Log("Found a taks on an interactable");
         return null;
       }
       return newInteractable;
@@ -57,8 +64,8 @@ public class AgentController : MonoBehaviourPun {
 
     private IEnumerator CompleteGoal() {
       yield return new WaitForSeconds(5);
-      if (currentGoal is Pickupable && ((Pickupable)currentGoal).isPickedUp) {
-        currentGoal.PrimaryInteraction(GetComponent<Agent>()); //interact with interactable
+      if (currentGoal is Pickupable && !((Pickupable)currentGoal).isPickedUp) {
+        currentGoal.PrimaryInteraction(character); //interact with interactable
       }
       currentGoal = null;
       goalInProgress = false;
@@ -68,7 +75,7 @@ public class AgentController : MonoBehaviourPun {
     private IEnumerator EndGoal(Interactable goal) {
       yield return new WaitForSeconds(10);
       if (GetComponent<Agent>().currentHeldItem != null) {
-        goal.PrimaryInteractionOff(GetComponent<Agent>()); //interact with interactable
+        goal.PrimaryInteractionOff(character); //interact with interactable
       }
     }
 
@@ -93,7 +100,14 @@ public class AgentController : MonoBehaviourPun {
           // 10% Do an animation
           // 10% wander aimlessly
         } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
-          CalculatePath(currentGoal);
+          try {
+            CalculatePath(currentGoal);
+          } catch {
+            // If we failed to calculate a path then find a new goal
+            currentGoal = null;
+            path = null;
+          }
+
         } else if (!(GetDistance(currentGoal) > maxInteractionDistance) && !goalInProgress) {
           if (currentGoal is Pickupable && ((Pickupable)currentGoal).isPickedUp) {
             currentGoal = null;
