@@ -39,7 +39,9 @@ public abstract class Interactable : MonoBehaviourPun {
   private Outline outline;
   
   public Task task;
-  public PhotonView view;
+  public PhotonView View {
+    get { return GetComponent<PhotonView>(); }
+  }
 
   public virtual void Reset() {}
 
@@ -47,7 +49,6 @@ public abstract class Interactable : MonoBehaviourPun {
     outline = gameObject.AddComponent<Outline>() as Outline;
     outline.OutlineWidth = outlineWidth;
     outline.enabled = false;
-    view = GetComponent<PhotonView>();
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
@@ -85,7 +86,7 @@ public abstract class Interactable : MonoBehaviourPun {
       PlayCharacterAnimation(character);
 
       // Destory if single use
-      if (singleUse) view.RPC("Disable", RpcTarget.All);
+      if (singleUse) View.RPC("Disable", RpcTarget.All);
     }
   }
 
@@ -220,7 +221,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void PlayItemAnimation() {
     Animator animator = GetComponent<Animator>();
     if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
-      view.RPC("ItemAnimationTrigger", RpcTarget.All);
+      View.RPC("ItemAnimationTrigger", RpcTarget.All);
     }
   }
   
@@ -251,7 +252,7 @@ public abstract class Interactable : MonoBehaviourPun {
     if (softRequirements.Count > 0) {
       System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randomIndex = random.Next(softRequirements.Count);
-      view.RPC("AddHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
+      View.RPC("AddHardRequirement", RpcTarget.All, softRequirements[randomIndex].GetComponent<PhotonView>().ViewID);
     }
   }
 
