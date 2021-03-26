@@ -17,6 +17,10 @@ public class Task : MonoBehaviour {
   // null then the task is a "master" task.
   public Task parent;
 
+  public PhotonView View {
+    get { return GetComponent<PhotonView>(); }
+  }
+
   void Start() {
     taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
     taskManager.AddTask(this);
