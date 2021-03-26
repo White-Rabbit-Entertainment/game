@@ -98,8 +98,6 @@ public abstract class Interactable : MonoBehaviourPun {
   /// <summary> Turn on the task glow. </summary>
   [PunRPC]
   public void TaskGlowOn() {
-    Debug.Log(HasTask());
-    Debug.Log(task.AllChildrenCompleted());
     if (HasTask() && task.AllChildrenCompleted() && NetworkManager.instance.GetMe().canTask) {
       outline.enabled = true;
       outline.OutlineColor = taskColour;
@@ -141,7 +139,6 @@ public abstract class Interactable : MonoBehaviourPun {
       if (Team.Loyal.HasFlag(NetworkManager.instance.GetLocalPlayerProperty<Team>("Team"))) {
         TaskGlowOn();
       }
-
   }
 
   // Adds a task and also sets the parent of the new task.

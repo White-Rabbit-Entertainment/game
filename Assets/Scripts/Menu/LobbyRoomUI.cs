@@ -5,33 +5,39 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public Text playerCounter;
+    public Text roomName;
 
     public GameObject playerList;
     public Button toggleReadyButton;
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
-
-    private Hashtable props;
+    bool initialized = false; 
 
     void Start() {
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
-      toggleReadyButton.onClick.AddListener(ToggleReady);
+      NetworkManager.instance.ResetRoom();
+      roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
     }
 
     void Update() {
-      SetText();
-      if (NetworkManager.instance.AllPlayersReady()) {
-        GameManager.instance.SetupGame();
-        if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
-          NetworkManager.instance.SetRoomProperty("GameStarted", true);
-          NetworkManager.instance.ChangeScene("GameScene");
-          Destroy(this);
+      if (!initialized && NetworkManager.instance.IsRoomReset()) {
+        initialized = true;
+        toggleReadyButton.onClick.AddListener(ToggleReady);
+      }
+      if (initialized) {
+        SetText();
+        if (NetworkManager.instance.AllPlayersReady()) {
+          NetworkManager.instance.SetupGame();
+          if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
+            NetworkManager.instance.SetRoomProperty("GameStarted", true);
+            NetworkManager.instance.ChangeScene("GameScene");
+            Destroy(this);
+          }
         }
       }
     }

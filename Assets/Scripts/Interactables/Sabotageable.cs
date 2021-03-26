@@ -27,16 +27,19 @@ public class Sabotageable : Interactable {
     private void Reset() {
         team = Team.Traitor;
         taskTeam = Team.Real;
+        taskDescription = "Fix the " + this.name;
+        base.Reset();
     }
     public override void PrimaryInteraction(Character character) {
-        if (!isSabotaged && character.team == Team.Traitor) {
-            //Timer.Sabotage.IsStarted();
+        if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
+            Timer.SabotageTimer.Start(30);
             Sabotage();
             view.RPC("AddTaskRPC", RpcTarget.All);
         } else if (isSabotaged && !(character.team == Team.Traitor)) {
             Fix();
             view.RPC("CompleteTask", RpcTarget.All);
-
+            Timer.SabotageTimer.End();
+            Reset();
         }
     }
     void Sabotage() {
