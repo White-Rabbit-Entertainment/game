@@ -143,6 +143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: Open the chest
+  interactionColour: {r: 0, g: 0, b: 0, a: 0}
+  taskColour: {r: 0, g: 0, b: 0, a: 0}
+  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
   softRequirementTypes:
   - GuidAssignmentFailed: 0
     GUID: aabafa18701ff0058b61effccb63959e
@@ -214,7 +217,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300084, guid: 5f3a7deba91ee3341b2266db1be8c0a0, type: 3}
 --- !u!1 &5211306066683463479
