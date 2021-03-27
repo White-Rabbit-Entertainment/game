@@ -110,11 +110,8 @@ public abstract class Interactable : MonoBehaviourPun {
       if (team == Team.Traitor && HasUndoTask()) {
         SetGlow(undoTaskColour);
       } else if (HasTask() && task.AllChildrenCompleted()) {
-        Debug.Log("The glow is reaalllly turning on");
         SetGlow(taskColour);
       } else {
-        Debug.Log("Nope");
-        Debug.Log(HasTask());
         outline.enabled = false;
       }
     } else {
