@@ -36,7 +36,7 @@ public abstract class Character : MonoBehaviour {
     return false; 
   }
 
-  public void PickUp(Pickupable item) {
+  public virtual void Pickup(Pickupable item) {
     currentHeldItem = item;
     // An item can only be moved by a player if they are the owner.
     // Therefore, give ownership of the item to the local player before

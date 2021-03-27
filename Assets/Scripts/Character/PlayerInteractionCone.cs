@@ -12,10 +12,10 @@ public class PlayerInteractionCone : MonoBehaviour
     }
     
     void OnTriggerEnter(Collider collider) {
-        itemInteract.OnInteracitonConeEnter(collider); // pass the own collider and the one we've hit
+        itemInteract.OnInteractionConeEnter(collider); // pass the own collider and the one we've hit
     }
     
     void OnTriggerExit(Collider collider) {
-        itemInteract.OnInteracitonConeExit(collider); // pass the own collider and the one we've hit
+        itemInteract.OnInteractionConeExit(collider); // pass the own collider and the one we've hit
     }
 }

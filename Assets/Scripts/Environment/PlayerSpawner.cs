@@ -23,7 +23,7 @@ public class PlayerSpawner : MonoBehaviour {
 
     public RoleInfo roleInfo;
 
-    void LateUpdate() {
+    void Update() {
         // Wait till all players are in the scene.
         if (NetworkManager.instance.CheckAllPlayers<string>("CurrentScene", SceneManager.GetActiveScene().name)) {
 
@@ -111,19 +111,17 @@ public class PlayerSpawner : MonoBehaviour {
         NetworkManager.myCharacter = character;
 
         //sets player layer to "raycast ignore" layer
-        player.layer = 2;
+        player.SetLayerRecursively(2);
     }
     
 
 
-    public Vector3 RandomNavmeshLocation(float radius)
-    {
+    public Vector3 RandomNavmeshLocation(float radius) {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
         randomDirection += transform.position;
         NavMeshHit hit;
         Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
-        {
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
             finalPosition = hit.position;
         }
         return finalPosition;

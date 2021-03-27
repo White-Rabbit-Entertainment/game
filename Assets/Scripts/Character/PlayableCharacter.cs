@@ -11,6 +11,14 @@ public abstract class PlayableCharacter : Character {
       base.Start();
     }
 
+    public override void Pickup(Pickupable item) {
+      ItemInteract itemInteract = GetComponent<ItemInteract>();
+      if (itemInteract.possibleInteractables.Contains(item)) {
+         itemInteract.possibleInteractables.Remove(item);
+      }
+      base.Pickup(item);
+    }
+
     public bool IsMe() {
       return Owner == PhotonNetwork.LocalPlayer;
     }
