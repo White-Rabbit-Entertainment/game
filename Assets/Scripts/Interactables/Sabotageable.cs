@@ -41,7 +41,7 @@ public class Sabotageable : Interactable {
         if (inRange && team == Team.Traitor && !isSabotaged) {
             SetGlow(undoTaskColour);
         } else {
-            base.SetTaskGlowRPC();
+            base.SetTaskGlow();
         }
     }
 

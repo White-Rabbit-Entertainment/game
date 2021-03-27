@@ -25,6 +25,7 @@ public abstract class TaskUI : MonoBehaviour {
         Image image = item.GetComponentInChildren<Image>();
         image.color = urgentTaskColour;
       }
+      
       // Set the toggle on/off depending of if task is completed 
       if (task.isCompleted) {
         text.fontStyle = FontStyles.Strikethrough;
