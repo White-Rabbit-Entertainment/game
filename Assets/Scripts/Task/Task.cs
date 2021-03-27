@@ -49,9 +49,9 @@ public class Task : MonoBehaviour {
   public void CompleteRPC() {
     isCompleted = true;
     if (parent !=  null) {
-      parent.View.RPC("SetTaskGlow", RpcTarget.All);
+      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    View.RPC("SetTaskGlow", RpcTarget.All);
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);
     taskManager.CheckAllTasksCompleted();
   }
     
@@ -63,9 +63,9 @@ public class Task : MonoBehaviour {
   public void UncompleteRPC() {
     isCompleted = false;
     if (parent !=  null) {
-      parent.View.RPC("SetTaskGlow", RpcTarget.All);
+      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    View.RPC("SetTaskGlow", RpcTarget.All);
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);
   }
 
   public void Uncomplete() {

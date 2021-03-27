@@ -15,9 +15,9 @@ using Photon.Pun;
 public abstract class Interactable : MonoBehaviourPun {
 
   public string taskDescription;
-  private Color interactionColour;
-  private Color taskColour;
-  private Color undoTaskColour;
+  public Color interactionColour;
+  public Color taskColour;
+  public Color undoTaskColour;
 
   [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
   public List<TypeReference> softRequirementTypes;
@@ -100,10 +100,14 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   [PunRPC]
-  public void SetTaskGlow() {
+  public void SetTaskGlowRPC() {
+    SetTaskGlow();
+  }
+
+  public virtual void SetTaskGlow() {
     if (inRange) {
-      Debug.Log("In range");
-      if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor) && HasUndoTask()) {
+      Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
+      if (team == Team.Traitor && HasUndoTask()) {
         SetGlow(undoTaskColour);
       } else if (HasTask() && task.AllChildrenCompleted()) {
         Debug.Log("The glow is reaalllly turning on");
@@ -161,7 +165,7 @@ public abstract class Interactable : MonoBehaviourPun {
       }
       
       // Set outline colour and turn on
-      View.RPC("SetTaskGlow", RpcTarget.All);
+      View.RPC("SetTaskGlowRPC", RpcTarget.All);
   }
 
   // Adds a task and also sets the parent of the new task.

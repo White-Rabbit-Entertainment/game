@@ -23,7 +23,7 @@ public class Sabotageable : Interactable {
         taskTeam = Team.Real;
         base.Reset();
     }
-    
+
     public override void PrimaryInteraction(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
             Timer.SabotageTimer.Start(30);
@@ -33,6 +33,15 @@ public class Sabotageable : Interactable {
             View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID);
             Timer.SabotageTimer.End();
             Reset();
+        }
+    }
+
+    public override void SetTaskGlow() {
+        Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
+        if (inRange && team == Team.Traitor && !isSabotaged) {
+            SetGlow(undoTaskColour);
+        } else {
+            base.SetTaskGlowRPC();
         }
     }
 
@@ -52,7 +61,8 @@ public class Sabotageable : Interactable {
             isSabotaged = false;
             // Tell everyone that the task is now completed
             // TODO Delete the task for everyone
-            task.Complete();
+            task = null;
+            Destroy(GetComponent<Task>());
         }
     }
 }
