@@ -23,6 +23,7 @@ public class ItemInteract : MonoBehaviourPun {
 
     void Start() {
         if (!photonView.IsMine) {
+            Destroy(GetComponent<AudioListener>());
             Destroy(this);
         } else {
             character = GetComponent<PlayableCharacter>();
@@ -92,7 +93,6 @@ public class ItemInteract : MonoBehaviourPun {
           // If we hit ourselves then it also doesnt count 
           &&  raycastFocus.collider.gameObject.GetInstanceID() != gameObject.GetInstanceID()
         ) {
-            Debug.Log($"Ray collided with {raycastFocus.collider.gameObject}");
             interactableInRange = true;
         }
         else {
@@ -103,7 +103,6 @@ public class ItemInteract : MonoBehaviourPun {
      public void OnTriggerEnter(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null) {
-            Debug.Log($"Setting {interactable.gameObject} in range of {gameObject}");
             interactable.inRange = true;
             interactable.SetTaskGlow();
         }
