@@ -32,16 +32,18 @@ public class ItemInteract : MonoBehaviourPun {
     }
 
     public List<Interactable> interactablesInRange = new List<Interactable>();
+    public List<Interactable> possibleInteractables = new List<Interactable>();
  
     void Update() {
         
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
-        bool canInteract = interactableInRange && !character.HasItem();
+        bool canInteract = (possibleInteractables.Count > 0) && !character.HasItem();
 
         // If we are able to interact with stuff
         if (canInteract) {
-            Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
+            // Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
+            Interactable newInteractable = ClosestInteractable();
             // If we are already interacting with something but we are now
             // trying to interact with something new, then we need to disable
             // the other interaction (turn off its glow).
@@ -80,26 +82,20 @@ public class ItemInteract : MonoBehaviourPun {
             }
         }
     }
- 
-    private void FixedUpdate() {
-        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
- 
-        // Is interactable object detected in front of player?
-        if (
-          // Fire a ray out and see if we hit anything within a max distance
-              Physics.Raycast(ray, out raycastFocus, maxInteractionDistance, ~0, QueryTriggerInteraction.Ignore) 
-          // If we hit something that is not interactalbe then it doesnt count 
-          &&  raycastFocus.collider.transform.GetComponent<Interactable>() != null
-          // If we hit ourselves then it also doesnt count 
-          &&  raycastFocus.collider.gameObject.GetInstanceID() != gameObject.GetInstanceID()
-        ) {
-            interactableInRange = true;
-        }
-        else {
-            interactableInRange = false;
-        }
-    }
 
+    private Interactable ClosestInteractable() {
+        float distance = float.PositiveInfinity;
+        Interactable closestInteractable = possibleInteractables[0];
+        foreach(Interactable interactable in possibleInteractables) {
+            float interactableDistance = Vector3.Distance(transform.position, interactable.transform.position);
+            if (interactableDistance < distance) {
+                distance = interactableDistance;
+                closestInteractable = interactable;
+            }
+        }
+        return closestInteractable;
+    }
+ 
      public void OnTriggerEnter(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null) {
@@ -115,4 +111,20 @@ public class ItemInteract : MonoBehaviourPun {
             interactable.SetTaskGlow();
         }
      }
+
+     public void OnInteracitonConeEnter(Collider collider) {
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null
+            && interactable.gameObject.GetInstanceID() != gameObject.GetInstanceID()
+        ) {
+            possibleInteractables.Add(interactable);
+        }
+     } 
+     
+     public void OnInteracitonConeExit(Collider collider) {
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null) {
+            possibleInteractables.Remove(interactable);
+        }
+     } 
 }
