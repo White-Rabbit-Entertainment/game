@@ -21,16 +21,18 @@ public class ItemInteract : MonoBehaviourPun {
 
     public SphereCollider itemCollider;
 
-    private void Start() {
+    void Start() {
         if (!photonView.IsMine) {
             Destroy(this);
+        } else {
+            character = GetComponent<PlayableCharacter>();
+            itemCollider.enabled = true;
         }
-        character = GetComponent<PlayableCharacter>();
     }
 
     public List<Interactable> interactablesInRange = new List<Interactable>();
  
-    private void Update() {
+    void Update() {
         
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
@@ -101,6 +103,7 @@ public class ItemInteract : MonoBehaviourPun {
      public void OnTriggerEnter(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null) {
+            Debug.Log($"Setting {interactable.gameObject} in range of {gameObject}");
             interactable.inRange = true;
             interactable.SetTaskGlow();
         }
