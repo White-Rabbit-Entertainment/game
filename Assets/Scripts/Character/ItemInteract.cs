@@ -77,6 +77,9 @@ public class ItemInteract : MonoBehaviourPun {
             if (Input.GetButtonUp("Fire1")) {
               // Some item have a primary interaction off method, eg drop the
               // item after pickup. Therefore run this on mouse up.
+              if (possibleInteractables.Contains(currentInteractable)) {
+                possibleInteractables.Remove(currentInteractable);
+              }
               currentInteractable.PrimaryInteractionOff(character);
               currentInteractable = null;
             }
