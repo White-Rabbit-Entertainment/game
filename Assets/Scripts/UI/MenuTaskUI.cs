@@ -6,8 +6,10 @@ using TMPro;
 
 /// <summary> UI to show tasks in the GameScene </summary>
 public class MenuTaskUI : TaskUI {
+  private bool taskListOpen = false;
+
   void Update() {
-    tasksList.DestroyChildren();
+    taskList.DestroyChildren();
     // Add in all the current tasks
     foreach (Task task in taskManager.GetTasks()) {
       if (task.IsMasterTask()) {
@@ -16,6 +18,20 @@ public class MenuTaskUI : TaskUI {
           AddTask(subTask, subTaskPrefab);
         }
       }
+    }
+
+    if (Input.GetKeyDown(KeyCode.Tab)) {
+      ToggleTaskList();
+    }
+  }
+
+  void ToggleTaskList() {
+    if (taskListOpen) {
+      taskList.SetActive(false);
+      taskListOpen = false;
+    } else {
+      taskList.SetActive(true);
+      taskListOpen = true;
     }
   }
 }

@@ -17,7 +17,7 @@ public abstract class Pickupable : Interactable {
 
   public override void PrimaryInteraction(Character character) {
     if (!isPickedUp) {
-      character.PickUp(this);
+      character.Pickup(this);
     }
     PlayCharacterAnimation(character);
   }

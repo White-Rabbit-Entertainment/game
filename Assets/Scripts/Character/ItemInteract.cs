@@ -33,17 +33,36 @@ public class ItemInteract : MonoBehaviourPun {
 
     public List<Interactable> interactablesInRange = new List<Interactable>();
     public List<Interactable> possibleInteractables = new List<Interactable>();
+    
+    public Interactable GetBestInteractable() {
+        float angle = float.PositiveInfinity;
+        Interactable bestInteractable = null;
+        foreach(Interactable interactable in possibleInteractables) {
+            RaycastHit hit;
+            Physics.Linecast(cameraTransform.position, interactable.transform.position, out hit); 
+            float interactableAngle = Vector3.Angle(cameraTransform.forward, interactable.transform.position - cameraTransform.position);
+            //Debug.Log(hit.collider.GetComponent<Interactable>());
+            if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
+                angle = interactableAngle;
+                bestInteractable = interactable;
+            }
+        }
+        return bestInteractable;
+
+    }
+
  
     void Update() {
-        
+        Interactable newInteractable = null; 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
-        bool canInteract = (possibleInteractables.Count > 0) && !character.HasItem();
+        if (!character.HasItem()) {
+            newInteractable = GetBestInteractable();
+        }
 
         // If we are able to interact with stuff
-        if (canInteract) {
+        if (newInteractable != null) {
             // Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
-            Interactable newInteractable = ClosestInteractable();
             // If we are already interacting with something but we are now
             // trying to interact with something new, then we need to disable
             // the other interaction (turn off its glow).
@@ -115,7 +134,7 @@ public class ItemInteract : MonoBehaviourPun {
         }
      }
 
-     public void OnInteracitonConeEnter(Collider collider) {
+     public void OnInteractionConeEnter(Collider collider) {
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null
             && interactable.gameObject.GetInstanceID() != gameObject.GetInstanceID()
@@ -124,7 +143,7 @@ public class ItemInteract : MonoBehaviourPun {
         }
      } 
      
-     public void OnInteracitonConeExit(Collider collider) {
+     public void OnInteractionConeExit(Collider collider) {
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null) {
             possibleInteractables.Remove(interactable);
