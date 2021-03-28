@@ -8,6 +8,8 @@ public class Sabotageable : Interactable {
     public bool isSabotaged;
     public int numberOfPlayersToFix = 1;
 
+    public GameObject sabotagedIndicator;
+
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
     
     private GameSceneManager gameSceneManager;
@@ -53,6 +55,7 @@ public class Sabotageable : Interactable {
         AddTaskWithTimerRPC(Timer.SabotageTimer);
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
+        sabotagedIndicator.SetActive(true);
     }
 
     [PunRPC]
@@ -66,6 +69,7 @@ public class Sabotageable : Interactable {
             // TODO Delete the task for everyone
             task = null;
             Destroy(GetComponent<Task>());
+            sabotagedIndicator.SetActive(false);
         }
     }
 
