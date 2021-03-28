@@ -19,22 +19,50 @@ public class ItemInteract : MonoBehaviourPun {
     private Interactable currentInteractable;
     private PlayableCharacter character;
 
-    private void Start() {
+    public SphereCollider itemCollider;
+
+    void Start() {
         if (!photonView.IsMine) {
+            Destroy(GetComponent<AudioListener>());
             Destroy(this);
+        } else {
+            character = GetComponent<PlayableCharacter>();
+            itemCollider.enabled = true;
         }
-        character = GetComponent<PlayableCharacter>();
     }
+
+    public List<Interactable> interactablesInRange = new List<Interactable>();
+    public List<Interactable> possibleInteractables = new List<Interactable>();
+    
+    public Interactable GetBestInteractable() {
+        float angle = float.PositiveInfinity;
+        Interactable bestInteractable = null;
+        foreach(Interactable interactable in possibleInteractables) {
+            RaycastHit hit;
+            Physics.Linecast(cameraTransform.position, interactable.transform.position, out hit); 
+            float interactableAngle = Vector3.Angle(cameraTransform.forward, interactable.transform.position - cameraTransform.position);
+            //Debug.Log(hit.collider.GetComponent<Interactable>());
+            if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
+                angle = interactableAngle;
+                bestInteractable = interactable;
+            }
+        }
+        return bestInteractable;
+
+    }
+
  
-    private void Update() {
-        
+    void Update() {
+        Interactable newInteractable = null; 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
-        bool canInteract = interactableInRange && !character.HasItem();
+        if (!character.HasItem()) {
+            newInteractable = GetBestInteractable();
+        }
 
         // If we are able to interact with stuff
-        if (canInteract) {
-            Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
+        if (newInteractable != null) {
+            // Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
             // If we are already interacting with something but we are now
             // trying to interact with something new, then we need to disable
             // the other interaction (turn off its glow).
@@ -45,10 +73,9 @@ public class ItemInteract : MonoBehaviourPun {
             
             if (currentInteractable != null && currentInteractable.CanInteract(character)) {
                 // If we are able to interact with the new interactable then turn on its glow
-                currentInteractable.InteractionGlowOn();
+                newInteractable.InteractionGlowOn();
 
                 if (currentInteractable.HasTask()) {
-                    Debug.Log("Attempting to add task");
                     character.contextTaskUI.SetTask(currentInteractable.task);
                 }
                 // If we are pressing mouse down then do the interaction
@@ -69,28 +96,57 @@ public class ItemInteract : MonoBehaviourPun {
             if (Input.GetButtonUp("Fire1")) {
               // Some item have a primary interaction off method, eg drop the
               // item after pickup. Therefore run this on mouse up.
+              if (possibleInteractables.Contains(currentInteractable)) {
+                possibleInteractables.Remove(currentInteractable);
+              }
               currentInteractable.PrimaryInteractionOff(character);
               currentInteractable = null;
             }
         }
     }
- 
-    private void FixedUpdate() {
-        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
- 
-        // Is interactable object detected in front of player?
-        if (
-          // Fire a ray out and see if we hit anything within a max distance
-              Physics.Raycast(ray, out raycastFocus, maxInteractionDistance) 
-          // If we hit something that is not interactalbe then it doesnt count 
-          &&  raycastFocus.collider.transform.GetComponent<Interactable>() != null
-          // If we hit ourselves then it also doesnt count 
-          &&  raycastFocus.collider.gameObject.GetInstanceID() != gameObject.GetInstanceID()
-        ) {
-            interactableInRange = true;
+
+    private Interactable ClosestInteractable() {
+        float distance = float.PositiveInfinity;
+        Interactable closestInteractable = possibleInteractables[0];
+        foreach(Interactable interactable in possibleInteractables) {
+            float interactableDistance = Vector3.Distance(transform.position, interactable.transform.position);
+            if (interactableDistance < distance) {
+                distance = interactableDistance;
+                closestInteractable = interactable;
+            }
         }
-        else {
-            interactableInRange = false;
-        }
+        return closestInteractable;
     }
+ 
+     public void OnTriggerEnter(Collider collider){
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null) {
+            interactable.inRange = true;
+            interactable.SetTaskGlow();
+        }
+     }
+
+     public void OnTriggerExit(Collider collider){
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null) {
+            interactable.inRange = false;
+            interactable.SetTaskGlow();
+        }
+     }
+
+     public void OnInteractionConeEnter(Collider collider) {
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null
+            && interactable.gameObject.GetInstanceID() != gameObject.GetInstanceID()
+        ) {
+            possibleInteractables.Add(interactable);
+        }
+     } 
+     
+     public void OnInteractionConeExit(Collider collider) {
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable != null) {
+            possibleInteractables.Remove(interactable);
+        }
+     } 
 }

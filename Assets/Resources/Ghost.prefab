@@ -172,7 +172,6 @@ MonoBehaviour:
   currentHeldItem: {fileID: 0}
   pocketedItem: {fileID: 0}
   inventoryUI: {fileID: 0}
-  canTask: 0
   team: 16
   roleInfo: {fileID: 0}
   ghostPrefab: {fileID: 7463885005024221200}

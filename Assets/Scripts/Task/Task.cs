@@ -9,6 +9,8 @@ public class Task : MonoBehaviour {
   public TaskManager taskManager;
   public bool isUndoable = true;
 
+  public Timer timer = Timer.None;
+
   // This is the list of requirements that must be completed before this task
   // can be completed 
   public List<Task> requirements = new List<Task>();
@@ -47,9 +49,9 @@ public class Task : MonoBehaviour {
   public void CompleteRPC() {
     isCompleted = true;
     if (parent !=  null) {
-      parent.View.RPC("SetTaskGlow", RpcTarget.All);
+      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    View.RPC("SetTaskGlow", RpcTarget.All);
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);
     taskManager.CheckAllTasksCompleted();
   }
     
@@ -61,9 +63,9 @@ public class Task : MonoBehaviour {
   public void UncompleteRPC() {
     isCompleted = false;
     if (parent !=  null) {
-      parent.View.RPC("SetTaskGlow", RpcTarget.All);
+      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    View.RPC("SetTaskGlow", RpcTarget.All);
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);
   }
 
   public void Uncomplete() {

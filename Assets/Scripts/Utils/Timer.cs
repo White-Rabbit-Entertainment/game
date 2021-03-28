@@ -4,7 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 
 public enum Timer {
+  None,
   RoundTimer,
+  SabotageTimer,
 }
 
 public static class TimerUtils {
@@ -20,6 +22,7 @@ public static class TimerUtils {
     }
     
     public static bool IsStarted(this Timer timer) {
+      if (timer == Timer.None) return false;
       return NetworkManager.instance.RoomPropertyIs<bool>(timer.ToString() + "started", true);
     }
     
