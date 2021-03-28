@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,7 +25,7 @@ public class VotingManager : MonoBehaviour {
   PlayableCharacter voteLeader;
 
   public void Update() {
-    if (voteStarted && !hasVoted && NetworkManager.instance.GetMe() != suspectedPlayer) {
+    if (voteStarted && !hasVoted) {
       if (Input.GetKeyDown(KeyCode.K)) {
         SubmitVote(Vote.For);
       } else if (Input.GetKeyDown(KeyCode.L)) {
@@ -57,16 +56,12 @@ public class VotingManager : MonoBehaviour {
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
     hasVoted = false;
-    if (NetworkManager.instance.GetMe() != suspectedPlayer) {
-      votingUI.SetActive(true);
-      votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
-    }
+    votingUI.SetActive(true);
+    votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
 
   public void EndVote() {
-    foreach (PlayableCharacter character in playersVotingAgainst.Concat(playersVotingAgainst)) {
-      playersUI.ClearVote(character);
-    }
+    playersUI.ClearVote();
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
@@ -95,14 +90,16 @@ public class VotingManager : MonoBehaviour {
       playersVotingAgainst.Add(votingPlayer);
     }
     playersUI.SetPlayerVote(vote, votingPlayer);
-    if (playersVotingFor.Count > numberOfVotingPlayers/2 || playersVotingAgainst.Count >= numberOfVotingPlayers/2) {
+    if (playersVotingFor.Count > numberOfVotingPlayers/2 || playersVotingAgainst.Count > numberOfVotingPlayers/2) {
       EndVote();
     }
   }
   
   public void SubmitVote(Vote vote) {
-    GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID);
-    hasVoted = true;
+    if (suspectedPlayer != NetworkManager.instance.GetMe()) {
+      GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID);
+      hasVoted = true;
+    }
     votingUI.SetActive(false);
   }
 }
