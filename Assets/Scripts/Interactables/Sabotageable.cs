@@ -70,6 +70,9 @@ public class Sabotageable : Interactable {
             task = null;
             Destroy(GetComponent<Task>());
             sabotagedIndicator.SetActive(false);
+
+            // After an item is fixed its no longer interactable for anyone
+            Destroy(this);
         }
     }
 

@@ -7,6 +7,9 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
+    public GameObject playerTile;
+    public PlayersUI playersUI;
+
     protected override void Start() { 
       base.Start();
     }
@@ -40,7 +43,12 @@ public abstract class PlayableCharacter : Character {
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
         GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
         GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-        NetworkManager.myCharacter = newPlayer.GetComponent<PlayableCharacter>();
+
+        PlayableCharacter newCharacter = newPlayer.GetComponent<PlayableCharacter>(); 
+        NetworkManager.myCharacter = newCharacter; 
+        newCharacter.playerTile = playerTile;
+        newCharacter.playersUI = playersUI;
+        playersUI.SetToDead(newCharacter);
     }
 
     [PunRPC]

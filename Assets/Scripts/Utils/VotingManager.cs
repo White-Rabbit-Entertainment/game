@@ -63,7 +63,7 @@ public class VotingManager : MonoBehaviour {
   } 
 
   public void EndVote() {
-    playersUI.ClearVote();
+    playersUI.ClearVote(NetworkManager.instance.GetMe());
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
