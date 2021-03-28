@@ -26,6 +26,12 @@ public class VotingManager : MonoBehaviour {
   PlayableCharacter voteLeader;
 
   public void Update() {
+    // Check if the vote has run out of time, if so end the vote
+    if (voteStarted && PhotonNetwork.IsMasterClient) {
+      if (Timer.VoteTimer.IsComplete()) {
+        EndVote();
+      }
+    }
     if (voteStarted && !hasVoted && NetworkManager.instance.GetMe() != suspectedPlayer) {
       if (Input.GetKeyDown(KeyCode.K)) {
         SubmitVote(Vote.For);
@@ -37,6 +43,7 @@ public class VotingManager : MonoBehaviour {
 
   public void InitVote(int suspectedPlayerId, int voteLeaderId) {
     if (!voteStarted) {
+      Timer.VoteTimer.Start(30);
       GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, suspectedPlayerId, voteLeaderId);
     } else {
       StartCoroutine(ShowVoteInProgress());
@@ -64,6 +71,7 @@ public class VotingManager : MonoBehaviour {
   } 
 
   public void EndVote() {
+    Timer.VoteTimer.End();
     foreach (PlayableCharacter character in playersVotingAgainst.Concat(playersVotingAgainst)) {
       playersUI.ClearVote(character);
     }
