@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ public class VotingManager : MonoBehaviour {
   PlayableCharacter voteLeader;
 
   public void Update() {
-    if (voteStarted && !hasVoted) {
+    if (voteStarted && !hasVoted && NetworkManager.instance.GetMe() != suspectedPlayer) {
       if (Input.GetKeyDown(KeyCode.K)) {
         SubmitVote(Vote.For);
       } else if (Input.GetKeyDown(KeyCode.L)) {
@@ -56,12 +57,16 @@ public class VotingManager : MonoBehaviour {
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
     hasVoted = false;
-    votingUI.SetActive(true);
-    votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
+    if (NetworkManager.instance.GetMe() != suspectedPlayer) {
+      votingUI.SetActive(true);
+      votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
+    }
   } 
 
   public void EndVote() {
-    playersUI.ClearVote();
+    foreach (PlayableCharacter character in playersVotingAgainst.Concat(playersVotingAgainst)) {
+      playersUI.ClearVote(character);
+    }
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
@@ -70,7 +75,7 @@ public class VotingManager : MonoBehaviour {
           gameSceneManager.EndGame(Team.Traitor);
         }
         if (NetworkManager.instance.NoTraitorsRemaining()) {
-          gameSceneManager.EndGame(Team.Loyal);;
+          gameSceneManager.EndGame(Team.Loyal);
         }
       }
       Debug.Log("The player has been voted off");
@@ -81,6 +86,7 @@ public class VotingManager : MonoBehaviour {
 
   [PunRPC]
   public void SetVote(Vote vote, int votingPlayerId) {
+    int numberOfVotingPlayers = NetworkManager.instance.GetPlayers().Count - 1;
     PlayableCharacter votingPlayer = PhotonView.Find(votingPlayerId).GetComponent<PlayableCharacter>();
     if (vote == Vote.For) {
       playersVotingFor.Add(votingPlayer);
@@ -89,7 +95,7 @@ public class VotingManager : MonoBehaviour {
       playersVotingAgainst.Add(votingPlayer);
     }
     playersUI.SetPlayerVote(vote, votingPlayer);
-    if (playersVotingFor.Count + playersVotingAgainst.Count == NetworkManager.instance.GetPlayers().Count) {
+    if (playersVotingFor.Count > numberOfVotingPlayers/2 || playersVotingAgainst.Count >= numberOfVotingPlayers/2) {
       EndVote();
     }
   }
