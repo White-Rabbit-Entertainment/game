@@ -25,7 +25,7 @@ public class VotingManager : MonoBehaviour {
   PlayableCharacter voteLeader;
 
   public void Update() {
-    if (voteStarted && !hasVoted && NetworkManager.instance.GetMe() != suspectedPlayer) {
+    if (voteStarted && !hasVoted) {
       if (Input.GetKeyDown(KeyCode.K)) {
         SubmitVote(Vote.For);
       } else if (Input.GetKeyDown(KeyCode.L)) {
@@ -56,10 +56,8 @@ public class VotingManager : MonoBehaviour {
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
     hasVoted = false;
-    if (NetworkManager.instance.GetMe() != suspectedPlayer) {
-      votingUI.SetActive(true);
-      votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
-    }
+    votingUI.SetActive(true);
+    votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
 
   public void EndVote() {
@@ -98,8 +96,10 @@ public class VotingManager : MonoBehaviour {
   }
   
   public void SubmitVote(Vote vote) {
-    GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID);
-    hasVoted = true;
+    if (suspectedPlayer != NetworkManager.instance.GetMe()) {
+      GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID);
+      hasVoted = true;
+    }
     votingUI.SetActive(false);
   }
 }
