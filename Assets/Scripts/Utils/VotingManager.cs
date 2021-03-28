@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -61,7 +62,9 @@ public class VotingManager : MonoBehaviour {
   } 
 
   public void EndVote() {
-    playersUI.ClearVote(NetworkManager.instance.GetMe());
+    foreach (PlayableCharacter character in playersVotingAgainst.Concat(playersVotingAgainst)) {
+      playersUI.ClearVote(character);
+    }
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
