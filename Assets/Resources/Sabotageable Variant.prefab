@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
   outlineWidth: 2.61
   precomputeOutline: 0
   bakeKeys: []
@@ -181,7 +181,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.93
+      value: 3.31
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
         type: 3}
