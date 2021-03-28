@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[DisallowMultipleComponent]
+[RequireComponent(typeof(Interactable))]
 public class Task : MonoBehaviour {
   public bool isCompleted = false;
   public string description;

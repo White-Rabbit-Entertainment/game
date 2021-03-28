@@ -7,8 +7,10 @@ public class Sabotageable : Interactable {
 
     public bool isSabotaged;
     public int numberOfPlayersToFix = 1;
-    
+
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
+    
+    private GameSceneManager gameSceneManager;
     
     // Start is called before the first frame update
     void Start()
@@ -16,6 +18,7 @@ public class Sabotageable : Interactable {
         // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
         base.Start();
+        gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
     }
 
     private void Reset() {
@@ -63,6 +66,12 @@ public class Sabotageable : Interactable {
             // TODO Delete the task for everyone
             task = null;
             Destroy(GetComponent<Task>());
+        }
+    }
+
+    void Update() {
+        if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
+            gameSceneManager.EndGame(Team.Traitor);
         }
     }
 }
