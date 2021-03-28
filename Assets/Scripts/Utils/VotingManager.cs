@@ -89,7 +89,7 @@ public class VotingManager : MonoBehaviour {
       playersVotingAgainst.Add(votingPlayer);
     }
     playersUI.SetPlayerVote(vote, votingPlayer);
-    if (playersVotingFor.Count + playersVotingAgainst.Count == NetworkManager.instance.GetPlayers().Count) {
+    if (playersVotingFor.Count > (NetworkManager.instance.GetPlayers().Count)/2 || playersVotingAgainst.Count > (NetworkManager.instance.GetPlayers().Count)/2) {
       EndVote();
     }
   }
