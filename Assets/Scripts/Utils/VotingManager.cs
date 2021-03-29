@@ -34,8 +34,8 @@ public class VotingManager : MonoBehaviour {
   public void Update() {
     // Check if the vote has run out of time, if so end the vote
     if (voteStarted) {
+      voteTimeRemaining.text = $"{(int)Timer.VoteTimer.TimeRemaining()}s remaining.";
       if (Timer.VoteTimer.IsComplete()) {
-        voteTimeRemaining.text = $"{(int)Timer.VoteTimer.TimeRemaining()}s remaining.";
         EndVote();
       }
     }
