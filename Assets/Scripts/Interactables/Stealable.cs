@@ -28,7 +28,10 @@ public class Stealable : Pickupable {
             task.Uncomplete();
         }
         base.PrimaryInteraction(character);
-        destination.indicator.SetActive(true);
+
+        if (HasTask()) {
+            destination.indicator.SetActive(true);
+        }
     }
     
     public override void PrimaryInteractionOff(Character character) {
