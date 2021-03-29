@@ -95,10 +95,10 @@ public class VotingManager : MonoBehaviour {
       if (suspectedPlayer.IsMe()) {
         suspectedPlayer.Kill();
         if (NetworkManager.instance.NoLoyalsRemaining()) {
-          // gameSceneManager.EndGame(Team.Traitor);
+          gameSceneManager.EndGame(Team.Traitor);
         }
         if (NetworkManager.instance.NoTraitorsRemaining()) {
-          // gameSceneManager.EndGame(Team.Loyal);
+          gameSceneManager.EndGame(Team.Loyal);
         }
       }
       Debug.Log("The player has been voted off");
