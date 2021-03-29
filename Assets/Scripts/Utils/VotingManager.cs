@@ -77,7 +77,7 @@ public class VotingManager : MonoBehaviour {
     votesAgainst.text = $"Against: 0";
 
     bool voteIsOnYou = NetworkManager.instance.GetMe() == suspectedPlayer;
-    voteTitle.text = voteIsOnYou ? "You are being voted on." : $"{suspectedPlayer.NickName} is being voted on.";
+    voteTitle.text = voteIsOnYou ? "You are being voted on." : $"{suspectedPlayer.Owner.NickName} is being voted on.";
     if (!voteIsOnYou) {
       setVoteUI.SetActive(true);
       votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
