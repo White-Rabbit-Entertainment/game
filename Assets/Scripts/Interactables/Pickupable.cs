@@ -7,7 +7,6 @@ using Photon.Pun;
 /// be picked up and put down. </summary>
 public abstract class Pickupable : Interactable {
     
-  private Transform pickupDestination;
   public bool isPickedUp = false;
 
   public override void Reset() {
