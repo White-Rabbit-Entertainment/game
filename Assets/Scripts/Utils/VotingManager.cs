@@ -27,7 +27,7 @@ public class VotingManager : MonoBehaviour {
 
   public void Update() {
     // Check if the vote has run out of time, if so end the vote
-    if (voteStarted && PhotonNetwork.IsMasterClient) {
+    if (voteStarted) {
       if (Timer.VoteTimer.IsComplete()) {
         EndVote();
       }
@@ -72,6 +72,7 @@ public class VotingManager : MonoBehaviour {
 
   public void EndVote() {
     Timer.VoteTimer.End();
+    votingUI.SetActive(false);
     foreach (PlayableCharacter character in playersVotingAgainst.Concat(playersVotingAgainst)) {
       playersUI.ClearVote(character);
     }
