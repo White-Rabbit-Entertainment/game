@@ -26,7 +26,7 @@ public abstract class PlayableCharacter : Character {
       return Owner == PhotonNetwork.LocalPlayer;
     }
 
-    public void Freeze() {
+    public virtual void Freeze() {
       GetComponent<PlayerMovement>().enabled = false;
       GetComponent<PlayerAnimation>().enabled = false;
       GetComponentInChildren<CameraMouseLook>().enabled = false;
@@ -41,18 +41,22 @@ public abstract class PlayableCharacter : Character {
     [PunRPC]
     public void Kill() {
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
-        GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
         GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+
+        // Kill the player for everyone else
+        GetComponent<PhotonView>().RPC("KillPlayer", RpcTarget.All, newPlayer.GetComponent<PhotonView>().ViewID);
 
         PlayableCharacter newCharacter = newPlayer.GetComponent<PlayableCharacter>(); 
         NetworkManager.myCharacter = newCharacter; 
-        newCharacter.playerTile = playerTile;
-        newCharacter.playersUI = playersUI;
-        playersUI.SetToDead(newCharacter);
     }
 
     [PunRPC]
-    public void DestroyPlayer() {
+    public void KillPlayer(int newPlayerViewId) {
+        PlayableCharacter newCharacter = PhotonView.Find(newPlayerViewId).GetComponent<PlayableCharacter>();
+        newCharacter.playerTile = playerTile;
+        newCharacter.playersUI = playersUI;
+        playersUI.SetToDead(newCharacter);
+        
         Destroy(gameObject);
     }
 }
