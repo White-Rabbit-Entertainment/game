@@ -71,10 +71,14 @@ public class VotingManager : MonoBehaviour {
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
     hasVoted = false;
+    
     currentVoteUI.SetActive(true);
-    bool voteIsOnYou = NetworkManager.instance.GetMe() != suspectedPlayer;
-    voteTitle.text = voteIsOnYou ? "You are being voted on." : "{suspectedPlayer.NickName is being voted on.}";
-    if (voteIsOnYou) {
+    votesFor.text = $"For: 0";
+    votesAgainst.text = $"Against: 0";
+
+    bool voteIsOnYou = NetworkManager.instance.GetMe() == suspectedPlayer;
+    voteTitle.text = voteIsOnYou ? "You are being voted on." : $"{suspectedPlayer.NickName} is being voted on.";
+    if (!voteIsOnYou) {
       setVoteUI.SetActive(true);
       votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
     }
