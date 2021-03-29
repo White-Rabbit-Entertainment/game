@@ -85,7 +85,6 @@ public class VotingManager : MonoBehaviour {
   } 
 
   public void EndVote() {
-    Timer.VoteTimer.End();
     setVoteUI.SetActive(false);
     currentVoteUI.SetActive(false);
     foreach (PlayableCharacter character in playersVotingFor.Concat(playersVotingAgainst)) {
