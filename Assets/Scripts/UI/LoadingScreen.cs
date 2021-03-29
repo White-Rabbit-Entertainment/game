@@ -2,19 +2,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Photon.Pun;
+using TMPro;
 
 public class LoadingScreen : MonoBehaviour {
 
   public GameObject loadingScreen;
   public PlayersUI playersUI;
-  public Text text;
+  // public Text text;
+  // public TMP_Text text;
+  public TextMeshProUGUI titleText;
+  public TextMeshProUGUI text;
   public Button closeButton;
+  public TeleType teleType;
 
   [TextArea(15,20)]
-  private string traitorDescription = "crew's aim is to stop the Loyal crew to complete their tasks whilst not being found out.";
-  private string loyalDescription = "crew's aim is to complete your tasks in a given time, if you do so they win the game. All crew members will also have the opportunity to vote a player off the ship if they believe them to be a traitor.";
+  private string traitorTitle = "You are a Traitor!";
+  private string loyalTitle = "You are a Loyal crewmate!";
+  private string traitorDescription = "You are secretely a crewmate of SS White Rabbit's rival ship, SS White Bear. Your mission is to disrupt SS White Rabbit as much as possible by breaking and sabotaging the ship. Be careful and do not get caught, or you fail your mission.";
+  private string loyalDescription = "Your ship has been infiltrated and damaged. It needs mending before it sinks. Your mission is to repair the ship before time runs out. Be on the watch out for any crew members acting suspisciously, and vote to throw them off if you beleive them to be a traitor.";
 
   private Dictionary<Team, string> descriptions;
+    private Dictionary<Team, string> titles;
 
   void Start() {
     Cursor.lockState = CursorLockMode.None;
@@ -25,7 +33,13 @@ public class LoadingScreen : MonoBehaviour {
     descriptions.Add(Team.Loyal, loyalDescription);
     descriptions.Add(Team.Traitor, traitorDescription);
 
-    text.text = $"Welcome to SS White Rabbit, {PhotonNetwork.LocalPlayer.NickName}! You are part of the {team} crew. The {team} {descriptions[team]}";
+    titles = new Dictionary<Team, string>();
+    titles.Add(Team.Loyal, loyalTitle);
+    titles.Add(Team.Traitor, traitorTitle);
+
+    titleText.text = $"{titles[team]}";
+    text.text = $"Welcome to SS White Rabbit, {PhotonNetwork.LocalPlayer.NickName}! {descriptions[team]}";
+    StartCoroutine(teleType.RevealCharacters());
 
     closeButton.onClick.AddListener(()=>CloseMenu());
   }
