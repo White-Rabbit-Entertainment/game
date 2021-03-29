@@ -9,6 +9,8 @@ public class TaskCompletionUI : MonoBehaviour {
 
   public void Update() {
     taskCompletionBar.GetComponentInChildren<Text>().text = $"{taskManager.NumberOfTasksCompleted()} / {taskManager.tasks.Count}";
-    slider.value = taskManager.NumberOfTasksCompleted() / taskManager.tasks.Count;
+    if (taskManager.tasks.Count > 0) {
+      slider.value = taskManager.NumberOfTasksCompleted() / taskManager.tasks.Count;
+    }
   }
 }
