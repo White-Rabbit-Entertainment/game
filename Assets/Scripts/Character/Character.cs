@@ -59,6 +59,10 @@ public abstract class Character : MonoBehaviour {
     item.ResetItemConditions(this);
 
     item.transform.parent = GameObject.Find("/Environment").transform;
+    
+    if (item.task != null && item.task.parent != null) {
+      item.task.parent.GetComponent<Interactable>().DisableTarget();
+    }
   }
 
   public void AddItemToInventory(Pocketable item) {

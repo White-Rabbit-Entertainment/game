@@ -55,6 +55,7 @@ public class Task : MonoBehaviour {
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
     taskManager.CheckAllTasksCompleted();
+    GetComponent<Interactable>().DisableTarget();
   }
     
   public void Complete() {

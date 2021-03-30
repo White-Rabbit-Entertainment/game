@@ -38,6 +38,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public string playerAnimationTrigger;
 
   private Outline outline;
+  private Target target;
   
   public Task task;
   public PhotonView View {
@@ -50,6 +51,9 @@ public abstract class Interactable : MonoBehaviourPun {
     outline = gameObject.AddComponent<Outline>() as Outline;
     outline.OutlineWidth = outlineWidth;
     outline.enabled = false;
+    
+    target = gameObject.AddComponent<Target>() as Target;
+    target.enabled = false;
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
@@ -132,6 +136,14 @@ public abstract class Interactable : MonoBehaviourPun {
   /// <summary> Remove glow. </summary>
   public void InteractionGlowOff() {
     SetTaskGlow();
+  }
+
+  public void EnabledTarget() {
+    target.enabled = true;
+  }
+  
+  public void DisableTarget() {
+    target.enabled = false;
   }
 
   // When we remove iteractablility from an item it should stop glowing.
