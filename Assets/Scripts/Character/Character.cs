@@ -59,10 +59,6 @@ public abstract class Character : MonoBehaviour {
     item.ResetItemConditions(this);
 
     item.transform.parent = GameObject.Find("/Environment").transform;
-    
-    if (item.task != null && item.task.parent != null) {
-      item.task.parent.GetComponent<Interactable>().DisableTarget();
-    }
   }
 
   public void AddItemToInventory(Pocketable item) {
@@ -80,6 +76,9 @@ public abstract class Character : MonoBehaviour {
     pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
     if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {
       pocketedItem.task.Uncomplete();
+    }
+    if (pocketedItem.task != null && pocketedItem.task.parent != null) {
+      pocketedItem.task.parent.GetComponent<Interactable>().DisableTarget();
     }
     pocketedItem = null;
   }
