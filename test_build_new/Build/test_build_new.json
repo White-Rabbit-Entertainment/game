@@ -1,0 +1,16 @@
+{
+"companyName": "DefaultCompany",
+"productName": "Rob",
+"productVersion": "0.1",
+"dataUrl": "test_build_new.data.unityweb",
+"wasmCodeUrl": "test_build_new.wasm.code.unityweb",
+"wasmFrameworkUrl": "test_build_new.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.4.19f1"
+}
