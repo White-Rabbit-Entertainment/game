@@ -14,6 +14,7 @@ public class LoadingScreen : MonoBehaviour {
   public TextMeshProUGUI text;
   public Button closeButton;
   public TeleType teleType;
+  public GameObject offScreenIndicator; 
 
   [TextArea(15,20)]
   private string traitorTitle = "You are a Traitor!";
@@ -52,6 +53,7 @@ public class LoadingScreen : MonoBehaviour {
     playersUI.Init();
     Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;
+    offScreenIndicator.SetActive(true);
     Destroy(loadingScreen);
     Destroy(this);
   }
