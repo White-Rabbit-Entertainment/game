@@ -22,24 +22,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     public GameObject roomNamePrefab;
     public Transform gridLayout;
 
-    public string RoomName() {
-        int number;
-        char code;
-        string roomString = string.Empty;
-        //Random random = new Random();
-        for (int i = 0; i < 8; i++)
-        {
-            number = Random.Range(0, 10);
-            if (number % 2 == 0)
-                code = (char)('0' + (char)(number % 10));
-            else
-                code = (char)('A' + (char)(number % 26));
-            roomString += code.ToString();
-        }
-
-        return roomString;
-    }
-
     void Start() {
         createRoomButton.onClick.AddListener(OnClickCreateRoom);
         joinRoomButton.onClick.AddListener(OnClickJoinRoom);
@@ -60,7 +42,7 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     void OnClickCreateRoom() {
-      NetworkManager.instance.CreateRoom(RoomName());
+      NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
       PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
 
@@ -70,13 +52,13 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     void OnClickCreatePrivateRoom() {
-        string PrivateRoom = 'p' + RoomName();
+        string PrivateRoom = 'p' + NetworkManager.instance.GenerateRoomName();
         NetworkManager.instance.CreateRoom(PrivateRoom);
     }
 
 
     void OnClickJoinPrivateRoom() {
-        NetworkManager.instance.JoinRoom('p' + RoomName(), playerNameInput.text);
+        NetworkManager.instance.JoinRoom('p' + NetworkManager.instance.GenerateRoomName(), playerNameInput.text);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {

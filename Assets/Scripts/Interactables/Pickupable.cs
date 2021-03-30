@@ -7,7 +7,6 @@ using Photon.Pun;
 /// be picked up and put down. </summary>
 public abstract class Pickupable : Interactable {
     
-  private Transform pickupDestination;
   public bool isPickedUp = false;
 
   public override void Reset() {
@@ -17,7 +16,7 @@ public abstract class Pickupable : Interactable {
 
   public override void PrimaryInteraction(Character character) {
     if (!isPickedUp) {
-      character.PickUp(this);
+      character.Pickup(this);
     }
     PlayCharacterAnimation(character);
   }

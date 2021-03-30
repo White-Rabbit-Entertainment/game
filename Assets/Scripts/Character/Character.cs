@@ -12,8 +12,6 @@ public abstract class Character : MonoBehaviour {
   
   public InventoryUI inventoryUI;
 
-  public bool canTask;
-
   public Team team;
 
   public RoleInfo roleInfo;
@@ -21,6 +19,8 @@ public abstract class Character : MonoBehaviour {
   public Player Owner {
       get { return GetComponent<PhotonView>().Owner; }
     }
+
+  protected virtual void Start() {}
 
   public bool HasItem() {
     return currentHeldItem != null; 
@@ -36,11 +36,7 @@ public abstract class Character : MonoBehaviour {
     return false; 
   }
 
-  public virtual void Start() {
-    canTask = false;
-  }
-
-  public void PickUp(Pickupable item) {
+  public virtual void Pickup(Pickupable item) {
     currentHeldItem = item;
     // An item can only be moved by a player if they are the owner.
     // Therefore, give ownership of the item to the local player before
@@ -79,8 +75,10 @@ public abstract class Character : MonoBehaviour {
   public void RemoveItemFromInventory() {
     pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
     if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {
-      pocketedItem.task.GetComponent<PhotonView>().RPC("Uncomplete", RpcTarget.All);
-      pocketedItem.view.RPC("TaskGlowOn", RpcTarget.All);
+      pocketedItem.task.Uncomplete();
+    }
+    if (pocketedItem.task != null && pocketedItem.task.parent != null) {
+      pocketedItem.task.parent.GetComponent<Interactable>().DisableTarget();
     }
     pocketedItem = null;
   }

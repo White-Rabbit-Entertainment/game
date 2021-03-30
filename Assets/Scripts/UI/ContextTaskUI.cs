@@ -28,6 +28,6 @@ public class ContextTaskUI : TaskUI {
     }
     
     public void UnshowTask() {
-      tasksList.DestroyChildren();
+      taskList.DestroyChildren();
     }
 }
