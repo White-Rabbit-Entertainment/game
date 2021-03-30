@@ -33,10 +33,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
           SetRoomProperty("TasksSet", false);
           SetRoomProperty("WinningTeam", "None");
-          SetRoomProperty("NumberOfTasks", 1);
+          SetRoomProperty("NumberOfTasks", 10);
           
           List<Player> players = GetPlayers();
-          int numberOfTraitors = GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
+          // int numberOfTraitors = GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
+          int numberOfTraitors = 1;
 
           List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
 
@@ -61,7 +62,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     
     public string GenerateRoomName() {
         string roomString = string.Empty;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 6; i++) {
             roomString += roomNameChars[UnityEngine.Random.Range(0, roomNameChars.Length)].ToString();
         }
         return roomString;

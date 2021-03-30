@@ -11,10 +11,7 @@ public class PlayersUI : MonoBehaviourPun {
   public GameObject playerTile;
   public GameObject playerList;
     
-  private Dictionary<PlayableCharacter, GameObject> playerTiles;
-
   public void Init() {
-    playerTiles = new Dictionary<PlayableCharacter, GameObject>();
     foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
       AddPlayerTile(player);
     }
@@ -22,7 +19,8 @@ public class PlayersUI : MonoBehaviourPun {
 
   void AddPlayerTile(PlayableCharacter player) {
     GameObject item = Instantiate(playerTile, playerList.transform);
-    playerTiles[player] = item;
+    player.playerTile = item;
+    player.playersUI = this;
 
     // Set colour of tile to match player role
     item.GetComponent<Image>().color = player.roleInfo.colour; 
@@ -33,13 +31,12 @@ public class PlayersUI : MonoBehaviourPun {
    
     // If the player is dead cross them out
     if (player is Ghost) {
-      Transform cross = item.transform.Find("Cross");
-      cross.gameObject.SetActive(true);
+      SetToDead(player);
     }
   }
 
   public void SetPlayerVote(Vote vote, PlayableCharacter player) {
-    GameObject item = playerTiles[player];
+    GameObject item = player.playerTile;
     if (vote == Vote.For) {
       item.transform.Find("VoteFor").gameObject.SetActive(true);
     } else if (vote == Vote.Against) {
@@ -47,10 +44,13 @@ public class PlayersUI : MonoBehaviourPun {
     }
   }
 
-  public void ClearVote() {
-    foreach(GameObject item in playerTiles.Values) {
-      item.transform.Find("VoteFor").gameObject.SetActive(false);
-      item.transform.Find("VoteAgainst").gameObject.SetActive(false);
-    }
+  public void ClearVote(PlayableCharacter character) {
+    character.playerTile.transform.Find("VoteFor").gameObject.SetActive(false);
+    character.playerTile.transform.Find("VoteAgainst").gameObject.SetActive(false);
+  }
+
+  public void SetToDead(PlayableCharacter character) {
+      Transform cross = character.playerTile.transform.Find("Cross");
+      cross.gameObject.SetActive(true);
   }
 }

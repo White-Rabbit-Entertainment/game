@@ -7,7 +7,6 @@ public enum Role {
     Cook,
     Musician,
     Swabby,
-    Lookout,
     Mate,
     // PowderMonkey,
     // Gunner,

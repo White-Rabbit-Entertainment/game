@@ -3,10 +3,15 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[DisallowMultipleComponent]
+[RequireComponent(typeof(Interactable))]
 public class Task : MonoBehaviour {
   public bool isCompleted = false;
   public string description;
   public TaskManager taskManager;
+  public bool isUndoable = true;
+
+  public Timer timer = Timer.None;
 
   // This is the list of requirements that must be completed before this task
   // can be completed 
@@ -15,6 +20,10 @@ public class Task : MonoBehaviour {
   // This is the task which depends on this being completed first. If this is
   // null then the task is a "master" task.
   public Task parent;
+
+  public PhotonView View {
+    get { return GetComponent<PhotonView>(); }
+  }
 
   void Start() {
     taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
@@ -37,22 +46,40 @@ public class Task : MonoBehaviour {
     }
     return true;
   }
-    
+
   [PunRPC]
-  public void Complete() {
+  public void CompleteRPC() {
     isCompleted = true;
     if (parent !=  null) {
-      parent.GetComponent<PhotonView>().RPC("TaskGlowOn", RpcTarget.All);
+      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);
     taskManager.CheckAllTasksCompleted();
+    GetComponent<Interactable>().DisableTarget();
+  }
+    
+  public void Complete() {
+    View.RPC("CompleteRPC", RpcTarget.All);
   }
   
   [PunRPC]
-  public void Uncomplete() {
+  public void UncompleteRPC() {
     isCompleted = false;
     if (parent !=  null) {
-      parent.GetComponent<PhotonView>().RPC("TaskGlowOff", RpcTarget.All);
+      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
+    if (IsMasterTask() && AllChildrenCompleted()) {
+      foreach(Task task in requirements) {
+        if (NetworkManager.instance.GetMe().HasItem(task.GetComponent<Interactable>())) {
+          GetComponent<Interactable>().EnabledTarget();
+        }
+      }
+    }
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);
+  }
+
+  public void Uncomplete() {
+    View.RPC("UncompleteRPC", RpcTarget.All);
   }
 
   public bool IsRequired() {

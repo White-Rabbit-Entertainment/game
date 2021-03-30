@@ -52,7 +52,6 @@ public class TaskManager : MonoBehaviourPun {
         if (transform.GetComponent<Interactable>().canBeMasterTask) {
             possibleMasterTaskables.Add(transform);
         }
-  
     }
 
     // Shuffle those lists randomly 
@@ -78,14 +77,20 @@ public class TaskManager : MonoBehaviourPun {
     return tasks;
   }
 
-  /// <summary> Return if all Loyal tasks have been completed. </summary> 
-  public void CheckAllTasksCompleted() {
+  public int NumberOfTasksCompleted() {
+    int count = 0;
     foreach(Task task in tasks) {
-      if (!task.isCompleted) {
-        return;
+      if (task.isCompleted) {
+        count++;
       }
     }
-    gameSceneManager.EndGame(Team.Loyal);
-    
+    return count;
+  }
+
+  /// <summary> Return if all Loyal tasks have been completed. </summary> 
+  public void CheckAllTasksCompleted() {
+    if (NumberOfTasksCompleted() == tasks.Count) {
+      gameSceneManager.EndGame(Team.Loyal);
+    }
   }
 }

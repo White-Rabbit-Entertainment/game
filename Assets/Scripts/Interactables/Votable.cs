@@ -12,6 +12,6 @@ public class Votable : Interactable {
   }
 
   public override void PrimaryInteraction(Character voteLeader) {
-    votingManager.GetComponent<VotingManager>().InitVote(view.ViewID, voteLeader.GetComponent<PhotonView>().ViewID);
+    votingManager.GetComponent<VotingManager>().InitVote(View.ViewID, voteLeader.GetComponent<PhotonView>().ViewID);
   }
 }

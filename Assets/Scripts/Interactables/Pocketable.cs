@@ -21,5 +21,12 @@ public class Pocketable : Interactable {
   public override void PrimaryInteraction(Character character) {
     character.AddItemToInventory(this);
     base.PrimaryInteraction(character);
+
+    // Enable the indicator for the real characters
+    if (character == NetworkManager.instance.GetMe()) {
+      if (task != null && task.parent != null && !task.parent.isCompleted) {
+        task.parent.GetComponent<Interactable>().EnabledTarget();
+      }
+    }
   }
 }

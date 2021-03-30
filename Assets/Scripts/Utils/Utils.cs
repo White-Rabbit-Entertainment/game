@@ -11,6 +11,13 @@ using Photon.Realtime;
 public static class Utils {
     private static System.Random rng = new System.Random(System.Guid.NewGuid().GetHashCode());
 
+    public static void SetLayerRecursively(this GameObject go, int layerNumber) {
+      foreach (Transform trans in go.GetComponentsInChildren<Transform>(true)) {
+        trans.gameObject.layer = layerNumber;
+      }
+    }
+
+
     public static void Shuffle<T>(this IList<T> list) {  
         int n = list.Count;  
         while (n > 1) {  
