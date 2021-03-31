@@ -91,7 +91,7 @@ public class ItemInteract : MonoBehaviourPun {
             // Then turn off the glow of that thing
             currentInteractable.InteractionGlowOff();
 
-            character.contextTaskUI.RemoveTask();
+            if (!character.HasItem()) character.contextTaskUI.RemoveTask();
             // And if bring the mouse button up
             if (Input.GetButtonUp("Fire1")) {
               // Some item have a primary interaction off method, eg drop the

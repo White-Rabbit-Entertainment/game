@@ -54,7 +54,7 @@ public abstract class Character : MonoBehaviour {
     item.transform.parent = pickupDestination;
   }
   
-  public void PutDown(Pickupable item) {
+  public virtual void PutDown(Pickupable item) {
     currentHeldItem = null;
     item.ResetItemConditions(this);
 
