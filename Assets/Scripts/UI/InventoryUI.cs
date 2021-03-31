@@ -5,16 +5,11 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour {
 
-    public GameObject inventory;
-    public GameObject inventoryItemPrefab;
+    public RawImage inventory;
 
     /// <summary> Adds an item to the player inventory in the UI. </summary>
     public void AddItem(Pocketable item) {
-      foreach (Transform child in inventory.transform) {
-        Destroy(child.gameObject);
-      }
-      // Instantiate a new inventory item
-      GameObject uiItem = Instantiate(inventoryItemPrefab, inventory.transform);
-      uiItem.GetComponentInChildren<Text>().text = item.name;
+      inventory.gameObject.SetActive(true);
+      inventory.texture = item.image;
     }
 }
