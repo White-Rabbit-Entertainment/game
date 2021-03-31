@@ -83,6 +83,7 @@ public abstract class Interactable : MonoBehaviourPun {
       TraitorUndo(character);
     } else {
       if (HasTask() && !(character is Agent)) {
+        Debug.Log("Complete");
         task.Complete();
       }
       

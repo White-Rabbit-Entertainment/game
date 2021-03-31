@@ -25,6 +25,7 @@ public class Stealable : Pickupable {
 
     public override void PrimaryInteraction(Character character) {
         if (!isPickedUp && task != null) {
+            Debug.Log("Uncomplete");
             task.Uncomplete();
         }
         base.PrimaryInteraction(character);

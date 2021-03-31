@@ -13,11 +13,11 @@ public class TaskNotificationUI : MonoBehaviour
     public void SetNotification(bool isComplete) {
         if (isComplete) {
             notificationPrefab.SetText(taskCompleteMessage);
-        } else {
+        } else if (!isComplete) {
             notificationPrefab.SetText(taskUndoneMessage);
         }
 
-        StartCoroutine(RemoveNotification(2f));
+        StartCoroutine(RemoveNotification(1f));
     }
 
 
