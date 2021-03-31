@@ -50,6 +50,7 @@ public class Task : MonoBehaviour {
   [PunRPC]
   public void CompleteRPC() {
     isCompleted = true;
+    NetworkManager.instance.GetMe().taskNotificationUI.SetNotification(true);
     if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
@@ -65,6 +66,7 @@ public class Task : MonoBehaviour {
   [PunRPC]
   public void UncompleteRPC() {
     isCompleted = false;
+    NetworkManager.instance.GetMe().taskNotificationUI.SetNotification(false);
     if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }

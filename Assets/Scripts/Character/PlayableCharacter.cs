@@ -7,6 +7,8 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
+    public TaskNotificationUI taskNotificationUI;
+
     public GameObject playerTile;
     public PlayersUI playersUI;
 
@@ -21,6 +23,7 @@ public abstract class PlayableCharacter : Character {
       }
       if (item.HasTask()) {
         contextTaskUI.SetTask(item.task);
+        taskNotificationUI.SetNotification(true);
       }
       base.Pickup(item);
     }

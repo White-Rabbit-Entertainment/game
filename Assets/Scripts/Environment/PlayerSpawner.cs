@@ -13,6 +13,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
     public ContextTaskUI contextTaskUI;
+    public TaskNotificationUI taskNotificationUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 0;
@@ -108,6 +109,7 @@ public class PlayerSpawner : MonoBehaviour {
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
         character.contextTaskUI = contextTaskUI;
+        character.taskNotificationUI = taskNotificationUI;
         NetworkManager.myCharacter = character;
 
         //sets player layer to "raycast ignore" layer
