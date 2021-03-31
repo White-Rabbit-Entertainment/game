@@ -14,6 +14,7 @@ public class GameSceneManager : MonoBehaviour {
 
     public LoadingScreen loadingScreen;
 
+
     void Update() {
         if (!initialized) {
             // We have all the playable characters in the scene
@@ -65,10 +66,15 @@ public class GameSceneManager : MonoBehaviour {
       GetComponent<PhotonView>().RPC("EndGameRPC", RpcTarget.All, winningTeam);
     }
 
+   
+    
+
     [PunRPC]
     public void EndGameRPC(Team winningTeam) {
         NetworkManager.instance.ChangeScene("LobbyScene");
     }
+
+
 
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
