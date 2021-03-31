@@ -167,6 +167,7 @@ MonoBehaviour:
   itemAnimationTrigger: 
   playerAnimationTrigger: Pickup
   task: {fileID: 0}
+  image: {fileID: 2800000, guid: 1ba36f342f4bcc1bc838cf7176ac7047, type: 3}
 --- !u!208 &8685803213303031568
 NavMeshObstacle:
   m_ObjectHideFlags: 0
