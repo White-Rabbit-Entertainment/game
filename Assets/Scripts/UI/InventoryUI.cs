@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour {
 
-    public RawImage inventory;
+    public RawImage inventoryImage;
 
     /// <summary> Adds an item to the player inventory in the UI. </summary>
     public void AddItem(Pocketable item) {
-      inventory.gameObject.SetActive(true);
-      inventory.texture = item.image;
+      inventoryImage.gameObject.SetActive(true);
+      inventoryImage.texture = item.image;
     }
 }
