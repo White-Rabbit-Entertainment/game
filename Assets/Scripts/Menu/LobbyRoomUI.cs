@@ -7,18 +7,18 @@ using Photon.Realtime;
 using System;
 
 public class LobbyRoomUI : MonoBehaviourPunCallbacks {
-    public Text playerCounter;
     public Text roomName;
 
     public GameObject playerList;
-    public Button toggleReadyButton;
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
+
+    public Task tutorialTask;
 
     bool initialized = false; 
 
     void Start() {
-      Cursor.lockState = CursorLockMode.None;
+      Cursor.lockState = CursorLockMode.Locked;
       Cursor.visible = true;
       NetworkManager.instance.ResetRoom();
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
@@ -27,10 +27,14 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     void Update() {
       if (!initialized && NetworkManager.instance.IsRoomReset()) {
         initialized = true;
-        toggleReadyButton.onClick.AddListener(ToggleReady);
       }
       if (initialized) {
         SetText();
+
+        if (tutorialTask.isCompleted) {
+          NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
+        }
+
         if (NetworkManager.instance.AllPlayersReady()) {
           NetworkManager.instance.SetupGame();
           if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
@@ -42,7 +46,6 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
       }
     }
 
-    
     void SetText() {
       playerList.DestroyChildren();
       foreach (Player player in NetworkManager.instance.GetPlayers()) {
@@ -56,8 +59,6 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
         item.GetComponentInChildren<Text>().text = player.NickName;
         item.transform.SetParent(playerList.transform);
       }
-      
-      playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
     }
 
     void ToggleReady() {

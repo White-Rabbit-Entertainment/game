@@ -21,13 +21,17 @@ public class Task : MonoBehaviour {
   // null then the task is a "master" task.
   public Task parent;
 
+  public bool tutorialTask = false;
+
   public PhotonView View {
     get { return GetComponent<PhotonView>(); }
   }
 
   void Start() {
-    taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
-    taskManager.AddTask(this);
+    if (!tutorialTask) {
+      taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
+      taskManager.AddTask(this);
+    }
   }
 
   // Returns if the task is a master task, i.e. no tasks depend on this task
@@ -54,7 +58,9 @@ public class Task : MonoBehaviour {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
-    taskManager.CheckAllTasksCompleted();
+    if (!tutorialTask) {
+      taskManager.CheckAllTasksCompleted();
+    }
     GetComponent<Interactable>().DisableTarget();
   }
     

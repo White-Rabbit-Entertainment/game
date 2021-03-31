@@ -76,7 +76,9 @@ public class ItemInteract : MonoBehaviourPun {
                 newInteractable.InteractionGlowOn();
 
                 if (currentInteractable.HasTask()) {
-                    character.contextTaskUI.SetTask(currentInteractable.task);
+                    if (character.contextTaskUI != null) {
+                        character.contextTaskUI.SetTask(currentInteractable.task);
+                    }
                 }
                 // If we are pressing mouse down then do the interaction
                 if (Input.GetButtonDown("Fire1")) {
@@ -91,7 +93,10 @@ public class ItemInteract : MonoBehaviourPun {
             // Then turn off the glow of that thing
             currentInteractable.InteractionGlowOff();
 
-            character.contextTaskUI.RemoveTask();
+            if (character.contextTaskUI != null) {
+                character.contextTaskUI.RemoveTask();
+            }
+
             // And if bring the mouse button up
             if (Input.GetButtonUp("Fire1")) {
               // Some item have a primary interaction off method, eg drop the
