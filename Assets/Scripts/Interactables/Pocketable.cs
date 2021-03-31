@@ -1,7 +1,10 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pocketable : Interactable {
+  
+  public Texture image;
 
   void Reset() {
     canBeMasterTask = false;
