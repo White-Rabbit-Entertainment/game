@@ -23,7 +23,6 @@ public abstract class PlayableCharacter : Character {
       }
       if (item.HasTask()) {
         contextTaskUI.SetTask(item.task);
-        taskNotificationUI.SetNotification(true);
       }
       base.Pickup(item);
     }
