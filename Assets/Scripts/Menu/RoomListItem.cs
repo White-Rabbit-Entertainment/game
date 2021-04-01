@@ -9,7 +9,6 @@ using Photon.Realtime;
 public class RoomListItem : MonoBehaviour {
     [SerializeField] Text text;
 
-    public string playerName;
     public RoomInfo info;
 
     public void Start() {
@@ -17,6 +16,6 @@ public class RoomListItem : MonoBehaviour {
     }
 
     public void OnClick() {
-        NetworkManager.instance.JoinRoom(text.text, playerName);   
+        NetworkManager.instance.JoinRoom(text.text);   
     }
 }
