@@ -58,7 +58,7 @@ public class GameSceneManager : MonoBehaviour {
     ///   <list>     
     public void CheckTimer() {
       if (Timer.RoundTimer.IsComplete()) {
-        EndGame(Team.Traitor);
+        //EndGame(Team.Traitor);
       } 
     }
 

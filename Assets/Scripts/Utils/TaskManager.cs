@@ -18,6 +18,8 @@ public class TaskManager : MonoBehaviourPun {
   public List<Task> tasks;
   public GameSceneManager gameSceneManager;
 
+    public bool compOrNot = false;
+
   void Start() {
     tasks = new List<Task>();
   }
@@ -90,7 +92,11 @@ public class TaskManager : MonoBehaviourPun {
   /// <summary> Return if all Loyal tasks have been completed. </summary> 
   public void CheckAllTasksCompleted() {
     if (NumberOfTasksCompleted() == tasks.Count) {
-      gameSceneManager.EndGame(Team.Loyal);
+
+            compOrNot = true;
+
+
+     //gameSceneManager.EndGame(Team.Loyal);
     }
   }
 }

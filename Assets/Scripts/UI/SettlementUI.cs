@@ -17,6 +17,7 @@ public class SettlementUI : MonoBehaviour
     public Button nextButtonLoyal;
 
     public GameSceneManager gameSceneManager;
+    public TaskManager taskManager;
 
 
     // Start is called before the first frame update
@@ -44,6 +45,18 @@ public class SettlementUI : MonoBehaviour
             //gameSceneManager.EndGame(Team.Loyal);
         }
 
+        //if (number of tasks comp) == tasks.count Loyalwon true
+        if (taskManager.NumberOfTasksCompleted() == taskManager.tasks.Count)
+        {
+            LoyalsWonUI.SetActive(true);
+        }
+
+        if (Timer.RoundTimer.IsComplete())
+        {
+            TraitorsWonUI.SetActive(true);
+        }
+
+        
 
 
     }
