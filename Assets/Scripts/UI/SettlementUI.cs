@@ -19,12 +19,18 @@ public class SettlementUI : MonoBehaviour
     public GameSceneManager gameSceneManager;
     public TaskManager taskManager;
 
+    public Text traitorName;
+
+   
+
 
     // Start is called before the first frame update
     void Start()
     {
         nextButtonTraitor.onClick.AddListener(OnNextTraitor);
         nextButtonLoyal.onClick.AddListener(OnNextLoyal);
+
+        traitorName.text = "FZS";
     }
 
     // Update is called once per frame
@@ -33,6 +39,7 @@ public class SettlementUI : MonoBehaviour
         if (NetworkManager.instance.NoLoyalsRemaining())
         {
             TraitorsWonUI.SetActive(true);
+            TraitorInfoUI.SetActive(true);
             
 
             //gameSceneManager.EndGame(Team.Traitor);
@@ -41,6 +48,7 @@ public class SettlementUI : MonoBehaviour
         if (NetworkManager.instance.NoTraitorsRemaining())
         {
             LoyalsWonUI.SetActive(true);
+            TraitorInfoUI.SetActive(true);
 
             //gameSceneManager.EndGame(Team.Loyal);
         }
@@ -48,12 +56,14 @@ public class SettlementUI : MonoBehaviour
         //if (number of tasks comp) == tasks.count Loyalwon true
         if (taskManager.NumberOfTasksCompleted() == taskManager.tasks.Count)
         {
-            LoyalsWonUI.SetActive(true);
+            //LoyalsWonUI.SetActive(true);
+            //TraitorInfoUI.SetActive(true);
         }
 
         if (Timer.RoundTimer.IsComplete())
         {
             TraitorsWonUI.SetActive(true);
+            TraitorInfoUI.SetActive(true);
         }
 
         
@@ -71,6 +81,9 @@ public class SettlementUI : MonoBehaviour
         gameSceneManager.EndGame(Team.Loyal);
     }
 
+    
+   
+    
   
 
     //public GameSceneManager gameScenManager;
