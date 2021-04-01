@@ -35,20 +35,19 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     void StartButton() {
+        PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
         NameUI.SetActive(false);
         RoomUI.SetActive(true);
         OnRoomListUpdate(roomList);
-
     }
 
     void OnClickCreateRoom() {
       NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
-      PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
 
 
     void OnClickJoinRoom() {
-      NetworkManager.instance.JoinRoom(roomNameInput.text, playerNameInput.text);
+      NetworkManager.instance.JoinRoom(roomNameInput.text);
     }
 
     void OnClickCreatePrivateRoom() {
@@ -58,7 +57,7 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
 
     void OnClickJoinPrivateRoom() {
-        NetworkManager.instance.JoinRoom('p' + NetworkManager.instance.GenerateRoomName(), playerNameInput.text);
+        NetworkManager.instance.JoinRoom('p' + NetworkManager.instance.GenerateRoomName());
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
@@ -80,9 +79,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
             }
             
             GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
-
-            newRoom.GetComponent<RoomListItem>().playerName = playerNameInput.text;
-
             newRoom.GetComponentInChildren<Text>().text = room.Name; //+ "(" + room.PlayerCount + ")";
             newRoom.transform.SetParent(gridLayout);
         }

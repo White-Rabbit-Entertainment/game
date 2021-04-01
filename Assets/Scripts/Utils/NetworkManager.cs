@@ -301,8 +301,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
     }
 
-    public void JoinRoom(string roomName, string playerName) {
-      PhotonNetwork.LocalPlayer.NickName = playerName;
+    public void JoinRoom(string roomName) {
       PhotonNetwork.JoinRoom(roomName);
     }
     
