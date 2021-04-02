@@ -77,8 +77,11 @@ public abstract class Character : MonoBehaviour {
     item.GetComponent<PhotonView>().RPC("SetItemPocketConditions", RpcTarget.All);
   }
 
-  public void RemoveItemFromInventory() {
-    pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+  public void RemoveItemFromInventory(bool resetConditions = true) {
+
+    if (resetConditions) {
+      pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+    }
     if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {
       pocketedItem.task.Uncomplete();
     }

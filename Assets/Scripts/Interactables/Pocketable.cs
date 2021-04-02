@@ -41,11 +41,11 @@ public class Pocketable : Interactable {
 
   public override void OnTaskComplete(Character character) {
     // Take out of inventory
-    character.RemoveItemFromInventory();
+    character.RemoveItemFromInventory(false);
     character.GetComponent<ItemInteract>().RemovePossibleInteractable(this);
     gameObject.SetActive(false);
   }
-  
+ 
   public override void OnTaskUncomplete() {
     // Move to random position
     transform.position = gameSceneManager.RandomNavmeshLocation(50f);
