@@ -166,7 +166,7 @@ MonoBehaviour:
   outlineWidth: 5
   inRange: 0
   itemAnimationTrigger: 
-  playerAnimationTrigger: PickUp
+  playerAnimationTrigger: Pickup
   task: {fileID: 0}
   isPickedUp: 0
   destination: {fileID: 0}
