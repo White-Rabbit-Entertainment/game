@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
@@ -83,5 +84,16 @@ public class GameSceneManager : MonoBehaviour {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
         Timer.RoundTimer.Start(1000);
       }
+    }
+    
+    public Vector3 RandomNavmeshLocation(float radius = 5f) {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
+            finalPosition = hit.position;
+        }
+        return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
     }
 }

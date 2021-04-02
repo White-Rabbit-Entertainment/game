@@ -156,4 +156,8 @@ public class ItemInteract : MonoBehaviourPun {
             possibleInteractables.Remove(interactable);
         }
      } 
+
+     public void RemovePossibleInteractable(Interactable item) {
+        possibleInteractables.Remove(item);
+     }
 }

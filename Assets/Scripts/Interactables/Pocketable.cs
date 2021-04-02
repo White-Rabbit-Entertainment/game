@@ -5,6 +5,12 @@ using UnityEngine.UI;
 public class Pocketable : Interactable {
   
   public Texture image;
+  private GameSceneManager gameSceneManager;
+
+  public override void Start() {
+    base.Start();
+    gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
+  }
 
   void Reset() {
     canBeMasterTask = false;
@@ -36,12 +42,13 @@ public class Pocketable : Interactable {
   public override void OnTaskComplete(Character character) {
     // Take out of inventory
     character.RemoveItemFromInventory();
+    character.GetComponent<ItemInteract>().RemovePossibleInteractable(this);
     gameObject.SetActive(false);
   }
   
   public override void OnTaskUncomplete() {
-    gameObject.SetActive(true);
-
     // Move to random position
+    transform.position = gameSceneManager.RandomNavmeshLocation(50f);
+    gameObject.SetActive(true);
   }
 }

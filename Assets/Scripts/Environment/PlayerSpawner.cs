@@ -13,6 +13,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject captainPrefab;
     public InventoryUI inventoryUI;
     public ContextTaskUI contextTaskUI;
+    public GameSceneManager gameSceneManager;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 0;
@@ -67,7 +68,7 @@ public class PlayerSpawner : MonoBehaviour {
         // Otherwise load in n agents which have the same role as the player
         for(int i = 0; i < numberOfAgentsPerPlayer; i++){
             // Spawn in the agent
-            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, gameSceneManager.RandomNavmeshLocation(30f), Quaternion.identity);
             agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
 
             // Assign the same role as the player to the agent
@@ -93,7 +94,7 @@ public class PlayerSpawner : MonoBehaviour {
             // spawnPoint = new Vector3(1,4,10);
             playerPrefab = ghostPrefab;
         }
-        spawnPoint = RandomNavmeshLocation(5f);
+        spawnPoint = gameSceneManager.RandomNavmeshLocation(5f);
         // Spawn in the player at the spawn point
         player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity);
 
@@ -112,19 +113,5 @@ public class PlayerSpawner : MonoBehaviour {
 
         //sets player layer to "raycast ignore" layer
         player.SetLayerRecursively(2);
-    }
-
-
-
-    public Vector3 RandomNavmeshLocation(float radius) {
-        // return new Vector3(4, 5, -3);
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-        randomDirection += transform.position;
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
-            finalPosition = hit.position;
-        }
-        return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
     }
 }
