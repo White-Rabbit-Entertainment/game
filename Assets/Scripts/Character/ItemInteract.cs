@@ -22,7 +22,7 @@ public class ItemInteract : MonoBehaviourPun {
     public SphereCollider itemCollider;
 
     void Start() {
-        if (!photonView.IsMine) {
+        if (photonView != null && !photonView.IsMine) {
             Destroy(GetComponent<AudioListener>());
             Destroy(this);
         } else {

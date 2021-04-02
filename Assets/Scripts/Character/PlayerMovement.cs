@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviourPun
     void Awake() {
         // If the player is not me (ie not some other player on the network)
         // then destory this script
-        if (!photonView.IsMine) {
+        if (photonView != null && !photonView.IsMine) {
             Destroy(this);
         }
 
