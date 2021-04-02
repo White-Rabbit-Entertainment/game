@@ -58,7 +58,7 @@ public abstract class Character : MonoBehaviour {
   
   public void PutDown(Pickupable item) {
     currentHeldItem = null;
-    if (item.View == null) {
+    if (item.View != null) {
       item.ResetItemConditions(this);
     } else {
       item.ResetItemConditionsRPC();
