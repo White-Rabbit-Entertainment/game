@@ -750,7 +750,7 @@ MonoBehaviour:
   - {fileID: 657248040}
   - {fileID: 729972833}
   currentStage: 0
-  tutorialTask: {fileID: 0}
+  tutorialTask: {fileID: 886997030}
 --- !u!1 &497323954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,6 +1789,7 @@ PrefabInstance:
     - {fileID: 4305298099000458400, guid: 6938f7395a5ee09868e498603f78ad19, type: 3}
     - {fileID: 4072975599417713631, guid: 6938f7395a5ee09868e498603f78ad19, type: 3}
     - {fileID: 7925793484534166744, guid: 6938f7395a5ee09868e498603f78ad19, type: 3}
+    - {fileID: 3102187832934006713, guid: 6938f7395a5ee09868e498603f78ad19, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6938f7395a5ee09868e498603f78ad19, type: 3}
 --- !u!4 &1716294439 stripped
 Transform:
