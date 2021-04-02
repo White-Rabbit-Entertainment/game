@@ -13,6 +13,9 @@ public class Task : MonoBehaviour {
 
   public Timer timer = Timer.None;
 
+  private Interactable TaskInteractable {
+    get { return GetComponent<Interactable>(); }
+  }
   // This is the list of requirements that must be completed before this task
   // can be completed 
   public List<Task> requirements = new List<Task>();
@@ -47,6 +50,14 @@ public class Task : MonoBehaviour {
       if (!requirement.isCompleted) {
         return false;
       }
+      // If the requirement is a pocketable
+      if (TaskInteractable is Pocketable) {
+        // And you do not have that pocketable
+        if (!NetworkManager.instance.GetMe().HasItem(TaskInteractable)) {
+          // Then return false
+          return false;
+        }
+      }
     }
     return true;
   }
@@ -63,7 +74,15 @@ public class Task : MonoBehaviour {
     }
     GetComponent<Interactable>().DisableTarget();
   }
-    
+   
+  // Complete taks and consume all the requirements  eg pocketables
+  public void CompleteAndConsume(Character character) {
+    foreach(Task requirement in requirements) {
+      requirement.TaskInteractable.OnTaskComplete(character);
+    }
+    Complete();
+  }
+  
   public void Complete() {
     if (tutorialTask) {
       CompleteRPC();
@@ -86,6 +105,10 @@ public class Task : MonoBehaviour {
       }
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
+    
+    foreach(Task requirement in requirements) {
+      requirement.TaskInteractable.OnTaskUncomplete();
+    }
   }
 
   public void Uncomplete() {

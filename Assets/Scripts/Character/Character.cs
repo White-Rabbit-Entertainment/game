@@ -85,6 +85,9 @@ public abstract class Character : MonoBehaviour {
     if (pocketedItem.task != null && pocketedItem.task.parent != null) {
       pocketedItem.task.parent.GetComponent<Interactable>().DisableTarget();
     }
+    if (!(this is Agent)) {
+      inventoryUI.RemoveItem();
+    }
     pocketedItem = null;
   }
 

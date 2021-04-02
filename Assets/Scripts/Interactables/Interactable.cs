@@ -82,7 +82,7 @@ public abstract class Interactable : MonoBehaviourPun {
       TraitorUndo(character);
     } else {
       if (HasTask() && !(character is Agent)) {
-        task.Complete();
+        task.CompleteAndConsume(character);
       }
       
       // Animation
@@ -144,6 +144,12 @@ public abstract class Interactable : MonoBehaviourPun {
   public void DisableTarget() {
     target.enabled = false;
   }
+
+  // Once completed set the disabled state
+  public virtual void OnTaskComplete(Character character) {}
+  
+  // When the task is readded set the enabled state
+  public virtual void OnTaskUncomplete() {}
 
   // When we remove iteractablility from an item it should stop glowing.
   void OnDestroy() {
