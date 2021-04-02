@@ -324,8 +324,8 @@ GameObject:
   - component: {fileID: 261634889}
   - component: {fileID: 261634888}
   - component: {fileID: 261634887}
-  - component: {fileID: 261634886}
   - component: {fileID: 261634891}
+  - component: {fileID: 261634886}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -342,11 +342,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 261634885}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 019eb1373bbf73fe6b484ab05c33293b, type: 3}
+  m_Script: {fileID: 11500000, guid: f2a517aff68834949b120f6b198eb7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   roomName: {fileID: 4376914}
-  playerList: {fileID: 1842660820}
+  playerList: {fileID: 1982473929}
   readyPlayerItemPrefab: {fileID: 6550528240836432456, guid: b075ac08209f85d90a0a7f0414733ae8,
     type: 3}
   unreadyPlayerItemPrefab: {fileID: 9098677639369183320, guid: b61ae5d8a0481f3949871e4cb58cd0a3,
