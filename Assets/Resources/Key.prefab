@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 2332235474238290017}
   - component: {fileID: 6724540497385013028}
   - component: {fileID: 8388924632959349574}
-  - component: {fileID: 3404274876649142224}
   - component: {fileID: 8805901355671028098}
   - component: {fileID: 8685803213303031568}
   - component: {fileID: 9179241029992408153}
+  - component: {fileID: 8150665690081829309}
   m_Layer: 0
   m_Name: Key
   m_TagString: Untagged
@@ -104,7 +104,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   ObservedComponents:
-  - {fileID: 3404274876649142224}
+  - {fileID: 8150665690081829309}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -123,23 +123,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &3404274876649142224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2309103251000201219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 1
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
+  m_CollisionDetection: 2
 --- !u!114 &8805901355671028098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,3 +181,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.15833572, y: 0.9110306, z: 0.18618324}
   m_Center: {x: 0.00000011920929, y: -0.009899467, z: -0.023091618}
+--- !u!114 &8150665690081829309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309103251000201219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
