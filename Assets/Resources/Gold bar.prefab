@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 3404274876649142224}
   - component: {fileID: -2127752391093568637}
   - component: {fileID: 4876101927155672708}
-  - component: {fileID: 1717531011789997751}
-  - component: {fileID: 5230674743469747555}
+  - component: {fileID: 4276992508382683120}
+  - component: {fileID: 8451829114104496765}
   m_Layer: 0
   m_Name: Gold bar
   m_TagString: Untagged
@@ -180,13 +180,13 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.24900001, y: 0.113000005, z: 0.517}
+  m_Extents: {x: 0.37800002, y: 0.943, z: 0.17400001}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0.23700002}
   m_TimeToStationary: 0.5
---- !u!64 &1717531011789997751
+--- !u!64 &4276992508382683120
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,7 +200,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: dec6b5dd6fbd6954b9a1bfa1d9c4ea94, type: 3}
---- !u!65 &5230674743469747555
+--- !u!65 &8451829114104496765
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,8 +208,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2309103251000201219}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.75660944, y: 1.8857608, z: 0.34882846}
-  m_Center: {x: 0, y: 0.00000002980233, z: 0.23661146}
+  m_Size: {x: 0.75660944, y: 1.9986813, z: 0.44184583}
+  m_Center: {x: 0, y: -0.010848491, z: 0.23559916}
