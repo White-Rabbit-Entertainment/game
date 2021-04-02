@@ -57,8 +57,8 @@ public class Task : MonoBehaviour {
     if (parent != null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);
     if (!tutorialTask) {
+      View.RPC("SetTaskGlowRPC", RpcTarget.All);
       taskManager.CheckAllTasksCompleted();
     }
     GetComponent<Interactable>().DisableTarget();
@@ -66,7 +66,7 @@ public class Task : MonoBehaviour {
     
   public void Complete() {
     if (tutorialTask) {
-      CompleteRPC();
+      CompleteRPC()
     } else {
       View.RPC("CompleteRPC", RpcTarget.All);
     }
