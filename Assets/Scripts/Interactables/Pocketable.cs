@@ -41,6 +41,7 @@ public class Pocketable : Interactable {
   
   public override void OnTaskUncomplete() {
     gameObject.SetActive(true);
-    // Random position
+
+    // Move to random position
   }
 }
