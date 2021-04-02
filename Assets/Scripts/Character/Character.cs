@@ -41,10 +41,12 @@ public abstract class Character : MonoBehaviour {
     // An item can only be moved by a player if they are the owner.
     // Therefore, give ownership of the item to the local player before
     // moving it.
-    PhotonView view = item.GetComponent<PhotonView>();
-    view.TransferOwnership(PhotonNetwork.LocalPlayer);
-
-    item.SetItemPickupConditions();
+    if (item.View != null) {
+      item.View.TransferOwnership(PhotonNetwork.LocalPlayer);
+      item.SetItemPickupConditions();
+    } else {
+      item.SetItemPickupConditionsRPC();
+    }
 
     // Move to players pickup destination.
     item.transform.position = pickupDestination.position;
@@ -56,8 +58,11 @@ public abstract class Character : MonoBehaviour {
   
   public void PutDown(Pickupable item) {
     currentHeldItem = null;
-    item.ResetItemConditions(this);
-
+    if (item.View == null) {
+      item.ResetItemConditions(this);
+    } else {
+      item.ResetItemConditionsRPC();
+    }
     item.transform.parent = GameObject.Find("/Environment").transform;
   }
 

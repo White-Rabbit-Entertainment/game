@@ -11,7 +11,6 @@ using Photon.Pun;
 /// interacted with. It add the funcitons for glowing. These can then be called
 /// in <c>ItemInteract</c>. </summary>
 [DisallowMultipleComponent]
-[RequireComponent(typeof(PhotonView))]
 public abstract class Interactable : MonoBehaviourPun {
 
   public string taskDescription;
