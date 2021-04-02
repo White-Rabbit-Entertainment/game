@@ -40,11 +40,11 @@ public abstract class Pickupable : Interactable {
     // Also turn off gravity on item and freeze its Rigidbody.
     GetComponent<BoxCollider>().enabled = false;                                        
     GetComponent<Rigidbody>().useGravity = false;
-    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
   }
   
   public void SetItemPickupConditions() {
     GetComponent<PhotonView>().RPC("SetItemPickupConditionsRPC", RpcTarget.All);
+    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
   }
   
   [PunRPC]
@@ -52,11 +52,11 @@ public abstract class Pickupable : Interactable {
     isPickedUp = false;
     GetComponent<BoxCollider>().enabled = true;
     GetComponent<Rigidbody>().useGravity = true;
-    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
   }
   
   public void ResetItemConditions(Character character) {
     GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.All);
+    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
     // Set velocity of box after it is putdown to the speed to the character moving it
     GetComponent<Rigidbody>().velocity = character.Velocity(); 
