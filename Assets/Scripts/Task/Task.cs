@@ -111,5 +111,15 @@ public class Task : MonoBehaviour {
   public void UnassignRPC() {
     isAssigned = false;
   }
+
+  public void EnabledTarget() {
+    Interactable interactable = GetComponent<Interactable>();
+    interactable.EnabledTarget();
+  }
+
+  public void DisableTarget() {
+    Interactable interactable = GetComponent<Interactable>();
+    interactable.DisableTarget();
+  }
   
 }

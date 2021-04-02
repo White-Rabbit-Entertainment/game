@@ -20,7 +20,6 @@ public class TaskManager : MonoBehaviourPun {
 
   void Start() {
     tasks = new List<Task>();
-
   }
 
   void Update() {
