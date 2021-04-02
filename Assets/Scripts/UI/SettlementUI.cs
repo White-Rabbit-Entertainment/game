@@ -30,7 +30,7 @@ public class SettlementUI : MonoBehaviour
         nextButtonTraitor.onClick.AddListener(OnNextTraitor);
         nextButtonLoyal.onClick.AddListener(OnNextLoyal);
 
-        traitorName.text = "FZS";
+        //traitorName.text = "FZS";
     }
 
     // Update is called once per frame
@@ -38,6 +38,7 @@ public class SettlementUI : MonoBehaviour
     {
         if (NetworkManager.instance.NoLoyalsRemaining())
         {
+            GetName();
             TraitorsWonUI.SetActive(true);
             TraitorInfoUI.SetActive(true);
             
@@ -47,6 +48,7 @@ public class SettlementUI : MonoBehaviour
 
         if (NetworkManager.instance.NoTraitorsRemaining())
         {
+            GetName();
             LoyalsWonUI.SetActive(true);
             TraitorInfoUI.SetActive(true);
 
@@ -62,6 +64,7 @@ public class SettlementUI : MonoBehaviour
 
         if (Timer.RoundTimer.IsComplete())
         {
+            GetName();
             TraitorsWonUI.SetActive(true);
             TraitorInfoUI.SetActive(true);
         }
@@ -81,6 +84,17 @@ public class SettlementUI : MonoBehaviour
         gameSceneManager.EndGame(Team.Loyal);
     }
 
+
+    void GetName()
+    {
+        foreach (Player player in NetworkManager.instance.GetPlayers())
+        {
+            if (NetworkManager.instance.PlayerPropertyIs("Traitor", true, player))
+            {
+                traitorName.text = traitorName + player.NickName;
+            }
+        }
+    }
     
    
     
