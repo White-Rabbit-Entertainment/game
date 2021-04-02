@@ -80,18 +80,16 @@ public abstract class Interactable : MonoBehaviourPun {
     // interaction to traitor undo.
     if (HasUndoTask() && character is Traitor) {
       TraitorUndo(character);
-    } else {
-      if (HasTask() && !(character is Agent)) {
-        task.CompleteAndConsume(character);
-      }
-      
-      // Animation
-      PlayItemAnimation();
-      PlayCharacterAnimation(character);
-
-      // Destory if single use
-      if (singleUse) View.RPC("Disable", RpcTarget.All);
+    } else if (HasTask() && !(character is Agent)) {
+      task.CompleteAndConsume(character);
     }
+      
+    // Animation
+    PlayItemAnimation();
+    PlayCharacterAnimation(character);
+
+    // Destory if single use
+    if (singleUse) View.RPC("Disable", RpcTarget.All);
   }
 
   // The action to do when an interaction stops. Atm this when the mouse is
