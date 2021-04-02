@@ -53,7 +53,7 @@ public class Task : MonoBehaviour {
       // If the requirement is a pocketable
       if (requirement.TaskInteractable is Pocketable) {
         // And you do not have that pocketable
-        if (!NetworkManager.instance.GetMe().HasItem(TaskInteractable)) {
+        if (!NetworkManager.instance.GetMe().HasItem(requirement.TaskInteractable)) {
           // Then return false
           return false;
         }
