@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -18,8 +19,13 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     bool initialized = false; 
 
     void Start() {
-      Cursor.lockState = CursorLockMode.Locked;
-      Cursor.visible = true;
+      if (SceneManager.GetActiveScene().name == "TutorialLobbyScene") {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = true;
+      } else {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
+      }
       NetworkManager.instance.ResetRoom();
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
     }
