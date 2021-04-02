@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -89,7 +90,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     
     // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
-      ChangeScene("TutorialLobbyScene");
+      SceneManager.LoadScene("TutorialLobbyScene");
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> rooms) {}
