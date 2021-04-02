@@ -28,7 +28,7 @@ public class Pocketable : Interactable {
     // Enable the indicator for the real characters
     if (character == NetworkManager.instance.GetMe()) {
       if (task != null && task.parent != null && !task.parent.isCompleted) {
-        task.parent.GetComponent<Interactable>().EnabledTarget();
+        task.parent.GetComponent<Interactable>().EnableTarget();
       }
     }
   }

@@ -15,9 +15,6 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
 
     public Task tutorialTask;
 
-    public List<GameObject> tutorialStages;
-    public TutorialManager tutorialManager;
-
     bool initialized = false; 
 
     void Start() {
@@ -34,14 +31,9 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
       if (initialized) {
         SetText();
 
-        if (!NetworkManager.instance.GetLocalPlayerProperty("Ready", true) && tutorialTask.isCompleted) {
+        if (!NetworkManager.instance.GetLocalPlayerProperty("Ready", true) && tutorialTask != null && tutorialTask.isCompleted) {
           NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
-          tutorialTask.GetComponent<Interactable>().DisableTarget();
-          tutorialManager.EndTutorial();
-        } else {
-          tutorialTask.GetComponent<Interactable>().EnabledTarget();
-        }
-
+        } 
         if (NetworkManager.instance.AllPlayersReady()) {
           NetworkManager.instance.SetupGame();
           if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {

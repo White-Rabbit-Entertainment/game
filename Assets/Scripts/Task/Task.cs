@@ -77,7 +77,7 @@ public class Task : MonoBehaviour {
     if (IsMasterTask() && AllChildrenCompleted()) {
       foreach(Task task in requirements) {
         if (NetworkManager.instance.GetMe().HasItem(task.GetComponent<Interactable>())) {
-          GetComponent<Interactable>().EnabledTarget();
+          GetComponent<Interactable>().EnableTarget();
         }
       }
     }

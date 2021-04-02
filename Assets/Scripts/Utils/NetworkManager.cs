@@ -19,7 +19,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
-    private string lobbyScene = "LobbyScene";
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     void Start() {
@@ -90,7 +89,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     
     // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
-      ChangeScene(lobbyScene);
+      ChangeScene("TutorialLobbyScene");
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> rooms) {}

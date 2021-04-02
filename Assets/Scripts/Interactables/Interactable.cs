@@ -138,7 +138,7 @@ public abstract class Interactable : MonoBehaviourPun {
     SetTaskGlow();
   }
 
-  public void EnabledTarget() {
+  public void EnableTarget() {
     target.enabled = true;
   }
   
