@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomName: {fileID: 4376914}
-  playerList: {fileID: 1982473929}
+  playerList: {fileID: 1842660820}
   readyPlayerItemPrefab: {fileID: 6550528240836432456, guid: b075ac08209f85d90a0a7f0414733ae8,
     type: 3}
   unreadyPlayerItemPrefab: {fileID: 9098677639369183320, guid: b61ae5d8a0481f3949871e4cb58cd0a3,
