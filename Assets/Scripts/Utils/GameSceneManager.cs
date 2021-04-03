@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,18 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
+    //public SettlementUI settlementUI;
+    //public GameSceneManager gameSceneManager;
+
+    public GameObject traitorsWonUI;
+    public GameObject loyalsWonUI;
+    public GameObject traitorInfoUI;
+
+    public Button nextButtonTraitor;
+    public Button nextButtonLoyal;
+
+    public Text traitorName;
+
     
 
 
@@ -73,9 +86,12 @@ public class GameSceneManager : MonoBehaviour {
     [PunRPC]
     public void EndGameRPC(Team winningTeam) {
         // NetworkManager.instance.ChangeScene("LobbyScene");
-        SettlementUI sl = new SettlementUI();
 
-        sl.OnGameOver(winningTeam);
+        //SettlementUI sl = new SettlementUI();
+
+        //sl.OnGameOver(winningTeam);
+
+        OnGameOver(winningTeam);
     }
 
 
@@ -104,5 +120,32 @@ public class GameSceneManager : MonoBehaviour {
         }
 
         return names;
+    }
+
+    // Update is called once per frame
+    public void OnGameOver(Team team)
+    {
+        nextButtonTraitor.onClick.AddListener(GoToLobby);
+        nextButtonLoyal.onClick.AddListener(GoToLobby);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        traitorName.text = NetworkManager.traitorNames.ToString();
+        if (team == Team.Traitor)
+        {
+            traitorsWonUI.SetActive(true);
+            traitorInfoUI.SetActive(true);
+        }
+        else
+        {
+            loyalsWonUI.SetActive(true);
+            traitorInfoUI.SetActive(true);
+        }
+    }
+
+    void GoToLobby()
+    {
+        NetworkManager.instance.ChangeScene("LobbyScene");
     }
 }
