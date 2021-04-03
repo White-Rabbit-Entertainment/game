@@ -96,7 +96,7 @@ public class ItemInteract : MonoBehaviourPun {
             currentInteractable.InteractionGlowOff();
 
             if (character.contextTaskUI != null) {
-                character.contextTaskUI.RemoveTask();
+                if (!character.HasItem()) character.contextTaskUI.RemoveTask();
             }
 
             // And if bring the mouse button up

@@ -14,9 +14,11 @@ public class PlayerSpawner : MonoBehaviour {
     public InventoryUI inventoryUI;
     public ContextTaskUI contextTaskUI;
     public GameSceneManager gameSceneManager;
+    public TaskNotificationUI taskNotificationUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 0;
+    public GameObject offScreenIndicator; 
 
     public string sceneName;
 
@@ -111,9 +113,13 @@ public class PlayerSpawner : MonoBehaviour {
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
         character.contextTaskUI = contextTaskUI;
+        character.taskNotificationUI = taskNotificationUI;
         NetworkManager.myCharacter = character;
 
         //sets player layer to "raycast ignore" layer
         player.SetLayerRecursively(2);
+   
+        // Set up the camera for offScreenIndicator
+        offScreenIndicator.SetActive(true);
     }
 }

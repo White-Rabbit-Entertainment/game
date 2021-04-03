@@ -138,6 +138,7 @@ public abstract class Interactable : MonoBehaviourPun {
 
   public void EnableTarget() {
     target.enabled = true;
+    Debug.Log("target enabled");
   }
   
   public void DisableTarget() {

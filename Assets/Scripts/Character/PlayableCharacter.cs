@@ -7,8 +7,12 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
+    public TaskNotificationUI taskNotificationUI;
+
     public GameObject playerTile;
     public PlayersUI playersUI;
+
+    public Task assignedTask = null;
 
     protected override void Start() { 
       base.Start();
@@ -19,10 +23,19 @@ public abstract class PlayableCharacter : Character {
       if (itemInteract.possibleInteractables.Contains(item)) {
          itemInteract.possibleInteractables.Remove(item);
       }
+      if (item.HasTask()) {
+        contextTaskUI.SetTask(item.task);
+      }
       base.Pickup(item);
     }
 
-    public bool IsMe() {
+    public override void PutDown(Pickupable item) {
+      if (item.HasTask()) {
+        contextTaskUI.RemoveTask();
+      }
+      base.PutDown(item);
+    }
+     public bool IsMe() {
       return Owner == PhotonNetwork.LocalPlayer;
     }
 

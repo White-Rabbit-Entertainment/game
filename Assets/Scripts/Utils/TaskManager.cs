@@ -30,6 +30,11 @@ public class TaskManager : MonoBehaviourPun {
     ) {
       SetTasks();
     }
+
+    if (NetworkManager.instance.RoomPropertyIs("TasksSet", true) && NetworkManager.instance.GetMe().assignedTask == null) {
+       Debug.Log("New Task!");
+       AssignTask();
+     }
   }
 
   public void AddTask(Task task) {
@@ -85,6 +90,38 @@ public class TaskManager : MonoBehaviourPun {
       }
     }
     return count;
+  }
+
+  public Task FindUncompleteTask() {
+    foreach(Task task in tasks) {
+      if (!task.isCompleted) {
+        Debug.Log("Found");
+        return task;
+      }
+    }
+    return null;
+  }
+
+  public Task FindUnassignedTask() {
+    Debug.Log("Running");
+    foreach(Task task in tasks) {
+      if (!task.isAssigned) {
+        Debug.Log("Assigned");
+        return task;
+      }
+    }
+    return null;
+  } 
+
+  public void AssignTask() {
+    Task nextTask = FindUnassignedTask();
+    if (nextTask == null) nextTask = FindUncompleteTask();
+    if (nextTask != null) {
+      nextTask.Assign();
+      Debug.Log(nextTask.description);
+      nextTask.EnabledTarget();
+      NetworkManager.instance.GetMe().assignedTask = nextTask;
+    }
   }
 
   /// <summary> Return if all Loyal tasks have been completed. </summary> 

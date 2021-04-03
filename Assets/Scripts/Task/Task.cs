@@ -7,6 +7,8 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Interactable))]
 public class Task : MonoBehaviour {
   public bool isCompleted = false;
+
+  public bool isAssigned = false;
   public string description;
   public TaskManager taskManager;
   public bool isUndoable = true;
@@ -65,7 +67,9 @@ public class Task : MonoBehaviour {
   [PunRPC]
   public void CompleteRPC() {
     isCompleted = true;
-    if (parent != null) {
+    PlayableCharacter me =  NetworkManager.instance.GetMe();
+    me.taskNotificationUI.SetNotification(true);
+    if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
@@ -89,12 +93,17 @@ public class Task : MonoBehaviour {
     } else {
       View.RPC("CompleteRPC", RpcTarget.All);
     }
+    PlayableCharacter me =  NetworkManager.instance.GetMe();
+    me.assignedTask = null;
+    View.RPC("CompleteRPC", RpcTarget.All);
   }
   
   [PunRPC]
   public void UncompleteRPC() {
     isCompleted = false;
-    if (parent !=  null) {
+    isAssigned = false;
+    NetworkManager.instance.GetMe().taskNotificationUI.SetNotification(false);
+    if (parent != null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
     if (IsMasterTask() && AllChildrenCompleted()) {
@@ -118,6 +127,35 @@ public class Task : MonoBehaviour {
 
   public bool IsRequired() {
     return !IsMasterTask() && !parent.isCompleted;
+  }
+
+  public void Assign() {
+    View.RPC("AssignRPC", RpcTarget.All);
+  }
+
+  [PunRPC]
+  public void AssignRPC() {
+    isAssigned = true;
+  }
+
+   public void Unassign() {
+   View.RPC("UnassignRPC", RpcTarget.All);
+  }
+
+  [PunRPC]
+  public void UnassignRPC() {
+    isAssigned = false;
+  }
+
+  public void EnabledTarget() {
+    Interactable interactable = GetComponent<Interactable>();
+    interactable.EnableTarget();
+    Debug.Log("Task Enabled");
+  }
+
+  public void DisableTarget() {
+    Interactable interactable = GetComponent<Interactable>();
+    interactable.DisableTarget();
   }
   
 }
