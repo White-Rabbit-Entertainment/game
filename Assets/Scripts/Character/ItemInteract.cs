@@ -38,13 +38,15 @@ public class ItemInteract : MonoBehaviourPun {
         float angle = float.PositiveInfinity;
         Interactable bestInteractable = null;
         foreach(Interactable interactable in possibleInteractables) {
-            RaycastHit hit;
-            Physics.Linecast(cameraTransform.position, interactable.transform.position, out hit); 
-            float interactableAngle = Vector3.Angle(cameraTransform.forward, interactable.transform.position - cameraTransform.position);
-            //Debug.Log(hit.collider.GetComponent<Interactable>());
-            if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
-                angle = interactableAngle;
-                bestInteractable = interactable;
+            if (interactable != null) { // Checks if the iteractable has been destroyed (eg player turns into ghost)
+                RaycastHit hit;
+                Physics.Linecast(cameraTransform.position, interactable.transform.position, out hit); 
+                float interactableAngle = Vector3.Angle(cameraTransform.forward, interactable.transform.position - cameraTransform.position);
+                //Debug.Log(hit.collider.GetComponent<Interactable>());
+                if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
+                    angle = interactableAngle;
+                    bestInteractable = interactable;
+                }
             }
         }
         return bestInteractable;
