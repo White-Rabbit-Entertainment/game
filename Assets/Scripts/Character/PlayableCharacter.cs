@@ -12,7 +12,7 @@ public abstract class PlayableCharacter : Character {
     public GameObject playerTile;
     public PlayersUI playersUI;
 
-    public Task assignedTask;
+    public Task assignedTask = null;
 
     protected override void Start() { 
       base.Start();

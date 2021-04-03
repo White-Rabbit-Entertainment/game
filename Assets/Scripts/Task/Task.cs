@@ -115,7 +115,7 @@ public class Task : MonoBehaviour {
   public void EnabledTarget() {
     Interactable interactable = GetComponent<Interactable>();
     interactable.EnabledTarget();
-    Debug.Log("task enabled");
+    Debug.Log("Task Enabled");
   }
 
   public void DisableTarget() {
