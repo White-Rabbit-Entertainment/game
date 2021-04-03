@@ -92,4 +92,13 @@ public class GameSceneManager : MonoBehaviour {
         Timer.RoundTimer.Start(240);
       }
     }
+
+    List<string> GetTraitorNames() {
+        List<string> names = new List<string>();
+        foreach (Player player in NetworkManager.instance.GetPlayers()) {
+            if (NetworkManager.instance.PlayerPropertyIs("Traitor", true, player)) {
+                names.Add(player.NickName);
+            }
+        }
+    }
 }

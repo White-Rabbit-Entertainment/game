@@ -24,6 +24,8 @@ public class VotingManager : MonoBehaviour {
   public Text voteTitle;
   public GameObject currentVoteUI;
 
+  public GameObject votingOutcomeUI;
+
   bool hasVoted = false;
   bool voteStarted = false;
   List<PlayableCharacter> playersVotingFor;
@@ -94,16 +96,20 @@ public class VotingManager : MonoBehaviour {
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
         suspectedPlayer.Kill();
-        //if (NetworkManager.instance.NoLoyalsRemaining()) {
-        //  gameSceneManager.EndGame(Team.Traitor);
-        //}
-        //if (NetworkManager.instance.NoTraitorsRemaining()) {
-        //  gameSceneManager.EndGame(Team.Loyal);
-        //}
+        if (NetworkManager.instance.NoLoyalsRemaining()) {
+          gameSceneManager.EndGame(Team.Traitor);
+        }
+        if (NetworkManager.instance.NoTraitorsRemaining()) {
+          gameSceneManager.EndGame(Team.Loyal);
+        }
       }
       Debug.Log("The player has been voted off");
+      // Show UI to say someone was voted off
+      ShowVotingOutCome(suspectedPlayer.Owner.NickName);
     } else {
       Debug.Log("The player survived the vote");
+      // Show UI to say vote was unsuccessful
+      ShowVotingOutCome(suspectedPlayer.Owner.NickName);
     }
   }
 
@@ -131,5 +137,9 @@ public class VotingManager : MonoBehaviour {
     GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID);
     hasVoted = true;
     setVoteUI.SetActive(false);
+  }
+    
+  public void ShowVotingOutCome() {
+    // Show some UI to say the vote outcome for everyone
   }
 }

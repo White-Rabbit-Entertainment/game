@@ -21,19 +21,16 @@ public class SettlementUI : MonoBehaviour
 
     public Text traitorName;
 
-   
-    // Start is called before the first frame update
-    void Start() {
+    // Update is called once per frame
+    void OnGameOver(Team team) {
         nextButtonTraitor.onClick.AddListener(GoToLobby);
         nextButtonLoyal.onClick.AddListener(GoToLobby);
 
-        traitorName.text = "FZS";
-    }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
-    // Update is called once per frame
-    void OnGameOver(Team team) {
-        if (team == Team.Traitor)
-        {
+        traitorName.text = NetworkManager.traitorNames.ToString();
+        if (team == Team.Traitor) {
             TraitorsWonUI.SetActive(true);
             TraitorInfoUI.SetActive(true);
         } else {

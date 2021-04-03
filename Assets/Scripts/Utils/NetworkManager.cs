@@ -19,6 +19,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
+    public static List<string> traitorNames;
     private string lobbyScene = "LobbyScene";
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -48,6 +49,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
             SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+            traitorNames.Add(players[i].NickName);
           }
 
           for (int i = numberOfTraitors; i < players.Count; i++) {
