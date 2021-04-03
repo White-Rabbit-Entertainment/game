@@ -24,6 +24,7 @@ MonoBehaviour:
   taskNotificationUI: {fileID: 0}
   playerTile: {fileID: 0}
   playersUI: {fileID: 0}
+  assignedTask: {fileID: 0}
 --- !u!1001 &7098933628780144307
 PrefabInstance:
   m_ObjectHideFlags: 0

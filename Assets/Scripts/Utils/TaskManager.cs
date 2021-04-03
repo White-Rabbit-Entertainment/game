@@ -34,7 +34,9 @@ public class TaskManager : MonoBehaviourPun {
     if (NetworkManager.instance.GetMe().assignedTask == null) {
        Debug.Log("New Task!");
        AssignTask();
+       
        Debug.Log(NetworkManager.instance.GetMe().assignedTask.description);
+       NetworkManager.instance.GetMe().assignedTask.EnabledTarget();
      }
   }
 

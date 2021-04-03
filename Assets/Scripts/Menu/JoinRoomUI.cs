@@ -4,29 +4,36 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
-    public InputField roomNameInput;
-    public InputField playerNameInput;
+    public TMP_InputField roomNameInput;
+    public TMP_InputField playerNameInput;
     public Button createRoomButton; 
     public Button joinRoomButton;
     public Button createPrivateButton;
     public Button startButton;
+    public Button findLobbiesButton;
 
     List<RoomInfo> roomList;
 
     public GameObject NameUI;
     public GameObject RoomUI;
 
+    public GameObject LobbiesUI;
+
     public GameObject roomNamePrefab;
     public Transform gridLayout;
 
     void Start() {
+        playerNameInput.Select();
+        playerNameInput.ActivateInputField(); 
         createRoomButton.onClick.AddListener(OnClickCreateRoom);
         joinRoomButton.onClick.AddListener(OnClickJoinRoom);
         createPrivateButton.onClick.AddListener(OnClickCreatePrivateRoom);
         startButton.onClick.AddListener(StartButton);
+        findLobbiesButton.onClick.AddListener(FindLobbiesButton);
     }
 
     public override void OnConnectedToMaster() {
@@ -36,12 +43,19 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
     void StartButton() {
         NameUI.SetActive(false);
-        RoomUI.SetActive(true);
-        OnRoomListUpdate(roomList);
+        RoomUI.SetActive(true);  
+        roomNameInput.Select();
+        roomNameInput.ActivateInputField(); 
+    }
 
+    void FindLobbiesButton(){
+        RoomUI.SetActive(false);
+        LobbiesUI.SetActive(true);
+        OnRoomListUpdate(roomList);
     }
 
     void OnClickCreateRoom() {
+      Debug.Log("click registered");
       NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
       PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
     }
