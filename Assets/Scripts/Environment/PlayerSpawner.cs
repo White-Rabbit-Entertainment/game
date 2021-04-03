@@ -17,6 +17,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 0;
+    public GameObject offScreenIndicator; 
 
     public string sceneName;
 
@@ -114,6 +115,9 @@ public class PlayerSpawner : MonoBehaviour {
 
         //sets player layer to "raycast ignore" layer
         player.SetLayerRecursively(2);
+   
+        // Set up the camera for offScreenIndicator
+        offScreenIndicator.SetActive(true);
     }
 
 
