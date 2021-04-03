@@ -8,7 +8,8 @@ using System;
 
 
 public class SettlementUI : MonoBehaviour
-{
+{ 
+
     public GameObject TraitorsWonUI;
     public GameObject LoyalsWonUI;
     public GameObject TraitorInfoUI;
@@ -22,7 +23,7 @@ public class SettlementUI : MonoBehaviour
     public Text traitorName;
 
     // Update is called once per frame
-    void OnGameOver(Team team) {
+    public void OnGameOver(Team team) {
         nextButtonTraitor.onClick.AddListener(GoToLobby);
         nextButtonLoyal.onClick.AddListener(GoToLobby);
 
