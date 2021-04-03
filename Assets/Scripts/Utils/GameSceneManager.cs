@@ -111,18 +111,9 @@ public class GameSceneManager : MonoBehaviour {
       }
     }
 
-    List<string> GetTraitorNames() {
-        List<string> names = new List<string>();
-        foreach (Player player in NetworkManager.instance.GetPlayers()) {
-            if (NetworkManager.instance.PlayerPropertyIs("Traitor", true, player)) {
-                names.Add(player.NickName);
-            }
-        }
+    
 
-        return names;
-    }
-
-    // Update is called once per frame
+    
     public void OnGameOver(Team team)
     {
         nextButtonTraitor.onClick.AddListener(GoToLobby);
@@ -147,5 +138,17 @@ public class GameSceneManager : MonoBehaviour {
     void GoToLobby()
     {
         NetworkManager.instance.ChangeScene("LobbyScene");
+    }
+
+
+    List<string> GetTraitorNames() {
+        List<string> names = new List<string>();
+        foreach (Player player in NetworkManager.instance.GetPlayers()) {
+            if (NetworkManager.instance.PlayerPropertyIs("Traitor", true, player)) {
+                names.Add(player.NickName);
+            }
+        }
+
+        return names;
     }
 }
