@@ -117,8 +117,8 @@ public class VotingManager : MonoBehaviour {
             
         } else {
       Debug.Log("The player survived the vote");
-      // Show UI to say vote was unsuccessful
-      ShowVotingOutCome(suspectedPlayer.Owner.NickName);
+            // Show UI to say vote was unsuccessful
+      ShowVotingUnsuccess(suspectedPlayer.Owner.NickName);
             StartCoroutine(ShowUnsuccessInProgress());
         }
   }

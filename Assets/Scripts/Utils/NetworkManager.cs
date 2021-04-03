@@ -49,7 +49,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
             SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
-            traitorNames.Add(players[i].NickName);
+            //traitorNames.Add(players[i].NickName);
           }
 
           for (int i = numberOfTraitors; i < players.Count; i++) {
