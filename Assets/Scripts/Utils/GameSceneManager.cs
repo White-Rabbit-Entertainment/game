@@ -116,6 +116,7 @@ public class GameSceneManager : MonoBehaviour {
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        NetworkManager.instance.GetMe().Freeze();
 
         traitorName.text = string.Join(", ", NetworkManager.traitorNames);
 
