@@ -10,7 +10,6 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject traitorPrefab;
     public GameObject ghostPrefab;
     public GameObject loyalPrefab;
-    public GameObject captainPrefab;
     public InventoryUI inventoryUI;
     public ContextTaskUI contextTaskUI;
     public GameSceneManager gameSceneManager;
