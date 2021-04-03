@@ -52,6 +52,7 @@ public class Task : MonoBehaviour {
   [PunRPC]
   public void CompleteRPC() {
     isCompleted = true;
+    isAssigned = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
     me.taskNotificationUI.SetNotification(true);
     if (parent !=  null) {

@@ -32,7 +32,7 @@ public class TaskManager : MonoBehaviourPun {
     }
 
     if (NetworkManager.instance.RoomPropertyIs("TasksSet", true) && NetworkManager.instance.GetMe().assignedTask == null) {
-       Debug.Log("New Task!");
+      //  Debug.Log("New Task!");
        AssignTask();
      }
   }
@@ -95,7 +95,7 @@ public class TaskManager : MonoBehaviourPun {
   public Task FindUncompleteTask() {
     foreach(Task task in tasks) {
       if (!task.isCompleted) {
-        Debug.Log("Found");
+        // Debug.Log("Found");
         return task;
       }
     }
@@ -103,10 +103,10 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public Task FindUnassignedTask() {
-    Debug.Log("Running");
+    // Debug.Log("Running");
     foreach(Task task in tasks) {
-      if (!task.isAssigned) {
-        Debug.Log("Assigned");
+      if (!task.isAssigned && !task.isCompleted) {
+        // Debug.Log("Assigned");
         return task;
       }
     }
