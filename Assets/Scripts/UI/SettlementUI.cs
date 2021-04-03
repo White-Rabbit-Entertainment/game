@@ -22,72 +22,27 @@ public class SettlementUI : MonoBehaviour
     public Text traitorName;
 
    
-
-
     // Start is called before the first frame update
-    void Start()
-    {
-        nextButtonTraitor.onClick.AddListener(OnNextTraitor);
-        nextButtonLoyal.onClick.AddListener(OnNextLoyal);
+    void Start() {
+        nextButtonTraitor.onClick.AddListener(GoToLobby);
+        nextButtonLoyal.onClick.AddListener(GoToLobby);
 
         traitorName.text = "FZS";
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (NetworkManager.instance.NoLoyalsRemaining())
+    void OnGameOver(Team team) {
+        if (team == Team.Traitor)
         {
             TraitorsWonUI.SetActive(true);
             TraitorInfoUI.SetActive(true);
-            
-
-            //gameSceneManager.EndGame(Team.Traitor);
-        }
-
-        if (NetworkManager.instance.NoTraitorsRemaining())
-        {
+        } else {
             LoyalsWonUI.SetActive(true);
             TraitorInfoUI.SetActive(true);
-
-            //gameSceneManager.EndGame(Team.Loyal);
         }
-
-        //if (number of tasks comp) == tasks.count Loyalwon true
-        if (taskManager.NumberOfTasksCompleted() == taskManager.tasks.Count)
-        {
-            //LoyalsWonUI.SetActive(true);
-            //TraitorInfoUI.SetActive(true);
-        }
-
-        if (Timer.RoundTimer.IsComplete())
-        {
-            TraitorsWonUI.SetActive(true);
-            TraitorInfoUI.SetActive(true);
-        }
-
-        
-
-
     }
 
-    void OnNextTraitor()
-    {
-        gameSceneManager.EndGame(Team.Traitor);
+    void GoToLobby() {
+        NetworkManager.instance.ChangeScene("LobbyScene");
     }
-
-    void OnNextLoyal()
-    {
-        gameSceneManager.EndGame(Team.Loyal);
-    }
-
-    
-   
-    
-  
-
-    //public GameSceneManager gameScenManager;
-
-
-    
 }

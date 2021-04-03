@@ -13,6 +13,7 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
+    public SettlementUI settlementUI;
 
 
     void Update() {
@@ -71,7 +72,8 @@ public class GameSceneManager : MonoBehaviour {
 
     [PunRPC]
     public void EndGameRPC(Team winningTeam) {
-        NetworkManager.instance.ChangeScene("LobbyScene");
+        // NetworkManager.instance.ChangeScene("LobbyScene");
+        SettlementUI.OnGameOver(winningTeam);
     }
 
 
