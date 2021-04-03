@@ -25,6 +25,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     void Start() {
       PhotonNetwork.ConnectUsingSettings();
+      traitorNames = new List<string>();
     }
 
     /// <summary> Before a game is able to start various things need to be
@@ -49,7 +50,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
             SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
-            //traitorNames.Add(players[i].NickName);
+            traitorNames.Add(players[i].NickName);
           }
 
           for (int i = numberOfTraitors; i < players.Count; i++) {

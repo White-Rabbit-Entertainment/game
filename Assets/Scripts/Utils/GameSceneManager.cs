@@ -26,8 +26,6 @@ public class GameSceneManager : MonoBehaviour {
 
     public Text traitorName;
 
-    
-
 
     void Update() {
         if (!initialized) {
@@ -107,12 +105,9 @@ public class GameSceneManager : MonoBehaviour {
     
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        Timer.RoundTimer.Start(240);
+        Timer.RoundTimer.Start(5);
       }
     }
-
-    
-
     
     public void OnGameOver(Team team)
     {
@@ -122,7 +117,8 @@ public class GameSceneManager : MonoBehaviour {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        traitorName.text = NetworkManager.traitorNames.ToString();
+        traitorName.text = string.Join(", ", NetworkManager.traitorNames);
+
         if (team == Team.Traitor)
         {
             traitorsWonUI.SetActive(true);
