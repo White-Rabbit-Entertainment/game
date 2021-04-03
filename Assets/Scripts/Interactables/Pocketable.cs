@@ -25,6 +25,8 @@ public class Pocketable : Interactable {
   public void SetItemDropConditions(Vector3 position) {
     gameObject.SetActive(true);
     transform.position = position;
+    NetworkManager.instance.GetMe().GetComponent<ItemInteract>().RemovePossibleInteractable(this);
+    SetTaskGlow();
   }
 
   public override void PrimaryInteraction(Character character) {
@@ -42,7 +44,6 @@ public class Pocketable : Interactable {
   public override void OnTaskComplete(Character character) {
     // Take out of inventory
     character.RemoveItemFromInventory(false);
-    character.GetComponent<ItemInteract>().RemovePossibleInteractable(this);
     gameObject.SetActive(false);
   }
  
