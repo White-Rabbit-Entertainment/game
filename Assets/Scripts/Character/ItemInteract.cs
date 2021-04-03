@@ -143,7 +143,6 @@ public class ItemInteract : MonoBehaviourPun {
      public void OnInteractionConeEnter(Collider collider) {
         Debug.Log(collider);
         Interactable interactable = collider.GetComponent<Interactable>();
-    NetworkManager.instance.GetMe().GetComponent<ItemInteract>().RemovePossibleInteractable(this);
         if (interactable != null
             && interactable.gameObject.GetInstanceID() != gameObject.GetInstanceID()
         ) {

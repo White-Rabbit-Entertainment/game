@@ -106,18 +106,19 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public virtual void SetTaskGlow() {
-    if (inRange) {
-      Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
-      if (team == Team.Traitor && HasUndoTask()) {
-        SetGlow(undoTaskColour);
-      } else if (HasTask() && task.AllChildrenCompleted()) {
-        SetGlow(taskColour);
-      } else {
-        outline.enabled = false;
-      }
-    } else {
-      outline.enabled = false;
-    }
+    //if (inRange) {
+    //  Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
+    //  if (team == Team.Traitor && HasUndoTask()) {
+    //    SetGlow(undoTaskColour);
+    //  } else if (HasTask() && task.AllChildrenCompleted()) {
+    //    SetGlow(taskColour);
+    //  } else {
+    //    outline.enabled = false;
+    //  }
+    //} else {
+    //  outline.enabled = false;
+    //}
+    outline.enabled = false;
   }
 
   public void SetGlow(Color colour) {
