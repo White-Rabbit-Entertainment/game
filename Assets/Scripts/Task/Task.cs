@@ -109,6 +109,7 @@ public class Task : MonoBehaviour {
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnTaskUncomplete();
     }
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);
   }
 
   public void Uncomplete() {

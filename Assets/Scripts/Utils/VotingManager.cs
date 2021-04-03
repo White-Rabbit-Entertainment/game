@@ -24,6 +24,11 @@ public class VotingManager : MonoBehaviour {
   public Text voteTitle;
   public GameObject currentVoteUI;
 
+  public GameObject votingOutcomeUI;
+  public GameObject voteUnsuccess;
+  public Text voteResult;
+  public Text voteUnsuccessful;
+  
   bool hasVoted = false;
   bool voteStarted = false;
   List<PlayableCharacter> playersVotingFor;
@@ -102,9 +107,16 @@ public class VotingManager : MonoBehaviour {
         }
       }
       Debug.Log("The player has been voted off");
-    } else {
+      // Show UI to say someone was voted off
+      ShowVotingOutCome(suspectedPlayer.Owner.NickName);
+            StartCoroutine(ShowOutcomeInProgress());
+            
+        } else {
       Debug.Log("The player survived the vote");
-    }
+            // Show UI to say vote was unsuccessful
+      ShowVotingUnsuccess(suspectedPlayer.Owner.NickName);
+            StartCoroutine(ShowUnsuccessInProgress());
+        }
   }
 
   [PunRPC]
@@ -132,4 +144,31 @@ public class VotingManager : MonoBehaviour {
     hasVoted = true;
     setVoteUI.SetActive(false);
   }
+    
+  public void ShowVotingOutCome(string name) {
+        // Show some UI to say the vote outcome for everyone
+
+        voteResult.text = name + "be voted";
+   }
+
+    public void ShowVotingUnsuccess(string name)
+    {
+        voteUnsuccessful.text = "The vote for" + name + "was unsuccessful";
+    }
+
+    IEnumerator ShowOutcomeInProgress()
+    {
+        votingOutcomeUI.SetActive(true);
+        yield return new WaitForSeconds(2);
+        votingOutcomeUI.SetActive(false);
+    }
+
+    IEnumerator ShowUnsuccessInProgress()
+    {
+        voteUnsuccess.SetActive(true);
+        yield return new WaitForSeconds(2);
+        voteUnsuccess.SetActive(false);
+    }
 }
+
+

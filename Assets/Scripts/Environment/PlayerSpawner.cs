@@ -21,6 +21,7 @@ public class PlayerSpawner : MonoBehaviour {
     public string sceneName;
 
     public List<GameObject> rolesPrefabs;
+    public List<string> traitors; 
 
     public RoleInfo roleInfo;
 
@@ -87,6 +88,7 @@ public class PlayerSpawner : MonoBehaviour {
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
             // spawnPoint = new Vector3(1,2,-10);
             playerPrefab = traitorPrefab;
+            traitors.Add(PhotonNetwork.LocalPlayer.NickName);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
             // spawnPoint = new Vector3(1,2,10);
             playerPrefab = loyalPrefab;

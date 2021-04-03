@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
@@ -14,6 +15,18 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
+    //public SettlementUI settlementUI;
+    //public GameSceneManager gameSceneManager;
+
+    public GameObject traitorsWonUI;
+    public GameObject loyalsWonUI;
+    public GameObject traitorInfoUI;
+
+    public Button nextButtonTraitor;
+    public Button nextButtonLoyal;
+
+    public Text traitorName;
+
 
     void Update() {
         if (!initialized) {
@@ -58,7 +71,7 @@ public class GameSceneManager : MonoBehaviour {
     ///   <list>     
     public void CheckTimer() {
       if (Timer.RoundTimer.IsComplete()) {
-        EndGame(Team.Traitor);
+        //EndGame(Team.Traitor);
       } 
     }
 
@@ -66,10 +79,21 @@ public class GameSceneManager : MonoBehaviour {
       GetComponent<PhotonView>().RPC("EndGameRPC", RpcTarget.All, winningTeam);
     }
 
+   
+    
+
     [PunRPC]
     public void EndGameRPC(Team winningTeam) {
-        NetworkManager.instance.ChangeScene("LobbyScene");
+        // NetworkManager.instance.ChangeScene("LobbyScene");
+
+        //SettlementUI sl = new SettlementUI();
+
+        //sl.OnGameOver(winningTeam);
+
+        OnGameOver(winningTeam);
     }
+
+
 
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
@@ -82,7 +106,7 @@ public class GameSceneManager : MonoBehaviour {
     
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        Timer.RoundTimer.Start(1000);
+        Timer.RoundTimer.Start(5);
       }
     }
     
@@ -95,5 +119,31 @@ public class GameSceneManager : MonoBehaviour {
             finalPosition = hit.position;
         }
         return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
+    }
+    
+    public void OnGameOver(Team team) {
+        nextButtonTraitor.onClick.AddListener(GoToLobby);
+        nextButtonLoyal.onClick.AddListener(GoToLobby);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        NetworkManager.instance.GetMe().Freeze();
+
+        traitorName.text = string.Join(", ", NetworkManager.traitorNames);
+
+        if (team == Team.Traitor)
+        {
+            traitorsWonUI.SetActive(true);
+            traitorInfoUI.SetActive(true);
+        }
+        else
+        {
+            loyalsWonUI.SetActive(true);
+            traitorInfoUI.SetActive(true);
+        }
+    }
+
+    void GoToLobby() {
+        NetworkManager.instance.ChangeScene("LobbyScene");
     }
 }
