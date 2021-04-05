@@ -146,10 +146,10 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   // Once completed set the disabled state
-  public virtual void OnTaskComplete(Character character) {}
+  public virtual void OnParentTaskComplete(Character character) {}
   
   // When the task is readded set the enabled state
-  public virtual void OnTaskUncomplete() {}
+  public virtual void OnParentTaskUncomplete() {}
 
   // When we remove iteractablility from an item it should stop glowing.
   void OnDestroy() {

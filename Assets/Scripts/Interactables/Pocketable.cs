@@ -41,13 +41,13 @@ public class Pocketable : Interactable {
     }
   }
 
-  public override void OnTaskComplete(Character character) {
+  public override void OnTaskParentComplete(Character character) {
     // Take out of inventory
     character.RemoveItemFromInventory(false);
     gameObject.SetActive(false);
   }
  
-  public override void OnTaskUncomplete() {
+  public override void OnParentTaskUncomplete() {
     // Move to random position
     View.RPC("SetItemDropConditions", RpcTarget.All, gameSceneManager.RandomNavmeshLocation(50f));
   }

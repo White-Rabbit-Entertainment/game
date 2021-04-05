@@ -82,10 +82,10 @@ public class Task : MonoBehaviour {
    
   // Complete taks and consume all the requirements  eg pocketables
   public void CompleteAndConsume(Character character) {
-    foreach(Task requirement in requirements) {
-      requirement.TaskInteractable.OnTaskComplete(character);
-    }
     Complete();
+    foreach(Task requirement in requirements) {
+      requirement.TaskInteractable.OnParentTaskComplete(character);
+    }
   }
   
   public void Complete() {
