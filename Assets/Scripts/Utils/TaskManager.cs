@@ -39,6 +39,9 @@ public class TaskManager : MonoBehaviourPun {
     && (NetworkManager.instance.GetMe().assignedSubTask == null 
       || NetworkManager.instance.GetMe().assignedSubTask.isCompleted)
     ) {
+      foreach (Task task in tasks) {
+        if(!task.IsMasterTask()) Debug.Log("UHOH task is not master task in the list");
+      }
       Debug.Log("Requesting new task");
       PlayableCharacter character = NetworkManager.instance.GetMe();
       if (character is Loyal) {
@@ -94,6 +97,7 @@ public class TaskManager : MonoBehaviourPun {
           view.RPC("AddTaskRPC", RpcTarget.All);
         }
     }
+
     // Say that we have finished the work of setting up tasks (used for
     // knowing everything is loaded).
     NetworkManager.instance.SetRoomProperty("TasksSet", true);
@@ -117,7 +121,6 @@ public class TaskManager : MonoBehaviourPun {
   public Task FindUncompleteTask() {
     foreach(Task task in tasks) {
       if (!task.isCompleted) {
-        // Debug.Log("Found");
         return task;
       }
     }
@@ -125,10 +128,8 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public Task FindUnassignedTask() {
-    // Debug.Log("Running");
     foreach(Task task in tasks) {
       if (!task.isAssigned && !task.isCompleted) {
-        Debug.Log("Assigned");
         return task;
       }
     }
