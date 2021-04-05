@@ -122,13 +122,23 @@ public class Task : MonoBehaviour {
     return !IsMasterTask() && !parent.isCompleted;
   }
 
-  public void Assign() {
-    View.RPC("AssignRPC", RpcTarget.All);
+  public void Assign(PlayableCharacter character) {
+    AssignToCharacter(character);
+    View.RPC("AssignRPC", RpcTarget.Others, character.View.ViewID);
   }
 
   [PunRPC]
-  public void AssignRPC() {
+  public void AssignRPC(int assignedCharacterViewId) {
+    PlayableCharacter character = PhotonView.Find(assignedCharacterViewId).GetComponent<PlayableCharacter>();
+    AssignToCharacter(character);
+  }
+  
+  public void AssignToCharacter(PlayableCharacter character) {
+    character.assignedTask = this;
     isAssigned = true;
+    if (character.IsMe()) {
+      EnabledTarget();
+    }
   }
 
    public void Unassign() {

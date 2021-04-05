@@ -33,7 +33,7 @@ public class TaskManager : MonoBehaviourPun {
 
     if (NetworkManager.instance.RoomPropertyIs("TasksSet", true) && (NetworkManager.instance.GetMe().assignedTask == null || NetworkManager.instance.GetMe().assignedTask.isCompleted)) {
       //  Debug.Log("New Task!");
-       AssignTask();
+       RequestNewTask();
      }
   }
 
@@ -111,18 +111,22 @@ public class TaskManager : MonoBehaviourPun {
       }
     }
     return null;
-  } 
+  }
 
-  public void AssignTask() {
+  public void RequestNewTask() {
+    GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
+  }
+
+  [PunRPC]
+  public void AssignTask(int requestingPlayerViewId) {
+    PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
     Task nextTask = null;
-    if (NetworkManager.instance.GetMe().assignedTask != null) nextTask = NetworkManager.instance.GetMe().assignedTask.parent;
+    if (taskRequester.assignedTask != null) nextTask = taskRequester.assignedTask.parent;
     if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
-      nextTask.Assign();
+      nextTask.Assign(taskRequester);
       Debug.Log(nextTask.description);
-      nextTask.EnabledTarget();
-      NetworkManager.instance.GetMe().assignedTask = nextTask;
     }
   }
 

@@ -19,6 +19,10 @@ public abstract class Character : MonoBehaviour {
   public Player Owner {
       get { return GetComponent<PhotonView>().Owner; }
     }
+  
+  public PhotonView View {
+      get { return GetComponent<PhotonView>(); }
+    }
 
   protected virtual void Start() {}
 
