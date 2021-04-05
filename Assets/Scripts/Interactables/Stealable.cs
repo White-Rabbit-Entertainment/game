@@ -29,7 +29,7 @@ public class Stealable : Pickupable {
         }
         base.PrimaryInteraction(character);
 
-        if (HasTask() && destination != null) {
+        if (HasTask() && destination != null && character is Traitor) {
             // destination.indicator.SetActive(true);
             destination.EnableTarget();
         }
