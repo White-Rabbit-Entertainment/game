@@ -71,7 +71,7 @@ public class GameSceneManager : MonoBehaviour {
     ///   <list>     
     public void CheckTimer() {
       if (Timer.RoundTimer.IsComplete()) {
-        //EndGame(Team.Traitor);
+        EndGame(Team.Traitor);
       } 
     }
 
@@ -79,20 +79,28 @@ public class GameSceneManager : MonoBehaviour {
       GetComponent<PhotonView>().RPC("EndGameRPC", RpcTarget.All, winningTeam);
     }
 
-   
-    
 
     [PunRPC]
+    // Show the UI for the gameover
     public void EndGameRPC(Team winningTeam) {
-        // NetworkManager.instance.ChangeScene("LobbyScene");
+        nextButtonTraitor.onClick.AddListener(GoToLobby);
+        nextButtonLoyal.onClick.AddListener(GoToLobby);
 
-        //SettlementUI sl = new SettlementUI();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        NetworkManager.instance.GetMe().Freeze();
 
-        //sl.OnGameOver(winningTeam);
+        traitorName.text = string.Join(", ", NetworkManager.traitorNames);
 
-        OnGameOver(winningTeam);
+        if (team == Team.Traitor) {
+            traitorsWonUI.SetActive(true);
+            traitorInfoUI.SetActive(true);
+        }
+        else {
+            loyalsWonUI.SetActive(true);
+            traitorInfoUI.SetActive(true);
+        }
     }
-
 
 
     /// <summary> Check if the level has finished loading. It does this by
@@ -119,28 +127,6 @@ public class GameSceneManager : MonoBehaviour {
             finalPosition = hit.position;
         }
         return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
-    }
-    
-    public void OnGameOver(Team team) {
-        nextButtonTraitor.onClick.AddListener(GoToLobby);
-        nextButtonLoyal.onClick.AddListener(GoToLobby);
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        NetworkManager.instance.GetMe().Freeze();
-
-        traitorName.text = string.Join(", ", NetworkManager.traitorNames);
-
-        if (team == Team.Traitor)
-        {
-            traitorsWonUI.SetActive(true);
-            traitorInfoUI.SetActive(true);
-        }
-        else
-        {
-            loyalsWonUI.SetActive(true);
-            traitorInfoUI.SetActive(true);
-        }
     }
 
     void GoToLobby() {
