@@ -201,6 +201,18 @@ public abstract class Interactable : MonoBehaviourPun {
   }
   
   [PunRPC]
+  public void AddCompletedTaskRPC() {
+    AddTask();
+    if (PhotonNetwork.IsMasterClient) {
+      task.Complete();
+      if (this is Stealable) {
+        View.TransferOwnership(PhotonNetwork.LocalPlayer);
+        transform.position = ((Stealable)this).destination.transform.position;
+      }
+    }
+  }
+  
+  [PunRPC]
   public void AddTaskWithTimerRPC(Timer timer) {
     AddTaskRPC();
     task.timer = timer;

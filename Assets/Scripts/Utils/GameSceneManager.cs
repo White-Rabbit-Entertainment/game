@@ -71,6 +71,7 @@ public class GameSceneManager : MonoBehaviour {
     ///   <list>     
     public void CheckTimer() {
       if (Timer.RoundTimer.IsComplete()) {
+        Debug.Log("Time ran out");
         EndGame(Team.Traitor);
       } 
     }

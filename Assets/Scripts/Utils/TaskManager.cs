@@ -78,9 +78,10 @@ public class TaskManager : MonoBehaviourPun {
         }
         expectedNumberOfTasks += 1 + possibleMasterTaskables[i].GetComponent<Interactable>().hardRequirements.Count;
         PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
-        view.RPC("AddTaskRPC", RpcTarget.All);
         if (i < numberOfTasksInitaillyCompleted) {
-          possibleMasterTaskables[i].GetComponent<Task>().Complete();
+          view.RPC("AddCompletedTaskRPC", RpcTarget.All);
+        } else {
+          view.RPC("AddTaskRPC", RpcTarget.All);
         }
     }
     // Say that we have finished the work of setting up tasks (used for
@@ -148,7 +149,7 @@ public class TaskManager : MonoBehaviourPun {
 
   /// <summary> Return if all Loyal tasks have been completed. </summary> 
   public void CheckAllTasksCompleted() {
-    if (NumberOfTasksCompleted() == tasks.Count) {
+    if (NumberOfTasksCompleted() == tasks.Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
       gameSceneManager.EndGame(Team.Loyal);
     }
   }

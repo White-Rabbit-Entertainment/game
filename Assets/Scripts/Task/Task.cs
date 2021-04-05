@@ -32,7 +32,7 @@ public class Task : MonoBehaviour {
     get { return GetComponent<PhotonView>(); }
   }
 
-  void Start() {
+  void Awake() {
     if (!tutorialTask) {
       taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
       taskManager.AddTask(this);
@@ -73,7 +73,7 @@ public class Task : MonoBehaviour {
     if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);;
     if (!tutorialTask) {
       taskManager.CheckAllTasksCompleted();
     }
@@ -97,8 +97,6 @@ public class Task : MonoBehaviour {
     } else {
       View.RPC("CompleteRPC", RpcTarget.All);
     }
-    PlayableCharacter me =  NetworkManager.instance.GetMe();
-    View.RPC("CompleteRPC", RpcTarget.All);
   }
   
   [PunRPC]
