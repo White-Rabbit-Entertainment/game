@@ -46,8 +46,19 @@ public abstract class PlayableCharacter : Character {
       GetComponentInChildren<CameraMouseLook>().enabled = true;
     }
 
+    public void UnassignTask() {
+        assignedSubTask.DisableTarget();
+        assignedSubTask.Unassign();
+
+        // This locally sets your tasks to nothing
+        assignedSubTask = null;
+        assignedMasterTask = null;
+    }
+
     [PunRPC]
     public void Kill() {
+        UnassignTask();
+
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
         GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
 
