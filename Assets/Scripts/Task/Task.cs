@@ -32,7 +32,7 @@ public class Task : MonoBehaviour {
     get { return GetComponent<PhotonView>(); }
   }
 
-  void Start() {
+  void Awake() {
     if (!tutorialTask) {
       taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
       taskManager.AddTask(this);
@@ -73,11 +73,14 @@ public class Task : MonoBehaviour {
     if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);
+    View.RPC("SetTaskGlowRPC", RpcTarget.All);;
     if (!tutorialTask) {
       taskManager.CheckAllTasksCompleted();
     }
     GetComponent<Interactable>().DisableTarget();
+    if (isUndoable && NetworkManager.instance.GetMe() is Traitor) {
+      EnableTarget();
+    }
   }
    
   // Complete taks and consume all the requirements  eg pocketables
@@ -94,8 +97,6 @@ public class Task : MonoBehaviour {
     } else {
       View.RPC("CompleteRPC", RpcTarget.All);
     }
-    PlayableCharacter me =  NetworkManager.instance.GetMe();
-    View.RPC("CompleteRPC", RpcTarget.All);
   }
   
   [PunRPC]
@@ -112,6 +113,9 @@ public class Task : MonoBehaviour {
       requirement.TaskInteractable.OnParentTaskUncomplete();
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
+    if (NetworkManager.instance.GetMe() is Traitor) {
+      DisableTarget();
+    }
   }
 
   public void Uncomplete() {
@@ -135,11 +139,10 @@ public class Task : MonoBehaviour {
   }
   
   public void AssignToCharacter(PlayableCharacter character) {
-    Debug.Log($"Setting my task");
     character.assignedTask = this;
     isAssigned = true;
     if (character.IsMe()) {
-      EnabledTarget();
+      EnableTarget();
       taskManager.requested = false;
     }
   }
@@ -153,7 +156,7 @@ public class Task : MonoBehaviour {
     isAssigned = false;
   }
 
-  public void EnabledTarget() {
+  public void EnableTarget() {
     Interactable interactable = GetComponent<Interactable>();
     interactable.EnableTarget();
     Debug.Log("Task Enabled");

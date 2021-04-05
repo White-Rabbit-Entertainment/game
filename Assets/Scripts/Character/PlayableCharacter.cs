@@ -40,14 +40,14 @@ public abstract class PlayableCharacter : Character {
     }
 
     public virtual void Freeze() {
-      GetComponent<PlayerMovement>().enabled = false;
-      GetComponent<PlayerAnimation>().enabled = false;
+      GetComponent<PlayerMovement>().frozen = true;
+      // GetComponent<PlayerAnimation>().enabled = false;
       GetComponentInChildren<CameraMouseLook>().enabled = false;
     }
 
     public void Unfreeze() {
-      GetComponent<PlayerMovement>().enabled = true;
-      GetComponent<PlayerAnimation>().enabled = true;
+      GetComponent<PlayerMovement>().frozen = false;
+      // GetComponent<PlayerAnimation>().enabled = true;
       GetComponentInChildren<CameraMouseLook>().enabled = true;
     }
 

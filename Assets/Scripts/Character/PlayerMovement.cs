@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviourPun
     public float gravity = -19.62f;
     public float jumpHeight = 3f;
     private Movement movement;
-
+    public bool frozen = false;
 
     void Awake() {
         // If the player is not me (ie not some other player on the network)
@@ -43,11 +43,17 @@ public class PlayerMovement : MonoBehaviourPun
     // Update is called once per frame
     void Update() {
         //get user input
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        bool isJumping = Input.GetButtonDown("Jump");
+        float x = 0;
+        float z = 0;
+        bool isJumping = false;
+        bool isSprinting = false;
+        if (!frozen) {
+            x = Input.GetAxis("Horizontal");
+            z = Input.GetAxis("Vertical");
+            isJumping = Input.GetButtonDown("Jump");
+            isSprinting = Input.GetKey("left shift");
+        }
         bool isGrounded = GetComponent<CharacterController>().isGrounded;
-        bool isSprinting = Input.GetKey("left shift");
         
         //apply movement
         Vector3 move = movement.Calculate(x, z, isJumping, isGrounded, isSprinting, Time.deltaTime);

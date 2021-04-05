@@ -37,6 +37,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           SetRoomProperty("TasksSet", false);
           SetRoomProperty("WinningTeam", "None");
           SetRoomProperty("NumberOfTasks", 10);
+          SetRoomProperty("NumberOfTasksInitallyCompleted", 2);
           
           List<Player> players = GetPlayers();
           // int numberOfTraitors = GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));

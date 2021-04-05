@@ -12,7 +12,6 @@ namespace PixelPlay.OffScreenIndicator
         /// <returns></returns>
         public static Vector3 GetScreenPosition(Camera mainCamera, Vector3 targetPosition)
         {
-            Debug.Log("Getting screen position");
             Vector3 screenPosition = mainCamera.WorldToScreenPoint(targetPosition);
             return screenPosition;
         }
@@ -25,7 +24,6 @@ namespace PixelPlay.OffScreenIndicator
         public static bool IsTargetVisible(Vector3 screenPosition)
         {
             bool isTargetVisible = screenPosition.z > 0 && screenPosition.x > 0 && screenPosition.x < Screen.width && screenPosition.y > 0 && screenPosition.y < Screen.height;
-            Debug.Log(isTargetVisible);
             return isTargetVisible;
         }
 

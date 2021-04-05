@@ -72,6 +72,7 @@ public class GameSceneManager : MonoBehaviour {
     ///   <list>     
     public void CheckTimer() {
       if (Timer.RoundTimer.IsComplete()) {
+        Debug.Log("Time ran out");
         EndGame(Team.Traitor);
       } 
     }
@@ -113,7 +114,7 @@ public class GameSceneManager : MonoBehaviour {
     
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        Timer.RoundTimer.Start(30);
+        Timer.RoundTimer.Start(1000);
       }
     }
     
