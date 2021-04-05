@@ -160,7 +160,7 @@ public abstract class Interactable : MonoBehaviourPun {
 
   /// <summary> Add a task to this item, i.e. Create a tast to
   /// steal this </summary>
-  public virtual void AddTask() {
+  public virtual void AddTask(Task parentTask = null) {
       // Add the Task script to this
       if (this.task != null) {
         throw new Exception($"You are trying to add a task to {gameObject} which already has a task.");
@@ -184,15 +184,13 @@ public abstract class Interactable : MonoBehaviourPun {
       
       // Set outline colour and turn on
       View.RPC("SetTaskGlowRPC", RpcTarget.All);
+      if (parentTask != null) {
+        task.parent = parentTask;
+      } else {
+        task.taskManager.AddTask(task);
+      }
   }
 
-  // Adds a task and also sets the parent of the new task.
-  public virtual void AddTask(Task parentTask) {
-    AddTask();
-    task.parent = parentTask;
-  }
-
-  // This adds a task to the interactable on all clients. It can only be used
   // for master tasks (tasks with no parents).
   [PunRPC]
   public void AddTaskRPC() {

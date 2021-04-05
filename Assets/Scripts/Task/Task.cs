@@ -35,7 +35,6 @@ public class Task : MonoBehaviour {
   void Awake() {
     if (!tutorialTask) {
       taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
-      taskManager.AddTask(this);
     }
   }
 
