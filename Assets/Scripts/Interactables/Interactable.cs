@@ -204,11 +204,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public void AddCompletedTaskRPC() {
     AddTask();
     if (PhotonNetwork.IsMasterClient) {
-      task.Complete();
-      if (this is Stealable) {
-        View.TransferOwnership(PhotonNetwork.LocalPlayer);
-        transform.position = ((Stealable)this).destination.transform.position;
-      }
+      task.ManualComplete();
     }
   }
   
