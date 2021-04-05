@@ -98,7 +98,7 @@ public class Task : MonoBehaviour {
       // When you complete a task if you are a loyal you want a new one
       PlayableCharacter me = NetworkManager.instance.GetMe();
       if (!isManual) {
-        if (me is Loyal && me.assignedSubTask == null || me.assignedSubTask.isCompleted) {
+        if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
           if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
             taskManager.RequestNewTask();
           } else {

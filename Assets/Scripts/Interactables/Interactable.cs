@@ -205,7 +205,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   [PunRPC]
   public void AddCompletedTaskRPC() {
-    AddTask();
+    AddTaskRPC();
     if (PhotonNetwork.IsMasterClient) {
       task.ManualComplete();
     }
