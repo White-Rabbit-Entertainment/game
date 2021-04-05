@@ -90,16 +90,27 @@ public class Task : MonoBehaviour {
     }
   }
   
-  public void Complete() {
+  public void Complete(bool isManual = false) {
     if (tutorialTask) {
       CompleteRPC();
     } else {
       View.RPC("CompleteRPC", RpcTarget.All);
+      // When you complete a task if you are a loyal you want a new one
+      PlayableCharacter me = NetworkManager.instance.GetMe();
+      if (!isManual) {
+        if (me is Loyal && me.assignedSubTask == null || me.assignedSubTask.isCompleted) {
+          if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
+            taskManager.RequestNewTask();
+          } else {
+            me.assignedMasterTask.AssignSubTaskToCharacter(me);
+          }
+        }
+      }
     }
   }
 
   public void ManualComplete() {
-    Complete();
+    Complete(true);
     foreach (Task requirement in requirements) {
       requirement.ManualComplete();
     }

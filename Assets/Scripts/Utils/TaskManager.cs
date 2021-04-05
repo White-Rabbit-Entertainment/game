@@ -32,25 +32,6 @@ public class TaskManager : MonoBehaviourPun {
     ) {
       SetTasks();
     }
-
-    if ((!requested) 
-    && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
-    && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
-    && (
-            NetworkManager.instance.GetMe().assignedSubTask == null 
-        ||  NetworkManager.instance.GetMe().assignedSubTask.isCompleted
-      )
-    ) {
-      Debug.Log("Requesting new task");
-      PlayableCharacter character = NetworkManager.instance.GetMe();
-      if (character is Loyal) {
-        if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
-          RequestNewTask();
-        } else {
-          character.assignedMasterTask.AssignSubTaskToCharacter(character);
-        }
-      }
-    }
   }
 
   public void AddTask(Task task) {
