@@ -156,6 +156,7 @@ MonoBehaviour:
   staminaRegenerationRate: 2
   gravity: -19.62
   jumpHeight: 3
+  frozen: 0
 --- !u!114 &-7170074885266061504
 MonoBehaviour:
   m_ObjectHideFlags: 0
