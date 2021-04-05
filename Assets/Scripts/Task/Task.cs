@@ -128,7 +128,9 @@ public class Task : MonoBehaviour {
 
   public void Assign(PlayableCharacter character) {
     Debug.Log($"Assign task to {character.Owner.NickName}");
+    //Master calls assignToCharacter first to ensure it is done before anyone else
     AssignToCharacter(character);
+    //Then we call AssignToCharacter on all other players
     View.RPC("AssignRPC", RpcTarget.Others, character.View.ViewID);
   }
 
@@ -139,6 +141,7 @@ public class Task : MonoBehaviour {
   }
   
   public void AssignToCharacter(PlayableCharacter character) {
+    character.contextTaskUI.SetTask(this);
     character.assignedTask = this;
     isAssigned = true;
     if (character.IsMe()) {

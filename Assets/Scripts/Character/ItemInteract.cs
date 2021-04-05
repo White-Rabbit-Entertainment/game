@@ -79,7 +79,7 @@ public class ItemInteract : MonoBehaviourPun {
 
                 if (currentInteractable.HasTask()) {
                     if (character.contextTaskUI != null) {
-                        character.contextTaskUI.SetTask(currentInteractable.task);
+                        //character.contextTaskUI.SetTask(currentInteractable.task);
                     }
                 }
                 // If we are pressing mouse down then do the interaction
