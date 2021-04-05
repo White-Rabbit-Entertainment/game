@@ -78,6 +78,9 @@ public class Task : MonoBehaviour {
       taskManager.CheckAllTasksCompleted();
     }
     GetComponent<Interactable>().DisableTarget();
+    if (isUndoable && NetworkManager.instance.GetMe() is Traitor) {
+      EnableTarget();
+    }
   }
    
   // Complete taks and consume all the requirements  eg pocketables
@@ -112,6 +115,9 @@ public class Task : MonoBehaviour {
       requirement.TaskInteractable.OnParentTaskUncomplete();
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
+    if (NetworkManager.instance.GetMe() is Traitor) {
+      DisableTarget();
+    }
   }
 
   public void Uncomplete() {
@@ -138,7 +144,7 @@ public class Task : MonoBehaviour {
     character.assignedTask = this;
     isAssigned = true;
     if (character.IsMe()) {
-      EnabledTarget();
+      EnableTarget();
       taskManager.requested = false;
     }
   }
@@ -152,7 +158,7 @@ public class Task : MonoBehaviour {
     isAssigned = false;
   }
 
-  public void EnabledTarget() {
+  public void EnableTarget() {
     Interactable interactable = GetComponent<Interactable>();
     interactable.EnableTarget();
     Debug.Log("Task Enabled");
