@@ -63,6 +63,8 @@ public class Sabotageable : Interactable {
         PlayableCharacter fixPlayer = PhotonView.Find(fixPlayerViewId).GetComponent<PlayableCharacter>();
         // TODO Show in UI that given character has fixed (same as voting)
         playersThatFixed.Add(fixPlayer);
+
+        // If the sabotagable is fully fixed
         if (numberOfPlayersToFix - playersThatFixed.Count <= 0) {
             isSabotaged = false;
             // Tell everyone that the task is now completed
