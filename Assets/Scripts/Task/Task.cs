@@ -141,11 +141,11 @@ public class Task : MonoBehaviour {
   }
   
   public void AssignToCharacter(PlayableCharacter character) {
-    character.contextTaskUI.SetTask(this);
     character.assignedTask = this;
     isAssigned = true;
     if (character.IsMe()) {
       EnableTarget();
+      character.contextTaskUI.SetTask(this);
       taskManager.requested = false;
     }
   }

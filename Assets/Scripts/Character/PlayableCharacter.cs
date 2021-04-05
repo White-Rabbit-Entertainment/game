@@ -23,16 +23,10 @@ public abstract class PlayableCharacter : Character {
       if (itemInteract.possibleInteractables.Contains(item)) {
          itemInteract.possibleInteractables.Remove(item);
       }
-      if (item.HasTask()) {
-        contextTaskUI.SetTask(item.task);
-      }
       base.Pickup(item);
     }
 
     public override void PutDown(Pickupable item) {
-      if (item.HasTask()) {
-        contextTaskUI.RemoveTask();
-      }
       base.PutDown(item);
     }
      public bool IsMe() {
