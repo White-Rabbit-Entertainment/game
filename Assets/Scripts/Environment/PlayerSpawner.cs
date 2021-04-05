@@ -70,7 +70,7 @@ public class PlayerSpawner : MonoBehaviour {
         // Otherwise load in n agents which have the same role as the player
         for(int i = 0; i < numberOfAgentsPerPlayer; i++){
             // Spawn in the agent
-            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, gameSceneManager.RandomNavmeshLocation(30f), Quaternion.identity);
+            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, gameSceneManager.RandomNavmeshLocation(), Quaternion.identity);
             agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
 
             // Assign the same role as the player to the agent
@@ -97,7 +97,7 @@ public class PlayerSpawner : MonoBehaviour {
             // spawnPoint = new Vector3(1,4,10);
             playerPrefab = ghostPrefab;
         }
-        spawnPoint = gameSceneManager.RandomNavmeshLocation(5f);
+        spawnPoint = gameSceneManager.RandomNavmeshLocation();
         // Spawn in the player at the spawn point
         player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity);
 

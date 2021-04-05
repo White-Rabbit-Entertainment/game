@@ -118,14 +118,14 @@ public class GameSceneManager : MonoBehaviour {
       }
     }
     
-    public Vector3 RandomNavmeshLocation(float radius = 5f) {
+    public Vector3 RandomNavmeshLocation(float radius = 25f) {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-        randomDirection += transform.position;
         NavMeshHit hit;
         Vector3 finalPosition = Vector3.zero;
         if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
             finalPosition = hit.position;
         }
+        Debug.Log($"{finalPosition.x},{finalPosition.y+3}, {finalPosition.z}");
         return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
     }
 
