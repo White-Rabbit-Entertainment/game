@@ -108,6 +108,7 @@ public class Task : MonoBehaviour {
       View.TransferOwnership(PhotonNetwork.LocalPlayer);
       TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
     }
+    TaskInteractable.PlayItemAnimation();
   }
   
   [PunRPC]
