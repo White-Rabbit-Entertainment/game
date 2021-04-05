@@ -160,6 +160,9 @@ public abstract class Interactable : MonoBehaviourPun {
   /// steal this </summary>
   public virtual void AddTask() {
       // Add the Task script to this
+      if (this.task != null) {
+        throw new Exception($"You are trying to add a task to {gameObject} which already has a task.");
+      }
       task = gameObject.AddComponent<Task>() as Task;
 
       // All stealing tasks should have the same kind of description
@@ -240,12 +243,10 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (task != null && character is Agent) {
-      Debug.Log("Agents cannot interact with tasks");
-      return false;
-    }
-    if (HasTask() && !task.AllChildrenCompleted()) return false;
-    return HasTask() ? taskTeam.HasFlag(character.team) : team.HasFlag(character.team);
+    if (character is Loyal && ((Loyal)character).assignedTask == task) return true;
+    if (character is Traitor && (HasUndoTask() || (HasTask() && task.AllChildrenCompleted()))) return true;
+    if (character is Agent && task == null) return true;
+    return false;
   }
   
   //// Taks Requirements

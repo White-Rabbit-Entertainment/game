@@ -33,9 +33,11 @@ public class TaskManager : MonoBehaviourPun {
       SetTasks();
     }
 
-    if (!requested && NetworkManager.instance.RoomPropertyIs("TasksSet", true) && (NetworkManager.instance.GetMe().assignedTask == null || NetworkManager.instance.GetMe().assignedTask.isCompleted)) {
-      //  Debug.Log("New Task!");
-       RequestNewTask();
+    if ((!requested) && NetworkManager.instance.RoomPropertyIs("TasksSet", true) && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) && (NetworkManager.instance.GetMe().assignedTask == null || NetworkManager.instance.GetMe().assignedTask.isCompleted)) {
+      Debug.Log("Requesting new task");
+      if (NetworkManager.instance.GetMe() is Loyal) {
+        RequestNewTask();
+      }
     }
   }
 
@@ -45,6 +47,7 @@ public class TaskManager : MonoBehaviourPun {
 
   void SetTasks() {
     // Get the number of tasks of each type which should be created
+    int expectedNumberOfTasks = 0;
     int numberOfTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasks");
     // Get all possible items to assign tasks to in the environment 
     // We split this so we can assign the correct number of stealing
@@ -72,12 +75,14 @@ public class TaskManager : MonoBehaviourPun {
                   possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
             }
         }
+        expectedNumberOfTasks += 1 + possibleMasterTaskables[i].GetComponent<Interactable>().hardRequirements.Count;
         PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
         view.RPC("AddTaskRPC", RpcTarget.All);
     }
     // Say that we have finished the work of setting up tasks (used for
     // knowing everything is loaded).
     NetworkManager.instance.SetRoomProperty("TasksSet", true);
+    NetworkManager.instance.SetRoomProperty("NumberOfTasksSet", expectedNumberOfTasks);
   }
 
   public List<Task> GetTasks() {
@@ -117,17 +122,21 @@ public class TaskManager : MonoBehaviourPun {
 
   public void RequestNewTask() {
     requested = true;
+    Debug.Log("Asking master client for new task");
     GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
   }
 
   [PunRPC]
   public void AssignTask(int requestingPlayerViewId) {
     PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
+    Debug.Log($"Assigning a task to {taskRequester.Owner.NickName}");
+    Debug.Log($"Number of tasks available for {taskRequester.Owner.NickName} {tasks.Count}");
     Task nextTask = null;
     if (taskRequester.assignedTask != null) nextTask = taskRequester.assignedTask.parent;
     if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
+      Debug.Log($"Actually assigning a task to {taskRequester.Owner.NickName}");
       nextTask.Assign(taskRequester);
       Debug.Log(nextTask.description);
     }

@@ -135,7 +135,6 @@ public class Task : MonoBehaviour {
   }
   
   public void AssignToCharacter(PlayableCharacter character) {
-    Debug.Log($"Setting my task");
     character.assignedTask = this;
     isAssigned = true;
     if (character.IsMe()) {
