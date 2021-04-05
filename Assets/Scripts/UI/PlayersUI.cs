@@ -26,8 +26,9 @@ public class PlayersUI : MonoBehaviourPun {
     item.GetComponent<Image>().color = player.roleInfo.colour; 
 
     // Set text to name
-    TMP_Text text = item.GetComponentInChildren<TMP_Text>();
-    text.text = player.Owner.NickName + " (" + player.roleInfo.name + ")";
+    TextMeshProUGUI playerName = item.GetComponentInChildren<TextMeshProUGUI>();
+    // text.text = player.Owner.NickName + " (" + player.roleInfo.name + ")";
+    playerName.text = player.Owner.NickName;
    
     // If the player is dead cross them out
     if (player is Ghost) {
