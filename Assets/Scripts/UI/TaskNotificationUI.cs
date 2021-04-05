@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class TaskNotificationUI : MonoBehaviour
 {
 
     public TextMeshProUGUI notificationPrefab;
-    public string taskCompleteMessage;
-    public string taskUndoneMessage;
+    private string taskCompleteMessage = "Task Complete";
+    private string taskUndoneMessage = "Task Undone";
 
     public void SetNotification(bool isComplete) {
         if (isComplete) {
-            notificationPrefab.SetText(taskCompleteMessage);
+            notificationPrefab.text = taskCompleteMessage;
         } else if (!isComplete) {
-            notificationPrefab.SetText(taskUndoneMessage);
+            notificationPrefab.text = taskUndoneMessage;
         }
 
         StartCoroutine(RemoveNotification(1f));
@@ -23,7 +24,7 @@ public class TaskNotificationUI : MonoBehaviour
 
     IEnumerator RemoveNotification(float timeInSeconds) {
         yield return new WaitForSeconds(timeInSeconds);
-        notificationPrefab.SetText("");
+        notificationPrefab.text = "";
     }
     
 }

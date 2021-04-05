@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using System;
+using TMPro;
 
 public class GameSceneManager : MonoBehaviour {
     
@@ -17,15 +18,15 @@ public class GameSceneManager : MonoBehaviour {
     public LoadingScreen loadingScreen;
     //public SettlementUI settlementUI;
     //public GameSceneManager gameSceneManager;
-
-    public GameObject traitorsWonUI;
-    public GameObject loyalsWonUI;
+    // public GameObject traitorsWonUI;
+    // public GameObject loyalsWonUI;
+    public GameObject playersWonUI;
     public GameObject traitorInfoUI;
-
-    public Button nextButtonTraitor;
-    public Button nextButtonLoyal;
-
+    public TextMeshProUGUI playerDescriptionText;
+    public Button nextButton;
     public Text traitorName;
+
+    
 
 
     void Update() {
@@ -84,22 +85,20 @@ public class GameSceneManager : MonoBehaviour {
     [PunRPC]
     // Show the UI for the gameover
     public void EndGameRPC(Team winningTeam) {
-        nextButtonTraitor.onClick.AddListener(GoToLobby);
-        nextButtonLoyal.onClick.AddListener(GoToLobby);
-
+        nextButton.onClick.AddListener(GoToLobby);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.instance.GetMe().Freeze();
 
         traitorName.text = string.Join(", ", NetworkManager.traitorNames);
-
+        playersWonUI.SetActive(true);
         if (winningTeam == Team.Traitor) {
-            traitorsWonUI.SetActive(true);
-            traitorInfoUI.SetActive(true);
+            playerDescriptionText.text = "Traitors Won!";
+            // traitorInfoUI.SetActive(true);
         }
         else {
-            loyalsWonUI.SetActive(true);
-            traitorInfoUI.SetActive(true);
+            playerDescriptionText.text = "Loyals Won!";
+            // traitorInfoUI.SetActive(true);
         }
     }
 
