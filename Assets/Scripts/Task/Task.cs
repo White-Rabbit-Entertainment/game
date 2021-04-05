@@ -123,6 +123,7 @@ public class Task : MonoBehaviour {
   }
 
   public void Assign(PlayableCharacter character) {
+    Debug.Log($"Assign task to {character.Owner.NickName}");
     AssignToCharacter(character);
     View.RPC("AssignRPC", RpcTarget.Others, character.View.ViewID);
   }
@@ -134,6 +135,7 @@ public class Task : MonoBehaviour {
   }
   
   public void AssignToCharacter(PlayableCharacter character) {
+    Debug.Log($"Setting my task");
     character.assignedTask = this;
     isAssigned = true;
     if (character.IsMe()) {

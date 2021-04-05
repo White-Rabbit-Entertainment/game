@@ -94,7 +94,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     
     // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
-      SceneManager.LoadScene("TutorialLobbyScene");
+      SceneManager.LoadScene("LobbyScene");
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> rooms) {}
