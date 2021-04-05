@@ -18,7 +18,7 @@ public class TaskManager : MonoBehaviourPun {
   public List<Task> tasks;
   public GameSceneManager gameSceneManager;
 
-  public bool requested = true;
+  public bool requested = false;
 
   void Start() {
     tasks = new List<Task>();
