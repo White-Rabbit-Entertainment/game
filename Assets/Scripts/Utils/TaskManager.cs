@@ -18,6 +18,8 @@ public class TaskManager : MonoBehaviourPun {
   public List<Task> tasks;
   public GameSceneManager gameSceneManager;
 
+  public bool requested = true;
+
   void Start() {
     tasks = new List<Task>();
   }
@@ -31,10 +33,10 @@ public class TaskManager : MonoBehaviourPun {
       SetTasks();
     }
 
-    if (NetworkManager.instance.RoomPropertyIs("TasksSet", true) && (NetworkManager.instance.GetMe().assignedTask == null || NetworkManager.instance.GetMe().assignedTask.isCompleted)) {
+    if (!requested && NetworkManager.instance.RoomPropertyIs("TasksSet", true) && (NetworkManager.instance.GetMe().assignedTask == null || NetworkManager.instance.GetMe().assignedTask.isCompleted)) {
       //  Debug.Log("New Task!");
        RequestNewTask();
-     }
+    }
   }
 
   public void AddTask(Task task) {
@@ -114,6 +116,7 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public void RequestNewTask() {
+    requested = true;
     GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
   }
 

@@ -138,6 +138,7 @@ public class Task : MonoBehaviour {
     isAssigned = true;
     if (character.IsMe()) {
       EnabledTarget();
+      taskManager.requested = false;
     }
   }
 
