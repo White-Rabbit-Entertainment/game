@@ -92,7 +92,7 @@ public class GameSceneManager : MonoBehaviour {
 
         traitorName.text = string.Join(", ", NetworkManager.traitorNames);
 
-        if (team == Team.Traitor) {
+        if (winningTeam == Team.Traitor) {
             traitorsWonUI.SetActive(true);
             traitorInfoUI.SetActive(true);
         }
