@@ -80,7 +80,7 @@ public class TaskManager : MonoBehaviourPun {
         PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
         view.RPC("AddTaskRPC", RpcTarget.All);
         if (i < numberOfTasksInitaillyCompleted) {
-          possibleMasterTaskables[i].GetComponent<Task>.Complete();
+          possibleMasterTaskables[i].GetComponent<Task>().Complete();
         }
     }
     // Say that we have finished the work of setting up tasks (used for
