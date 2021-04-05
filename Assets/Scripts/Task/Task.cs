@@ -152,13 +152,13 @@ public class Task : MonoBehaviour {
     //Master calls assignToCharacter first to ensure it is done before anyone else
     AssignTaskToCharacter(character);
     //Then we call AssignToCharacter on all other players
-    View.RPC("AssignTaskRPC", RpcTarget.Others, character.View.ViewID);
+    View.RPC("AssignTaskToCharacterRPC", RpcTarget.Others, character.View.ViewID);
   }
 
   [PunRPC]
-  public void AssignTaskRPC(int assignedCharacterViewId) {
+  public void AssignTaskToCharacterRPC(int assignedCharacterViewId) {
     PlayableCharacter character = PhotonView.Find(assignedCharacterViewId).GetComponent<PlayableCharacter>();
-    AssignTask(character);
+    AssignTaskToCharacter(character);
   }
   
   private void AssignTaskToCharacter(PlayableCharacter character) {
