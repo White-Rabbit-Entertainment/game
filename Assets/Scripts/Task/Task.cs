@@ -163,8 +163,10 @@ public class Task : MonoBehaviour {
 
   public void AssignSubTaskToCharacter(PlayableCharacter character) {
     Debug.Log($"Giving my self a master task: {FindIncompleteChild(this)}");
-    character.assignedSubTask = FindIncompleteChild(this);
-    character.contextTaskUI.SetTask(character.assignedSubTask);
+    Task subTask = FindIncompleteChild(this);
+    character.assignedSubTask = subTask;
+    character.contextTaskUI.SetTask(subTask);
+    subTask.EnableTarget();
   }
 
   private Task FindIncompleteChild(Task task) {
