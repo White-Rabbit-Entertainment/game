@@ -161,10 +161,13 @@ public abstract class Interactable : MonoBehaviourPun {
   /// <summary> Add a task to this item, i.e. Create a tast to
   /// steal this </summary>
   public virtual void AddTask(Task parentTask = null) {
-      // Add the Task script to this
+      
+      // If this already has a task then just use that 
       if (this.task != null) {
-        throw new Exception($"You are trying to add a task to {gameObject} which already has a task.");
+        Debug.Log($"You are trying to add another task to {gameObject}");
+        return;
       }
+
       task = gameObject.AddComponent<Task>() as Task;
 
       // All stealing tasks should have the same kind of description
