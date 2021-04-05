@@ -83,7 +83,7 @@ public class Task : MonoBehaviour {
   }
    
   // Complete taks and consume all the requirements  eg pocketables
-  public void CompleteAndConsume(Character character) {
+  public void CompleteAndConsume(Character character = null, bool isManual = false) {
     Complete();
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskComplete(character);
@@ -110,7 +110,7 @@ public class Task : MonoBehaviour {
   }
 
   public void ManualComplete() {
-    Complete(true);
+    CompleteAndConsume(null, true);
     foreach (Task requirement in requirements) {
       requirement.ManualComplete();
     }

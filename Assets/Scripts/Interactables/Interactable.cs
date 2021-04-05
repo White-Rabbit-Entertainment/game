@@ -148,7 +148,7 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   // Once completed set the disabled state
-  public virtual void OnParentTaskComplete(Character character) {}
+  public virtual void OnParentTaskComplete(Character character = null) {}
   
   // When the task is readded set the enabled state
   public virtual void OnParentTaskUncomplete() {}
