@@ -204,11 +204,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public void AddCompletedTaskRPC() {
     AddTask();
     if (PhotonNetwork.IsMasterClient) {
-      task.Complete();
-      if (this is Stealable) {
-        View.TransferOwnership(PhotonNetwork.LocalPlayer);
-        transform.position = ((Stealable)this).destination.transform.position;
-      }
+      task.ManualComplete();
     }
   }
   
@@ -258,6 +254,7 @@ public abstract class Interactable : MonoBehaviourPun {
     if (character is Loyal && ((Loyal)character).assignedTask == task) return true;
     if (character is Traitor && (HasUndoTask() || (HasTask() && task.AllChildrenCompleted()))) return true;
     if (character is Agent && task == null) return true;
+    if (this is Votable && GetComponent<PlayableCharacter>() != NetworkManager.instance.GetMe()) return true;
     return false;
   }
   

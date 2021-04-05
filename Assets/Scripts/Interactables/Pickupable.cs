@@ -13,7 +13,6 @@ public abstract class Pickupable : Interactable {
     playerAnimationTrigger = "Pickup";
   }
   
-
   public override void PrimaryInteraction(Character character) {
     if (!isPickedUp) {
       character.Pickup(this);
@@ -30,7 +29,7 @@ public abstract class Pickupable : Interactable {
   /// <summary> Checks if the item is in a pickup destination, if so it is
   /// picked up.  </summary>
   public override bool CanInteract(Character character) {
-    return !isPickedUp && !character.HasItem();
+    return base.CanInteract(character) && !isPickedUp && !character.HasItem();
   }
 
   [PunRPC]

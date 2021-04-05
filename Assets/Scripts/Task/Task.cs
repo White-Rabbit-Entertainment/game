@@ -98,6 +98,17 @@ public class Task : MonoBehaviour {
       View.RPC("CompleteRPC", RpcTarget.All);
     }
   }
+
+  public void ManualComplete() {
+    Complete();
+    foreach (Task requirement in requirements) {
+      requirement.ManualComplete();
+    }
+    if (TaskInteractable is Stealable) {
+      View.TransferOwnership(PhotonNetwork.LocalPlayer);
+      TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
+    }
+  }
   
   [PunRPC]
   public void UncompleteRPC() {
@@ -112,7 +123,6 @@ public class Task : MonoBehaviour {
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskUncomplete();
     }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);
     if (NetworkManager.instance.GetMe() is Traitor) {
       DisableTarget();
     }
@@ -141,11 +151,11 @@ public class Task : MonoBehaviour {
   }
   
   public void AssignToCharacter(PlayableCharacter character) {
-    character.contextTaskUI.SetTask(this);
     character.assignedTask = this;
     isAssigned = true;
     if (character.IsMe()) {
       EnableTarget();
+      character.contextTaskUI.SetTask(this);
       taskManager.requested = false;
     }
   }
