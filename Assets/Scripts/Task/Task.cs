@@ -151,15 +151,18 @@ public class Task : MonoBehaviour {
   }
   
   private void AssignTaskToCharacter(PlayableCharacter character) {
+    Debug.Log($"Assining master taks: {this}");
     character.assignedMasterTask = this;
     isAssigned = true;
     if (character.IsMe()) {
+      Debug.Log($"Assining master taks to me: {this}");
       AssignSubTaskToCharacter(character);
       taskManager.requested = false;
     }
   }
 
   public void AssignSubTaskToCharacter(PlayableCharacter character) {
+    Debug.Log($"Giving my self a master task: {FindIncompleteChild(this)}");
     character.assignedSubTask = FindIncompleteChild(this);
     character.contextTaskUI.SetTask(character.assignedSubTask);
   }
@@ -174,6 +177,9 @@ public class Task : MonoBehaviour {
         }
       }
     }
+
+    // This should be impossible
+    Debug.Log("This should be impossible");
     return null;
   }
 
