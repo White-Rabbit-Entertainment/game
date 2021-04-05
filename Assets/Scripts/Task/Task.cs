@@ -136,32 +136,49 @@ public class Task : MonoBehaviour {
     return !IsMasterTask() && !parent.isCompleted;
   }
 
-  public void Assign(PlayableCharacter character) {
+  public void AssignTask(PlayableCharacter character) {
     Debug.Log($"Assign task to {character.Owner.NickName}");
     //Master calls assignToCharacter first to ensure it is done before anyone else
-    AssignToCharacter(character);
+    AssignTaskToCharacter(character);
     //Then we call AssignToCharacter on all other players
-    View.RPC("AssignRPC", RpcTarget.Others, character.View.ViewID);
+    View.RPC("AssignTaskRPC", RpcTarget.Others, character.View.ViewID);
   }
 
   [PunRPC]
-  public void AssignRPC(int assignedCharacterViewId) {
+  public void AssignTaskRPC(int assignedCharacterViewId) {
     PlayableCharacter character = PhotonView.Find(assignedCharacterViewId).GetComponent<PlayableCharacter>();
-    AssignToCharacter(character);
+    AssignTask(character);
   }
   
-  public void AssignToCharacter(PlayableCharacter character) {
-    character.assignedTask = this;
+  private void AssignTaskToCharacter(PlayableCharacter character) {
+    character.assignedMasterTask = this;
     isAssigned = true;
     if (character.IsMe()) {
-      EnableTarget();
-      character.contextTaskUI.SetTask(this);
+      AssignSubTaskToCharacter(character);
       taskManager.requested = false;
     }
   }
 
-   public void Unassign() {
-   View.RPC("UnassignRPC", RpcTarget.All);
+  public void AssignSubTaskToCharacter(PlayableCharacter character) {
+    character.assignedSubTask = FindIncompleteChild(this);
+    character.contextTaskUI.SetTask(character.assignedSubTask);
+  }
+
+  private Task FindIncompleteChild(Task task) {
+    if (task.AllChildrenCompleted()) {
+      return task;
+    } else {
+      foreach (Task child in task.requirements) {
+        if (!child.isCompleted) {
+          return FindIncompleteChild(child);
+        }
+      }
+    }
+    return null;
+  }
+
+  public void Unassign() {
+    View.RPC("UnassignRPC", RpcTarget.All);
   }
 
   [PunRPC]

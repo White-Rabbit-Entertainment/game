@@ -12,7 +12,8 @@ public abstract class PlayableCharacter : Character {
     public GameObject playerTile;
     public PlayersUI playersUI;
 
-    public Task assignedTask = null;
+    public Task assignedMasterTask = null;
+    public Task assignedSubTask = null;
 
     protected override void Start() { 
       base.Start();

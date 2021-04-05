@@ -251,7 +251,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (character is Loyal && ((Loyal)character).assignedTask == task) return true;
+    if (character is Loyal && ((Loyal)character).assignedSubTask == task) return true;
     if (character is Traitor && (HasUndoTask() || (HasTask() && task.AllChildrenCompleted()))) return true;
     if (character is Agent && task == null) return true;
     if ((character is Loyal || character is Traitor) && this is Votable && GetComponent<PlayableCharacter>() != character) return true;
