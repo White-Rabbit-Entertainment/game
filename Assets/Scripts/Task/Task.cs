@@ -95,7 +95,6 @@ public class Task : MonoBehaviour {
       View.RPC("CompleteRPC", RpcTarget.All);
     }
     PlayableCharacter me =  NetworkManager.instance.GetMe();
-    me.assignedTask = null;
     View.RPC("CompleteRPC", RpcTarget.All);
   }
   

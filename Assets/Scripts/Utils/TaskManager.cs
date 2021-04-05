@@ -31,7 +31,7 @@ public class TaskManager : MonoBehaviourPun {
       SetTasks();
     }
 
-    if (NetworkManager.instance.RoomPropertyIs("TasksSet", true) && NetworkManager.instance.GetMe().assignedTask == null) {
+    if (NetworkManager.instance.RoomPropertyIs("TasksSet", true) && (NetworkManager.instance.GetMe().assignedTask == null || NetworkManager.instance.GetMe().assignedTask.isCompleted)) {
       //  Debug.Log("New Task!");
        AssignTask();
      }
@@ -105,8 +105,8 @@ public class TaskManager : MonoBehaviourPun {
   public Task FindUnassignedTask() {
     // Debug.Log("Running");
     foreach(Task task in tasks) {
-      if (!task.isAssigned && !task.isCompleted) {
-        // Debug.Log("Assigned");
+      if (!task.isAssigned && !task.isCompleted && task.AllChildrenCompleted()) {
+        Debug.Log("Assigned");
         return task;
       }
     }
@@ -114,7 +114,9 @@ public class TaskManager : MonoBehaviourPun {
   } 
 
   public void AssignTask() {
-    Task nextTask = FindUnassignedTask();
+    Task nextTask = null;
+    if (NetworkManager.instance.GetMe().assignedTask != null) nextTask = NetworkManager.instance.GetMe().assignedTask.parent;
+    if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
       nextTask.Assign();
