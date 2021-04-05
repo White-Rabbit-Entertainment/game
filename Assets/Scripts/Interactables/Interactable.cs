@@ -143,6 +143,8 @@ public abstract class Interactable : MonoBehaviourPun {
   
   public void DisableTarget() {
     target.enabled = false;
+    Debug.Log("target disabled");
+    Debug.Log($"target disabled for {gameObject}");
   }
 
   // Once completed set the disabled state

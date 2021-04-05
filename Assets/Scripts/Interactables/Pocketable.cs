@@ -23,6 +23,7 @@ public class Pocketable : Interactable {
 
   [PunRPC]
   public void SetItemDropConditions(Vector3 position) {
+    Debug.Log($"Actual position {position}");
     gameObject.SetActive(true);
     transform.position = position;
     NetworkManager.instance.GetMe().GetComponent<ItemInteract>().RemovePossibleInteractable(this);
@@ -32,13 +33,6 @@ public class Pocketable : Interactable {
   public override void PrimaryInteraction(Character character) {
     character.AddItemToInventory(this);
     base.PrimaryInteraction(character);
-
-    // Enable the indicator for the real characters
-    if (character == NetworkManager.instance.GetMe()) {
-      if (task != null && task.parent != null && !task.parent.isCompleted) {
-        task.parent.GetComponent<Interactable>().EnableTarget();
-      }
-    }
   }
 
   public override void OnParentTaskComplete(Character character) {
@@ -49,6 +43,7 @@ public class Pocketable : Interactable {
  
   public override void OnParentTaskUncomplete() {
     // Move to random position
+    Debug.Log($"Sent position {gameSceneManager.RandomNavmeshLocation(50f)}");
     View.RPC("SetItemDropConditions", RpcTarget.All, gameSceneManager.RandomNavmeshLocation(50f));
     task.Uncomplete();
   }

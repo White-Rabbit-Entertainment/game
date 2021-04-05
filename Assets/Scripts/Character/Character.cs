@@ -85,12 +85,12 @@ public abstract class Character : MonoBehaviour {
 
     if (resetConditions) {
       pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+      if (pocketedItem.task != null && pocketedItem.task.parent != null) {
+        pocketedItem.task.parent.GetComponent<Interactable>().DisableTarget();
+      }
     }
     if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {
       pocketedItem.task.Uncomplete();
-    }
-    if (pocketedItem.task != null && pocketedItem.task.parent != null) {
-      pocketedItem.task.parent.GetComponent<Interactable>().DisableTarget();
     }
     if (!(this is Agent)) {
       inventoryUI.RemoveItem();
