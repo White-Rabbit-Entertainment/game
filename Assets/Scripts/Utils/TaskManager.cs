@@ -35,12 +35,8 @@ public class TaskManager : MonoBehaviourPun {
 
     // Set inital task
     if ((!requested) 
-    && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
-    && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
-    && (
-            NetworkManager.instance.GetMe().assignedSubTask == null 
-        ||  NetworkManager.instance.GetMe().assignedSubTask.isCompleted
-      )
+      && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
+      && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
     ) {
       requested = true;
       Debug.Log("Requesting new task");
