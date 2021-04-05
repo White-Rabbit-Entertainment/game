@@ -168,7 +168,6 @@ public class Task : MonoBehaviour {
     if (character.IsMe()) {
       Debug.Log($"Assining master taks to me: {this}");
       AssignSubTaskToCharacter(character);
-      taskManager.requested = false;
     }
   }
 

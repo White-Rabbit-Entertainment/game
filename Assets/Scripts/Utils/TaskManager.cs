@@ -32,6 +32,27 @@ public class TaskManager : MonoBehaviourPun {
     ) {
       SetTasks();
     }
+
+    // Set inital task
+    if ((!requested) 
+    && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
+    && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
+    && (
+            NetworkManager.instance.GetMe().assignedSubTask == null 
+        ||  NetworkManager.instance.GetMe().assignedSubTask.isCompleted
+      )
+    ) {
+      requested = true;
+      Debug.Log("Requesting new task");
+      PlayableCharacter character = NetworkManager.instance.GetMe();
+      if (character is Loyal) {
+        if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
+          RequestNewTask();
+        } else {
+          character.assignedMasterTask.AssignSubTaskToCharacter(character);
+        }
+      }
+    }
   }
 
   public void AddTask(Task task) {
@@ -117,7 +138,6 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public void RequestNewTask() {
-    requested = true;
     Debug.Log("Asking master client for new task");
     GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
   }
