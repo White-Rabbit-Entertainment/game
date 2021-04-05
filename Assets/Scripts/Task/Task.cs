@@ -106,17 +106,10 @@ public class Task : MonoBehaviour {
     if (parent != null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
-    if (IsMasterTask() && AllChildrenCompleted()) {
-      foreach(Task task in requirements) {
-        if (NetworkManager.instance.GetMe().HasItem(task.GetComponent<Interactable>())) {
-          GetComponent<Interactable>().EnableTarget();
-        }
-      }
-    }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
     
     foreach(Task requirement in requirements) {
-      requirement.TaskInteractable.OnTaskUncomplete();
+      requirement.TaskInteractable.OnParentTaskUncomplete();
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);
   }

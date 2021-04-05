@@ -41,7 +41,7 @@ public class Pocketable : Interactable {
     }
   }
 
-  public override void OnTaskParentComplete(Character character) {
+  public override void OnParentTaskComplete(Character character) {
     // Take out of inventory
     character.RemoveItemFromInventory(false);
     gameObject.SetActive(false);

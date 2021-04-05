@@ -33,6 +33,7 @@ public class Stealable : Pickupable {
             // destination.indicator.SetActive(true);
             destination.EnableTarget();
         }
+        DisableTarget();
     }
     
     public override void PrimaryInteractionOff(Character character) {
@@ -40,6 +41,11 @@ public class Stealable : Pickupable {
         // destination.indicator.SetActive(false);
         if (destination != null) {
             destination.DisableTarget();
+        }
+        if (character is PlayableCharacter) {
+            if (task != null && ((PlayableCharacter)character).assignedTask == task) {
+                EnableTarget();
+            }
         }
     }
 }
