@@ -49,6 +49,7 @@ public class TaskManager : MonoBehaviourPun {
     // Get the number of tasks of each type which should be created
     int expectedNumberOfTasks = 0;
     int numberOfTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasks");
+    int numberOfTasksInitaillyCompleted = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasksInitallyCompleted");
     // Get all possible items to assign tasks to in the environment 
     // We split this so we can assign the correct number of stealing
     // tasks.
@@ -78,6 +79,9 @@ public class TaskManager : MonoBehaviourPun {
         expectedNumberOfTasks += 1 + possibleMasterTaskables[i].GetComponent<Interactable>().hardRequirements.Count;
         PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
         view.RPC("AddTaskRPC", RpcTarget.All);
+        if (i < numberOfTasksInitaillyCompleted) {
+          possibleMasterTaskables[i].Complete();
+        }
     }
     // Say that we have finished the work of setting up tasks (used for
     // knowing everything is loaded).
