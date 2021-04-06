@@ -25,6 +25,10 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     }
 
     void Update() {
+      if (localPlayerIsInRoom) {
+        NetworkManager.instance.ResetRoom();
+        roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
+      }
       if (!initialized && NetworkManager.instance.IsRoomReset()) {
         initialized = true;
         toggleReadyButton.onClick.AddListener(ToggleReady);
