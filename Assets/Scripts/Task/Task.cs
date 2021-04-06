@@ -87,6 +87,7 @@ public class Task : MonoBehaviour {
     if (!isManual) {
       if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
         if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
+          Debug.Log("Requesting new task after non manual complete");
           taskManager.RequestNewTask();
         } else {
           me.assignedMasterTask.AssignSubTaskToCharacter(me);
