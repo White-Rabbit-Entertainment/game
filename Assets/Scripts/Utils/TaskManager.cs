@@ -18,7 +18,7 @@ public class TaskManager : MonoBehaviourPun {
   public List<Task> tasks;
   public GameSceneManager gameSceneManager;
 
-  public bool requested = false;
+  private bool requested = false;
 
   void Start() {
     tasks = new List<Task>();
@@ -34,12 +34,13 @@ public class TaskManager : MonoBehaviourPun {
     }
 
     // Set inital task
-    if ((!requested) 
+    if (
+        !requested
       && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
       && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
     ) {
       requested = true;
-      Debug.Log("Requesting new task");
+      Debug.Log("Requesting new task in update");
       PlayableCharacter character = NetworkManager.instance.GetMe();
       if (character is Loyal) {
         if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
