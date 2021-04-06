@@ -19,10 +19,11 @@ public class BackButton : MonoBehaviour {
     }
 
     void GoBack() {
-        if (changeScene) {
-            NetworkManager.instance.ChangeScene(newScene);
-        } else {
+        NetworkManager.instance.ChangeScene(newScene);
+        if (currentGO != null) {
             currentGO.SetActive(false);
+        }
+        if (backGO != null) {
             backGO.SetActive(true);
         }
     }
