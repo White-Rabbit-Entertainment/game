@@ -64,7 +64,7 @@ public class Task : MonoBehaviour {
   }
 
   [PunRPC]
-  public void CompleteRPC() {
+  public void CompleteRPC(bool isManual) {
     isCompleted = true;
     isAssigned = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
@@ -77,48 +77,39 @@ public class Task : MonoBehaviour {
       taskManager.CheckAllTasksCompleted();
     }
     GetComponent<Interactable>().DisableTarget();
-    if (isUndoable && NetworkManager.instance.GetMe() is Traitor) {
+    if (isUndoable && me is Traitor) {
       EnableTarget();
     }
-  }
-   
-  // Complete taks and consume all the requirements  eg pocketables
-  public void CompleteAndConsume(Character character = null, bool isManual = false) {
-    Complete(isManual);
     foreach(Task requirement in requirements) {
-      requirement.TaskInteractable.OnParentTaskComplete(character);
+      requirement.TaskInteractable.OnParentTaskComplete(me);
+    }
+    // When you complete a task if you are a loyal you want a new one
+    if (!isManual) {
+      if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
+        if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
+          taskManager.RequestNewTask();
+        } else {
+          me.assignedMasterTask.AssignSubTaskToCharacter(me);
+        }
+      }
+    } else {
+      foreach (Task requirement in requirements) {
+        requirement.CompleteRPC(true);
+      }
+      if (TaskInteractable is Stealable) {
+        View.TransferOwnership(PhotonNetwork.LocalPlayer);
+        TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
+      }
+      TaskInteractable.PlayItemAnimation();
     }
   }
   
   public void Complete(bool isManual = false) {
     if (tutorialTask) {
-      CompleteRPC();
+      CompleteRPC(isManual);
     } else {
-      View.RPC("CompleteRPC", RpcTarget.All);
-      // When you complete a task if you are a loyal you want a new one
-      PlayableCharacter me = NetworkManager.instance.GetMe();
-      if (!isManual) {
-        if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
-          if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
-            taskManager.RequestNewTask();
-          } else {
-            me.assignedMasterTask.AssignSubTaskToCharacter(me);
-          }
-        }
-      }
+      View.RPC("CompleteRPC", RpcTarget.All, isManual);
     }
-  }
-
-  public void ManualComplete() {
-    CompleteAndConsume(null, true);
-    foreach (Task requirement in requirements) {
-      requirement.ManualComplete();
-    }
-    if (TaskInteractable is Stealable) {
-      View.TransferOwnership(PhotonNetwork.LocalPlayer);
-      TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
-    }
-    TaskInteractable.PlayItemAnimation();
   }
   
   [PunRPC]

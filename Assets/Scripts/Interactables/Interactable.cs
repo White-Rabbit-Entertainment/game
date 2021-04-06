@@ -81,7 +81,7 @@ public abstract class Interactable : MonoBehaviourPun {
     if (HasUndoTask() && character is Traitor) {
       TraitorUndo(character);
     } else if (HasTask() && !(character is Agent)) {
-      task.CompleteAndConsume(character);
+      task.Complete(character);
     }
       
     // Animation
@@ -207,7 +207,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public void AddCompletedTaskRPC() {
     AddTaskRPC();
     if (PhotonNetwork.IsMasterClient) {
-      task.ManualComplete();
+      task.Complete(true);
     }
   }
   

@@ -34,7 +34,7 @@ public class Sabotageable : Interactable {
             Timer.SabotageTimer.Start(30);
             View.RPC("Sabotage", RpcTarget.All);
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
-            task.CompleteRPC();
+            task.CompleteRPC(false);
             View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID);
             Timer.SabotageTimer.End();
             Reset();
