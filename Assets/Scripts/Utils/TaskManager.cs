@@ -33,10 +33,20 @@ public class TaskManager : MonoBehaviourPun {
       SetTasks();
     }
 
-    if ((!requested) && NetworkManager.instance.RoomPropertyIs("TasksSet", true) && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) && (NetworkManager.instance.GetMe().assignedTask == null || NetworkManager.instance.GetMe().assignedTask.isCompleted)) {
+    // Set inital task
+    if ((!requested) 
+      && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
+      && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
+    ) {
+      requested = true;
       Debug.Log("Requesting new task");
-      if (NetworkManager.instance.GetMe() is Loyal) {
-        RequestNewTask();
+      PlayableCharacter character = NetworkManager.instance.GetMe();
+      if (character is Loyal) {
+        if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
+          RequestNewTask();
+        } else {
+          character.assignedMasterTask.AssignSubTaskToCharacter(character);
+        }
       }
     }
   }
@@ -49,7 +59,7 @@ public class TaskManager : MonoBehaviourPun {
     // Get the number of tasks of each type which should be created
     int expectedNumberOfTasks = 0;
     int numberOfTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasks");
-    int numberOfTasksInitaillyCompleted = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasksInitallyCompleted");
+    int numberOfTasksInitiallyCompleted = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasksInitiallyCompleted");
     // Get all possible items to assign tasks to in the environment 
     // We split this so we can assign the correct number of stealing
     // tasks.
@@ -76,14 +86,15 @@ public class TaskManager : MonoBehaviourPun {
                   possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
             }
         }
-        expectedNumberOfTasks += 1 + possibleMasterTaskables[i].GetComponent<Interactable>().hardRequirements.Count;
+        expectedNumberOfTasks++;
         PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
-        if (i < numberOfTasksInitaillyCompleted) {
+        if (i < numberOfTasksInitiallyCompleted) {
           view.RPC("AddCompletedTaskRPC", RpcTarget.All);
         } else {
           view.RPC("AddTaskRPC", RpcTarget.All);
         }
     }
+
     // Say that we have finished the work of setting up tasks (used for
     // knowing everything is loaded).
     NetworkManager.instance.SetRoomProperty("TasksSet", true);
@@ -107,7 +118,6 @@ public class TaskManager : MonoBehaviourPun {
   public Task FindUncompleteTask() {
     foreach(Task task in tasks) {
       if (!task.isCompleted) {
-        // Debug.Log("Found");
         return task;
       }
     }
@@ -115,10 +125,8 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public Task FindUnassignedTask() {
-    // Debug.Log("Running");
     foreach(Task task in tasks) {
-      if (!task.isAssigned && !task.isCompleted && task.AllChildrenCompleted()) {
-        Debug.Log("Assigned");
+      if (!task.isAssigned && !task.isCompleted) {
         return task;
       }
     }
@@ -126,7 +134,6 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public void RequestNewTask() {
-    requested = true;
     Debug.Log("Asking master client for new task");
     GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
   }
@@ -137,12 +144,11 @@ public class TaskManager : MonoBehaviourPun {
     Debug.Log($"Assigning a task to {taskRequester.Owner.NickName}");
     Debug.Log($"Number of tasks available for {taskRequester.Owner.NickName} {tasks.Count}");
     Task nextTask = null;
-    if (taskRequester.assignedTask != null) nextTask = taskRequester.assignedTask.parent;
     if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
       Debug.Log($"Actually assigning a task to {taskRequester.Owner.NickName}");
-      nextTask.Assign(taskRequester);
+      nextTask.AssignTask(taskRequester);
       Debug.Log(nextTask.description);
     }
   }

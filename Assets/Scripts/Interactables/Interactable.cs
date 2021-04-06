@@ -81,7 +81,7 @@ public abstract class Interactable : MonoBehaviourPun {
     if (HasUndoTask() && character is Traitor) {
       TraitorUndo(character);
     } else if (HasTask() && !(character is Agent)) {
-      task.CompleteAndConsume(character);
+      task.Complete();
     }
       
     // Animation
@@ -148,7 +148,7 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   // Once completed set the disabled state
-  public virtual void OnParentTaskComplete(Character character) {}
+  public virtual void OnParentTaskComplete(Character character = null) {}
   
   // When the task is readded set the enabled state
   public virtual void OnParentTaskUncomplete() {}
@@ -160,11 +160,14 @@ public abstract class Interactable : MonoBehaviourPun {
 
   /// <summary> Add a task to this item, i.e. Create a tast to
   /// steal this </summary>
-  public virtual void AddTask() {
-      // Add the Task script to this
+  public virtual void AddTask(Task parentTask = null) {
+      
+      // If this already has a task then just use that 
       if (this.task != null) {
-        throw new Exception($"You are trying to add a task to {gameObject} which already has a task.");
+        Debug.Log($"You are trying to add another task to {gameObject}");
+        return;
       }
+
       task = gameObject.AddComponent<Task>() as Task;
 
       // All stealing tasks should have the same kind of description
@@ -184,15 +187,13 @@ public abstract class Interactable : MonoBehaviourPun {
       
       // Set outline colour and turn on
       View.RPC("SetTaskGlowRPC", RpcTarget.All);
+      if (parentTask != null) {
+        task.parent = parentTask;
+      } else {
+        task.taskManager.AddTask(task);
+      }
   }
 
-  // Adds a task and also sets the parent of the new task.
-  public virtual void AddTask(Task parentTask) {
-    AddTask();
-    task.parent = parentTask;
-  }
-
-  // This adds a task to the interactable on all clients. It can only be used
   // for master tasks (tasks with no parents).
   [PunRPC]
   public void AddTaskRPC() {
@@ -204,9 +205,9 @@ public abstract class Interactable : MonoBehaviourPun {
   
   [PunRPC]
   public void AddCompletedTaskRPC() {
-    AddTask();
+    AddTaskRPC();
     if (PhotonNetwork.IsMasterClient) {
-      task.ManualComplete();
+      task.Complete(true);
     }
   }
   
@@ -253,10 +254,10 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (character is Loyal && ((Loyal)character).assignedTask == task) return true;
+    if (character is Loyal && ((Loyal)character).assignedSubTask == task) return true;
     if (character is Traitor && (HasUndoTask() || (HasTask() && task.AllChildrenCompleted()))) return true;
     if (character is Agent && task == null) return true;
-    if (this is Votable && GetComponent<PlayableCharacter>() != NetworkManager.instance.GetMe()) return true;
+    if ((character is Loyal || character is Traitor) && this is Votable && GetComponent<PlayableCharacter>() != character) return true;
     return false;
   }
   

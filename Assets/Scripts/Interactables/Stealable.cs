@@ -43,7 +43,7 @@ public class Stealable : Pickupable {
             destination.DisableTarget();
         }
         if (character is PlayableCharacter) {
-            if (task != null && ((PlayableCharacter)character).assignedTask == task) {
+            if (task != null && ((PlayableCharacter)character).assignedSubTask == task) {
                 EnableTarget();
             }
         }

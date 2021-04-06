@@ -35,7 +35,6 @@ public class Task : MonoBehaviour {
   void Awake() {
     if (!tutorialTask) {
       taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
-      taskManager.AddTask(this);
     }
   }
 
@@ -65,7 +64,7 @@ public class Task : MonoBehaviour {
   }
 
   [PunRPC]
-  public void CompleteRPC() {
+  public void CompleteRPC(bool isManual) {
     isCompleted = true;
     isAssigned = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
@@ -78,37 +77,43 @@ public class Task : MonoBehaviour {
       taskManager.CheckAllTasksCompleted();
     }
     GetComponent<Interactable>().DisableTarget();
-    if (isUndoable && NetworkManager.instance.GetMe() is Traitor) {
+    if (isUndoable && me is Traitor) {
       EnableTarget();
     }
-  }
-   
-  // Complete taks and consume all the requirements  eg pocketables
-  public void CompleteAndConsume(Character character) {
-    Complete();
     foreach(Task requirement in requirements) {
-      requirement.TaskInteractable.OnParentTaskComplete(character);
+      requirement.TaskInteractable.OnParentTaskComplete(me);
+    }
+    // When you complete a task if you are a loyal you want a new one
+    if (!isManual) {
+      Debug.Log("ITS FUCKING MANUAL");
+      if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
+        Debug.Log("I NEED A NEW FUCKING TASK");
+        if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
+          Debug.Log("I NEED A NEW FUCKING MASTER TASK");
+          taskManager.RequestNewTask();
+        } else {
+          Debug.Log("assigning new subtask");
+          me.assignedMasterTask.AssignSubTaskToCharacter(me);
+        }
+      }
+    } else {
+      foreach (Task requirement in requirements) {
+        requirement.CompleteRPC(true);
+      }
+      if (TaskInteractable is Stealable) {
+        View.TransferOwnership(PhotonNetwork.LocalPlayer);
+        TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
+      }
+      TaskInteractable.PlayItemAnimation();
     }
   }
   
-  public void Complete() {
+  public void Complete(bool isManual = false) {
     if (tutorialTask) {
-      CompleteRPC();
+      CompleteRPC(isManual);
     } else {
-      View.RPC("CompleteRPC", RpcTarget.All);
+      View.RPC("CompleteRPC", RpcTarget.All, isManual);
     }
-  }
-
-  public void ManualComplete() {
-    Complete();
-    foreach (Task requirement in requirements) {
-      requirement.ManualComplete();
-    }
-    if (TaskInteractable is Stealable) {
-      View.TransferOwnership(PhotonNetwork.LocalPlayer);
-      TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
-    }
-    TaskInteractable.PlayItemAnimation();
   }
   
   [PunRPC]
@@ -137,32 +142,56 @@ public class Task : MonoBehaviour {
     return !IsMasterTask() && !parent.isCompleted;
   }
 
-  public void Assign(PlayableCharacter character) {
+  public void AssignTask(PlayableCharacter character) {
     Debug.Log($"Assign task to {character.Owner.NickName}");
     //Master calls assignToCharacter first to ensure it is done before anyone else
-    AssignToCharacter(character);
+    AssignTaskToCharacter(character);
     //Then we call AssignToCharacter on all other players
-    View.RPC("AssignRPC", RpcTarget.Others, character.View.ViewID);
+    View.RPC("AssignTaskToCharacterRPC", RpcTarget.Others, character.View.ViewID);
   }
 
   [PunRPC]
-  public void AssignRPC(int assignedCharacterViewId) {
+  public void AssignTaskToCharacterRPC(int assignedCharacterViewId) {
     PlayableCharacter character = PhotonView.Find(assignedCharacterViewId).GetComponent<PlayableCharacter>();
-    AssignToCharacter(character);
+    AssignTaskToCharacter(character);
   }
   
-  public void AssignToCharacter(PlayableCharacter character) {
-    character.assignedTask = this;
+  private void AssignTaskToCharacter(PlayableCharacter character) {
+    Debug.Log($"Assining master taks: {this}");
+    character.assignedMasterTask = this;
     isAssigned = true;
     if (character.IsMe()) {
-      EnableTarget();
-      character.contextTaskUI.SetTask(this);
-      taskManager.requested = false;
+      Debug.Log($"Assining master taks to me: {this}");
+      AssignSubTaskToCharacter(character);
     }
   }
 
-   public void Unassign() {
-   View.RPC("UnassignRPC", RpcTarget.All);
+  public void AssignSubTaskToCharacter(PlayableCharacter character) {
+    Debug.Log($"Giving my self a master task: {FindIncompleteChild(this)}");
+    Task subTask = FindIncompleteChild(this);
+    character.assignedSubTask = subTask;
+    character.contextTaskUI.SetTask(subTask);
+    subTask.EnableTarget();
+  }
+
+  private Task FindIncompleteChild(Task task) {
+    if (task.AllChildrenCompleted()) {
+      return task;
+    } else {
+      foreach (Task child in task.requirements) {
+        if (!child.isCompleted) {
+          return FindIncompleteChild(child);
+        }
+      }
+    }
+
+    // This should be impossible
+    Debug.Log("This should be impossible");
+    return null;
+  }
+
+  public void Unassign() {
+    View.RPC("UnassignRPC", RpcTarget.All);
   }
 
   [PunRPC]
