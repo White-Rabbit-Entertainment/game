@@ -65,7 +65,7 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
 
     void OnClickJoinRoom() {
-        FindLobbiesUI.SetActive(false);
+        RoomUI.SetActive(false);
         LobbyUI.SetActive(true);
         NetworkManager.instance.JoinRoom(roomNameInput.text);
     }

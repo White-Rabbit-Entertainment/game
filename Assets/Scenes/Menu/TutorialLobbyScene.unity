@@ -1122,6 +1122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCompleted: 0
+  isAssigned: 0
   description: Place the goldbar in the chest.
   taskManager: {fileID: 0}
   isUndoable: 1
