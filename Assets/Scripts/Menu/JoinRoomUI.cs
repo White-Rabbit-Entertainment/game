@@ -21,7 +21,8 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     public GameObject NameUI;
     public GameObject RoomUI;
 
-    public GameObject LobbiesUI;
+    public GameObject FindLobbiesUI;
+    public GameObject LobbyUI;
 
     public GameObject roomNamePrefab;
     public Transform gridLayout;
@@ -51,22 +52,28 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
 
     void FindLobbiesButton(){
         RoomUI.SetActive(false);
-        LobbiesUI.SetActive(true);
+        FindLobbiesUI.SetActive(true);
         OnRoomListUpdate(roomList);
     }
 
     void OnClickCreateRoom() {
-      Debug.Log("click registered");
-      NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
+        Debug.Log("click registered");
+        RoomUI.SetActive(false);
+        LobbyUI.SetActive(true);
+        NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
     }
 
 
     void OnClickJoinRoom() {
-      NetworkManager.instance.JoinRoom(roomNameInput.text);
+        FindLobbiesUI.SetActive(false);
+        LobbyUI.SetActive(true);
+        NetworkManager.instance.JoinRoom(roomNameInput.text);
     }
 
     void OnClickCreatePrivateRoom() {
         string PrivateRoom = 'p' + NetworkManager.instance.GenerateRoomName();
+        RoomUI.SetActive(false);
+        LobbyUI.SetActive(true);
         NetworkManager.instance.CreateRoom(PrivateRoom);
     }
 

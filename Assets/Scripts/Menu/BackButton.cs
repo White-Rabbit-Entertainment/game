@@ -8,9 +8,6 @@ public class BackButton : MonoBehaviour {
     public GameObject currentGO;   // Where you are
     public GameObject backGO;      // Where you go 
 
-    public bool changeScene = false;
-    public string newScene;
-
     Button button;
 
     void Start() {
@@ -19,7 +16,6 @@ public class BackButton : MonoBehaviour {
     }
 
     void GoBack() {
-        NetworkManager.instance.ChangeScene(newScene);
         if (currentGO != null) {
             currentGO.SetActive(false);
         }

@@ -21,7 +21,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
     public static List<string> traitorNames;
-    private string lobbyScene = "LobbyScene";
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     void Start() {
@@ -95,7 +94,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     
     // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
-      SceneManager.LoadScene("LobbyScene");
+      //SceneManager.LoadScene("LobbyScene");
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> rooms) {}
