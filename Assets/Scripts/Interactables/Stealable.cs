@@ -8,6 +8,7 @@ using Photon.Pun;
 public class Stealable : Pickupable {
 
     public PickupDestination destination;
+    public bool ignoreNextCollision = false;
 
     public override void Reset() {
         taskDescription = "Steal the " + this.name;
@@ -17,7 +18,9 @@ public class Stealable : Pickupable {
     /// <summary> When a stealable item collides with the "endpoint" the item
     /// should be stolen on all clients. </summary>
     void OnCollisionEnter(Collision collision) {
-	    if(collision.gameObject == destination.gameObject && PhotonNetwork.LocalPlayer.IsMasterClient) {
+        if (ignoreNextCollision) {
+            ignoreNextCollision = false;
+        } else if(collision.gameObject == destination.gameObject && PhotonNetwork.LocalPlayer.IsMasterClient) {
             // Calls the steal rpc on all clients
             task.Complete();
 	    }

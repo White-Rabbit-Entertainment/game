@@ -99,7 +99,13 @@ public class Task : MonoBehaviour {
       }
       if (TaskInteractable is Stealable) {
         View.TransferOwnership(PhotonNetwork.LocalPlayer);
-        TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
+        Stealable stealable = ((Stealable)TaskInteractable);
+        // When manually complete a stealable you dont want to also register
+        // the collision with the endzone (and recomplete). Therefore we
+        // disable the next collision.
+        stealable.ignoreNextCollision = true;
+        // Move stealable to endzone inorder to complete
+        TaskInteractable.transform.position = stealable.destination.transform.position;
       }
       if (PhotonNetwork.IsMasterClient) {
         TaskInteractable.PlayItemAnimation();
