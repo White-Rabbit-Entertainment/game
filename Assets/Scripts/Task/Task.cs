@@ -65,7 +65,6 @@ public class Task : MonoBehaviour {
 
   [PunRPC]
   public void CompleteRPC(bool isManual) {
-    if (isCompleted) return;
     isCompleted = true;
     isAssigned = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
@@ -101,8 +100,9 @@ public class Task : MonoBehaviour {
         View.TransferOwnership(PhotonNetwork.LocalPlayer);
         TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
       }
-      Debug.Log("Playing animation");
-      TaskInteractable.PlayItemAnimation();
+      if (PhotonNetwork.IsMasterClient) {
+        TaskInteractable.PlayItemAnimation();
+      }
     }
   }
   
