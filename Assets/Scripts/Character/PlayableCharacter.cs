@@ -47,8 +47,10 @@ public abstract class PlayableCharacter : Character {
     }
 
     public void UnassignTask() {
-        assignedSubTask.DisableTarget();
-        assignedSubTask.Unassign();
+        if (assignedSubTask != null) {
+            assignedSubTask.DisableTarget();
+            assignedSubTask.Unassign();
+        }
 
         // This locally sets your tasks to nothing
         assignedSubTask = null;

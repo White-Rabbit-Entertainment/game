@@ -85,14 +85,10 @@ public class Task : MonoBehaviour {
     }
     // When you complete a task if you are a loyal you want a new one
     if (!isManual) {
-      Debug.Log("ITS FUCKING MANUAL");
       if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
-        Debug.Log("I NEED A NEW FUCKING TASK");
         if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
-          Debug.Log("I NEED A NEW FUCKING MASTER TASK");
           taskManager.RequestNewTask();
         } else {
-          Debug.Log("assigning new subtask");
           me.assignedMasterTask.AssignSubTaskToCharacter(me);
         }
       }
@@ -104,11 +100,14 @@ public class Task : MonoBehaviour {
         View.TransferOwnership(PhotonNetwork.LocalPlayer);
         TaskInteractable.transform.position = ((Stealable)TaskInteractable).destination.transform.position;
       }
-      TaskInteractable.PlayItemAnimation();
+      if (PhotonNetwork.IsMasterClient) {
+        TaskInteractable.PlayItemAnimation();
+      }
     }
   }
   
   public void Complete(bool isManual = false) {
+    Debug.Log("Completing task");
     if (tutorialTask) {
       CompleteRPC(isManual);
     } else {

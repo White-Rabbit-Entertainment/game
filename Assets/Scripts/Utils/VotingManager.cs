@@ -95,9 +95,12 @@ public class VotingManager : MonoBehaviour {
     foreach (PlayableCharacter character in playersVotingFor.Concat(playersVotingAgainst)) {
       playersUI.ClearVote(character);
     }
+    Debug.Log("Ending vote");
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
+      Debug.Log("The vote is successful");
       if (suspectedPlayer.IsMe()) {
+        Debug.Log("Im going to kill myself");
         suspectedPlayer.Kill();
         if (NetworkManager.instance.NoLoyalsRemaining()) {
           gameSceneManager.EndGame(Team.Traitor);
