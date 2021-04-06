@@ -10,6 +10,8 @@ public class Sabotageable : Interactable {
 
     public GameObject sabotagedIndicator;
 
+    public GameObject smallFires;
+
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
     
     private GameSceneManager gameSceneManager;
@@ -40,6 +42,13 @@ public class Sabotageable : Interactable {
             Reset();
         }
     }
+    
+    public override bool CanInteract(Character character) {
+        if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) return true;
+        if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
+        return false;
+        
+    }
 
     public override void SetTaskGlow() {
         Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
@@ -56,6 +65,7 @@ public class Sabotageable : Interactable {
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
         sabotagedIndicator.SetActive(true);
+        smallFires.SetActive(true);
     }
 
     [PunRPC]
@@ -72,6 +82,9 @@ public class Sabotageable : Interactable {
             task = null;
             Destroy(GetComponent<Task>());
             sabotagedIndicator.SetActive(false);
+            smallFires.SetActive(false);
+            DisableTarget();
+
 
             // After an item is fixed its no longer interactable for anyone
             Destroy(this);
