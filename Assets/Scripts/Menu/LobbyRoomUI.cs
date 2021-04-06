@@ -20,12 +20,12 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     void Start() {
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
-      NetworkManager.instance.ResetRoom();
-      roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
+      // NetworkManager.instance.ResetRoom();
+      // roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
     }
 
     void Update() {
-      if (localPlayerIsInRoom) {
+      if (PhotonNetwork.CurrentRoom != null && !NetworkManager.instance.IsRoomReset()) {
         NetworkManager.instance.ResetRoom();
         roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
       }

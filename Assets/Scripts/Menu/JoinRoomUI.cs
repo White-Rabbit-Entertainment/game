@@ -63,7 +63,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
         NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
     }
 
-
     void OnClickJoinRoom() {
         RoomUI.SetActive(false);
         LobbyUI.SetActive(true);
@@ -76,7 +75,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
         LobbyUI.SetActive(true);
         NetworkManager.instance.CreateRoom(PrivateRoom);
     }
-
 
     void OnClickJoinPrivateRoom() {
         NetworkManager.instance.JoinRoom('p' + NetworkManager.instance.GenerateRoomName());
@@ -93,7 +91,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
                 }
             }
         }
-
 
         foreach (var room in roomList) {
             if (room.Name.StartsWith("p")) {
