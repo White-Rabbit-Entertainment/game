@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public enum Vote {
   For,
@@ -14,20 +15,20 @@ public enum Vote {
 public class VotingManager : MonoBehaviour {
   public GameObject setVoteUI;
   public GameObject voteInProgress;
-  public Text votingUIText;
+  public TextMeshProUGUI votingUIText;
   public PlayersUI playersUI;
   public GameSceneManager gameSceneManager;
 
-  public Text votesFor;
-  public Text votesAgainst;
-  public Text voteTimeRemaining;
-  public Text voteTitle;
+  public TextMeshProUGUI votesFor;
+  public TextMeshProUGUI votesAgainst;
+  public TextMeshProUGUI voteTimeRemaining;
+  public TextMeshProUGUI voteTitle;
   public GameObject currentVoteUI;
 
   public GameObject votingOutcomeUI;
   public GameObject voteUnsuccess;
-  public Text voteResult;
-  public Text voteUnsuccessful;
+  public TextMeshProUGUI voteResult;
+  public TextMeshProUGUI voteUnsuccessful;
   
   bool hasVoted = false;
   bool voteStarted = false;
@@ -156,7 +157,7 @@ public class VotingManager : MonoBehaviour {
 
     public void ShowVotingUnsuccess(string name)
     {
-        voteUnsuccessful.text = "The vote for" + name + "was unsuccessful";
+        voteUnsuccessful.text = "The vote for " + name + " was unsuccessful";
     }
 
     IEnumerator ShowOutcomeInProgress()
