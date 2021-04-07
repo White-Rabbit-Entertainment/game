@@ -90,17 +90,17 @@ PrefabInstance:
     - target: {fileID: 2305875844104867459, guid: beb753fd8f76b120a9299779f0895f76,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000021855694
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2305875844104867459, guid: beb753fd8f76b120a9299779f0895f76,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2305875844104867459, guid: beb753fd8f76b120a9299779f0895f76,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2305875844104867459, guid: beb753fd8f76b120a9299779f0895f76,
         type: 3}
@@ -127,6 +127,16 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2332235474238290017, guid: beb753fd8f76b120a9299779f0895f76,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a4cb5e885040089f59094576a9f6e42d, type: 2}
+    - target: {fileID: 2339637025297916333, guid: beb753fd8f76b120a9299779f0895f76,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 6724540497385013028, guid: beb753fd8f76b120a9299779f0895f76,
         type: 3}
       propertyPath: viewIdField

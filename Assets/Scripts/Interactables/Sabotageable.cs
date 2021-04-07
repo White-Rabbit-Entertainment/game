@@ -10,8 +10,6 @@ public class Sabotageable : Interactable {
 
     public GameObject sabotagedIndicator;
 
-    public GameObject smallFires;
-
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
     
     private GameSceneManager gameSceneManager;
@@ -60,16 +58,15 @@ public class Sabotageable : Interactable {
     }
 
     [PunRPC]
-    void Sabotage() {
+    public virtual void Sabotage() {
         AddTaskWithTimerRPC(Timer.SabotageTimer);
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
         sabotagedIndicator.SetActive(true);
-        smallFires.SetActive(true);
     }
 
     [PunRPC]
-    void Fix(int fixPlayerViewId) {
+    public virtual void Fix(int fixPlayerViewId) {
         PlayableCharacter fixPlayer = PhotonView.Find(fixPlayerViewId).GetComponent<PlayableCharacter>();
         // TODO Show in UI that given character has fixed (same as voting)
         playersThatFixed.Add(fixPlayer);
@@ -82,7 +79,6 @@ public class Sabotageable : Interactable {
             task = null;
             Destroy(GetComponent<Task>());
             sabotagedIndicator.SetActive(false);
-            smallFires.SetActive(false);
             DisableTarget();
 
 
