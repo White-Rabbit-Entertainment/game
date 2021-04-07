@@ -28,13 +28,13 @@ public class LobbyPage : MenuPage {
       initialized = false;
       enteredRoom = false;
       back.onClick.AddListener(Back);
+      roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
     }
 
     void Update() {
       if (PhotonNetwork.CurrentRoom != null && !NetworkManager.instance.IsRoomReset() && !enteredRoom) {
         enteredRoom = true;
         NetworkManager.instance.ResetRoom();
-        roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
       }
       if (!initialized && NetworkManager.instance.IsRoomReset()) {
         initialized = true;
