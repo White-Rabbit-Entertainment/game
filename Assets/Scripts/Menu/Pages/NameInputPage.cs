@@ -10,8 +10,8 @@ public class NameInputPage : MenuPage {
     public JoinRoomPage joinRoomPage;
     string pattern = @"^[a-zA-Z0-9]+$";
     Regex inputChecker;
-    
-    void Start() {
+
+    void OnEnable() {
         inputChecker = new Regex(pattern);
         playerNameInput.Select();
         playerNameInput.ActivateInputField(); 

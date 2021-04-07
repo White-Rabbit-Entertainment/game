@@ -18,7 +18,7 @@ public class TutorialLobbyRoomUI : MonoBehaviourPunCallbacks {
 
     bool initialized = false; 
 
-    void Start() {
+    void OnEnable() {
       Cursor.lockState = CursorLockMode.Locked;
       Cursor.visible = false;
       NetworkManager.instance.ResetRoom();

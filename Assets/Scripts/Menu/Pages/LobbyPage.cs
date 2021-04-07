@@ -21,7 +21,7 @@ public class LobbyPage : MenuPage {
     bool initialized;
     bool enteredRoom; 
 
-    void Start() {
+    void OnEnable() {
       Debug.Log("Start");
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;

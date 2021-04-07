@@ -9,12 +9,11 @@ public class RoomListPage : MenuPage {
     public Transform gridLayout;
     public GameObject roomNamePrefab;
  
-    void Start(){
+    void OnEnable(){
         OnRoomListUpdate(menuManager.roomList);
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
-
         gridLayout.gameObject.DestroyChildren();
         foreach (var room in roomList) {
             if (room.IsVisible && room.PlayerCount > 0) {
