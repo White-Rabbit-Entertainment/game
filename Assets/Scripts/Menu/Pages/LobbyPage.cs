@@ -81,4 +81,9 @@ public class LobbyPage : MenuPage {
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }
+
+    public override void Close() {
+      PhotonNetwork.LeaveRoom();
+      base.Close();
+    }
 }
