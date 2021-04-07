@@ -43,8 +43,4 @@ public class JoinRoomPage : MenuPage {
     void OnClickJoinPrivateRoom() {
         NetworkManager.instance.JoinRoom('p' + NetworkManager.instance.GenerateRoomName());
     }
-    
-    public override void OnJoinedRoom() {
-        lobbyPage.Open();
-    }
 }
