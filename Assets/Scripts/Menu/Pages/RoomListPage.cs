@@ -10,7 +10,7 @@ public class RoomListPage : MenuPage {
     public GameObject roomNamePrefab;
  
     void Start(){
-        // OnRoomListUpdate(menuManager.roomList);
+        OnRoomListUpdate(menuManager.roomList);
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
