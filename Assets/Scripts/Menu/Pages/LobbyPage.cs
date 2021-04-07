@@ -15,6 +15,9 @@ public class LobbyPage : MenuPage {
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
+    public JoinRoomPage joinRoomPage;
+    public Button back;
+
     bool initialized;
     bool enteredRoom; 
 
@@ -24,6 +27,7 @@ public class LobbyPage : MenuPage {
       Cursor.visible = true;
       initialized = false;
       enteredRoom = false;
+      back.onClick.AddListener(Back);
     }
 
     void Update() {
@@ -74,9 +78,12 @@ public class LobbyPage : MenuPage {
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }
-
-    public override void Close() {
+    
+    void Back() {
       PhotonNetwork.LeaveRoom();
-      base.Close();
+    }
+    
+    public override void OnLeftRoom() {
+      joinRoomPage.Open();
     }
 }

@@ -12,9 +12,9 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public NameInputPage nameInputPage;
     public LobbyPage lobbyPage;
     public JoinRoomPage joinRoomPage;
+    
+    public List<RoomInfo> roomList;
 
-    public override void OnConnectedToMaster() {}
-   
     void Start() {
         if (PhotonNetwork.LocalPlayer.NickName == null || PhotonNetwork.LocalPlayer.NickName == "") {
             nameInputPage.Open();
@@ -23,5 +23,9 @@ public class MenuManager: MonoBehaviourPunCallbacks {
         } else {
             joinRoomPage.Open();
         }
+    }
+    
+    public override void OnRoomListUpdate(List<RoomInfo> roomList) {
+        this.roomList = roomList;
     }
 }

@@ -6,17 +6,15 @@ using Photon.Pun;
 using Photon.Realtime;
 
 public class RoomListPage : MenuPage {
-    List<RoomInfo> roomList;
     public Transform gridLayout;
     public GameObject roomNamePrefab;
+    public MenuManager menuManager;
 
     void Start(){
-        List<RoomInfo> roomList = new List<RoomInfo>();
-        OnRoomListUpdate(roomList);
+        OnRoomListUpdate(menuManager.roomList);
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
-        this.roomList = roomList;
         for (int i = 0; i < gridLayout.childCount; i++) {
             if (gridLayout.GetChild(i).gameObject.GetComponentInChildren<Text>().text == roomList[i].Name) {
                 Destroy(gridLayout.GetChild(i).gameObject);
