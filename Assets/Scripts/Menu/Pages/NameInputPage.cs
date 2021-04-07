@@ -12,6 +12,7 @@ public class NameInputPage : MenuPage {
     Regex inputChecker;
 
     void OnEnable() {
+        base.OnEnable();
         inputChecker = new Regex(pattern);
         playerNameInput.Select();
         playerNameInput.ActivateInputField(); 
