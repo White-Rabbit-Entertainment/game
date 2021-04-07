@@ -33,6 +33,10 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public override void OnJoinedRoom() {
         lobbyPage.Open();
     }
+   
+    public override void OnLeftRoom() {
+        joinRoomPage.Open();
+    }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
         Debug.Log("On room list update manager");
