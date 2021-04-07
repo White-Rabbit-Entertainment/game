@@ -5,22 +5,11 @@ using UnityEngine.UI;
 
 public class BackButton : MonoBehaviour {
    
-    public GameObject currentGO;   // Where you are
-    public GameObject backGO;      // Where you go 
-
+    public MenuPage page;      // Where you go 
     Button button;
 
     void Start() {
         button = GetComponent<Button>(); 
-        button.onClick.AddListener(GoBack);
-    }
-
-    void GoBack() {
-        if (currentGO != null) {
-            currentGO.SetActive(false);
-        }
-        if (backGO != null) {
-            backGO.SetActive(true);
-        }
+        button.onClick.AddListener(page.Open);
     }
 }

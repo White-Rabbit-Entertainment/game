@@ -6,7 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 
-public class LobbyRoomUI : MonoBehaviourPunCallbacks {
+public class LobbyPage : MenuPage {
     public Text playerCounter;
     public Text roomName;
 
