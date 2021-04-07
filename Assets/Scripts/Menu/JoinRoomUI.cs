@@ -28,6 +28,13 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     public Transform gridLayout;
 
     void Start() {
+        if (PhotonNetwork.LocalPlayer.NickName == null) {
+            NameUI.SetActive(true);
+        } else if (PhotonNetwork.CurrentRoom != null) {
+            LobbyUI.SetActive(true);
+        } else {
+            RoomUI.SetActive(true);
+        }
         playerNameInput.Select();
         playerNameInput.ActivateInputField(); 
         createRoomButton.onClick.AddListener(OnClickCreateRoom);
@@ -38,7 +45,6 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     public override void OnConnectedToMaster() {
-        NameUI.SetActive(true);
         PhotonNetwork.JoinLobby();
     }
 

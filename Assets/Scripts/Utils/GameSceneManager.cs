@@ -130,6 +130,6 @@ public class GameSceneManager : MonoBehaviour {
     }
 
     void GoToLobby() {
-        NetworkManager.instance.ChangeScene("LobbyScene");
+        NetworkManager.instance.ChangeScene("MenuScene");
     }
 }
