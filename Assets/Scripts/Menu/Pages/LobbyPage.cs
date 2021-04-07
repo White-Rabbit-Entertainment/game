@@ -24,8 +24,6 @@ public class LobbyPage : MenuPage {
       Cursor.visible = true;
       initialized = false;
       enteredRoom = false;
-      // NetworkManager.instance.ResetRoom();
-      // roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
     }
 
     void Update() {
@@ -70,14 +68,9 @@ public class LobbyPage : MenuPage {
     }
 
     void ToggleReady() {
-      Debug.Log("CLICK");
-      Debug.Log(PhotonNetwork.CurrentRoom);
-      Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
       if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
-        Debug.Log("UNREADY");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       } else {
-        Debug.Log("READY");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }

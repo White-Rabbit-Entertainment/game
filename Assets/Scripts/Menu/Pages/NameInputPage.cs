@@ -12,6 +12,10 @@ public class NameInputPage : MenuPage {
         playerNameInput.ActivateInputField(); 
         startButton.onClick.AddListener(StartButton);
     }
+
+    public override void OnConnectedToMaster() {
+        startButton.interactable = true;
+    }
     
     void StartButton() {
         PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
