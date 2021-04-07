@@ -14,6 +14,9 @@ public class RoomListPage : MenuPage {
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
+        Debug.Log(roomList);
+        Debug.Log(roomList.Count);
+
         for (int i = 0; i < gridLayout.childCount; i++) {
             if (gridLayout.GetChild(i).gameObject.GetComponentInChildren<Text>().text == roomList[i].Name) {
                 Destroy(gridLayout.GetChild(i).gameObject);
@@ -23,7 +26,7 @@ public class RoomListPage : MenuPage {
                 }
             }
         }
-
+        
         foreach (var room in roomList) {
             if (room.Name.StartsWith("p")) {
                 continue;

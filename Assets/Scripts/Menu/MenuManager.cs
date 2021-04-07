@@ -16,7 +16,6 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public List<RoomInfo> roomList;
 
     void Start() {
-        List<RoomInfo> roomList = new List<RoomInfo>();
         if (PhotonNetwork.LocalPlayer.NickName == null || PhotonNetwork.LocalPlayer.NickName == "") {
             nameInputPage.Open();
         } else if (PhotonNetwork.CurrentRoom != null) {
@@ -27,6 +26,9 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
+        Debug.Log("On room list update manager");
+        Debug.Log(roomList);
+        Debug.Log(roomList.Count);
         this.roomList = roomList;
     }
 }
