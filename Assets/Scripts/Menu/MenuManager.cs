@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using TMPro;
 
 public class MenuManager: MonoBehaviourPunCallbacks {
@@ -24,6 +25,10 @@ public class MenuManager: MonoBehaviourPunCallbacks {
             joinRoomPage.Open();
         }
     }
+
+    public override void OnConnectedToMaster() {
+        PhotonNetwork.JoinLobby();
+    }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
         Debug.Log("On room list update manager");
@@ -32,3 +37,4 @@ public class MenuManager: MonoBehaviourPunCallbacks {
         this.roomList = roomList;
     }
 }
+
