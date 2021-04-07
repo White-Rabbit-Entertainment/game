@@ -82,8 +82,4 @@ public class LobbyPage : MenuPage {
     void Back() {
       PhotonNetwork.LeaveRoom();
     }
-    
-    public override void OnLeftRoom() {
-      joinRoomPage.Open();
-    }
 }
