@@ -8,7 +8,6 @@ using Photon.Realtime;
 public class RoomListPage : MenuPage {
     public Transform gridLayout;
     public GameObject roomNamePrefab;
-    public MenuManager menuManager;
 
     void Start(){
         OnRoomListUpdate(menuManager.roomList);
