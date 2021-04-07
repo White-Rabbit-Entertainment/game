@@ -14,27 +14,14 @@ public class RoomListPage : MenuPage {
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
-        Debug.Log(roomList);
-        Debug.Log(roomList.Count);
 
-        for (int i = 0; i < gridLayout.childCount; i++) {
-            if (gridLayout.GetChild(i).gameObject.GetComponentInChildren<Text>().text == roomList[i].Name) {
-                Destroy(gridLayout.GetChild(i).gameObject);
-
-                if (roomList[i].PlayerCount == 0) {
-                    roomList.Remove(roomList[i]);
-                }
-            }
-        }
-        
+        gridLayout.gameObject.DestroyChildren();
         foreach (var room in roomList) {
-            if (room.Name.StartsWith("p")) {
-                continue;
+            if (room.IsVisible && room.PlayerCount > 0) {
+                GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
+                newRoom.GetComponentInChildren<Text>().text = room.Name; //+ "(" + room.PlayerCount + ")";
+                newRoom.transform.SetParent(gridLayout);
             }
-            
-            GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
-            newRoom.GetComponentInChildren<Text>().text = room.Name; //+ "(" + room.PlayerCount + ")";
-            newRoom.transform.SetParent(gridLayout);
         }
     }
 }

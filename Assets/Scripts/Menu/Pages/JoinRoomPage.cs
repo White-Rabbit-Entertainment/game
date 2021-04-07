@@ -18,29 +18,12 @@ public class JoinRoomPage : MenuPage {
     public LobbyPage lobbyPage;
 
     void Start() {
-        createRoomButton.onClick.AddListener(OnClickCreateRoom);
-        joinRoomButton.onClick.AddListener(OnClickJoinRoom);
-        createPrivateButton.onClick.AddListener(OnClickCreatePrivateRoom);
-        findLobbiesButton.onClick.AddListener(roomListPage.Open);
-        
         roomNameInput.Select();
         roomNameInput.ActivateInputField(); 
-    }
 
-    void OnClickCreateRoom() {
-        NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
-    }
-
-    void OnClickJoinRoom() {
-        NetworkManager.instance.JoinRoom(roomNameInput.text);
-    }
-
-    void OnClickCreatePrivateRoom() {
-        string PrivateRoom = 'p' + NetworkManager.instance.GenerateRoomName();
-        NetworkManager.instance.CreateRoom(PrivateRoom);
-    }
-
-    void OnClickJoinPrivateRoom() {
-        NetworkManager.instance.JoinRoom('p' + NetworkManager.instance.GenerateRoomName());
+        createRoomButton.onClick.AddListener(() => NetworkManager.instance.CreateRoom(true));
+        joinRoomButton.onClick.AddListener(() => NetworkManager.instance.JoinRoom(roomNameInput.text));
+        createPrivateButton.onClick.AddListener(() => NetworkManager.instance.CreateRoom(false));
+        findLobbiesButton.onClick.AddListener(roomListPage.Open);
     }
 }

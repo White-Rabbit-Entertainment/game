@@ -39,9 +39,6 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
-        Debug.Log("On room list update manager");
-        Debug.Log(roomList);
-        Debug.Log(roomList.Count);
         this.roomList = roomList;
     }
 }

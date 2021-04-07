@@ -301,8 +301,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         && !Timer.RoundTimer.IsStarted();
     } 
 
-    public void CreateRoom (string roomName) {
-      PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
+    public void CreateRoom (bool isVisible = true) {
+      PhotonNetwork.CreateRoom(GenerateRoomName(), new RoomOptions {IsVisible = isVisible, EmptyRoomTtl = 1,});
     }
 
     public void JoinRoom(string roomName) {
