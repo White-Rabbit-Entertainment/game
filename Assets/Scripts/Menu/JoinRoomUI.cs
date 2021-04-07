@@ -57,16 +57,15 @@ public class JoinRoomUI: MonoBehaviourPunCallbacks {
     }
 
     void OnClickCreateRoom() {
-        Debug.Log("click registered");
+        NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
         RoomUI.SetActive(false);
         LobbyUI.SetActive(true);
-        NetworkManager.instance.CreateRoom(NetworkManager.instance.GenerateRoomName());
     }
 
     void OnClickJoinRoom() {
+        NetworkManager.instance.JoinRoom(roomNameInput.text);
         RoomUI.SetActive(false);
         LobbyUI.SetActive(true);
-        NetworkManager.instance.JoinRoom(roomNameInput.text);
     }
 
     void OnClickCreatePrivateRoom() {

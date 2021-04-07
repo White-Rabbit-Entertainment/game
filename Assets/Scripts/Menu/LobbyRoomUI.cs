@@ -15,22 +15,28 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
 
-    bool initialized = false; 
+    bool initialized;
+    bool enteredRoom; 
 
     void Start() {
+      Debug.Log("Start");
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
+      initialized = false;
+      enteredRoom = false;
       // NetworkManager.instance.ResetRoom();
       // roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
     }
 
     void Update() {
-      if (PhotonNetwork.CurrentRoom != null && !NetworkManager.instance.IsRoomReset()) {
+      if (PhotonNetwork.CurrentRoom != null && !NetworkManager.instance.IsRoomReset() && !enteredRoom) {
+        enteredRoom = true;
         NetworkManager.instance.ResetRoom();
         roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
       }
       if (!initialized && NetworkManager.instance.IsRoomReset()) {
         initialized = true;
+        Debug.Log("adding listener to ready button");
         toggleReadyButton.onClick.AddListener(ToggleReady);
       }
       if (initialized) {
@@ -46,7 +52,6 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
       }
     }
 
-    
     void SetText() {
       playerList.DestroyChildren();
       foreach (Player player in NetworkManager.instance.GetPlayers()) {
@@ -65,9 +70,14 @@ public class LobbyRoomUI : MonoBehaviourPunCallbacks {
     }
 
     void ToggleReady() {
+      Debug.Log("CLICK");
+      Debug.Log(PhotonNetwork.CurrentRoom);
+      Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties.ToStringFull());
       if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
+        Debug.Log("UNREADY");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       } else {
+        Debug.Log("READY");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }
