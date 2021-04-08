@@ -11,7 +11,6 @@ using Photon.Pun;
 /// interacted with. It add the funcitons for glowing. These can then be called
 /// in <c>ItemInteract</c>. </summary>
 [DisallowMultipleComponent]
-[RequireComponent(typeof(PhotonView))]
 public abstract class Interactable : MonoBehaviourPun {
 
   public string taskDescription;
@@ -81,18 +80,16 @@ public abstract class Interactable : MonoBehaviourPun {
     // interaction to traitor undo.
     if (HasUndoTask() && character is Traitor) {
       TraitorUndo(character);
-    } else {
-      if (HasTask() && !(character is Agent)) {
-        task.Complete();
-      }
-      
-      // Animation
-      PlayItemAnimation();
-      PlayCharacterAnimation(character);
-
-      // Destory if single use
-      if (singleUse) View.RPC("Disable", RpcTarget.All);
+    } else if (HasTask() && !(character is Agent)) {
+      task.Complete();
     }
+      
+    // Animation
+    PlayItemAnimation();
+    PlayCharacterAnimation(character);
+
+    // Destory if single use
+    if (singleUse) View.RPC("Disable", RpcTarget.All);
   }
 
   // The action to do when an interaction stops. Atm this when the mouse is
@@ -109,18 +106,19 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public virtual void SetTaskGlow() {
-    if (inRange) {
-      Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
-      if (team == Team.Traitor && HasUndoTask()) {
-        SetGlow(undoTaskColour);
-      } else if (HasTask() && task.AllChildrenCompleted()) {
-        SetGlow(taskColour);
-      } else {
-        outline.enabled = false;
-      }
-    } else {
-      outline.enabled = false;
-    }
+    //if (inRange) {
+    //  Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
+    //  if (team == Team.Traitor && HasUndoTask()) {
+    //    SetGlow(undoTaskColour);
+    //  } else if (HasTask() && task.AllChildrenCompleted()) {
+    //    SetGlow(taskColour);
+    //  } else {
+    //    outline.enabled = false;
+    //  }
+    //} else {
+    //  outline.enabled = false;
+    //}
+    outline.enabled = false;
   }
 
   public void SetGlow(Color colour) {
@@ -138,13 +136,22 @@ public abstract class Interactable : MonoBehaviourPun {
     SetTaskGlow();
   }
 
-  public void EnabledTarget() {
+  public void EnableTarget() {
     target.enabled = true;
+    Debug.Log("target enabled");
   }
   
   public void DisableTarget() {
     target.enabled = false;
+    Debug.Log("target disabled");
+    Debug.Log($"target disabled for {gameObject}");
   }
+
+  // Once completed set the disabled state
+  public virtual void OnParentTaskComplete(Character character = null) {}
+  
+  // When the task is readded set the enabled state
+  public virtual void OnParentTaskUncomplete() {}
 
   // When we remove iteractablility from an item it should stop glowing.
   void OnDestroy() {
@@ -153,8 +160,14 @@ public abstract class Interactable : MonoBehaviourPun {
 
   /// <summary> Add a task to this item, i.e. Create a tast to
   /// steal this </summary>
-  public virtual void AddTask() {
-      // Add the Task script to this
+  public virtual void AddTask(Task parentTask = null) {
+      
+      // If this already has a task then just use that 
+      if (this.task != null) {
+        Debug.Log($"You are trying to add another task to {gameObject}");
+        return;
+      }
+
       task = gameObject.AddComponent<Task>() as Task;
 
       // All stealing tasks should have the same kind of description
@@ -174,21 +187,27 @@ public abstract class Interactable : MonoBehaviourPun {
       
       // Set outline colour and turn on
       View.RPC("SetTaskGlowRPC", RpcTarget.All);
+      if (parentTask != null) {
+        task.parent = parentTask;
+      } else {
+        task.taskManager.AddTask(task);
+      }
   }
 
-  // Adds a task and also sets the parent of the new task.
-  public virtual void AddTask(Task parentTask) {
-    AddTask();
-    task.parent = parentTask;
-  }
-
-  // This adds a task to the interactable on all clients. It can only be used
   // for master tasks (tasks with no parents).
   [PunRPC]
   public void AddTaskRPC() {
     AddTask();
     if (!task.IsMasterTask()) {
       throw new Exception("AddTaskRPC cannot be used on a subtask.");
+    }
+  }
+  
+  [PunRPC]
+  public void AddCompletedTaskRPC() {
+    AddTaskRPC();
+    if (PhotonNetwork.IsMasterClient) {
+      task.Complete(true);
     }
   }
   
@@ -235,12 +254,11 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
-    if (task != null && character is Agent) {
-      Debug.Log("Agents cannot interact with tasks");
-      return false;
-    }
-    if (HasTask() && !task.AllChildrenCompleted()) return false;
-    return HasTask() ? taskTeam.HasFlag(character.team) : team.HasFlag(character.team);
+    if (character is Loyal && ((Loyal)character).assignedSubTask == task) return true;
+    if (character is Traitor && (HasUndoTask() || (HasTask() && task.IsMasterTask() && task.AllChildrenCompleted()))) return true;
+    if (character is Agent && task == null) return true;
+    if ((character is Loyal || character is Traitor) && this is Votable && GetComponent<PlayableCharacter>() != character) return true;
+    return false;
   }
   
   //// Taks Requirements

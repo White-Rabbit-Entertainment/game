@@ -7,8 +7,13 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
+    public TaskNotificationUI taskNotificationUI;
+
     public GameObject playerTile;
     public PlayersUI playersUI;
+
+    public Task assignedMasterTask = null;
+    public Task assignedSubTask = null;
 
     protected override void Start() { 
       base.Start();
@@ -22,24 +27,38 @@ public abstract class PlayableCharacter : Character {
       base.Pickup(item);
     }
 
-    public bool IsMe() {
+    public override void PutDown(Pickupable item) {
+      base.PutDown(item);
+    }
+     public bool IsMe() {
       return Owner == PhotonNetwork.LocalPlayer;
     }
 
     public virtual void Freeze() {
-      GetComponent<PlayerMovement>().enabled = false;
-      GetComponent<PlayerAnimation>().enabled = false;
+      GetComponent<PlayerMovement>().frozen = true;
       GetComponentInChildren<CameraMouseLook>().enabled = false;
     }
 
     public void Unfreeze() {
-      GetComponent<PlayerMovement>().enabled = true;
-      GetComponent<PlayerAnimation>().enabled = true;
+      GetComponent<PlayerMovement>().frozen = false;
       GetComponentInChildren<CameraMouseLook>().enabled = true;
+    }
+
+    public void UnassignTask() {
+        if (assignedSubTask != null) {
+            assignedSubTask.DisableTarget();
+            assignedSubTask.Unassign();
+        }
+
+        // This locally sets your tasks to nothing
+        assignedSubTask = null;
+        assignedMasterTask = null;
     }
 
     [PunRPC]
     public void Kill() {
+        UnassignTask();
+
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
         GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
 

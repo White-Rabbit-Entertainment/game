@@ -18,6 +18,8 @@ public class TaskManager : MonoBehaviourPun {
   public List<Task> tasks;
   public GameSceneManager gameSceneManager;
 
+  private bool requested = false;
+
   void Start() {
     tasks = new List<Task>();
   }
@@ -30,6 +32,24 @@ public class TaskManager : MonoBehaviourPun {
     ) {
       SetTasks();
     }
+
+    // Set inital task
+    if (
+        !requested
+      && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
+      && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
+    ) {
+      requested = true;
+      Debug.Log("Requesting new task in update");
+      PlayableCharacter character = NetworkManager.instance.GetMe();
+      if (character is Loyal) {
+        if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
+          RequestNewTask();
+        } else {
+          character.assignedMasterTask.AssignSubTaskToCharacter(character);
+        }
+      }
+    }
   }
 
   public void AddTask(Task task) {
@@ -38,7 +58,9 @@ public class TaskManager : MonoBehaviourPun {
 
   void SetTasks() {
     // Get the number of tasks of each type which should be created
+    int expectedNumberOfTasks = 0;
     int numberOfTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasks");
+    int numberOfTasksInitiallyCompleted = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasksInitiallyCompleted");
     // Get all possible items to assign tasks to in the environment 
     // We split this so we can assign the correct number of stealing
     // tasks.
@@ -65,12 +87,19 @@ public class TaskManager : MonoBehaviourPun {
                   possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
             }
         }
+        expectedNumberOfTasks++;
         PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
-        view.RPC("AddTaskRPC", RpcTarget.All);
+        if (i < numberOfTasksInitiallyCompleted) {
+          view.RPC("AddCompletedTaskRPC", RpcTarget.All);
+        } else {
+          view.RPC("AddTaskRPC", RpcTarget.All);
+        }
     }
+
     // Say that we have finished the work of setting up tasks (used for
     // knowing everything is loaded).
     NetworkManager.instance.SetRoomProperty("TasksSet", true);
+    NetworkManager.instance.SetRoomProperty("NumberOfTasksSet", expectedNumberOfTasks);
   }
 
   public List<Task> GetTasks() {
@@ -87,9 +116,47 @@ public class TaskManager : MonoBehaviourPun {
     return count;
   }
 
+  public Task FindUncompleteTask() {
+    foreach(Task task in tasks) {
+      if (!task.isCompleted) {
+        return task;
+      }
+    }
+    return null;
+  }
+
+  public Task FindUnassignedTask() {
+    foreach(Task task in tasks) {
+      if (!task.isAssigned && !task.isCompleted) {
+        return task;
+      }
+    }
+    return null;
+  }
+
+  public void RequestNewTask() {
+    Debug.Log("Asking master client for new task");
+    GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
+  }
+
+  [PunRPC]
+  public void AssignTask(int requestingPlayerViewId) {
+    PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
+    Debug.Log($"Assigning a task to {taskRequester.Owner.NickName}");
+    Debug.Log($"Number of tasks available for {taskRequester.Owner.NickName} {tasks.Count}");
+    Task nextTask = null;
+    if (nextTask == null) nextTask = FindUnassignedTask();
+    if (nextTask == null) nextTask = FindUncompleteTask();
+    if (nextTask != null) {
+      Debug.Log($"Actually assigning a task to {taskRequester.Owner.NickName}");
+      nextTask.AssignTask(taskRequester);
+      Debug.Log(nextTask.description);
+    }
+  }
+
   /// <summary> Return if all Loyal tasks have been completed. </summary> 
   public void CheckAllTasksCompleted() {
-    if (NumberOfTasksCompleted() == tasks.Count) {
+    if (NumberOfTasksCompleted() == tasks.Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
       gameSceneManager.EndGame(Team.Loyal);
     }
   }

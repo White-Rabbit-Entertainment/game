@@ -3,12 +3,12 @@ using UnityEngine.UI;
 using TMPro;
 
 public class TaskCompletionUI : MonoBehaviour {
-  public GameObject taskCompletionBar;
+  public TextMeshProUGUI taskCompletionText;
   public TaskManager taskManager;
   public Slider slider;
 
   public void Update() {
-    taskCompletionBar.GetComponentInChildren<Text>().text = $"{taskManager.NumberOfTasksCompleted()} / {taskManager.tasks.Count}";
+    taskCompletionText.text = $"Tasks Completed: {taskManager.NumberOfTasksCompleted()} / {taskManager.tasks.Count}";
     if (taskManager.tasks.Count > 0) {
       slider.value = taskManager.NumberOfTasksCompleted() / (float)taskManager.tasks.Count;
     }

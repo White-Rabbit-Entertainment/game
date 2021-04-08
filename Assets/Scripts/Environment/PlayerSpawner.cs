@@ -10,16 +10,19 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject traitorPrefab;
     public GameObject ghostPrefab;
     public GameObject loyalPrefab;
-    public GameObject captainPrefab;
     public InventoryUI inventoryUI;
     public ContextTaskUI contextTaskUI;
+    public GameSceneManager gameSceneManager;
+    public TaskNotificationUI taskNotificationUI;
     public GameObject agentPrefab;
     public GameObject interactablesGameObject;
     public int numberOfAgentsPerPlayer = 0;
+    public GameObject offScreenIndicator; 
 
     public string sceneName;
 
     public List<GameObject> rolesPrefabs;
+    public List<string> traitors; 
 
     public RoleInfo roleInfo;
 
@@ -67,7 +70,7 @@ public class PlayerSpawner : MonoBehaviour {
         // Otherwise load in n agents which have the same role as the player
         for(int i = 0; i < numberOfAgentsPerPlayer; i++){
             // Spawn in the agent
-            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, RandomNavmeshLocation(30f), Quaternion.identity);
+            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, gameSceneManager.RandomNavmeshLocation(), Quaternion.identity);
             agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
 
             // Assign the same role as the player to the agent
@@ -86,6 +89,7 @@ public class PlayerSpawner : MonoBehaviour {
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
             // spawnPoint = new Vector3(1,2,-10);
             playerPrefab = traitorPrefab;
+            traitors.Add(PhotonNetwork.LocalPlayer.NickName);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
             // spawnPoint = new Vector3(1,2,10);
             playerPrefab = loyalPrefab;
@@ -93,7 +97,7 @@ public class PlayerSpawner : MonoBehaviour {
             // spawnPoint = new Vector3(1,4,10);
             playerPrefab = ghostPrefab;
         }
-        spawnPoint = RandomNavmeshLocation(5f);
+        spawnPoint = gameSceneManager.RandomNavmeshLocation();
         // Spawn in the player at the spawn point
         player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity);
 
@@ -108,23 +112,13 @@ public class PlayerSpawner : MonoBehaviour {
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
         character.contextTaskUI = contextTaskUI;
+        character.taskNotificationUI = taskNotificationUI;
         NetworkManager.myCharacter = character;
 
         //sets player layer to "raycast ignore" layer
         player.SetLayerRecursively(2);
-    }
-
-
-
-    public Vector3 RandomNavmeshLocation(float radius) {
-        // return new Vector3(4, 5, -3);
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-        randomDirection += transform.position;
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
-            finalPosition = hit.position;
-        }
-        return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
+   
+        // Set up the camera for offScreenIndicator
+        offScreenIndicator.SetActive(true);
     }
 }

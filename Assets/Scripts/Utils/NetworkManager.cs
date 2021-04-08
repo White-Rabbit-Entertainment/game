@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -19,11 +20,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
-    private string lobbyScene = "LobbyScene";
+    public static List<string> traitorNames;
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     void Start() {
       PhotonNetwork.ConnectUsingSettings();
+      traitorNames = new List<string>();
     }
 
     /// <summary> Before a game is able to start various things need to be
@@ -34,9 +36,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           SetRoomProperty("TasksSet", false);
           SetRoomProperty("WinningTeam", "None");
           SetRoomProperty("NumberOfTasks", 10);
+          SetRoomProperty("NumberOfTasksInitiallyCompleted", 2);
           
           List<Player> players = GetPlayers();
-          // int numberOfTraitors = GetRoomProperty<int>("NumberOfTraitors", (int)(players.Count/2));
           int numberOfTraitors = 1;
 
           List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
@@ -48,6 +50,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
             SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+            traitorNames.Add(players[i].NickName);
           }
 
           for (int i = numberOfTraitors; i < players.Count; i++) {
@@ -90,7 +93,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     
     // A call back for when user joins a room. 
     public override void OnJoinedRoom() {
-      ChangeScene(lobbyScene);
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> rooms) {}
@@ -297,8 +299,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         && !Timer.RoundTimer.IsStarted();
     } 
 
-    public void CreateRoom (string roomName) {
-      PhotonNetwork.CreateRoom(roomName, new RoomOptions {IsVisible = true});
+    public void CreateRoom (bool isVisible = true) {
+      PhotonNetwork.CreateRoom(GenerateRoomName(), new RoomOptions {IsVisible = isVisible, EmptyRoomTtl = 1,});
     }
 
     public void JoinRoom(string roomName) {

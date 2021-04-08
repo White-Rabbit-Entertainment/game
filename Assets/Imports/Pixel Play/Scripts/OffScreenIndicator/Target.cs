@@ -7,7 +7,7 @@
 public class Target : MonoBehaviour
 {
     [Tooltip("Change this color to change the indicators color for this target")]
-    [SerializeField] private Color targetColor = Color.red;
+    [SerializeField] private Color targetColor = Color.green;
 
     [Tooltip("Select if box indicator is required for this target")]
     [SerializeField] private bool needBoxIndicator = true;
