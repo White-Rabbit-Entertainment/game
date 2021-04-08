@@ -80,6 +80,6 @@ public class LobbyPage : MenuPage {
     }
     
     void Back() {
-      PhotonNetwork.LeaveRoom();
+      PhotonNetwork.LeaveRoom(false);
     }
 }

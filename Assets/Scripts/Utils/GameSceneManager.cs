@@ -16,10 +16,6 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
-    //public SettlementUI settlementUI;
-    //public GameSceneManager gameSceneManager;
-    // public GameObject traitorsWonUI;
-    // public GameObject loyalsWonUI;
     public GameObject playersWonUI;
     public GameObject traitorInfoUI;
     public TextMeshProUGUI playerDescriptionText;
@@ -105,9 +101,6 @@ public class GameSceneManager : MonoBehaviour {
 
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
-    // TODO Show some loading UI if the level isnt loaded yet.
-    // TODO Check players are loaded in.
-    // TODO Check AIs are loaded in.
     public bool SceneLoaded() {
       return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
     }
