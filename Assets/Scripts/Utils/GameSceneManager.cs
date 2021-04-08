@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using System;
+using TMPro;
 
 public class GameSceneManager : MonoBehaviour {
     
@@ -13,6 +16,14 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
+    public GameObject playersWonUI;
+    public GameObject traitorInfoUI;
+    public TextMeshProUGUI playerDescriptionText;
+    public Button nextButton;
+    public Text traitorName;
+
+    
+
 
     void Update() {
         if (!initialized) {
@@ -57,6 +68,7 @@ public class GameSceneManager : MonoBehaviour {
     ///   <list>     
     public void CheckTimer() {
       if (Timer.RoundTimer.IsComplete()) {
+        Debug.Log("Time ran out");
         EndGame(Team.Traitor);
       } 
     }
@@ -65,23 +77,50 @@ public class GameSceneManager : MonoBehaviour {
       GetComponent<PhotonView>().RPC("EndGameRPC", RpcTarget.All, winningTeam);
     }
 
+
     [PunRPC]
+    // Show the UI for the gameover
     public void EndGameRPC(Team winningTeam) {
-        NetworkManager.instance.ChangeScene("LobbyScene");
+        nextButton.onClick.AddListener(GoToLobby);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        NetworkManager.instance.GetMe().Freeze();
+
+        traitorName.text = string.Join(", ", NetworkManager.traitorNames);
+        playersWonUI.SetActive(true);
+        if (winningTeam == Team.Traitor) {
+            playerDescriptionText.text = "Traitors Won!";
+        }
+        else {
+            playerDescriptionText.text = "Loyals Won!";
+        }
     }
+
 
     /// <summary> Check if the level has finished loading. It does this by
     /// checking if all items, players and AIs are spawned in. </summary> 
-    // TODO Show some loading UI if the level isnt loaded yet.
-    // TODO Check players are loaded in.
-    // TODO Check AIs are loaded in.
     public bool SceneLoaded() {
       return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
     }
     
     public void StartRoundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        Timer.RoundTimer.Start(240);
+        Timer.RoundTimer.Start(1000);
       }
+    }
+    
+    public Vector3 RandomNavmeshLocation(float radius = 25f) {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
+            finalPosition = hit.position;
+        }
+        Debug.Log($"{finalPosition.x},{finalPosition.y+3}, {finalPosition.z}");
+        return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
+    }
+
+    void GoToLobby() {
+        NetworkManager.instance.ChangeScene("MenuScene");
     }
 }

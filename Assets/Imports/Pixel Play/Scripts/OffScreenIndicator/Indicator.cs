@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Assign this script to the indicator prefabs.
@@ -8,7 +9,7 @@ public class Indicator : MonoBehaviour
 {
     [SerializeField] private IndicatorType indicatorType;
     private Image indicatorImage;
-    private Text distanceText;
+    private TextMeshProUGUI distanceText;
 
     /// <summary>
     /// Gets if the game object is active in hierarchy.
@@ -35,7 +36,7 @@ public class Indicator : MonoBehaviour
     void Awake()
     {
         indicatorImage = transform.GetComponent<Image>();
-        distanceText = transform.GetComponentInChildren<Text>();
+        distanceText = transform.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     /// <summary>

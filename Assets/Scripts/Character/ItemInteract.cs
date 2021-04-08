@@ -22,7 +22,7 @@ public class ItemInteract : MonoBehaviourPun {
     public SphereCollider itemCollider;
 
     void Start() {
-        if (!photonView.IsMine) {
+        if (photonView != null && !photonView.IsMine) {
             Destroy(GetComponent<AudioListener>());
             Destroy(this);
         } else {
@@ -38,19 +38,21 @@ public class ItemInteract : MonoBehaviourPun {
         float angle = float.PositiveInfinity;
         Interactable bestInteractable = null;
         foreach(Interactable interactable in possibleInteractables) {
-            RaycastHit hit;
-            Physics.Linecast(cameraTransform.position, interactable.transform.position, out hit); 
-            float interactableAngle = Vector3.Angle(cameraTransform.forward, interactable.transform.position - cameraTransform.position);
-            //Debug.Log(hit.collider.GetComponent<Interactable>());
-            if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
-                angle = interactableAngle;
-                bestInteractable = interactable;
+            if (interactable != null) { // Checks if the iteractable has been destroyed (eg player turns into ghost)
+                RaycastHit hit;
+                Vector3 direction = interactable.transform.position - cameraTransform.position;
+                Physics.Raycast(cameraTransform.position, direction, out hit); 
+                float interactableAngle = Vector3.Angle(cameraTransform.forward, direction);
+
+                if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
+                    angle = interactableAngle;
+                    bestInteractable = interactable;
+                }
             }
         }
         return bestInteractable;
 
     }
-
  
     void Update() {
         Interactable newInteractable = null; 
@@ -75,9 +77,6 @@ public class ItemInteract : MonoBehaviourPun {
                 // If we are able to interact with the new interactable then turn on its glow
                 newInteractable.InteractionGlowOn();
 
-                if (currentInteractable.HasTask()) {
-                    character.contextTaskUI.SetTask(currentInteractable.task);
-                }
                 // If we are pressing mouse down then do the interaction
                 if (Input.GetButtonDown("Fire1")) {
                   // Do whatever the primary interaction of this interactable is.
@@ -91,7 +90,6 @@ public class ItemInteract : MonoBehaviourPun {
             // Then turn off the glow of that thing
             currentInteractable.InteractionGlowOff();
 
-            character.contextTaskUI.RemoveTask();
             // And if bring the mouse button up
             if (Input.GetButtonUp("Fire1")) {
               // Some item have a primary interaction off method, eg drop the
@@ -149,4 +147,8 @@ public class ItemInteract : MonoBehaviourPun {
             possibleInteractables.Remove(interactable);
         }
      } 
+
+     public void RemovePossibleInteractable(Interactable item) {
+        possibleInteractables.Remove(item);
+     }
 }

@@ -156,6 +156,7 @@ MonoBehaviour:
   staminaRegenerationRate: 2
   gravity: -19.62
   jumpHeight: 3
+  frozen: 0
 --- !u!114 &-7170074885266061504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,8 +177,11 @@ MonoBehaviour:
   roleInfo: {fileID: 0}
   ghostPrefab: {fileID: 7463885005024221200}
   contextTaskUI: {fileID: 0}
+  taskNotificationUI: {fileID: 0}
   playerTile: {fileID: 0}
   playersUI: {fileID: 0}
+  assignedMasterTask: {fileID: 0}
+  assignedSubTask: {fileID: 0}
 --- !u!82 &6287254934639758642
 AudioSource:
   m_ObjectHideFlags: 0

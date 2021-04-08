@@ -12,4 +12,8 @@ public class InventoryUI : MonoBehaviour {
       inventoryImage.gameObject.SetActive(true);
       inventoryImage.texture = item.image;
     }
+    
+    public void RemoveItem() {
+      inventoryImage.gameObject.SetActive(false);
+    }
 }

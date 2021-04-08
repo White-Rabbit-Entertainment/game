@@ -34,7 +34,7 @@ public class Sabotageable : Interactable {
             Timer.SabotageTimer.Start(30);
             View.RPC("Sabotage", RpcTarget.All);
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
-            task.CompleteRPC();
+            task.CompleteRPC(false);
             View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID);
             Timer.SabotageTimer.End();
             Reset();
@@ -63,6 +63,8 @@ public class Sabotageable : Interactable {
         PlayableCharacter fixPlayer = PhotonView.Find(fixPlayerViewId).GetComponent<PlayableCharacter>();
         // TODO Show in UI that given character has fixed (same as voting)
         playersThatFixed.Add(fixPlayer);
+
+        // If the sabotagable is fully fixed
         if (numberOfPlayersToFix - playersThatFixed.Count <= 0) {
             isSabotaged = false;
             // Tell everyone that the task is now completed
