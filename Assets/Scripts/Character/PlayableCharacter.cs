@@ -41,7 +41,6 @@ public abstract class PlayableCharacter : Character {
 
     public void Unfreeze() {
       GetComponent<PlayerMovement>().frozen = false;
-      // GetComponent<PlayerAnimation>().enabled = true;
       GetComponentInChildren<CameraMouseLook>().enabled = true;
     }
 
