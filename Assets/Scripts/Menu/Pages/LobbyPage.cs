@@ -72,9 +72,12 @@ public class LobbyPage : MenuPage {
     }
 
     void ToggleReady() {
+      Debug.Log("CLICK");
       if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
+        Debug.Log("READYING DOWN");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       } else {
+        Debug.Log("READYING UP");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }
