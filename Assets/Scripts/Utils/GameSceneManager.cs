@@ -97,7 +97,6 @@ public class GameSceneManager : MonoBehaviour {
         }
         else {
             playerDescriptionText.text = "Loyals Won!";
-            // traitorInfoUI.SetActive(true);
         }
     }
 
