@@ -86,6 +86,7 @@ public class LobbyPage : MenuPage {
     }
     
     void Back() {
+      NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       PhotonNetwork.LeaveRoom(false);
     }
 }
