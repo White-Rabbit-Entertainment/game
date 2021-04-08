@@ -29,6 +29,7 @@ public class LobbyPage : MenuPage {
       enteredRoom = false;
       back.onClick.AddListener(Back);
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
+      toggleReadyButton.onClick.AddListener(ToggleReady);
     }
 
     void Update() {
@@ -39,7 +40,6 @@ public class LobbyPage : MenuPage {
       if (!initialized && NetworkManager.instance.IsRoomReset()) {
         initialized = true;
         Debug.Log("adding listener to ready button");
-        toggleReadyButton.onClick.AddListener(ToggleReady);
       }
       if (initialized) {
         SetText();
