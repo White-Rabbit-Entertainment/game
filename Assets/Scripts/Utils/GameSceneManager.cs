@@ -90,11 +90,9 @@ public class GameSceneManager : MonoBehaviour {
         playersWonUI.SetActive(true);
         if (winningTeam == Team.Traitor) {
             playerDescriptionText.text = "Traitors Won!";
-            // traitorInfoUI.SetActive(true);
         }
         else {
             playerDescriptionText.text = "Loyals Won!";
-            // traitorInfoUI.SetActive(true);
         }
     }
 
