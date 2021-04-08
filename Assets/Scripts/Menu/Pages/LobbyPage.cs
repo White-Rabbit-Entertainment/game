@@ -21,6 +21,10 @@ public class LobbyPage : MenuPage {
     bool initialized;
     bool enteredRoom; 
 
+    void Start() {
+      toggleReadyButton.onClick.AddListener(ToggleReady);
+    }
+
     void OnEnable() {
       Debug.Log("Start");
       Cursor.lockState = CursorLockMode.None;
@@ -29,7 +33,6 @@ public class LobbyPage : MenuPage {
       enteredRoom = false;
       back.onClick.AddListener(Back);
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
-      toggleReadyButton.onClick.AddListener(ToggleReady);
     }
 
     void Update() {
