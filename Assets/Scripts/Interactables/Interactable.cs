@@ -59,7 +59,7 @@ public abstract class Interactable : MonoBehaviourPun {
 
     undoneMarker = gameObject.AddComponent<Target>() as Target;
     undoneMarker.enabled = false;
-    undoneMarker.boxImage = Resources.Load<Sprite>("/Assets/Resources/Images/exclaimationmark");
+    undoneMarker.boxImage = Resources.Load<Sprite>("Images/exclaimationmark");
     undoneMarker.boxText = "UNDONE";
     undoneMarker.TargetColor = Color.red;
 
