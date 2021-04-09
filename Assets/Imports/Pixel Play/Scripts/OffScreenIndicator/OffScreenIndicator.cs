@@ -61,13 +61,15 @@ public class OffScreenIndicator : MonoBehaviour
             }
             if(indicator)
             {
-                if (target.NeedArrowIndicator) {
-                    indicator.SetImage(target.arrowImage);
-                    indicator.SetText(target.arrowText);
-                }
-                if (target.NeedBoxIndicator) {
+                if (target.NeedBoxIndicator && isTargetVisible) {
+                    Debug.Log("Need box indicator");
                     indicator.SetImage(target.boxImage);
                     indicator.SetText(target.boxText);
+                }
+                else if (target.NeedArrowIndicator && !isTargetVisible) {
+                    Debug.Log("Need arrow indicator");
+                    indicator.SetImage(target.arrowImage);
+                    indicator.SetText(target.arrowText);
                 }
                 indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.

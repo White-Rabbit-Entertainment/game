@@ -52,6 +52,7 @@ public class Indicator : MonoBehaviour
     public void SetImageColor(Color color)
     {
         indicatorImage.color = color;
+        titleText.color = color;
     }
     
     public void SetText(string text)
@@ -61,6 +62,7 @@ public class Indicator : MonoBehaviour
     
     public void SetImage(Sprite image)
     {
+        Debug.Log($"Setting image to {image == null}");
         indicatorImage.sprite = image != null ? image : defaultImage;
     }
 
@@ -89,10 +91,6 @@ public class Indicator : MonoBehaviour
     public void Activate(bool value)
     {
         transform.gameObject.SetActive(value);
-    }
-
-    public void SetImage()
-    {
     }
 }
 

@@ -11,6 +11,7 @@ using Photon.Pun;
 /// interacted with. It add the funcitons for glowing. These can then be called
 /// in <c>ItemInteract</c>. </summary>
 [DisallowMultipleComponent]
+[RequireComponent(typeof(Target))]
 public abstract class Interactable : MonoBehaviourPun {
 
   public string taskDescription;
@@ -40,10 +41,12 @@ public abstract class Interactable : MonoBehaviourPun {
   private Target target;
   private Target undoneMarker;
 
+  // Target values
   [SerializeField] private Sprite boxTargetImageOverride;
   [SerializeField] private Sprite arrowTargetImageOverride;
   [SerializeField] private string boxTargetTextOverride;
   [SerializeField] private string arrowTargetTextOverride;
+  [SerializeField] private Color targetColour = Color.green;
   
   public Task task;
   public PhotonView View {
@@ -56,13 +59,14 @@ public abstract class Interactable : MonoBehaviourPun {
     outline = gameObject.AddComponent<Outline>() as Outline;
     outline.OutlineWidth = outlineWidth;
     outline.enabled = false;
-    
+  
     target = gameObject.AddComponent<Target>() as Target;
     target.enabled = false;
     target.boxImage = boxTargetImageOverride;
     target.boxText = boxTargetTextOverride;
     target.arrowImage = arrowTargetImageOverride;
     target.arrowText = arrowTargetTextOverride;
+    target.TargetColor = targetColour;
 
     // undoneMarker = gameObject.AddComponent<Target>() as Target;
     // undoneMarker.enabled = false;
