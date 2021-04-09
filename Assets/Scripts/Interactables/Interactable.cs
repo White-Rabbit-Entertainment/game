@@ -51,7 +51,7 @@ public abstract class Interactable : MonoBehaviourPun {
   [SerializeField] private Sprite undoneMarkerArrowImageOverride;
   [SerializeField] private string undoneMarkerBoxTextOverride = "UNDONE";
   [SerializeField] private string undoneMarkerArrowTextOverride;
-  [SerializeField] private Color undoneMarkerColour = Color.green;
+  [SerializeField] private Color undoneMarkerColour = Color.red;
   
   public Task task;
   public PhotonView View {
