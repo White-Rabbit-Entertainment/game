@@ -167,9 +167,15 @@ MonoBehaviour:
   inRange: 0
   itemAnimationTrigger: 
   playerAnimationTrigger: Pickup
+  boxTargetImageOverride: {fileID: 21300000, guid: aad05c085ae286c4197c7972d4a16931,
+    type: 3}
+  arrowTargetImageOverride: {fileID: 0}
+  boxTargetTextOverride: HELLO
+  arrowTargetTextOverride: 
   task: {fileID: 0}
   isPickedUp: 0
   destination: {fileID: 0}
+  ignoreNextCollision: 0
 --- !u!208 &4876101927155672708
 NavMeshObstacle:
   m_ObjectHideFlags: 0

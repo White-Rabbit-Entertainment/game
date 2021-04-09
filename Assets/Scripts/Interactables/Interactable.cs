@@ -39,6 +39,11 @@ public abstract class Interactable : MonoBehaviourPun {
   private Outline outline;
   private Target target;
   private Target undoneMarker;
+
+  [SerializeField] private Sprite boxTargetImageOverride;
+  [SerializeField] private Sprite arrowTargetImageOverride;
+  [SerializeField] private string boxTargetTextOverride;
+  [SerializeField] private string arrowTargetTextOverride;
   
   public Task task;
   public PhotonView View {
@@ -54,6 +59,10 @@ public abstract class Interactable : MonoBehaviourPun {
     
     target = gameObject.AddComponent<Target>() as Target;
     target.enabled = false;
+    target.boxImage = boxTargetImageOverride;
+    target.boxText = boxTargetTextOverride;
+    target.arrowImage = arrowTargetImageOverride;
+    target.arrowText = arrowTargetTextOverride;
 
     undoneMarker = gameObject.AddComponent<Target>() as Target;
     undoneMarker.enabled = false;
