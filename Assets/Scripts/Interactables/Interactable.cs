@@ -43,13 +43,13 @@ public abstract class Interactable : MonoBehaviourPun {
   // Target values
   [SerializeField] private Sprite taskMarkerBoxImageOverride;
   [SerializeField] private Sprite taskMarkerArrowImageOverride;
-  [SerializeField] private string taskMarkerBoxTextOverride;
+  [SerializeField] private string taskMarkerBoxTextOverride = "TASK";
   [SerializeField] private string taskMarkerArrowTextOverride;
   [SerializeField] private Color taskMarkerColour = Color.green;
 
-  [SerializeField] private Sprite undoneMarkerBoxImageOverride;
+  [SerializeField] private Sprite undoneMarkerBoxImageOverride = Resources.Load<Sprite>("/Assets/Resources/undoneMarker");
   [SerializeField] private Sprite undoneMarkerArrowImageOverride;
-  [SerializeField] private string undoneMarkerBoxTextOverride;
+  [SerializeField] private string undoneMarkerBoxTextOverride = "UNDONE";
   [SerializeField] private string undoneMarkerArrowTextOverride;
   [SerializeField] private Color undoneMarkerColour = Color.green;
   
