@@ -51,13 +51,6 @@ public class OffScreenIndicator : MonoBehaviour
             {
                 screenPosition.z = 0;
                 indicator = GetIndicator(ref target.indicator, IndicatorType.BOX); // Gets the box indicator from the pool.
-
-                if (target.boxImage != null) {
-                    indicator.SetImage(target.boxImage);
-                }
-                if (target.boxText != null) {
-                    indicator.SetText(target.boxText);
-                }
             }
             else if(target.NeedArrowIndicator && !isTargetVisible)
             {
@@ -65,16 +58,17 @@ public class OffScreenIndicator : MonoBehaviour
                 OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
                 indicator = GetIndicator(ref target.indicator, IndicatorType.ARROW); // Gets the arrow indicator from the pool.
                 indicator.transform.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg); // Sets the rotation for the arrow indicator.
-
-                if (target.arrowImage != null) {
-                    indicator.SetImage(target.arrowImage);
-                }
-                if (target.arrowText != null) {
-                    indicator.SetText(target.arrowText);
-                }
             }
             if(indicator)
             {
+                if (target.NeedArrowIndicator) {
+                    indicator.SetImage(target.arrowImage);
+                    indicator.SetText(target.arrowText);
+                }
+                if (target.NeedBoxIndicator) {
+                    indicator.SetImage(target.boxImage);
+                    indicator.SetText(target.boxText);
+                }
                 indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.

@@ -11,6 +11,8 @@ public class Indicator : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     private Image indicatorImage;
     private TextMeshProUGUI distanceText;
+    private Sprite defaultImage;
+    private string defaultText;
 
 
     /// <summary>
@@ -39,6 +41,8 @@ public class Indicator : MonoBehaviour
     {
         indicatorImage = transform.GetComponent<Image>();
         distanceText = transform.GetComponentInChildren<TextMeshProUGUI>();
+        defaultImage = indicatorImage.sprite;
+        defaultText = titleText.text;
     }
 
     /// <summary>
@@ -52,12 +56,12 @@ public class Indicator : MonoBehaviour
     
     public void SetText(string text)
     {
-        titleText.text = text;
+        titleText.text = text != null ? text : defaultText;
     }
     
     public void SetImage(Sprite image)
     {
-        indicatorImage.sprite = image;
+        indicatorImage.sprite = image != null ? image : defaultImage;
     }
 
     /// <summary>
