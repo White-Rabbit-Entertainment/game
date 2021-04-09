@@ -39,19 +39,6 @@ public abstract class Interactable : MonoBehaviourPun {
   private Outline outline;
   private Target taskMarker;
   private Target undoneMarker;
-
-  // Target values
-  [SerializeField] private Sprite taskMarkerBoxImageOverride;
-  [SerializeField] private Sprite taskMarkerArrowImageOverride;
-  [SerializeField] private string taskMarkerBoxTextOverride = "TASK";
-  [SerializeField] private string taskMarkerArrowTextOverride;
-  [SerializeField] private Color taskMarkerColour = Color.green;
-
-  [SerializeField] private Sprite undoneMarkerBoxImageOverride = Resources.Load<Sprite>("/Assets/Resources/Images/exclaimationmark");
-  [SerializeField] private Sprite undoneMarkerArrowImageOverride;
-  [SerializeField] private string undoneMarkerBoxTextOverride = "UNDONE";
-  [SerializeField] private string undoneMarkerArrowTextOverride;
-  [SerializeField] private Color undoneMarkerColour = Color.red;
   
   public Task task;
   public PhotonView View {
@@ -67,19 +54,14 @@ public abstract class Interactable : MonoBehaviourPun {
   
     taskMarker = gameObject.AddComponent<Target>() as Target;
     taskMarker.enabled = false;
-    taskMarker.boxImage = taskMarkerBoxImageOverride;
-    taskMarker.boxText = taskMarkerBoxTextOverride;
-    taskMarker.arrowImage = taskMarkerArrowImageOverride;
-    taskMarker.arrowText = taskMarkerArrowTextOverride;
-    taskMarker.TargetColor = taskMarkerColour;
+    taskMarker.boxText = "TASK";
+    taskMarker.TargetColor = Color.green;
 
     undoneMarker = gameObject.AddComponent<Target>() as Target;
     undoneMarker.enabled = false;
-    undoneMarker.boxImage = undoneMarkerBoxImageOverride;
-    undoneMarker.boxText = undoneMarkerBoxTextOverride;
-    undoneMarker.arrowImage = undoneMarkerArrowImageOverride;
-    undoneMarker.arrowText = undoneMarkerArrowTextOverride;
-    undoneMarker.TargetColor = undoneMarkerColour;
+    undoneMarker.boxImage = Resources.Load<Sprite>("/Assets/Resources/Images/exclaimationmark");
+    undoneMarker.boxText = "UNDONE";
+    undoneMarker.TargetColor = Color.red;
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
