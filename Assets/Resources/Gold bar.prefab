@@ -168,12 +168,17 @@ MonoBehaviour:
   inRange: 0
   itemAnimationTrigger: 
   playerAnimationTrigger: Pickup
-  boxTargetImageOverride: {fileID: 21300000, guid: aad05c085ae286c4197c7972d4a16931,
+  taskMarkerBoxImageOverride: {fileID: 0}
+  taskMarkerArrowImageOverride: {fileID: 0}
+  taskMarkerBoxTextOverride: TASK
+  taskMarkerArrowTextOverride: 
+  taskMarkerColour: {r: 0, g: 1, b: 0, a: 1}
+  undoneMarkerBoxImageOverride: {fileID: 21300000, guid: 80bc7fb0f3659b2459a46e076d24f562,
     type: 3}
-  arrowTargetImageOverride: {fileID: 0}
-  boxTargetTextOverride: HELLO
-  arrowTargetTextOverride: 
-  targetColour: {r: 0, g: 1, b: 0, a: 1}
+  undoneMarkerArrowImageOverride: {fileID: 0}
+  undoneMarkerBoxTextOverride: 
+  undoneMarkerArrowTextOverride: 
+  undoneMarkerColour: {r: 0, g: 0, b: 0, a: 0}
   task: {fileID: 0}
   isPickedUp: 0
   destination: {fileID: 0}
