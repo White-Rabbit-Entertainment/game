@@ -11,7 +11,6 @@ using Photon.Pun;
 /// interacted with. It add the funcitons for glowing. These can then be called
 /// in <c>ItemInteract</c>. </summary>
 [DisallowMultipleComponent]
-[RequireComponent(typeof(Target))]
 public abstract class Interactable : MonoBehaviourPun {
 
   public string taskDescription;
@@ -38,15 +37,21 @@ public abstract class Interactable : MonoBehaviourPun {
   public string playerAnimationTrigger;
 
   private Outline outline;
-  private Target target;
+  private Target taskMarker;
   private Target undoneMarker;
 
   // Target values
-  [SerializeField] private Sprite boxTargetImageOverride;
-  [SerializeField] private Sprite arrowTargetImageOverride;
-  [SerializeField] private string boxTargetTextOverride;
-  [SerializeField] private string arrowTargetTextOverride;
-  [SerializeField] private Color targetColour = Color.green;
+  [SerializeField] private Sprite taskMarkerBoxImageOverride;
+  [SerializeField] private Sprite taskMarkerArrowImageOverride;
+  [SerializeField] private string taskMarkerBoxTextOverride;
+  [SerializeField] private string taskMarkerArrowTextOverride;
+  [SerializeField] private Color taskMarkerColour = Color.green;
+
+  [SerializeField] private Sprite undoneMarkerBoxImageOverride;
+  [SerializeField] private Sprite undoneMarkerArrowImageOverride;
+  [SerializeField] private string undoneMarkerBoxTextOverride;
+  [SerializeField] private string undoneMarkerArrowTextOverride;
+  [SerializeField] private Color undoneMarkerColour = Color.green;
   
   public Task task;
   public PhotonView View {
@@ -60,16 +65,21 @@ public abstract class Interactable : MonoBehaviourPun {
     outline.OutlineWidth = outlineWidth;
     outline.enabled = false;
   
-    target = gameObject.AddComponent<Target>() as Target;
-    target.enabled = false;
-    target.boxImage = boxTargetImageOverride;
-    target.boxText = boxTargetTextOverride;
-    target.arrowImage = arrowTargetImageOverride;
-    target.arrowText = arrowTargetTextOverride;
-    target.TargetColor = targetColour;
+    taskMarker = gameObject.AddComponent<Target>() as Target;
+    taskMarker.enabled = false;
+    taskMarker.boxImage = taskMarkerBoxImageOverride;
+    taskMarker.boxText = taskMarkerBoxTextOverride;
+    taskMarker.arrowImage = taskMarkerArrowImageOverride;
+    taskMarker.arrowText = taskMarkerArrowTextOverride;
+    taskMarker.TargetColor = taskMarkerColour;
 
-    // undoneMarker = gameObject.AddComponent<Target>() as Target;
-    // undoneMarker.enabled = false;
+    undoneMarker = gameObject.AddComponent<Target>() as Target;
+    undoneMarker.enabled = false;
+    undoneMarker.boxImage = undoneMarkerBoxImageOverride;
+    undoneMarker.boxText = undoneMarkerBoxTextOverride;
+    undoneMarker.arrowImage = undoneMarkerArrowImageOverride;
+    undoneMarker.arrowText = undoneMarkerArrowTextOverride;
+    undoneMarker.TargetColor = undoneMarkerColour;
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
@@ -153,12 +163,12 @@ public abstract class Interactable : MonoBehaviourPun {
     SetTaskGlow();
   }
 
-  public void EnableTarget() {
-    target.enabled = true;
+  public void EnableTaskMarker() {
+    taskMarker.enabled = true;
   }
   
-  public void DisableTarget() {
-    target.enabled = false;
+  public void DisableTaskMarker() {
+    taskMarker.enabled = false;
   }
 
   public void EnableUndoneMarker() {

@@ -68,6 +68,7 @@ public class Task : MonoBehaviour {
     isCompleted = true;
     isAssigned = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
+    DisableUndoneMarker();
     //DisableUndoneMarker();
     me.taskNotificationUI.SetNotification(true);
     if (parent !=  null) {
@@ -77,9 +78,9 @@ public class Task : MonoBehaviour {
     if (!tutorialTask) {
       taskManager.CheckAllTasksCompleted();
     }
-    GetComponent<Interactable>().DisableTarget();
+    GetComponent<Interactable>().DisableTaskMarker();
     if (isUndoable && me is Traitor) {
-      EnableTarget();
+      EnableTaskMarker();
     }
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskComplete(me);
@@ -137,9 +138,9 @@ public class Task : MonoBehaviour {
       requirement.TaskInteractable.OnParentTaskUncomplete();
     }
     if (NetworkManager.instance.GetMe() is Traitor) {
-      DisableTarget();
+      DisableTaskMarker();
     } else {
-      //EnableUndoneMarker();
+      EnableUndoneMarker();
     }
   }
 
@@ -180,7 +181,7 @@ public class Task : MonoBehaviour {
     Task subTask = FindIncompleteChild(this);
     character.assignedSubTask = subTask;
     character.contextTaskUI.SetTask(subTask);
-    subTask.EnableTarget();
+    subTask.EnableTaskMarker();
   }
 
   private Task FindIncompleteChild(Task task) {
@@ -208,12 +209,12 @@ public class Task : MonoBehaviour {
     isAssigned = false;
   }
 
-  public void EnableTarget() {
-    GetComponent<Interactable>().EnableTarget();
+  public void EnableTaskMarker() {
+    GetComponent<Interactable>().EnableTaskMarker();
   }
 
-  public void DisableTarget() {
-    GetComponent<Interactable>().DisableTarget();
+  public void DisableTaskMarker() {
+    GetComponent<Interactable>().DisableTaskMarker();
   }
 
   public void EnableUndoneMarker() {

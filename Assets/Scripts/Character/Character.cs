@@ -86,7 +86,7 @@ public abstract class Character : MonoBehaviour {
     if (resetConditions) {
       pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
       if (pocketedItem.task != null && pocketedItem.task.parent != null) {
-        pocketedItem.task.parent.GetComponent<Interactable>().DisableTarget();
+        pocketedItem.task.parent.GetComponent<Interactable>().DisableTaskMarker();
       }
     }
     if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {

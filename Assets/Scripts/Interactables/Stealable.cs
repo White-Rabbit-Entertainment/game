@@ -34,20 +34,20 @@ public class Stealable : Pickupable {
 
         if (HasTask() && destination != null && character is Loyal) {
             // destination.indicator.SetActive(true);
-            destination.EnableTarget();
+            destination.EnableTaskMarker();
         }
-        DisableTarget();
+        DisableTaskMarker();
     }
     
     public override void PrimaryInteractionOff(Character character) {
         base.PrimaryInteractionOff(character);
         // destination.indicator.SetActive(false);
         if (destination != null) {
-            destination.DisableTarget();
+            destination.DisableTaskMarker();
         }
         if (character is PlayableCharacter) {
             if (task != null && ((PlayableCharacter)character).assignedSubTask == task) {
-                EnableTarget();
+                EnableTaskMarker();
             }
         }
     }
