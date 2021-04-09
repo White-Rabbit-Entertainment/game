@@ -64,8 +64,8 @@ public abstract class Interactable : MonoBehaviourPun {
     target.arrowImage = arrowTargetImageOverride;
     target.arrowText = arrowTargetTextOverride;
 
-    undoneMarker = gameObject.AddComponent<Target>() as Target;
-    undoneMarker.enabled = false;
+    // undoneMarker = gameObject.AddComponent<Target>() as Target;
+    // undoneMarker.enabled = false;
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
