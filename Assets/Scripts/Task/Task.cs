@@ -68,6 +68,7 @@ public class Task : MonoBehaviour {
     isCompleted = true;
     isAssigned = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
+    DisableUndoneMarker();
     me.taskNotificationUI.SetNotification(true);
     if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
@@ -137,6 +138,8 @@ public class Task : MonoBehaviour {
     }
     if (NetworkManager.instance.GetMe() is Traitor) {
       DisableTarget();
+    } else {
+      EnableUndoneMarker();
     }
   }
 
@@ -206,14 +209,19 @@ public class Task : MonoBehaviour {
   }
 
   public void EnableTarget() {
-    Interactable interactable = GetComponent<Interactable>();
-    interactable.EnableTarget();
-    Debug.Log("Task Enabled");
+    GetComponent<Interactable>().EnableTarget();
   }
 
   public void DisableTarget() {
-    Interactable interactable = GetComponent<Interactable>();
-    interactable.DisableTarget();
+    GetComponent<Interactable>().DisableTarget();
+  }
+
+  public void EnableUndoneMarker() {
+    GetComponent<Interactable>().EnableUndoneMarker();
+  }
+
+  public void DisableUndoneMarker() {
+    GetComponent<Interactable>().DisableUndoneMarker();
   }
   
 }

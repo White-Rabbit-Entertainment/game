@@ -38,6 +38,7 @@ public abstract class Interactable : MonoBehaviourPun {
 
   private Outline outline;
   private Target target;
+  private Target undoneMarker;
   
   public Task task;
   public PhotonView View {
@@ -53,6 +54,9 @@ public abstract class Interactable : MonoBehaviourPun {
     
     target = gameObject.AddComponent<Target>() as Target;
     target.enabled = false;
+
+    undoneMarker = gameObject.AddComponent<Target>() as Target;
+    undoneMarker.enabled = false;
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
@@ -138,13 +142,18 @@ public abstract class Interactable : MonoBehaviourPun {
 
   public void EnableTarget() {
     target.enabled = true;
-    Debug.Log("target enabled");
   }
   
   public void DisableTarget() {
     target.enabled = false;
-    Debug.Log("target disabled");
-    Debug.Log($"target disabled for {gameObject}");
+  }
+
+  public void EnableUndoneMarker() {
+    undoneMarker.enabled = true;
+  }
+  
+  public void DisableUndoneMarker() {
+    undoneMarker.enabled = false;
   }
 
   // Once completed set the disabled state
