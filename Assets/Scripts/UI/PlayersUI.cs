@@ -27,6 +27,7 @@ public class PlayersUI : MonoBehaviourPun {
 
     // Set text to name
     TextMeshProUGUI playerName = item.GetComponentInChildren<TextMeshProUGUI>();
+    // text.text = player.Owner.NickName + " (" + player.roleInfo.name + ")";
     playerName.text = player.Owner.NickName;
    
     // If the player is dead cross them out
@@ -44,9 +45,14 @@ public class PlayersUI : MonoBehaviourPun {
     }
   }
 
+  public void SetVotingPlayer(PlayableCharacter player){
+    player.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(true);
+  }
+
   public void ClearVote(PlayableCharacter character) {
     character.playerTile.transform.Find("VoteFor").gameObject.SetActive(false);
     character.playerTile.transform.Find("VoteAgainst").gameObject.SetActive(false);
+    character.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(false);
   }
 
   public void SetToDead(PlayableCharacter character) {
