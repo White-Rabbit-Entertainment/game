@@ -12,8 +12,6 @@ public abstract class Character : MonoBehaviour {
   
   public InventoryUI inventoryUI;
 
-  public bool canTask;
-
   public Team team;
 
   public RoleInfo roleInfo;
@@ -21,6 +19,12 @@ public abstract class Character : MonoBehaviour {
   public Player Owner {
       get { return GetComponent<PhotonView>().Owner; }
     }
+  
+  public PhotonView View {
+      get { return GetComponent<PhotonView>(); }
+    }
+
+  protected virtual void Start() {}
 
   public bool HasItem() {
     return currentHeldItem != null; 
@@ -36,19 +40,17 @@ public abstract class Character : MonoBehaviour {
     return false; 
   }
 
-  public virtual void Start() {
-    canTask = false;
-  }
-
-  public void PickUp(Pickupable item) {
+  public virtual void Pickup(Pickupable item) {
     currentHeldItem = item;
     // An item can only be moved by a player if they are the owner.
     // Therefore, give ownership of the item to the local player before
     // moving it.
-    PhotonView view = item.GetComponent<PhotonView>();
-    view.TransferOwnership(PhotonNetwork.LocalPlayer);
-
-    item.SetItemPickupConditions();
+    if (item.View != null) {
+      item.View.TransferOwnership(PhotonNetwork.LocalPlayer);
+      item.SetItemPickupConditions();
+    } else {
+      item.SetItemPickupConditionsRPC();
+    }
 
     // Move to players pickup destination.
     item.transform.position = pickupDestination.position;
@@ -58,10 +60,13 @@ public abstract class Character : MonoBehaviour {
     item.transform.parent = pickupDestination;
   }
   
-  public void PutDown(Pickupable item) {
+  public virtual void PutDown(Pickupable item) {
     currentHeldItem = null;
-    item.ResetItemConditions(this);
-
+    if (item.View != null) {
+      item.ResetItemConditions(this);
+    } else {
+      item.ResetItemConditionsRPC();
+    }
     item.transform.parent = GameObject.Find("/Environment").transform;
   }
 
@@ -76,11 +81,19 @@ public abstract class Character : MonoBehaviour {
     item.GetComponent<PhotonView>().RPC("SetItemPocketConditions", RpcTarget.All);
   }
 
-  public void RemoveItemFromInventory() {
-    pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+  public void RemoveItemFromInventory(bool resetConditions = true) {
+    if (pocketedItem == null) return;
+    if (resetConditions) {
+      pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+      if (pocketedItem.task != null && pocketedItem.task.parent != null) {
+        pocketedItem.task.parent.GetComponent<Interactable>().DisableTarget();
+      }
+    }
     if (pocketedItem.task != null && pocketedItem.task.IsRequired()) {
-      pocketedItem.task.GetComponent<PhotonView>().RPC("Uncomplete", RpcTarget.All);
-      pocketedItem.view.RPC("TaskGlowOn", RpcTarget.All);
+      pocketedItem.task.Uncomplete();
+    }
+    if (!(this is Agent)) {
+      inventoryUI.RemoveItem();
     }
     pocketedItem = null;
   }

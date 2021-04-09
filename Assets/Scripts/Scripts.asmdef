@@ -10,7 +10,8 @@
         "QuantumUI",
         "PhotonChat",
         "TypeReferences",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Target"
     ],
     "includePlatforms": [],
     "excludePlatforms": [

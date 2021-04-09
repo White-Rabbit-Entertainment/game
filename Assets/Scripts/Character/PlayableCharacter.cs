@@ -7,36 +7,75 @@ public abstract class PlayableCharacter : Character {
 
     public ContextTaskUI contextTaskUI;
 
-    public override void Start() { 
+    public TaskNotificationUI taskNotificationUI;
+
+    public GameObject playerTile;
+    public PlayersUI playersUI;
+
+    public Task assignedMasterTask = null;
+    public Task assignedSubTask = null;
+
+    protected override void Start() { 
       base.Start();
     }
 
-    public bool IsMe() {
+    public override void Pickup(Pickupable item) {
+      ItemInteract itemInteract = GetComponent<ItemInteract>();
+      if (itemInteract.possibleInteractables.Contains(item)) {
+         itemInteract.possibleInteractables.Remove(item);
+      }
+      base.Pickup(item);
+    }
+
+    public override void PutDown(Pickupable item) {
+      base.PutDown(item);
+    }
+     public bool IsMe() {
       return Owner == PhotonNetwork.LocalPlayer;
     }
 
-    public void Freeze() {
-      GetComponent<PlayerMovement>().enabled = false;
-      GetComponent<PlayerAnimation>().enabled = false;
+    public virtual void Freeze() {
+      GetComponent<PlayerMovement>().frozen = true;
       GetComponentInChildren<CameraMouseLook>().enabled = false;
     }
 
     public void Unfreeze() {
-      GetComponent<PlayerMovement>().enabled = true;
-      GetComponent<PlayerAnimation>().enabled = true;
+      GetComponent<PlayerMovement>().frozen = false;
       GetComponentInChildren<CameraMouseLook>().enabled = true;
+    }
+
+    public void UnassignTask() {
+        if (assignedSubTask != null) {
+            assignedSubTask.DisableTarget();
+            assignedSubTask.Unassign();
+        }
+
+        // This locally sets your tasks to nothing
+        assignedSubTask = null;
+        assignedMasterTask = null;
     }
 
     [PunRPC]
     public void Kill() {
+        UnassignTask();
+
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
-        GetComponent<PhotonView>().RPC("DestroyPlayer", RpcTarget.All);
         GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
-        NetworkManager.myCharacter = newPlayer.GetComponent<PlayableCharacter>();
+
+        // Kill the player for everyone else
+        GetComponent<PhotonView>().RPC("KillPlayer", RpcTarget.All, newPlayer.GetComponent<PhotonView>().ViewID);
+
+        PlayableCharacter newCharacter = newPlayer.GetComponent<PlayableCharacter>(); 
+        NetworkManager.myCharacter = newCharacter; 
     }
 
     [PunRPC]
-    public void DestroyPlayer() {
+    public void KillPlayer(int newPlayerViewId) {
+        PlayableCharacter newCharacter = PhotonView.Find(newPlayerViewId).GetComponent<PlayableCharacter>();
+        newCharacter.playerTile = playerTile;
+        newCharacter.playersUI = playersUI;
+        playersUI.SetToDead(newCharacter);
+        
         Destroy(gameObject);
     }
 }

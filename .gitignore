@@ -1,5 +1,6 @@
 # Custom gitignores
-Assets/Imports/LowPolyWater_Pack/
+Assets/Imports/LowPolyWater*
+*.icloud
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #

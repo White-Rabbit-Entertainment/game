@@ -16,7 +16,7 @@ public class CameraMouseLook : MonoBehaviourPun
 
     // Start is called before the first frame update
     void Start() {
-        if (!photonView.IsMine) {
+        if (photonView != null && !photonView.IsMine) {
           Destroy(this);
 
           // Also destory the camera object

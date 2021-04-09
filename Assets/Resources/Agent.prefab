@@ -38,7 +38,6 @@ MonoBehaviour:
   currentHeldItem: {fileID: 0}
   pocketedItem: {fileID: 0}
   inventoryUI: {fileID: 0}
-  canTask: 0
   team: 0
   roleInfo: {fileID: 0}
 --- !u!114 &2197168800728776343
