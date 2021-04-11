@@ -65,7 +65,7 @@ public class VotingManager : MonoBehaviour {
 
   IEnumerator ShowVoteInProgress() {
     voteInProgress.SetActive(true);
-    yield return new WaitForSeconds(2);
+    yield return new WaitForSeconds(4);
     voteInProgress.SetActive(false);
   }
 
@@ -74,8 +74,10 @@ public class VotingManager : MonoBehaviour {
     playersVotingFor = new List<PlayableCharacter>();
     playersVotingAgainst = new List<PlayableCharacter>();
     suspectedPlayer = PhotonView.Find(suspectedPlayerId).GetComponent<PlayableCharacter>();
+    playersUI.SetVotingPlayer(suspectedPlayer);
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
+
     hasVoted = false;
     
     currentVoteUI.SetActive(true);

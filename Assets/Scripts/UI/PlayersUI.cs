@@ -10,6 +10,8 @@ public class PlayersUI : MonoBehaviourPun {
 
   public GameObject playerTile;
   public GameObject playerList;
+
+  public GameObject suspectedPlayer;
     
   public void Init() {
     foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
@@ -47,12 +49,14 @@ public class PlayersUI : MonoBehaviourPun {
 
   public void SetVotingPlayer(PlayableCharacter player){
     player.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(true);
+    suspectedPlayer = player.playerTile.transform.gameObject;
   }
 
   public void ClearVote(PlayableCharacter character) {
     character.playerTile.transform.Find("VoteFor").gameObject.SetActive(false);
     character.playerTile.transform.Find("VoteAgainst").gameObject.SetActive(false);
     character.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(false);
+    suspectedPlayer.SetActive(false);
   }
 
   public void SetToDead(PlayableCharacter character) {
