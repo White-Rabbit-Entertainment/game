@@ -49,7 +49,7 @@ public class PlayersUI : MonoBehaviourPun {
 
   public void SetVotingPlayer(PlayableCharacter player){
     player.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(true);
-    suspectedPlayer = player.playerTile.transform.gameObject;
+    player.playerTile.transform.position = suspectedPlayer.transform.position;
   }
 
   public void ClearVote(PlayableCharacter character) {
