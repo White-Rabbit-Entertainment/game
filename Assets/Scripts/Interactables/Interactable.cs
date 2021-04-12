@@ -154,7 +154,7 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public void EnableUndoneMarker() {
-    undoneMarker.enabled = true;
+    if (!(NetworkManager.instance.GetMe() is Traitor)) undoneMarker.enabled = true;
   }
   
   public void DisableUndoneMarker() {
