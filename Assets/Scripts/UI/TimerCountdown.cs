@@ -8,9 +8,16 @@ using TMPro;
 public class TimerCountdown : MonoBehaviour {
 
     public TextMeshProUGUI timerText;
+    public bool stopped = false;
 
     void Update() {
-        timerText.text = Timer.RoundTimer.FormatTime();
+        if (!stopped) {
+            timerText.text = Timer.RoundTimer.FormatTime();
+        }
+    }
+
+    public void Stop() {
+        stopped = true;
     }
 }
 
