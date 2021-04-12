@@ -44,6 +44,10 @@ public class Task : MonoBehaviour {
     return parent == null;
   }
 
+  public bool IsUndone() {
+    return isUndone && IsMasterTask();
+  }
+
   // Returns true if all the requirements of this task have been completed. If this
   // is the case then this task can now be attempted. If false the requirement
   // tasks must be completed first.
@@ -146,7 +150,7 @@ public class Task : MonoBehaviour {
     
     if (NetworkManager.instance.GetMe() is Traitor) {
       DisableTaskMarker();
-    } else if (TaskInteractable.inRange) {
+    } else if (TaskInteractable.inRange && IsUndone()) {
       EnableUndoneMarker();
     }
   }
