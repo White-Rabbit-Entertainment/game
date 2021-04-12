@@ -7,12 +7,15 @@ public class CountdownVote : MonoBehaviour
 {
     [SerializeField] private Image countdownCircleTimer;
     [SerializeField] private TextMeshProUGUI countdownText;
-    [SerializeField] private float startTime = 30.0f;
+    // [SerializeField] private float startTime = 30.0f;
+    private float startTime;
      private float currentTime;
      private bool updateTime;
      private void Start()
      { 
-        currentTime = startTime;
+        // currentTime = startTime;
+        currentTime = (float)Timer.VoteTimer.TimeRemaining();
+        startTime = currentTime;
         countdownCircleTimer.fillAmount = 1.0f;
          // Easy way to represent only the seconds and skip the
          // float     
@@ -24,8 +27,9 @@ public class CountdownVote : MonoBehaviour
       {
           if (updateTime)
           {
-            currentTime -= Time.deltaTime;
-            if (currentTime <= 0.0f)
+            // currentTime -= Time.deltaTime;
+            currentTime = (float)Timer.VoteTimer.TimeRemaining();
+            if (Timer.VoteTimer.IsComplete())
             {
                // Stop the countdown timer              
                updateTime = false;
@@ -35,5 +39,5 @@ public class CountdownVote : MonoBehaviour
             float normalizedValue = Mathf.Clamp(currentTime /startTime, 0.0f, 1.0f);
             countdownCircleTimer.fillAmount = normalizedValue;
            }
-    }﻿
+    }
 }
