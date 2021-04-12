@@ -37,7 +37,8 @@ public abstract class Interactable : MonoBehaviourPun {
   public string playerAnimationTrigger;
 
   private Outline outline;
-  private Target target;
+  private Target taskMarker;
+  private Target undoneMarker;
   
   public Task task;
   public PhotonView View {
@@ -50,9 +51,19 @@ public abstract class Interactable : MonoBehaviourPun {
     outline = gameObject.AddComponent<Outline>() as Outline;
     outline.OutlineWidth = outlineWidth;
     outline.enabled = false;
-    
-    target = gameObject.AddComponent<Target>() as Target;
-    target.enabled = false;
+  
+    taskMarker = gameObject.AddComponent<Target>() as Target;
+    taskMarker.enabled = false;
+    taskMarker.boxText = "TASK";
+    taskMarker.TargetColor = Color.green;
+
+    undoneMarker = gameObject.AddComponent<Target>() as Target;
+    undoneMarker.enabled = false;
+    undoneMarker.NeedDistanceText = false;
+    undoneMarker.NeedArrowIndicator = false;
+    undoneMarker.boxImage = Resources.Load<Sprite>("Images/exclaimationmark");
+    undoneMarker.boxText = "UNDONE";
+    undoneMarker.TargetColor = Color.red;
 
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
@@ -136,15 +147,20 @@ public abstract class Interactable : MonoBehaviourPun {
     SetTaskGlow();
   }
 
-  public void EnableTarget() {
-    target.enabled = true;
-    Debug.Log("target enabled");
+  public void EnableTaskMarker() {
+    taskMarker.enabled = true;
   }
   
-  public void DisableTarget() {
-    target.enabled = false;
-    Debug.Log("target disabled");
-    Debug.Log($"target disabled for {gameObject}");
+  public void DisableTaskMarker() {
+    taskMarker.enabled = false;
+  }
+
+  public void EnableUndoneMarker() {
+    if (!(NetworkManager.instance.GetMe() is Traitor)) undoneMarker.enabled = true;
+  }
+  
+  public void DisableUndoneMarker() {
+    undoneMarker.enabled = false;
   }
 
   // Once completed set the disabled state

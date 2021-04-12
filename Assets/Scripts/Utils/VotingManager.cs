@@ -96,12 +96,9 @@ public class VotingManager : MonoBehaviour {
     foreach (PlayableCharacter character in playersVotingFor.Concat(playersVotingAgainst)) {
       playersUI.ClearVote(character);
     }
-    Debug.Log("Ending vote");
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
-      Debug.Log("The vote is successful");
       if (suspectedPlayer.IsMe()) {
-        Debug.Log("Im going to kill myself");
         suspectedPlayer.Kill();
         if (NetworkManager.instance.NoLoyalsRemaining()) {
           gameSceneManager.EndGame(Team.Traitor);
@@ -110,17 +107,14 @@ public class VotingManager : MonoBehaviour {
           gameSceneManager.EndGame(Team.Loyal);
         }
       }
-      Debug.Log("The player has been voted off");
       // Show UI to say someone was voted off
       ShowVotingOutCome(suspectedPlayer.Owner.NickName);
-            StartCoroutine(ShowOutcomeInProgress());
-            
-        } else {
-      Debug.Log("The player survived the vote");
-            // Show UI to say vote was unsuccessful
+      StartCoroutine(ShowOutcomeInProgress());
+    } else {
+      // Show UI to say vote was unsuccessful
       ShowVotingUnsuccess(suspectedPlayer.Owner.NickName);
-            StartCoroutine(ShowUnsuccessInProgress());
-        }
+      StartCoroutine(ShowUnsuccessInProgress());
+    }
   }
 
   [PunRPC]

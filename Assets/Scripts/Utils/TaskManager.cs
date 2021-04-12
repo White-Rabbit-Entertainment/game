@@ -17,11 +17,13 @@ public class TaskManager : MonoBehaviourPun {
   public GameObject taskables;
   public List<Task> tasks;
   public GameSceneManager gameSceneManager;
+  public TaskCompletionUI taskCompletionUI;
 
   private bool requested = false;
 
   void Start() {
     tasks = new List<Task>();
+    InvokeRepeating("UpdateTaskBar", 5f, 5f);
   }
 
   void Update() {
@@ -40,7 +42,6 @@ public class TaskManager : MonoBehaviourPun {
       && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
     ) {
       requested = true;
-      Debug.Log("Requesting new task in update");
       PlayableCharacter character = NetworkManager.instance.GetMe();
       if (character is Loyal) {
         if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
@@ -50,6 +51,10 @@ public class TaskManager : MonoBehaviourPun {
         }
       }
     }
+  }
+
+  public void UpdateTaskBar() {
+    taskCompletionUI.UpdateBar();
   }
 
   public void AddTask(Task task) {
@@ -135,22 +140,17 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public void RequestNewTask() {
-    Debug.Log("Asking master client for new task");
     GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
   }
 
   [PunRPC]
   public void AssignTask(int requestingPlayerViewId) {
     PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
-    Debug.Log($"Assigning a task to {taskRequester.Owner.NickName}");
-    Debug.Log($"Number of tasks available for {taskRequester.Owner.NickName} {tasks.Count}");
     Task nextTask = null;
     if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
-      Debug.Log($"Actually assigning a task to {taskRequester.Owner.NickName}");
       nextTask.AssignTask(taskRequester);
-      Debug.Log(nextTask.description);
     }
   }
 
