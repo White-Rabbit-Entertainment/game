@@ -54,7 +54,6 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public void UpdateTaskBar() {
-    Debug.Log("Updating task bar");
     taskCompletionUI.UpdateBar();
   }
 
