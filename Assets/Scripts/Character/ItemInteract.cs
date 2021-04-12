@@ -127,7 +127,7 @@ public class ItemInteract : MonoBehaviourPun {
      public void OnTriggerExit(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null) {
-            if (interactable.task != null) interactable.task.DisableTaskMarker();
+            if (interactable.task != null) interactable.task.DisableUndoneMarker();
             interactable.inRange = false;
         }
      }
