@@ -23,7 +23,7 @@ public class TaskManager : MonoBehaviourPun {
 
   void Start() {
     tasks = new List<Task>();
-    InvokeRepeating("UpdateTaskBar", 20f, 20f);
+    InvokeRepeating("UpdateTaskBar", 5f, 5f);
   }
 
   void Update() {
@@ -54,6 +54,7 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   public void UpdateTaskBar() {
+    Debug.Log("Updating task bar");
     taskCompletionUI.UpdateBar();
   }
 
