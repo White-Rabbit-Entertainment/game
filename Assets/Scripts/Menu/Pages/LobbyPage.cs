@@ -26,7 +26,6 @@ public class LobbyPage : MenuPage {
     }
 
     void OnEnable() {
-      Debug.Log("Start");
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
       initialized = false;
@@ -42,7 +41,6 @@ public class LobbyPage : MenuPage {
       }
       if (!initialized && NetworkManager.instance.IsRoomReset()) {
         initialized = true;
-        Debug.Log("adding listener to ready button");
       }
       if (initialized) {
         SetText();
@@ -75,12 +73,9 @@ public class LobbyPage : MenuPage {
     }
 
     void ToggleReady() {
-      Debug.Log("CLICK");
       if (NetworkManager.instance.LocalPlayerPropertyIs<bool>("Ready", true)) {
-        Debug.Log("READYING DOWN");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       } else {
-        Debug.Log("READYING UP");
         NetworkManager.instance.SetLocalPlayerProperty("Ready", true);
       }
     }

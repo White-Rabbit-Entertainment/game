@@ -91,7 +91,6 @@ public class Task : MonoBehaviour {
     if (!isManual) {
       if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
         if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
-          Debug.Log($"Requesting new task after non manual complete of {gameObject}");
           taskManager.RequestNewTask();
         } else {
           me.assignedMasterTask.AssignSubTaskToCharacter(me);
@@ -157,7 +156,6 @@ public class Task : MonoBehaviour {
   }
 
   public void AssignTask(PlayableCharacter character) {
-    Debug.Log($"Assign task to {character.Owner.NickName}");
     //Master calls assignToCharacter first to ensure it is done before anyone else
     AssignTaskToCharacter(character);
     //Then we call AssignToCharacter on all other players
@@ -171,17 +169,14 @@ public class Task : MonoBehaviour {
   }
   
   private void AssignTaskToCharacter(PlayableCharacter character) {
-    Debug.Log($"Assining master taks: {this}");
     character.assignedMasterTask = this;
     isAssigned = true;
     if (character.IsMe()) {
-      Debug.Log($"Assining master taks to me: {this}");
       AssignSubTaskToCharacter(character);
     }
   }
 
   public void AssignSubTaskToCharacter(PlayableCharacter character) {
-    Debug.Log($"Giving my self a master task: {FindIncompleteChild(this)}");
     Task subTask = FindIncompleteChild(this);
     character.assignedSubTask = subTask;
     character.contextTaskUI.SetTask(subTask);
