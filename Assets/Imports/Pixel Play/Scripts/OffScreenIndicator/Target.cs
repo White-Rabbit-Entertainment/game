@@ -55,7 +55,7 @@ public class Target : MonoBehaviour
             return needBoxIndicator;
         }
         set {
-            needArrowIndicator = value;
+            needBoxIndicator = value;
         }
     }
 
@@ -83,7 +83,7 @@ public class Target : MonoBehaviour
             return needDistanceText;
         }
         set {
-            needArrowIndicator = value;
+            needDistanceText = value;
         }
     }
 
