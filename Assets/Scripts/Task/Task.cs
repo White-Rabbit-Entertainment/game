@@ -12,6 +12,7 @@ public class Task : MonoBehaviour {
   public string description;
   public TaskManager taskManager;
   public bool isUndoable = true;
+  public bool isUndone = false;
 
   public Timer timer = Timer.None;
 
@@ -67,6 +68,7 @@ public class Task : MonoBehaviour {
   public void CompleteRPC(bool isManual) {
     isCompleted = true;
     isAssigned = false;
+    isUndone = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
     
     me.taskNotificationUI.SetNotification(true);
@@ -131,6 +133,7 @@ public class Task : MonoBehaviour {
   public void UncompleteRPC() {
     isCompleted = false;
     isAssigned = false;
+    isUndone = true;
     NetworkManager.instance.GetMe().taskNotificationUI.SetNotification(false);
     if (parent != null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
@@ -143,7 +146,7 @@ public class Task : MonoBehaviour {
     
     if (NetworkManager.instance.GetMe() is Traitor) {
       DisableTaskMarker();
-    } else {
+    } else if (TaskInteractable.inRange) {
       EnableUndoneMarker();
     }
   }
