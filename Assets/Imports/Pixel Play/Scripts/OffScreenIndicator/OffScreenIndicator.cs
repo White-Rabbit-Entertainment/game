@@ -122,8 +122,8 @@ public class OffScreenIndicator : MonoBehaviour
             {
                 indicator.Activate(false);
                 indicator = type == IndicatorType.BOX ? BoxObjectPool.current.GetPooledObject() : ArrowObjectPool.current.GetPooledObject();
-                indicator.Activate(true); // Sets the indicator as active.
             }
+            indicator.Activate(true); // Sets the indicator as active.
         }
         else
         {
