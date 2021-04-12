@@ -75,7 +75,7 @@ public class VotingManager : MonoBehaviour {
     playersVotingFor = new List<PlayableCharacter>();
     playersVotingAgainst = new List<PlayableCharacter>();
     suspectedPlayer = PhotonView.Find(suspectedPlayerId).GetComponent<PlayableCharacter>();
-    playersUI.SetVotingPlayer(suspectedPlayer);
+    playersUI.SetSuspectedPlayer(suspectedPlayer);
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
 
@@ -98,6 +98,7 @@ public class VotingManager : MonoBehaviour {
     setVoteUI.SetActive(false);
     currentVoteUI.SetActive(false);
     voteTopRightUI.SetActive(false);
+    playersUI.ClearSuspectedPlayer();
     foreach (PlayableCharacter character in playersVotingFor.Concat(playersVotingAgainst)) {
       playersUI.ClearVote(character);
     }
