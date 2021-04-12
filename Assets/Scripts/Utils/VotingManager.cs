@@ -27,6 +27,7 @@ public class VotingManager : MonoBehaviour {
 
   public GameObject votingOutcomeUI;
   public GameObject voteUnsuccess;
+  public GameObject voteTopRightUI;
   public TextMeshProUGUI voteResult;
   public TextMeshProUGUI voteUnsuccessful;
   
@@ -79,6 +80,7 @@ public class VotingManager : MonoBehaviour {
     voteStarted = true;
 
     hasVoted = false;
+    voteTopRightUI.SetActive(true);
     
     currentVoteUI.SetActive(true);
     votesFor.text = $"For: 0";
@@ -95,6 +97,7 @@ public class VotingManager : MonoBehaviour {
   public void EndVote() {
     setVoteUI.SetActive(false);
     currentVoteUI.SetActive(false);
+    voteTopRightUI.SetActive(false);
     foreach (PlayableCharacter character in playersVotingFor.Concat(playersVotingAgainst)) {
       playersUI.ClearVote(character);
     }
