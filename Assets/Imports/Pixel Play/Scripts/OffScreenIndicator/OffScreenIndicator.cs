@@ -64,7 +64,6 @@ public class OffScreenIndicator : MonoBehaviour
             if(indicator)
             {
                 if (target.NeedBoxIndicator && isTargetVisible) {
-                    Debug.Log("Need box indicator");
                     indicator.SetImage(target.boxImage);
                     indicator.SetText(target.boxText);
                 }
