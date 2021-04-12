@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicatorType: 0
+  titleText: {fileID: 7435982347826765522}
 --- !u!1 &2876257083408931255
 GameObject:
   m_ObjectHideFlags: 0
