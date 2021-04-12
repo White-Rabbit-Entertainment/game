@@ -47,9 +47,9 @@ public class VotingManager : MonoBehaviour {
       }
     }
     if (voteStarted && !hasVoted && NetworkManager.instance.GetMe() != suspectedPlayer) {
-      if (Input.GetKeyDown(KeyCode.K)) {
+      if (Input.GetKeyDown(KeyCode.Y)) {
         SubmitVote(Vote.For);
-      } else if (Input.GetKeyDown(KeyCode.L)) {
+      } else if (Input.GetKeyDown(KeyCode.N)) {
         SubmitVote(Vote.Against);
       }
     }
@@ -88,10 +88,8 @@ public class VotingManager : MonoBehaviour {
 
     bool voteIsOnYou = NetworkManager.instance.GetMe() == suspectedPlayer;
     voteTitle.text = voteIsOnYou ? "You are being voted on." : $"{suspectedPlayer.Owner.NickName} is being voted on.";
-    if (!voteIsOnYou) {
-      setVoteUI.SetActive(true);
-      votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
-    }
+    setVoteUI.SetActive(true);
+    votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
 
   public void EndVote() {
