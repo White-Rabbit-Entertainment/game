@@ -69,7 +69,6 @@ public class OffScreenIndicator : MonoBehaviour
                     indicator.SetText(target.boxText);
                 }
                 else if (target.NeedArrowIndicator && !isTargetVisible) {
-                    Debug.Log("Need arrow indicator");
                     indicator.SetImage(target.arrowImage);
                     indicator.SetText(target.arrowText);
                 }
