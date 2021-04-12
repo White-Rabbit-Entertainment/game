@@ -27,16 +27,12 @@ public class Task : MonoBehaviour {
   // null then the task is a "master" task.
   public Task parent;
 
-  public bool tutorialTask = false;
-
   public PhotonView View {
     get { return GetComponent<PhotonView>(); }
   }
 
   void Awake() {
-    if (!tutorialTask) {
-      taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
-    }
+    taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
   }
 
   // Returns if the task is a master task, i.e. no tasks depend on this task
@@ -74,15 +70,12 @@ public class Task : MonoBehaviour {
     isAssigned = false;
     isUndone = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
-    
-    me.taskNotificationUI.SetNotification(true);
+   
     if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);;
-    if (!tutorialTask) {
-      taskManager.CheckAllTasksCompleted();
-    }
+    taskManager.CheckAllTasksCompleted();
 
     //Enable & Disable relevant targets
     DisableUndoneMarker();
@@ -125,12 +118,11 @@ public class Task : MonoBehaviour {
   }
   
   public void Complete(bool isManual = false) {
-    Debug.Log("Completing task");
-    if (tutorialTask) {
-      CompleteRPC(isManual);
-    } else {
-      View.RPC("CompleteRPC", RpcTarget.All, isManual);
+    if (!isManual) {
+      PlayableCharacter me =  NetworkManager.instance.GetMe();
+      me.taskNotificationUI.SetNotification(true);
     }
+    View.RPC("CompleteRPC", RpcTarget.All, isManual);
   }
   
   [PunRPC]
@@ -138,7 +130,6 @@ public class Task : MonoBehaviour {
     isCompleted = false;
     isAssigned = false;
     isUndone = true;
-    NetworkManager.instance.GetMe().taskNotificationUI.SetNotification(false);
     if (parent != null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
@@ -156,6 +147,8 @@ public class Task : MonoBehaviour {
   }
 
   public void Uncomplete() {
+    PlayableCharacter me =  NetworkManager.instance.GetMe();
+    me.taskNotificationUI.SetNotification(false);
     View.RPC("UncompleteRPC", RpcTarget.All);
   }
 

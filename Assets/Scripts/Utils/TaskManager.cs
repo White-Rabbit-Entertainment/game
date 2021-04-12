@@ -17,11 +17,13 @@ public class TaskManager : MonoBehaviourPun {
   public GameObject taskables;
   public List<Task> tasks;
   public GameSceneManager gameSceneManager;
+  public TaskCompletionUI taskCompletionUI;
 
   private bool requested = false;
 
   void Start() {
     tasks = new List<Task>();
+    InvokeRepeating("UpdateTaskBar", 20f, 20f);
   }
 
   void Update() {
@@ -50,6 +52,10 @@ public class TaskManager : MonoBehaviourPun {
         }
       }
     }
+  }
+
+  public void UpdateTaskBar() {
+    taskCompletionUI.UpdateBar();
   }
 
   public void AddTask(Task task) {
