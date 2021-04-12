@@ -9,8 +9,6 @@ public class LoadingScreen : MonoBehaviour {
   public GameObject loadingScreen;
   public PlayersUI playersUI;
   public TaskCompletionUI taskCompletionUI;
-  // public Text text;
-  // public TMP_Text text;
   public TextMeshProUGUI titleText;
   public TextMeshProUGUI text;
   public Button closeButton;
