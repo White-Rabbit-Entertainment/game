@@ -62,7 +62,6 @@ public class Indicator : MonoBehaviour
     
     public void SetImage(Sprite image)
     {
-        Debug.Log($"Setting image to {image == null}");
         indicatorImage.sprite = image != null ? image : defaultImage;
     }
 
