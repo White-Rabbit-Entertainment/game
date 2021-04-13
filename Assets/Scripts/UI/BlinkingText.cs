@@ -8,7 +8,7 @@ public class BlinkingText : MonoBehaviour
 {
     public TextMeshProUGUI text;
 
-    private void Start()
+    private void OnEnable()
     {
         text = GetComponent<TextMeshProUGUI>();
         StartBlinking();
