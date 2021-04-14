@@ -3187,8 +3187,51 @@ Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
 STATICTOP += 16;
 assert(tempDoublePtr % 8 == 0);
-function _Hello() {
- window.alert("Hello, world!");
+var Data = {
+ peerConnection: null,
+ localStream: null,
+ remoteStream: null
+};
+function _Init() {
+ const constraints = {
+  "video": true,
+  "audio": true
+ };
+ const configuration = {
+  "iceServers": [ {
+   "urls": "stun:stun.l.google.com:19302"
+  } ]
+ };
+ Data.remoteStream = new MediaStream;
+ Data.peerConnection = new RTCPeerConnection(Data.configuration);
+ Data.peerConnection.ontrack = (function() {
+  Data.remoteStream.addTrack(event.track, Data.remoteStream);
+ });
+ Data.peerConnection.onnegotiationneeded = (function(event) {
+  console.log("Negotiation needed!");
+ });
+ Data.peerConnection.onicecandidate = (function(event) {
+  console.log("icecandidate happened");
+  if (event.candidate) {
+   console.log("icecandidate really happened");
+  }
+ });
+ Data.peerConnection.onconnectionstatechanged = (function(event) {
+  if (Data.peerConnection.connectionState === "connected") {
+   console.log("CONNECTED!!!!!!");
+  }
+ });
+ navigator.mediaDevices.getUserMedia(constraints).then((function(stream) {
+  console.log("Got MediaStream:", stream);
+  Data.localStream = stream;
+  Data.localStream.getTracks().forEach((function(track) {
+   console.log("Sending track");
+   console.log(track);
+   Data.peerConnection.addTrack(track, Data.localStream);
+  }));
+ })).catch((function(error) {
+  console.error("Error accessing media devices.", error);
+ }));
 }
 function _JS_Cursor_SetImage(ptr, length) {
  var binary = "";
@@ -18933,7 +18976,7 @@ Module.asmLibraryArg = {
  "invoke_vijjji": invoke_vijjji,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
- "_Hello": _Hello,
+ "_Init": _Init,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
  "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
  "_JS_Eval_ClearInterval": _JS_Eval_ClearInterval,
