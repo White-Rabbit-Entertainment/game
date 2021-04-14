@@ -14,7 +14,7 @@ var WebRTCPlugin = {
     Data.remoteStream = new MediaStream();
     const remoteVideo = document.querySelector('#remoteVideo');
     Data.remoteVideo.srcObject = remoteStream;
-  }
+  },
 
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));
