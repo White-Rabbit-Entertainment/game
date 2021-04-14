@@ -37,6 +37,27 @@ var WebRTCPlugin = {
         }
     };
       
+    try {
+        navigator.mediaDevices.getUserMedia(Data.constraints)
+            .then(function(stream) {
+                console.log('Got MediaStream:', stream);
+            })
+            .catch(function(error) {
+                console.error('Error accessing media devices.', error);
+            });
+  
+        Data.localStream = await navigator.mediaDevices.getUserMedia(Data.constraints);
+        // const videoElement = document.querySelector('video#localVideo');
+        // videoElement.srcObject = Data.localStream;
+
+        Data.localStream.getTracks().forEach(function(track) {
+            console.log("Sending track")
+            console.log(track)
+            Data.peerConnection.addTrack(track, Data.localStream);
+        });
+    } catch(error) {
+        console.error('Error opening video camera.', error);
+    }
   },
   
   HelloString: function (str) {
