@@ -53,15 +53,15 @@ var WebRTCPlugin = {
   },
 
   MakeOffer: function() {
-      peerConnection.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true})
+      Data.peerConnection.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true})
         .then(function(offer) {
-            peerConnection.setLocalDescription(offer)
+            Data.peerConnection.setLocalDescription(offer)
               .then(function() {
                 console.log("Offer constructed");
                 return offer.sdp
               });
         });
-  }
+  },
 
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));
