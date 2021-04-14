@@ -11,8 +11,8 @@ var WebRTCPlugin = {
   Init: function() {
     // Setup remote stream
     Data.remoteStream = new MediaStream();
-    const remoteVideo = document.querySelector('#remoteVideo');
-    Data.remoteVideo.srcObject = remoteStream;
+    // const remoteVideo = document.querySelector('#remoteVideo');
+    // Data.remoteVideo.srcObject = remoteStream;
 
     // Setup peer connection
     Data.peerConnection = new RTCPeerConnection(Data.configuration);
@@ -25,6 +25,7 @@ var WebRTCPlugin = {
             // socket.emit("message", {"iceCandidate": event.candidate});
         }
     };
+
     Data.peerConnection.onconnectionstatechanged = (event) => {
         // If peerConnection becomes connected
         if (peerConnection.connectionState === 'connected') {
@@ -33,30 +34,30 @@ var WebRTCPlugin = {
         }
     };
 
-    SetupLocalStream();
+    // SetupLocalStream();
   }
 
   SetupLocalStream: function () {
-      try {
-          navigator.mediaDevices.getUserMedia(Data.constraints)
-              .then(stream => {
-                  console.log('Got MediaStream:', stream);
-              })
-              .catch(error => {
-                  console.error('Error accessing media devices.', error);
-              });
+      // try {
+      //     navigator.mediaDevices.getUserMedia(Data.constraints)
+      //         .then(stream => {
+      //             console.log('Got MediaStream:', stream);
+      //         })
+      //         .catch(error => {
+      //             console.error('Error accessing media devices.', error);
+      //         });
   
-          Data.localStream = await navigator.mediaDevices.getUserMedia(Data.constraints);
-          const videoElement = document.querySelector('video#localVideo');
-          videoElement.srcObject = Data.localStream;
-          Data.localStream.getTracks().forEach(track => {
-              console.log("Sending track")
-              console.log(track)
-              Data.peerConnection.addTrack(track, Data.localStream);
-          });
-      } catch(error) {
-          console.error('Error opening video camera.', error);
-      }
+      //     Data.localStream = await navigator.mediaDevices.getUserMedia(Data.constraints);
+      //     // const videoElement = document.querySelector('video#localVideo');
+      //     // videoElement.srcObject = Data.localStream;
+      //     Data.localStream.getTracks().forEach(track => {
+      //         console.log("Sending track")
+      //         console.log(track)
+      //         Data.peerConnection.addTrack(track, Data.localStream);
+      //     });
+      // } catch(error) {
+      //     console.error('Error opening video camera.', error);
+      // }
   }
 
 };
