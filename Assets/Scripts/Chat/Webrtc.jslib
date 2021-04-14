@@ -12,8 +12,27 @@ var WebRTCPlugin = {
   
   Init: function() {
     Data.remoteStream = new MediaStream();
-    const remoteVideo = document.querySelector('#remoteVideo');
-    Data.remoteVideo.srcObject = remoteStream;
+    // const remoteVideo = document.querySelector('#remoteVideo');
+    // Data.remoteVideo.srcObject = remoteStream;
+    
+    Data.peerConnection = new RTCPeerConnection(Data.configuration);
+    Data.peerConnection.ontrack = () => Data.remoteStream.addTrack(event.track, Data.remoteStream);
+    Data.peerConnection.onnegotiationneeded = (event) => console.log("Negotiation needed!");
+    Data.peerConnection.onicecandidate = (event) => {
+        console.log("icecandidate happened")
+        if (event.candidate) {
+            console.log("icecandidate really happened")
+            // socket.emit("message", {"iceCandidate": event.candidate});
+        }
+    };
+
+    Data.peerConnection.onconnectionstatechanged = (event) => {
+        // If peerConnection becomes connected
+        if (Data.peerConnection.connectionState === 'connected') {
+            // Peers connected!
+            console.log("CONNECTED!!!!!!")
+        }
+    };
   },
 
   HelloString: function (str) {
