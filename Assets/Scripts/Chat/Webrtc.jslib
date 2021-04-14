@@ -1,38 +1,38 @@
 var WebRTCPlugin = {
 
-  $Data: {
-    peerConnection: null,
-    localStream: null,
-    remoteStream: null,
-    constraints = {'video': true, 'audio': true},
-    configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
-  },
+  // $Data: {
+  //   peerConnection: null,
+  //   localStream: null,
+  //   remoteStream: null,
+  //   constraints = {'video': true, 'audio': true},
+  //   configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+  // },
 
   Init: function() {
     // Setup remote stream
-    Data.remoteStream = new MediaStream();
-    // const remoteVideo = document.querySelector('#remoteVideo');
-    // Data.remoteVideo.srcObject = remoteStream;
+    // Data.remoteStream = new MediaStream();
+    // // const remoteVideo = document.querySelector('#remoteVideo');
+    // // Data.remoteVideo.srcObject = remoteStream;
 
-    // Setup peer connection
-    Data.peerConnection = new RTCPeerConnection(Data.configuration);
-    Data.peerConnection.ontrack = () => Data.remoteStream.addTrack(event.track, remoteStream)
-    Data.peerConnection.onnegotiationneeded = (event) => console.log("Negotiation needed!");
-    Data.peerConnection.onicecandidate = (event) => {
-        console.log("icecandidate happened")
-        if (event.candidate) {
-            console.log("icecandidate really happened")
-            // socket.emit("message", {"iceCandidate": event.candidate});
-        }
-    };
+    // // Setup peer connection
+    // Data.peerConnection = new RTCPeerConnection(Data.configuration);
+    // Data.peerConnection.ontrack = () => Data.remoteStream.addTrack(event.track, Data.remoteStream)
+    // Data.peerConnection.onnegotiationneeded = (event) => console.log("Negotiation needed!");
+    // Data.peerConnection.onicecandidate = (event) => {
+    //     console.log("icecandidate happened")
+    //     if (event.candidate) {
+    //         console.log("icecandidate really happened")
+    //         // socket.emit("message", {"iceCandidate": event.candidate});
+    //     }
+    // };
 
-    Data.peerConnection.onconnectionstatechanged = (event) => {
-        // If peerConnection becomes connected
-        if (peerConnection.connectionState === 'connected') {
-            // Peers connected!
-            console.log("CONNECTED!!!!!!")
-        }
-    };
+    // Data.peerConnection.onconnectionstatechanged = (event) => {
+    //     // If peerConnection becomes connected
+    //     if (Data.peerConnection.connectionState === 'connected') {
+    //         // Peers connected!
+    //         console.log("CONNECTED!!!!!!")
+    //     }
+    // };
 
     // SetupLocalStream();
   }
@@ -62,5 +62,4 @@ var WebRTCPlugin = {
 
 };
 
-autoAddDeps(WebRTCPlugin, '$Data');
 mergeInto(LibraryManager.library, WebRTCPlugin);
