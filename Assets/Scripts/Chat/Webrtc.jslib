@@ -37,27 +37,6 @@ var WebRTCPlugin = {
             console.log("CONNECTED!!!!!!")
         }
     };
-
-    try {
-          navigator.mediaDevices.getUserMedia(constraints)
-              .then(stream => {
-                  console.log('Got MediaStream:', stream);
-              })
-              .catch(error => {
-                  console.error('Error accessing media devices.', error);
-              });
-  
-          Data.localStream = await navigator.mediaDevices.getUserMedia(constraints);
-          // const videoElement = document.querySelector('video#localVideo');
-          // videoElement.srcObject = Data.localStream;
-          Data.localStream.getTracks().forEach(track => {
-              console.log("Sending track")
-              console.log(track)
-              Data.peerConnection.addTrack(track, Data.localStream);
-          });
-    } catch(error) {
-          console.error('Error opening video camera.', error);
-    }
   },
   
   HelloString: function (str) {
