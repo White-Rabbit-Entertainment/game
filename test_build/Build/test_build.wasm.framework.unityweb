@@ -3247,7 +3247,6 @@ function _Init() {
  })).catch((function(error) {
   console.error("Error accessing media devices.", error);
  }));
- MakeOffer();
 }
 function _JS_Cursor_SetImage(ptr, length) {
  var binary = "";
