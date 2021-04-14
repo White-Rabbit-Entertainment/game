@@ -50,8 +50,6 @@ var WebRTCPlugin = {
         .catch(function(error) {
             console.error('Error accessing media devices.', error);
         });
-
-      MakeOffer();
   },
 
   MakeOffer: function(sendOffer) {
