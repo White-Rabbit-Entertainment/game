@@ -1299,7 +1299,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3359056;
+STATICTOP = STATIC_BASE + 3359120;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -3181,7 +3181,7 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3359056;
+var STATIC_BUMP = 3359120;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
@@ -3192,6 +3192,9 @@ var Data = {
  localStream: null,
  remoteStream: null
 };
+function _HelloString(str) {
+ window.alert(Pointer_stringify(str));
+}
 function _Init() {
  const constraints = {
   "video": true,
@@ -3635,6 +3638,17 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 }
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
+}
+function _MakeOffer() {
+ Data.peerConnection.createOffer({
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
+ }).then((function(offer) {
+  Data.peerConnection.setLocalDescription(offer).then((function() {
+   console.log("Offer constructed");
+   return offer.sdp;
+  }));
+ }));
 }
 var webSocketInstances = [];
 function _SocketClose(socketInstance) {
@@ -18976,6 +18990,7 @@ Module.asmLibraryArg = {
  "invoke_vijjji": invoke_vijjji,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
+ "_HelloString": _HelloString,
  "_Init": _Init,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
  "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
@@ -19023,6 +19038,7 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetRequestHeader": _JS_WebRequest_SetRequestHeader,
  "_JS_WebRequest_SetResponseHandler": _JS_WebRequest_SetResponseHandler,
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
+ "_MakeOffer": _MakeOffer,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,
  "_SocketError": _SocketError,
