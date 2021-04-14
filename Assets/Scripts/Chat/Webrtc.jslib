@@ -11,6 +11,10 @@ var WebRTCPlugin = {
   },
   
   Init: function() {
+  
+    const constraints = {'video': true, 'audio': true}
+    const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+
     Data.remoteStream = new MediaStream();
     // const remoteVideo = document.querySelector('#remoteVideo');
     // Data.remoteVideo.srcObject = remoteStream;
@@ -33,10 +37,8 @@ var WebRTCPlugin = {
             console.log("CONNECTED!!!!!!")
         }
     };
-  },
-  
-  SetupLocalStream: function (constraints) {
-      try {
+
+    try {
           navigator.mediaDevices.getUserMedia(constraints)
               .then(stream => {
                   console.log('Got MediaStream:', stream);
@@ -53,11 +55,11 @@ var WebRTCPlugin = {
               console.log(track)
               Data.peerConnection.addTrack(track, Data.localStream);
           });
-      } catch(error) {
+    } catch(error) {
           console.error('Error opening video camera.', error);
-      }
+    }
   },
-
+  
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));
   },
