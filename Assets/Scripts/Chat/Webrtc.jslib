@@ -4,7 +4,7 @@ var WebRTCPlugin = {
     peerConnection: null,
     localStream: null,
     remoteStream: null,
-    constraints = {'video': true, 'audio': true}
+    constraints = {'video': true, 'audio': true},
     configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
   },
 
