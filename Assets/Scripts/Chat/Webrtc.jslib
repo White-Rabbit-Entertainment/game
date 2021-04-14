@@ -60,7 +60,7 @@ var WebRTCPlugin = {
                 var sdp = offer.sdp;
                 var sdpLen = lengthBytesUTF8(sdp) + 1;
                 console.log("Offer sent");
-                console.log(spd);
+                console.log(sdp);
 
                 var strPtr = _malloc(len1);
                 stringToUTF8(sdp, strPtr, sdpLen);
