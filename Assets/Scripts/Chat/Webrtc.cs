@@ -22,8 +22,9 @@ public class Webrtc : MonoBehaviour {
     }
 
     [MonoPInvokeCallback(typeof(Action))]
-    public static void SendOffer()
+    public static void SendOffer(string sdp)
     {
+        HelloString(sdp);
     }
 
 }

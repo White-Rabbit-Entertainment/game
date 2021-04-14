@@ -50,15 +50,19 @@ var WebRTCPlugin = {
         .catch(function(error) {
             console.error('Error accessing media devices.', error);
         });
+
+      MakeOffer();
   },
 
-  MakeOffer: function() {
+  MakeOffer: function(sendOffer) {
       Data.peerConnection.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true})
         .then(function(offer) {
             Data.peerConnection.setLocalDescription(offer)
               .then(function() {
                 console.log("Offer constructed");
-                return offer.sdp
+                Data.callback = sendOffer;
+                Runtime.dynCall('v', sendOffer, 0, offer.sdp);
+                return offer;
               });
         });
   },
