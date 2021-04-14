@@ -5,19 +5,19 @@ using AOT;
 using UnityEngine;
 
 public class Webrtc : MonoBehaviour {
-    
+
     [DllImport("__Internal")]
     private static extern void Init();
     
     [DllImport("__Internal")]
-    private static extern string MakeOffer();
+    private static extern string MakeOffer(Action action);
     
     [DllImport("__Internal")]
     private static extern void HelloString(string str);
 
     void Start() {
         Init();
-        string sdp = MakeOffer();
+        string sdp = MakeOffer(SendOffer);
         HelloString(sdp);
     }
 
