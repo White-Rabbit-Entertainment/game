@@ -1,4 +1,12 @@
-mergeInto(LibraryManager.library, {
+var WebRTCPlugin = {
+
+  $Data: {
+    peerConnection: null,
+    localStream: null,
+    remoteStream: null,
+    constraints = {'video': true, 'audio': true},
+    configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]},
+  },
 
   Hello: function () {
     window.alert("Hello, world!");
@@ -29,4 +37,7 @@ mergeInto(LibraryManager.library, {
     GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
   },
 
-});
+};
+
+autoAddDeps(WebRTCPlugin, '$Data');
+mergeInto(LibraryManager.library, WebRTCPlugin);
