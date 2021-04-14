@@ -370,18 +370,6 @@ function dynCall(sig, ptr, args) {
   return Module["dynCall_" + sig].call(null, ptr);
  }
 }
-var Runtime = {
- dynCall: dynCall,
- getTempRet0: (function() {
-  abort('getTempRet0() is now a top-level function, after removing the Runtime object. Remove "Runtime."');
- }),
- staticAlloc: (function() {
-  abort('staticAlloc() is now a top-level function, after removing the Runtime object. Remove "Runtime."');
- }),
- stackAlloc: (function() {
-  abort('stackAlloc() is now a top-level function, after removing the Runtime object. Remove "Runtime."');
- })
-};
 var GLOBAL_BASE = 1024;
 var ABORT = 0;
 var EXITSTATUS = 0;
@@ -3657,10 +3645,13 @@ function _MakeOffer(sendOffer) {
   offerToReceiveVideo: true
  }).then((function(offer) {
   Data.peerConnection.setLocalDescription(offer).then((function() {
-   console.log("Offer constructed");
-   Data.callback = sendOffer;
-   Runtime.dynCall("v", sendOffer, 0, offer.sdp);
-   return offer;
+   var sdp = offer.sdp;
+   var sdpLen = lengthBytesUTF8(sdp) + 1;
+   console.log("Offer sent");
+   console.log(spd);
+   var strPtr = _malloc(len1);
+   stringToUTF8(sdp, strPtr, sdpLen);
+   Module.dynCall_vii(sendOffer, strPtr);
   }));
  }));
 }
