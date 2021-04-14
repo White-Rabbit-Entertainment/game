@@ -20,6 +20,23 @@ var WebRTCPlugin = {
     Data.peerConnection.ontrack = function() {
       Data.remoteStream.addTrack(event.track, Data.remoteStream);
     };
+    Data.peerConnection.onnegotiationneeded = function(event) {
+      console.log("Negotiation needed!");
+    };
+    Data.peerConnection.onicecandidate = function(event) {
+        console.log("icecandidate happened");
+        if (event.candidate) {
+          console.log("icecandidate really happened");
+        }
+    };
+    Data.peerConnection.onconnectionstatechanged = function(event) {
+        // If peerConnection becomes connected
+        if (Data.peerConnection.connectionState === 'connected') {
+            // Peers connected!
+            console.log("CONNECTED!!!!!!")
+        }
+    };
+      
   },
   
   HelloString: function (str) {
