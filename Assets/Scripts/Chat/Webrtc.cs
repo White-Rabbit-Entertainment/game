@@ -10,7 +10,7 @@ public class Webrtc : MonoBehaviour {
     private static extern void Init();
     
     [DllImport("__Internal")]
-    private static extern string MakeOffer(Action action);
+    private static extern string MakeOffer(Action<string> action);
     
     [DllImport("__Internal")]
     private static extern void HelloString(string str);
@@ -21,7 +21,7 @@ public class Webrtc : MonoBehaviour {
         HelloString(sdp);
     }
 
-    [MonoPInvokeCallback(typeof(Action))]
+    [MonoPInvokeCallback(typeof(Action<string>))]
     public static void SendOffer(string sdp)
     {
         HelloString(sdp);
