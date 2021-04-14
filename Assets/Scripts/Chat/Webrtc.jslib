@@ -62,7 +62,7 @@ var WebRTCPlugin = {
                 console.log("Offer sent");
                 console.log(sdp);
 
-                var strPtr = _malloc(len1);
+                var strPtr = _malloc(sdpLen);
                 stringToUTF8(sdp, strPtr, sdpLen);
                 Module.dynCall_vii(sendOffer, strPtr);
               });
