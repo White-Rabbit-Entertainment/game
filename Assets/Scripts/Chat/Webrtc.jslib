@@ -11,8 +11,11 @@ var WebRTCPlugin = {
   },
   
   Init: function() {
+  
     const constraints = {'video': true, 'audio': true}
     const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+
+    Data.remoteStream = new MediaStream();
   },
   
   HelloString: function (str) {
