@@ -1299,7 +1299,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3359248;
+STATICTOP = STATIC_BASE + 3359056;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -1902,10 +1902,6 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
-  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
- })
-}, {
- func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_gc_cpp();
  })
 }, {
@@ -1919,6 +1915,10 @@ __ATINIT__.push({
 }, {
  func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_vm_cpp();
+ })
+}, {
+ func: (function() {
+  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
  })
 }, {
  func: (function() {
@@ -3181,23 +3181,14 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3359248;
+var STATIC_BUMP = 3359056;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
 STATICTOP += 16;
 assert(tempDoublePtr % 8 == 0);
-function _AddNumbers(x, y) {
- return x + y;
-}
-function _BindWebGLTexture(texture) {
- GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
-}
 function _Hello() {
  window.alert("Hello, world!");
-}
-function _HelloString(str) {
- window.alert(Pointer_stringify(str));
 }
 function _JS_Cursor_SetImage(ptr, length) {
  var binary = "";
@@ -3602,9 +3593,6 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
 }
-function _PrintFloatArray(array, size) {
- for (var i = 0; i < size; i++) console.log(HEAPF32[(array >> 2) + i]);
-}
 var webSocketInstances = [];
 function _SocketClose(socketInstance) {
  var socket = webSocketInstances[socketInstance];
@@ -3683,13 +3671,6 @@ function _SocketSend(socketInstance, ptr, length) {
 function _SocketState(socketInstance) {
  var socket = webSocketInstances[socketInstance];
  return socket.socket.readyState;
-}
-function _StringReturnValueFunction() {
- var returnStr = "bla";
- var bufferSize = lengthBytesUTF8(returnStr) + 1;
- var buffer = _malloc(bufferSize);
- stringToUTF8(returnStr, buffer, bufferSize);
- return buffer;
 }
 function ___atomic_fetch_add_8(ptr, vall, valh, memmodel) {
  var l = HEAP32[ptr >> 2];
@@ -18952,10 +18933,7 @@ Module.asmLibraryArg = {
  "invoke_vijjji": invoke_vijjji,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
- "_AddNumbers": _AddNumbers,
- "_BindWebGLTexture": _BindWebGLTexture,
  "_Hello": _Hello,
- "_HelloString": _HelloString,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
  "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
  "_JS_Eval_ClearInterval": _JS_Eval_ClearInterval,
@@ -19002,7 +18980,6 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetRequestHeader": _JS_WebRequest_SetRequestHeader,
  "_JS_WebRequest_SetResponseHandler": _JS_WebRequest_SetResponseHandler,
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
- "_PrintFloatArray": _PrintFloatArray,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,
  "_SocketError": _SocketError,
@@ -19010,7 +18987,6 @@ Module.asmLibraryArg = {
  "_SocketRecvLength": _SocketRecvLength,
  "_SocketSend": _SocketSend,
  "_SocketState": _SocketState,
- "_StringReturnValueFunction": _StringReturnValueFunction,
  "__ZSt18uncaught_exceptionv": __ZSt18uncaught_exceptionv,
  "___atomic_fetch_add_8": ___atomic_fetch_add_8,
  "___buildEnvironment": ___buildEnvironment,
