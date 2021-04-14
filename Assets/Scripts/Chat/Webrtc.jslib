@@ -57,10 +57,14 @@ var WebRTCPlugin = {
         .then(function(offer) {
             Data.peerConnection.setLocalDescription(offer)
               .then(function() {
-                console.log("Offer constructed");
-                Data.callback = sendOffer;
-                Runtime.dynCall('v', sendOffer, 0, offer.sdp);
-                return offer;
+                var sdp = offer.sdp;
+                var sdpLen = lengthBytesUTF8(sdp) + 1;
+                console.log("Offer sent");
+                console.log(spd);
+
+                var strPtr = _malloc(len1);
+                stringToUTF8(sdp, strPtr, sdpLen);
+                Module.dynCall_vii(sendOffer, strPtr);
               });
         });
   },
