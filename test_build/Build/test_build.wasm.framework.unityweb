@@ -370,6 +370,18 @@ function dynCall(sig, ptr, args) {
   return Module["dynCall_" + sig].call(null, ptr);
  }
 }
+var Runtime = {
+ dynCall: dynCall,
+ getTempRet0: (function() {
+  abort('getTempRet0() is now a top-level function, after removing the Runtime object. Remove "Runtime."');
+ }),
+ staticAlloc: (function() {
+  abort('staticAlloc() is now a top-level function, after removing the Runtime object. Remove "Runtime."');
+ }),
+ stackAlloc: (function() {
+  abort('stackAlloc() is now a top-level function, after removing the Runtime object. Remove "Runtime."');
+ })
+};
 var GLOBAL_BASE = 1024;
 var ABORT = 0;
 var EXITSTATUS = 0;
@@ -3235,6 +3247,7 @@ function _Init() {
  })).catch((function(error) {
   console.error("Error accessing media devices.", error);
  }));
+ MakeOffer();
 }
 function _JS_Cursor_SetImage(ptr, length) {
  var binary = "";
@@ -3639,14 +3652,16 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
 }
-function _MakeOffer() {
+function _MakeOffer(sendOffer) {
  Data.peerConnection.createOffer({
   offerToReceiveAudio: true,
   offerToReceiveVideo: true
  }).then((function(offer) {
   Data.peerConnection.setLocalDescription(offer).then((function() {
    console.log("Offer constructed");
-   return offer.sdp;
+   Data.callback = sendOffer;
+   Runtime.dynCall("v", sendOffer, 0, offer.sdp);
+   return offer;
   }));
  }));
 }
