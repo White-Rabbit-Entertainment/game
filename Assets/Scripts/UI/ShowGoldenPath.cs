@@ -1,30 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-// using Utils;
-
-
-// public class PathCreator : MonoBehaviour {
-//     private LineRenderer lineRenderer;
-//     private List<Vector3> points = new List<Vector3>();
-//     public Action<IEnumerable<Vector3>> OnNewPathCreated = delegate{};
-//     public Target target;
-//     private void Awake(){
-//         lineRenderer = GetComponent<LineRenderer>();
-//         target = GetComponent<Target>();
-//     }
-//     private void Update(){
-//         Ray ray = Camera.main.ScreenPointToRay(target.transform.position);
-//         RaycastHit hitInfo;
-//         if (Physics.Raycast(ray,out hitInfo)){
-//             points.Add(hitInfo.point);
-//             lineRenderer.positionCount = points.Count;
-//             lineRenderer.SetPositions(points.ToArray());
-//         }
-
-//     } 
-// }
-
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
@@ -61,8 +37,10 @@ public class ShowGoldenPath : MonoBehaviourPun
         path = new NavMeshPath();
         elapsed = 0.0f;
         lineRenderer.material = new Material (Shader.Find ("Custom/Line"));
+        // lineRenderer.material = new Material (Shader.Find ("Custom/Neon"));
         lineRenderer.SetWidth(0.1f,0.1f);
-        lineRenderer.material.color = Color.green; 
+        // lineRenderer.material.color = Color.green; 
+        lineRenderer.material.SetColor("_Color", new Color(0f, 1f, 0.016f, 0.2f));
     }    
     void Update()
     {
