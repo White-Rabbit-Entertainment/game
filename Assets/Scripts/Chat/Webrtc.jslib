@@ -1,65 +1,32 @@
-var WebRTCPlugin = {
+mergeInto(LibraryManager.library, {
 
-  // $Data: {
-  //   peerConnection: null,
-  //   localStream: null,
-  //   remoteStream: null,
-  //   constraints = {'video': true, 'audio': true},
-  //   configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
-  // },
+  Hello: function () {
+    window.alert("Hello, world!");
+  },
 
-  Init: function() {
-    // Setup remote stream
-    // Data.remoteStream = new MediaStream();
-    // // const remoteVideo = document.querySelector('#remoteVideo');
-    // // Data.remoteVideo.srcObject = remoteStream;
+  HelloString: function (str) {
+    window.alert(Pointer_stringify(str));
+  },
 
-    // // Setup peer connection
-    // Data.peerConnection = new RTCPeerConnection(Data.configuration);
-    // Data.peerConnection.ontrack = () => Data.remoteStream.addTrack(event.track, Data.remoteStream)
-    // Data.peerConnection.onnegotiationneeded = (event) => console.log("Negotiation needed!");
-    // Data.peerConnection.onicecandidate = (event) => {
-    //     console.log("icecandidate happened")
-    //     if (event.candidate) {
-    //         console.log("icecandidate really happened")
-    //         // socket.emit("message", {"iceCandidate": event.candidate});
-    //     }
-    // };
+  PrintFloatArray: function (array, size) {
+    for(var i = 0; i < size; i++)
+    console.log(HEAPF32[(array >> 2) + i]);
+  },
 
-    // Data.peerConnection.onconnectionstatechanged = (event) => {
-    //     // If peerConnection becomes connected
-    //     if (Data.peerConnection.connectionState === 'connected') {
-    //         // Peers connected!
-    //         console.log("CONNECTED!!!!!!")
-    //     }
-    // };
+  AddNumbers: function (x, y) {
+    return x + y;
+  },
 
-    // SetupLocalStream();
-  }
+  StringReturnValueFunction: function () {
+    var returnStr = "bla";
+    var bufferSize = lengthBytesUTF8(returnStr) + 1;
+    var buffer = _malloc(bufferSize);
+    stringToUTF8(returnStr, buffer, bufferSize);
+    return buffer;
+  },
 
-  SetupLocalStream: function () {
-      // try {
-      //     navigator.mediaDevices.getUserMedia(Data.constraints)
-      //         .then(stream => {
-      //             console.log('Got MediaStream:', stream);
-      //         })
-      //         .catch(error => {
-      //             console.error('Error accessing media devices.', error);
-      //         });
-  
-      //     Data.localStream = await navigator.mediaDevices.getUserMedia(Data.constraints);
-      //     // const videoElement = document.querySelector('video#localVideo');
-      //     // videoElement.srcObject = Data.localStream;
-      //     Data.localStream.getTracks().forEach(track => {
-      //         console.log("Sending track")
-      //         console.log(track)
-      //         Data.peerConnection.addTrack(track, Data.localStream);
-      //     });
-      // } catch(error) {
-      //     console.error('Error opening video camera.', error);
-      // }
-  }
+  BindWebGLTexture: function (texture) {
+    GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
+  },
 
-};
-
-mergeInto(LibraryManager.library, WebRTCPlugin);
+});

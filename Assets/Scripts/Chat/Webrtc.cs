@@ -4,13 +4,10 @@ using System.Runtime.InteropServices;
 public class Webrtc : MonoBehaviour {
     
     [DllImport("__Internal")]
-    private static extern void SetupLocalStream();
-    
-    [DllImport("__Internal")]
-    private static extern void Init();
+    private static extern void Hello();
 
     void Start() {
-        Init();
+        Hello();
     }
 }
 
