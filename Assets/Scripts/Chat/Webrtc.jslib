@@ -36,7 +36,7 @@ var WebRTCPlugin = {
     };
 
     // SetupLocalStream();
-  }
+  },
 
   Hello: function () {
     window.alert("Hello, world!");
