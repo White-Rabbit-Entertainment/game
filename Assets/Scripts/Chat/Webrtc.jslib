@@ -17,7 +17,9 @@ var WebRTCPlugin = {
 
     Data.remoteStream = new MediaStream();
     Data.peerConnection = new RTCPeerConnection(Data.configuration);
-    Data.peerConnection.ontrack = () {Data.remoteStream.addTrack(event.track, Data.remoteStream);}
+    Data.peerConnection.ontrack = function() {
+      Data.remoteStream.addTrack(event.track, Data.remoteStream);
+    };
   },
   
   HelloString: function (str) {
