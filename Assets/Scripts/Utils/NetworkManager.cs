@@ -39,7 +39,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           SetRoomProperty("NumberOfTasksInitiallyCompleted", 2);
           
           List<Player> players = GetPlayers();
-          int numberOfTraitors = 1;
+          int numberOfTraitors = 0;
 
           List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
 
