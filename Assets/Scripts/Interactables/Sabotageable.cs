@@ -63,6 +63,7 @@ public class Sabotageable : Interactable {
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
         sabotagedIndicator.SetActive(true);
+        EnableTarget();  
     }
 
     [PunRPC]
