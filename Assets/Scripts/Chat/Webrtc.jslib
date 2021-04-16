@@ -57,10 +57,29 @@ var WebRTCPlugin = {
         .then(function(offer) {
             Data.peerConnection.setLocalDescription(offer)
               .then(function() {
-                unityInstance.SendMessage("WebRTC", "Working", offer.sdp);
+                unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
               });
         });
   },
+
+  MakeAnswer: function(sdp) {
+      const offer = {type: "offer", sdp: sdp}
+      Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp}));
+      peerConnection.createAnswer().then((answer) {
+        peerConnection.setLocalDescription(answer).then(() {
+          unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp);
+        });
+      });
+  }
+
+  HandleAnswer: function(sdp) {
+      console.log("Got answer")
+      const answer = new RTCSessionDescription({type: "answer", sdp: sdp});
+      const remoteDesc = new RTCSessionDescription(answer);
+      peerConnection.setRemoteDescription(remoteDesc).then(() {
+        console.log("Handle answer complete");
+      });
+  }
 
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));

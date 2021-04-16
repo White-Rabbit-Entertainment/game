@@ -14,27 +14,37 @@ public class WebRTC : MonoBehaviour {
     private static extern string MakeOffer();
     
     [DllImport("__Internal")]
+    private static extern string MakeAnswer(string sdp);
+    
+    [DllImport("__Internal")]
     private static extern void HelloString(string str);
+
+    PhotonView View {
+        get {return GetComponent<PhotonView>();}
+    }
 
     void Start() {
         Init();
         string sdp = MakeOffer();
         HelloString(sdp);
+        
     }
 
     public void Working(string thing) {
         HelloString(thing);
     }
 
-    [PunRPC]
     public void SendOffer(string sdp) {
-        Debug.Log("Offer received");
-        // Make answer
+        View.RPC("HandleOffer", RpcTarget.Others, sdp);
     }
 
     [PunRPC]
+    public void HandleOffer(string sdp) {
+        Debug.Log("Offer received");
+        MakeAnswer(sdp);
+    }
+
     public void SendAnswer(string sdp) {
-        Debug.Log("Answer received");
     }
 }
 
