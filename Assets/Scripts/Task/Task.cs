@@ -12,6 +12,7 @@ public class Task : MonoBehaviour {
   public string description;
   public TaskManager taskManager;
   public bool isUndoable = true;
+  public bool isUndone = false;
 
   public Timer timer = Timer.None;
 
@@ -26,21 +27,21 @@ public class Task : MonoBehaviour {
   // null then the task is a "master" task.
   public Task parent;
 
-  public bool tutorialTask = false;
-
   public PhotonView View {
     get { return GetComponent<PhotonView>(); }
   }
 
   void Awake() {
-    if (!tutorialTask) {
-      taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
-    }
+    taskManager = GameObject.Find("/TaskManager").GetComponent<TaskManager>();
   }
 
   // Returns if the task is a master task, i.e. no tasks depend on this task
   public bool IsMasterTask() {
     return parent == null;
+  }
+
+  public bool IsUndone() {
+    return isUndone && IsMasterTask();
   }
 
   // Returns true if all the requirements of this task have been completed. If this
@@ -67,19 +68,22 @@ public class Task : MonoBehaviour {
   public void CompleteRPC(bool isManual) {
     isCompleted = true;
     isAssigned = false;
+    isUndone = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
-    me.taskNotificationUI.SetNotification(true);
+   
     if (parent !=  null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
     View.RPC("SetTaskGlowRPC", RpcTarget.All);;
-    if (!tutorialTask) {
-      taskManager.CheckAllTasksCompleted();
-    }
-    GetComponent<Interactable>().DisableTarget();
+    taskManager.CheckAllTasksCompleted();
+
+    //Enable & Disable relevant targets
+    DisableUndoneMarker();
+    DisableTaskMarker();
     if (isUndoable && me is Traitor) {
-      EnableTarget();
+      EnableTaskMarker();
     }
+
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskComplete(me);
     }
@@ -87,7 +91,6 @@ public class Task : MonoBehaviour {
     if (!isManual) {
       if (me is Loyal && (me.assignedSubTask == null || me.assignedSubTask.isCompleted)) {
         if (me.assignedMasterTask == null || me.assignedMasterTask.isCompleted) {
-          Debug.Log($"Requesting new task after non manual complete of {gameObject}");
           taskManager.RequestNewTask();
         } else {
           me.assignedMasterTask.AssignSubTaskToCharacter(me);
@@ -114,19 +117,18 @@ public class Task : MonoBehaviour {
   }
   
   public void Complete(bool isManual = false) {
-    Debug.Log("Completing task");
-    if (tutorialTask) {
-      CompleteRPC(isManual);
-    } else {
-      View.RPC("CompleteRPC", RpcTarget.All, isManual);
+    if (!isManual) {
+      PlayableCharacter me =  NetworkManager.instance.GetMe();
+      me.taskNotificationUI.SetNotification(true);
     }
+    View.RPC("CompleteRPC", RpcTarget.All, isManual);
   }
   
   [PunRPC]
   public void UncompleteRPC() {
     isCompleted = false;
     isAssigned = false;
-    NetworkManager.instance.GetMe().taskNotificationUI.SetNotification(false);
+    isUndone = true;
     if (parent != null) {
       parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
     }
@@ -135,12 +137,17 @@ public class Task : MonoBehaviour {
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskUncomplete();
     }
+    
     if (NetworkManager.instance.GetMe() is Traitor) {
-      DisableTarget();
+      DisableTaskMarker();
+    } else if (TaskInteractable.inRange && IsUndone()) {
+      EnableUndoneMarker();
     }
   }
 
   public void Uncomplete() {
+    PlayableCharacter me =  NetworkManager.instance.GetMe();
+    me.taskNotificationUI.SetNotification(false);
     View.RPC("UncompleteRPC", RpcTarget.All);
   }
 
@@ -149,7 +156,6 @@ public class Task : MonoBehaviour {
   }
 
   public void AssignTask(PlayableCharacter character) {
-    Debug.Log($"Assign task to {character.Owner.NickName}");
     //Master calls assignToCharacter first to ensure it is done before anyone else
     AssignTaskToCharacter(character);
     //Then we call AssignToCharacter on all other players
@@ -163,21 +169,18 @@ public class Task : MonoBehaviour {
   }
   
   private void AssignTaskToCharacter(PlayableCharacter character) {
-    Debug.Log($"Assining master taks: {this}");
     character.assignedMasterTask = this;
     isAssigned = true;
     if (character.IsMe()) {
-      Debug.Log($"Assining master taks to me: {this}");
       AssignSubTaskToCharacter(character);
     }
   }
 
   public void AssignSubTaskToCharacter(PlayableCharacter character) {
-    Debug.Log($"Giving my self a master task: {FindIncompleteChild(this)}");
     Task subTask = FindIncompleteChild(this);
     character.assignedSubTask = subTask;
     character.contextTaskUI.SetTask(subTask);
-    subTask.EnableTarget();
+    subTask.EnableTaskMarker();
   }
 
   private Task FindIncompleteChild(Task task) {
@@ -205,15 +208,20 @@ public class Task : MonoBehaviour {
     isAssigned = false;
   }
 
-  public void EnableTarget() {
-    Interactable interactable = GetComponent<Interactable>();
-    interactable.EnableTarget();
-    Debug.Log("Task Enabled");
+  public void EnableTaskMarker() {
+    GetComponent<Interactable>().EnableTaskMarker();
   }
 
-  public void DisableTarget() {
-    Interactable interactable = GetComponent<Interactable>();
-    interactable.DisableTarget();
+  public void DisableTaskMarker() {
+    GetComponent<Interactable>().DisableTaskMarker();
+  }
+
+  public void EnableUndoneMarker() {
+    GetComponent<Interactable>().EnableUndoneMarker();
+  }
+
+  public void DisableUndoneMarker() {
+    GetComponent<Interactable>().DisableUndoneMarker();
   }
   
 }
