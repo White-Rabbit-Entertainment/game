@@ -100,9 +100,6 @@ public class VotingManager : MonoBehaviour {
     foreach (PlayableCharacter character in FindObjectsOfType<PlayableCharacter>()) {
       playersUI.ClearVote(character);
     }
-    // foreach (PlayableCharacter character in playersVotingFor.Concat(playersVotingAgainst)) {
-    //   playersUI.ClearVote(character);
-    // }
     Debug.Log("Ending vote");
     voteStarted = false;
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
@@ -181,5 +178,4 @@ public class VotingManager : MonoBehaviour {
         voteUnsuccess.SetActive(false);
     }
 }
-
 
