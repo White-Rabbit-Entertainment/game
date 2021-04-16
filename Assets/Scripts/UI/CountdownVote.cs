@@ -12,7 +12,6 @@ public class CountdownVote : MonoBehaviour
      private bool updateTime;
      private void Start()
      { 
-        // currentTime = startTime;
         currentTime = (float)Timer.VoteTimer.TimeRemaining();
         startTime = currentTime;
         countdownCircleTimer.fillAmount = 1.0f;
