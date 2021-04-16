@@ -7,7 +7,6 @@ public class CountdownVote : MonoBehaviour
 {
     [SerializeField] private Image countdownCircleTimer;
     [SerializeField] private TextMeshProUGUI countdownText;
-    // [SerializeField] private float startTime = 30.0f;
     private float startTime;
      private float currentTime;
      private bool updateTime;
