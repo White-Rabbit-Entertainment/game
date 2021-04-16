@@ -52,19 +52,13 @@ var WebRTCPlugin = {
         });
   },
 
-  MakeOffer: function(sendOffer) {
+  MakeOffer: function() {
       Data.peerConnection.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true})
         .then(function(offer) {
             Data.peerConnection.setLocalDescription(offer)
               .then(function() {
                 var sdp = offer.sdp;
-                var sdpLen = lengthBytesUTF8(sdp) + 1;
-                console.log("Offer sent");
-                console.log(sdp);
-
-                var strPtr = _malloc(sdpLen);
-                stringToUTF8(sdp, strPtr, sdpLen);
-                Module.dynCall_vii(sendOffer, strPtr);
+                unityInstance.SendMessage("WebRTC", "Working", "Hello world from jslib");
               });
         });
   },
