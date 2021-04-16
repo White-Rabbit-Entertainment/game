@@ -69,7 +69,6 @@ public class PlayersUI : MonoBehaviourPun {
     character.playerTile.transform.Find("VoteFor").gameObject.SetActive(false);
     character.playerTile.transform.Find("VoteAgainst").gameObject.SetActive(false);
     character.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(false);
-    // suspectTile.SetActive(false);
   }
 
   public void SetToDead(PlayableCharacter character) {
