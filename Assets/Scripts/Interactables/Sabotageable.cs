@@ -40,6 +40,13 @@ public class Sabotageable : Interactable {
             Reset();
         }
     }
+    
+    public override bool CanInteract(Character character) {
+        if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) return true;
+        if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
+        return false;
+        
+    }
 
     public override void SetTaskGlow() {
         Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
@@ -51,15 +58,16 @@ public class Sabotageable : Interactable {
     }
 
     [PunRPC]
-    void Sabotage() {
+    public virtual void Sabotage() {
         AddTaskWithTimerRPC(Timer.SabotageTimer);
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
         sabotagedIndicator.SetActive(true);
+        EnableTaskMarker();  
     }
 
     [PunRPC]
-    void Fix(int fixPlayerViewId) {
+    public virtual void Fix(int fixPlayerViewId) {
         PlayableCharacter fixPlayer = PhotonView.Find(fixPlayerViewId).GetComponent<PlayableCharacter>();
         // TODO Show in UI that given character has fixed (same as voting)
         playersThatFixed.Add(fixPlayer);
@@ -72,6 +80,8 @@ public class Sabotageable : Interactable {
             task = null;
             Destroy(GetComponent<Task>());
             sabotagedIndicator.SetActive(false);
+            DisableTaskMarker();
+
 
             // After an item is fixed its no longer interactable for anyone
             Destroy(this);
