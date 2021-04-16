@@ -1299,7 +1299,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3359200;
+STATICTOP = STATIC_BASE + 3359120;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -1902,6 +1902,10 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
+  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
+ })
+}, {
+ func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_gc_cpp();
  })
 }, {
@@ -1915,10 +1919,6 @@ __ATINIT__.push({
 }, {
  func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_vm_cpp();
- })
-}, {
- func: (function() {
-  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
  })
 }, {
  func: (function() {
@@ -3181,7 +3181,7 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3359200;
+var STATIC_BUMP = 3359120;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
@@ -3639,19 +3639,13 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
 }
-function _MakeOffer(sendOffer) {
+function _MakeOffer() {
  Data.peerConnection.createOffer({
   offerToReceiveAudio: true,
   offerToReceiveVideo: true
  }).then((function(offer) {
   Data.peerConnection.setLocalDescription(offer).then((function() {
-   var sdp = offer.sdp;
-   var sdpLen = lengthBytesUTF8(sdp) + 1;
-   console.log("Offer sent");
-   console.log(sdp);
-   var strPtr = _malloc(sdpLen);
-   stringToUTF8(sdp, strPtr, sdpLen);
-   Module.dynCall_vii(sendOffer, strPtr);
+   unityInstance.SendMessage("WebRTC", "Working", offer.sdp);
   }));
  }));
 }
