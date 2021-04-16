@@ -28,7 +28,6 @@ public class PlayersUI : MonoBehaviourPun {
 
     // Set text to name
     TextMeshProUGUI playerName = item.GetComponentInChildren<TextMeshProUGUI>();
-    // text.text = player.Owner.NickName + " (" + player.roleInfo.name + ")";
     playerName.text = player.Owner.NickName;
    
     // If the player is dead cross them out
