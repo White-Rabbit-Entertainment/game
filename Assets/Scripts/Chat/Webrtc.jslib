@@ -57,8 +57,7 @@ var WebRTCPlugin = {
         .then(function(offer) {
             Data.peerConnection.setLocalDescription(offer)
               .then(function() {
-                var sdp = offer.sdp;
-                unityInstance.SendMessage("WebRTC", "Working", "Hello world from jslib");
+                unityInstance.SendMessage("WebRTC", "Working", offer.sdp);
               });
         });
   },
