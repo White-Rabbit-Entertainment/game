@@ -56,7 +56,6 @@ public class PlayersUI : MonoBehaviourPun {
   public void SetSuspectedPlayer(PlayableCharacter suspectedPlayer){
     suspectedPlayer.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(true);
     suspectedPlayer.playerTile.transform.position = suspectTile.transform.position;
-    // suspectedPlayer.transform.SetParent(playerList.transform,false);
     suspectedPlayer.playerTile.transform.SetParent(suspectTile.transform,true);
   }
 
