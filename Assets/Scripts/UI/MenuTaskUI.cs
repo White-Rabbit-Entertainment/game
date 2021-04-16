@@ -28,13 +28,9 @@ public class MenuTaskUI : TaskUI {
 
   void ToggleTaskList() {
     if (taskListOpen) {
-      // taskList.SetActive(false);
-      // allTasksTmp.enabled = false;
       AllTasks.SetActive(false);
       taskListOpen = false;
     } else {
-      // taskList.SetActive(true);
-      // allTasksTmp.enabled = true;
       AllTasks.SetActive(true);
       taskListOpen = true;
     }

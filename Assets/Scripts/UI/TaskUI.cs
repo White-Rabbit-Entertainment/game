@@ -9,7 +9,7 @@ public abstract class TaskUI : MonoBehaviour {
     public TaskManager taskManager;
     public TextMeshProUGUI allTasksTmp;
 
-    public GameObject AllTasks;
+    public GameObject AllTasks; //AllTasks is an empty gameObject which contains taskList,allTaskstmp.
 
     private Color urgentTaskColour = new Color(1f, 0f, 0f, 1f);
 
@@ -33,9 +33,7 @@ public abstract class TaskUI : MonoBehaviour {
       // Set the toggle on/off depending of if task is completed 
       if (task.isCompleted) {
         // text.fontStyle = FontStyles.Strikethrough;
-        // GameObject tick = item.GetComponentInChildren<GameObject>();
         item.transform.Find("tick").gameObject.SetActive(true);
-        // tick.SetActive(true);
       }
 
       if (!task.isCompleted){
