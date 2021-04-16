@@ -32,7 +32,10 @@ public abstract class TaskUI : MonoBehaviour {
       
       // Set the toggle on/off depending of if task is completed 
       if (task.isCompleted) {
+<<<<<<< HEAD
         // text.fontStyle = FontStyles.Strikethrough;
+=======
+>>>>>>> caf6a3e77da5c8af0b040a6239b319c7287dedad
         item.transform.Find("tick").gameObject.SetActive(true);
       }
 

@@ -8,8 +8,7 @@ public class LoadingScreen : MonoBehaviour {
 
   public GameObject loadingScreen;
   public PlayersUI playersUI;
-  // public Text text;
-  // public TMP_Text text;
+  public TaskCompletionUI taskCompletionUI;
   public TextMeshProUGUI titleText;
   public TextMeshProUGUI text;
   public Button closeButton;
@@ -50,6 +49,7 @@ public class LoadingScreen : MonoBehaviour {
 
   void CloseMenu() {
     playersUI.Init();
+    taskCompletionUI.UpdateBar();
     Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;
     Destroy(loadingScreen);

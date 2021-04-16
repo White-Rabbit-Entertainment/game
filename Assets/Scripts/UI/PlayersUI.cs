@@ -28,7 +28,6 @@ public class PlayersUI : MonoBehaviourPun {
 
     // Set text to name
     TextMeshProUGUI playerName = item.GetComponentInChildren<TextMeshProUGUI>();
-    // text.text = player.Owner.NickName + " (" + player.roleInfo.name + ")";
     playerName.text = player.Owner.NickName;
    
     // If the player is dead cross them out
@@ -57,23 +56,10 @@ public class PlayersUI : MonoBehaviourPun {
   public void SetSuspectedPlayer(PlayableCharacter suspectedPlayer){
     suspectedPlayer.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(true);
     suspectedPlayer.playerTile.transform.position = suspectTile.transform.position;
-    // suspectedPlayer.transform.SetParent(playerList.transform,false);
     suspectedPlayer.playerTile.transform.SetParent(suspectTile.transform,true);
-    // playerList.Remove(suspectedPlayer);
-    // foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
-    //   if (player != suspectedPlayer){
-    //     Destroy(player.playerTile);
-    //   }
-    // }
-    // RedoPlayerTiles(suspectedPlayer);
   }
 
   public void ClearSuspectedPlayer(PlayableCharacter suspectedPlayer){
-    // foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
-    //   Destroy(player.playerTile);
-    // }
-    // Init();
-    // suspectedPlayer.transform.SetParent(suspectTile.transform,false);
     suspectedPlayer.playerTile.transform.SetParent(playerList.transform,true);
     
   }
@@ -82,7 +68,6 @@ public class PlayersUI : MonoBehaviourPun {
     character.playerTile.transform.Find("VoteFor").gameObject.SetActive(false);
     character.playerTile.transform.Find("VoteAgainst").gameObject.SetActive(false);
     character.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(false);
-    // suspectTile.SetActive(false);
   }
 
   public void SetToDead(PlayableCharacter character) {

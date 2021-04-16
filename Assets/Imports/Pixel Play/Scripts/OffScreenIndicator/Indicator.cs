@@ -8,8 +8,12 @@ using TMPro;
 public class Indicator : MonoBehaviour
 {
     [SerializeField] private IndicatorType indicatorType;
+    [SerializeField] private TextMeshProUGUI titleText;
     private Image indicatorImage;
     private TextMeshProUGUI distanceText;
+    private Sprite defaultImage;
+    private string defaultText;
+
 
     /// <summary>
     /// Gets if the game object is active in hierarchy.
@@ -37,6 +41,8 @@ public class Indicator : MonoBehaviour
     {
         indicatorImage = transform.GetComponent<Image>();
         distanceText = transform.GetComponentInChildren<TextMeshProUGUI>();
+        defaultImage = indicatorImage.sprite;
+        defaultText = titleText.text;
     }
 
     /// <summary>
@@ -46,6 +52,17 @@ public class Indicator : MonoBehaviour
     public void SetImageColor(Color color)
     {
         indicatorImage.color = color;
+        titleText.color = color;
+    }
+    
+    public void SetText(string text)
+    {
+        titleText.text = text != null ? text : defaultText;
+    }
+    
+    public void SetImage(Sprite image)
+    {
+        indicatorImage.sprite = image != null ? image : defaultImage;
     }
 
     /// <summary>

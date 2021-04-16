@@ -19,7 +19,7 @@ public class TutorialManager : MonoBehaviour {
             currentStage++;
             stages[currentStage].gameObject.SetActive(true);
             if (currentStage == 1) {
-                tutorialTask.GetComponent<Interactable>().EnableTarget();
+                tutorialTask.GetComponent<Interactable>().EnableTaskMarker();
             } 
 
         } else {

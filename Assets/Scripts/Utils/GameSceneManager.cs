@@ -16,6 +16,9 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     public LoadingScreen loadingScreen;
+    public TimerCountdown timerCountdown;
+    public TaskCompletionUI taskCompletionUI;
+
     public GameObject playersWonUI;
     public GameObject traitorInfoUI;
     public TextMeshProUGUI playerDescriptionText;
@@ -81,6 +84,9 @@ public class GameSceneManager : MonoBehaviour {
     [PunRPC]
     // Show the UI for the gameover
     public void EndGameRPC(Team winningTeam) {
+        taskCompletionUI.UpdateBar();
+        timerCountdown.Stop();
+        
         nextButton.onClick.AddListener(GoToLobby);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

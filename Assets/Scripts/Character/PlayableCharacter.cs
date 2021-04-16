@@ -46,7 +46,7 @@ public abstract class PlayableCharacter : Character {
 
     public void UnassignTask() {
         if (assignedSubTask != null) {
-            assignedSubTask.DisableTarget();
+            assignedSubTask.DisableTaskMarker();
             assignedSubTask.Unassign();
         }
 
