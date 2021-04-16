@@ -58,13 +58,6 @@ public class PlayersUI : MonoBehaviourPun {
     suspectedPlayer.playerTile.transform.position = suspectTile.transform.position;
     // suspectedPlayer.transform.SetParent(playerList.transform,false);
     suspectedPlayer.playerTile.transform.SetParent(suspectTile.transform,true);
-    // playerList.Remove(suspectedPlayer);
-    // foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
-    //   if (player != suspectedPlayer){
-    //     Destroy(player.playerTile);
-    //   }
-    // }
-    // RedoPlayerTiles(suspectedPlayer);
   }
 
   public void ClearSuspectedPlayer(PlayableCharacter suspectedPlayer){
