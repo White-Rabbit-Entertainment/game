@@ -23,7 +23,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public static List<string> traitorNames;
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    void Start() {
+    void Awake() {
       PhotonNetwork.ConnectUsingSettings();
       traitorNames = new List<string>();
     }
