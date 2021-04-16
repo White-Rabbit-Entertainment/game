@@ -35,7 +35,6 @@ public abstract class TaskUI : MonoBehaviour {
         // text.fontStyle = FontStyles.Strikethrough;
         // GameObject tick = item.GetComponentInChildren<GameObject>();
         item.transform.Find("tick").gameObject.SetActive(true);
-        // tick.SetActive(true);
       }
 
       if (!task.isCompleted){
