@@ -17,7 +17,7 @@ public class ContextTaskUI : TaskUI {
 
     public void SetTask(Task task) {
       if (task != this.task) {
-        this.task = task;
+        this.task = task; 
         ShowTask();
       }
     }

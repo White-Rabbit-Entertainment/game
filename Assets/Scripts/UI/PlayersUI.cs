@@ -10,6 +10,7 @@ public class PlayersUI : MonoBehaviourPun {
 
   public GameObject playerTile;
   public GameObject playerList;
+  public GameObject suspectTile;
     
   public void Init() {
     foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
@@ -35,6 +36,14 @@ public class PlayersUI : MonoBehaviourPun {
     }
   }
 
+  void RedoPlayerTiles(PlayableCharacter suspectedPlayer){
+    foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
+      if (player != suspectedPlayer){
+        AddPlayerTile(player);
+      }
+    }
+  }
+
   public void SetPlayerVote(Vote vote, PlayableCharacter player) {
     GameObject item = player.playerTile;
     if (vote == Vote.For) {
@@ -44,9 +53,21 @@ public class PlayersUI : MonoBehaviourPun {
     }
   }
 
+  public void SetSuspectedPlayer(PlayableCharacter suspectedPlayer){
+    suspectedPlayer.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(true);
+    suspectedPlayer.playerTile.transform.position = suspectTile.transform.position;
+    suspectedPlayer.playerTile.transform.SetParent(suspectTile.transform,true);
+  }
+
+  public void ClearSuspectedPlayer(PlayableCharacter suspectedPlayer){
+    suspectedPlayer.playerTile.transform.SetParent(playerList.transform,true);
+    
+  }
+
   public void ClearVote(PlayableCharacter character) {
     character.playerTile.transform.Find("VoteFor").gameObject.SetActive(false);
     character.playerTile.transform.Find("VoteAgainst").gameObject.SetActive(false);
+    character.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(false);
   }
 
   public void SetToDead(PlayableCharacter character) {
