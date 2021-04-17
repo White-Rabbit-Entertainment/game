@@ -92,7 +92,7 @@ var WebRTCPlugin = {
   ApplyIceCandidate: function(candidateData) {
       console.log(candidateData);
       try {
-        peerConnection.addIceCandidate(candidateData).then(function() {
+        Data.peerConnection.addIceCandidate(candidateData).then(function() {
           console.log("Added ice candidate");
         });
       } catch (e) {
