@@ -13,6 +13,8 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public NameInputPage nameInputPage;
     public LobbyPage lobbyPage;
     public JoinRoomPage joinRoomPage;
+
+    public WebRTC webRTC;
     
     public List<RoomInfo> roomList;
 
@@ -32,6 +34,7 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     
     public override void OnJoinedRoom() {
         lobbyPage.Open();
+        webRTC.InitWebRTC();
     }
    
     public override void OnLeftRoom() {

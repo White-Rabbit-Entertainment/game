@@ -27,6 +27,8 @@ var WebRTCPlugin = {
         console.log("icecandidate happened");
         if (event.candidate) {
           console.log("icecandidate really happened");
+          var candidateData = JSON.stringify(event.candidate);
+          unityInstance.SendMessage("WebRTC", "SendIceCandidate", candidateData);
         }
     };
     Data.peerConnection.onconnectionstatechanged = function(event) {
@@ -34,6 +36,7 @@ var WebRTCPlugin = {
         if (Data.peerConnection.connectionState === 'connected') {
             // Peers connected!
             console.log("CONNECTED!!!!!!")
+            unityInstance.SendMessage("WebRTC", "OnConnected");
         }
     };
       
@@ -58,28 +61,38 @@ var WebRTCPlugin = {
             Data.peerConnection.setLocalDescription(offer)
               .then(function() {
                 unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
+                console.log("Making offer")
               });
         });
   },
 
-  MakeAnswer: function(sdp) {
-      const offer = {type: "offer", sdp: sdp}
+  MakeAnswer: function(sdp, callerId) {
       Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp}));
       peerConnection.createAnswer().then((answer) {
         peerConnection.setLocalDescription(answer).then(() {
-          unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp);
+          unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
+          console.log("Making answer")
         });
       });
-  }
+  },
 
-  HandleAnswer: function(sdp) {
+  ApplyAnswer: function(sdp) {
       console.log("Got answer")
       const answer = new RTCSessionDescription({type: "answer", sdp: sdp});
       const remoteDesc = new RTCSessionDescription(answer);
       peerConnection.setRemoteDescription(remoteDesc).then(() {
         console.log("Handle answer complete");
       });
-  }
+  },
+
+  ApplyIceCandidate: function(candidateData) {
+      var candidate = new RTCIceCandidate(JSON.parse(candidateData));
+      try {
+        await peerConnection.addIceCandidate(candidate);
+      } catch (e) {
+        console.error('Error adding received ice candidate', e);
+      }
+  },
 
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));
