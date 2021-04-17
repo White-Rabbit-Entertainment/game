@@ -6,7 +6,7 @@ public class FillCannon : Pickupable
 {
     public override void Reset()
     {
-        taskDescription = "Fill cannon by " + this.name;
+       taskDescription = "Fill cannon by " + this.name;
         base.Reset();
     }
 
