@@ -80,6 +80,26 @@ var WebRTCPlugin = {
           });
   },
 
+  ApplyAnswer: function(sdp) {
+      console.log("Got answer")
+      const answer = new RTCSessionDescription({type: "answer", sdp: sdp});
+      const remoteDesc = new RTCSessionDescription(answer);
+      Data.peerConnection.setRemoteDescription(remoteDesc).then(function() {
+        console.log("Handle answer complete");
+      });
+  },
+
+  ApplyIceCandidate: function(candidateData) {
+      var candidate = new RTCIceCandidate(JSON.parse(candidateData));
+      try {
+        peerConnection.addIceCandidate(candidate).then(function() {
+          console.log("Added ice candidate");
+        });
+      } catch (e) {
+        console.error('Error adding received ice candidate', e);
+      }
+  },
+
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));
   },
