@@ -8,6 +8,10 @@ TagManager:
   - seeker
   - robber
   - Cannon
+  - interactable
+  - Fire
+  - Filled
+  - Ball
   layers:
   - Default
   - TransparentFX
