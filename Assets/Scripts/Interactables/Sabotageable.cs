@@ -8,7 +8,7 @@ public class Sabotageable : Interactable {
     public bool isSabotaged;
     public int numberOfPlayersToFix = 1;
 
-    public boolean fixing = false;
+    public bool fixing = false;
 
     public int numberOfPlayersFixing = 0;
     public GameObject sabotagedIndicator;
@@ -17,7 +17,8 @@ public class Sabotageable : Interactable {
 
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
     
-    private GameSceneManager gameSceneManager;
+    // private GameSceneManager gameSceneManager;
+    public GameSceneManager gameSceneManager;
     
     // Start is called before the first frame update
     void Start()
@@ -25,16 +26,22 @@ public class Sabotageable : Interactable {
         // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
         base.Start();
-        gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
+        // gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
     }
 
     void Update() {
         if (isSabotaged && numberOfPlayersFixing > 0) {
             amountToFix -= numberOfPlayersFixing * Time.deltaTime;
-            if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID); 
+            if (Timer.SabotageTimer.IsComplete()) {gameSceneManager.EndGame(Team.Traitor);}
+            // if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID); 
+            if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID); 
         }
     }
-
+    // void Update() {
+    //     if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
+    //         gameSceneManager.EndGame(Team.Traitor);
+    //     }
+    // }
     private void Reset() {
         team = Team.Traitor;
         taskTeam = Team.Real;
@@ -115,12 +122,6 @@ public class Sabotageable : Interactable {
 
             // After an item is fixed its no longer interactable for anyone
             Destroy(this);
-        }
-    }
-
-    void Update() {
-        if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
-            gameSceneManager.EndGame(Team.Traitor);
         }
     }
 }
