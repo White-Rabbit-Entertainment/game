@@ -1299,7 +1299,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3359120;
+STATICTOP = STATIC_BASE + 3359280;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -1902,10 +1902,6 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
-  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
- })
-}, {
- func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_gc_cpp();
  })
 }, {
@@ -1919,6 +1915,10 @@ __ATINIT__.push({
 }, {
  func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_vm_cpp();
+ })
+}, {
+ func: (function() {
+  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
  })
 }, {
  func: (function() {
@@ -3181,7 +3181,7 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3359120;
+var STATIC_BUMP = 3359280;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
@@ -3192,6 +3192,27 @@ var Data = {
  localStream: null,
  remoteStream: null
 };
+function _ApplyAnswer(sdp) {
+ console.log("Got answer");
+ const answer = new RTCSessionDescription({
+  type: "answer",
+  sdp: sdp
+ });
+ const remoteDesc = new RTCSessionDescription(answer);
+ Data.peerConnection.setRemoteDescription(remoteDesc).then((function() {
+  console.log("Handle answer complete");
+ }));
+}
+function _ApplyIceCandidate(candidateData) {
+ var candidate = new RTCIceCandidate(JSON.parse(candidateData));
+ try {
+  peerConnection.addIceCandidate(candidate).then((function() {
+   console.log("Added ice candidate");
+  }));
+ } catch (e) {
+  console.error("Error adding received ice candidate", e);
+ }
+}
 function _HelloString(str) {
  window.alert(Pointer_stringify(str));
 }
@@ -3217,11 +3238,14 @@ function _Init() {
   console.log("icecandidate happened");
   if (event.candidate) {
    console.log("icecandidate really happened");
+   var candidateData = JSON.stringify(event.candidate);
+   unityInstance.SendMessage("WebRTC", "SendIceCandidate", candidateData);
   }
  });
  Data.peerConnection.onconnectionstatechanged = (function(event) {
   if (Data.peerConnection.connectionState === "connected") {
    console.log("CONNECTED!!!!!!");
+   unityInstance.SendMessage("WebRTC", "OnConnected");
   }
  });
  navigator.mediaDevices.getUserMedia(constraints).then((function(stream) {
@@ -3639,13 +3663,27 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
 }
+function _MakeAnswer(sdp, callerId) {
+ Data.peerConnection.setRemoteDescription(new RTCSessionDescription({
+  type: "offer",
+  sdp: sdp
+ })).then((function() {
+  Data.peerConnection.createAnswer().then((function(answer) {
+   Data.peerConnection.setLocalDescription(answer).then((function() {
+    unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
+    console.log("Making answer");
+   }));
+  }));
+ }));
+}
 function _MakeOffer() {
  Data.peerConnection.createOffer({
   offerToReceiveAudio: true,
   offerToReceiveVideo: true
  }).then((function(offer) {
   Data.peerConnection.setLocalDescription(offer).then((function() {
-   unityInstance.SendMessage("WebRTC", "Working", offer.sdp);
+   unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
+   console.log("Making offer");
   }));
  }));
 }
@@ -18989,6 +19027,8 @@ Module.asmLibraryArg = {
  "invoke_vijjji": invoke_vijjji,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
+ "_ApplyAnswer": _ApplyAnswer,
+ "_ApplyIceCandidate": _ApplyIceCandidate,
  "_HelloString": _HelloString,
  "_Init": _Init,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
@@ -19037,6 +19077,7 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetRequestHeader": _JS_WebRequest_SetRequestHeader,
  "_JS_WebRequest_SetResponseHandler": _JS_WebRequest_SetResponseHandler,
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
+ "_MakeAnswer": _MakeAnswer,
  "_MakeOffer": _MakeOffer,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,
