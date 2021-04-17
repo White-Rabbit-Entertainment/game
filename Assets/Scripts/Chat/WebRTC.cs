@@ -30,8 +30,11 @@ public class WebRTC : MonoBehaviour {
         get {return GetComponent<PhotonView>();}
     }
 
-    public void InitWebRTC() {
+    void Awake() {
         Init();
+    }
+
+    public void InitWebRTC() {
         string sdp = MakeOffer();
         HelloString(sdp);
     }
