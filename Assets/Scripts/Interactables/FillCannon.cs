@@ -12,9 +12,10 @@ public class FillCannon : Pickupable
 
     private void OnCollisionEnter(Collision collision)
     {
-        //if(collision.collider.tag = )
-        //{
-
-        //}
+        if(collision.gameObject.tag == "Cannon")
+        {
+            Destroy(this.gameObject);
+            task.Complete();
+        }
     }
 }
