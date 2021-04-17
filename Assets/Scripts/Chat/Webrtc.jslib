@@ -88,7 +88,9 @@ var WebRTCPlugin = {
   ApplyIceCandidate: function(candidateData) {
       var candidate = new RTCIceCandidate(JSON.parse(candidateData));
       try {
-        await peerConnection.addIceCandidate(candidate);
+        peerConnection.addIceCandidate(candidate).then(() {
+          console.log("Added ice candidate");
+        });
       } catch (e) {
         console.error('Error adding received ice candidate', e);
       }
