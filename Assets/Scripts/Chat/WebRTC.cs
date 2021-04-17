@@ -14,11 +14,11 @@ public class WebRTC : MonoBehaviour {
     [DllImport("__Internal")]
     private static extern string MakeOffer();
     
-    [DllImport("__Internal")]
-    private static extern string MakeAnswer(string sdp, int callerId);
+    // [DllImport("__Internal")]
+    // private static extern string MakeAnswer(string sdp, int callerId);
     
-    [DllImport("__Internal")]
-    private static extern string ApplyAnswer(string sdp);
+    //[DllImport("__Internal")]
+    //private static extern string ApplyAnswer(string sdp);
     // 
     // [DllImport("__Internal")]
     // private static extern string ApplyIceCandidate(string candidateData);
@@ -47,7 +47,7 @@ public class WebRTC : MonoBehaviour {
     [PunRPC]
     public void HandleOffer(string sdp, int callerId) {
         Debug.Log("Offer received");
-        MakeAnswer(sdp, callerId);
+        // MakeAnswer(sdp, callerId);
     }
 
     public void SendAnswer(string sdp, int callerId) {
@@ -56,7 +56,7 @@ public class WebRTC : MonoBehaviour {
     
     [PunRPC]
     public void HandleAnswer(string sdp) {
-        ApplyAnswer(sdp);
+        // ApplyAnswer(sdp);
     }
     
     public void OnConnected() {

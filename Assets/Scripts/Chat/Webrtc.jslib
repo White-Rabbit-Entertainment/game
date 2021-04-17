@@ -66,26 +66,6 @@ var WebRTCPlugin = {
         });
   },
 
-  MakeAnswer: function(sdp, callerId) {
-      Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp})).then(() {
-        Data.peerConnection.createAnswer().then((answer) {
-          Data.peerConnection.setLocalDescription(answer).then(() {
-            unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
-            console.log("Making answer")
-          });
-        });
-      });
-  },
-
-  ApplyAnswer: function(sdp) {
-      console.log("Got answer")
-      const answer = new RTCSessionDescription({type: "answer", sdp: sdp});
-      const remoteDesc = new RTCSessionDescription(answer);
-      Data.peerConnection.setRemoteDescription(remoteDesc).then(() {
-        console.log("Handle answer complete");
-      });
-  },
-
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));
   },
