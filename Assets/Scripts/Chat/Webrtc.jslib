@@ -67,11 +67,12 @@ var WebRTCPlugin = {
   },
 
   MakeAnswer: function(sdp, callerId) {
-      Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp}));
-      Data.peerConnection.createAnswer().then((answer) {
-        Data.peerConnection.setLocalDescription(answer).then(() {
-          unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
-          console.log("Making answer")
+      Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp})).then(() {
+        Data.peerConnection.createAnswer().then((answer) {
+          Data.peerConnection.setLocalDescription(answer).then(() {
+            unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
+            console.log("Making answer")
+          });
         });
       });
   },
