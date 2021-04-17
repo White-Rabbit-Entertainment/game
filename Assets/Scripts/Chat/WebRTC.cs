@@ -11,8 +11,8 @@ public class WebRTC : MonoBehaviour {
     [DllImport("__Internal")]
     private static extern void Init();
     
-    // [DllImport("__Internal")]
-    // private static extern string MakeOffer();
+    [DllImport("__Internal")]
+    private static extern string MakeOffer();
     // 
     // [DllImport("__Internal")]
     // private static extern string MakeAnswer(string sdp, int callerId);
