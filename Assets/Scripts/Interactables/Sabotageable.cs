@@ -8,7 +8,12 @@ public class Sabotageable : Interactable {
     public bool isSabotaged;
     public int numberOfPlayersToFix = 1;
 
+    public boolean fixing = false;
+
+    public int numberOfPlayersFixing = 0;
     public GameObject sabotagedIndicator;
+
+    public float amountToFix = 100f;
 
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
     
@@ -23,6 +28,13 @@ public class Sabotageable : Interactable {
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
     }
 
+    void Update() {
+        if (isSabotaged && numberOfPlayersFixing > 0) {
+            amountToFix -= numberOfPlayersFixing * Time.deltaTime;
+            if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID); 
+        }
+    }
+
     private void Reset() {
         team = Team.Traitor;
         taskTeam = Team.Real;
@@ -35,12 +47,30 @@ public class Sabotageable : Interactable {
             View.RPC("Sabotage", RpcTarget.All);
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
             task.CompleteRPC(false);
-            View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID);
+            // View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID);
             Timer.SabotageTimer.End();
+            fixing = true;
+            View.RPC("IncrementNumberOffFixers", PhotonNetwork.MasterClient);
             Reset();
         }
     }
     
+    public override void PrimaryInteractionOff(Character character) {
+        if (fixing) {
+            fixing = false;
+            View.RPC("DeccrementNumberOffFixers", PhotonNetwork.MasterClient);
+        }
+    }
+
+    [PunRPC]
+    public void IncrementNumberOfFixers() {
+        numberOfPlayersFixing++;
+    }
+
+    [PunRPC]
+    public void DecrementNumberOfFixers() {
+        numberOfPlayersFixing--;
+    }
     public override bool CanInteract(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) return true;
         if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
