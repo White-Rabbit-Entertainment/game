@@ -55,72 +55,9 @@ var WebRTCPlugin = {
         });
   },
 
-  MakeOffer: function() {
-      Data.peerConnection.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true})
-        .then(function(offer) {
-            Data.peerConnection.setLocalDescription(offer)
-              .then(function() {
-                unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
-                console.log("Making offer")
-              });
-        });
-  },
-
-  MakeAnswer: function(sdp, callerId) {
-      Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp}));
-      Data.peerConnection.createAnswer().then((answer) {
-        Data.peerConnection.setLocalDescription(answer).then(() {
-          unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
-          console.log("Making answer")
-        });
-      });
-  },
-
-  ApplyAnswer: function(sdp) {
-      console.log("Got answer")
-      const answer = new RTCSessionDescription({type: "answer", sdp: sdp});
-      const remoteDesc = new RTCSessionDescription(answer);
-      Data.peerConnection.setRemoteDescription(remoteDesc).then(() {
-        console.log("Handle answer complete");
-      });
-  },
-
-  ApplyIceCandidate: function(candidateData) {
-      var candidate = new RTCIceCandidate(JSON.parse(candidateData));
-      try {
-        Data.peerConnection.addIceCandidate(candidate).then(() {
-          console.log("Added ice candidate");
-        });
-      } catch (e) {
-        console.error('Error adding received ice candidate', e);
-      }
-  },
-
   HelloString: function (str) {
     window.alert(Pointer_stringify(str));
   },
-
-  PrintFloatArray: function (array, size) {
-    for(var i = 0; i < size; i++)
-    console.log(HEAPF32[(array >> 2) + i]);
-  },
-
-  AddNumbers: function (x, y) {
-    return x + y;
-  },
-
-  StringReturnValueFunction: function () {
-    var returnStr = "bla";
-    var bufferSize = lengthBytesUTF8(returnStr) + 1;
-    var buffer = _malloc(bufferSize);
-    stringToUTF8(returnStr, buffer, bufferSize);
-    return buffer;
-  },
-
-  BindWebGLTexture: function (texture) {
-    GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
-  },
-
 };
 
 autoAddDeps(WebRTCPlugin, '$Data');
