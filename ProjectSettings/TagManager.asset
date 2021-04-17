@@ -7,6 +7,7 @@ TagManager:
   - endpoint
   - seeker
   - robber
+  - Cannon
   layers:
   - Default
   - TransparentFX
