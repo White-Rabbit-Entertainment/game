@@ -3206,8 +3206,11 @@ function _ApplyAnswer(sdp) {
 function _ApplyIceCandidate(candidateData) {
  console.log(Pointer_stringify(candidateData));
  const candidate = JSON.parse(Pointer_stringify(candidateData));
+ console.log("Generated candidate: ");
+ console.log(candidate);
  Data.peerConnection.addIceCandidate(candidate).then((function() {
   console.log("Added ice candidate");
+  console.log(candidate);
  }));
 }
 function _HelloString(str) {
@@ -3240,6 +3243,7 @@ function _Init() {
   }
  });
  Data.peerConnection.onconnectionstatechanged = (function(event) {
+  console.log("Connection state changed to: " + Data.peerConnection.connectionState);
   if (Data.peerConnection.connectionState === "connected") {
    console.log("CONNECTED!!!!!!");
    unityInstance.SendMessage("WebRTC", "OnConnected");
