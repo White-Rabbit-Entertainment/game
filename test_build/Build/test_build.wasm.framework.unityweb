@@ -3194,7 +3194,6 @@ var Data = {
 };
 function _ApplyAnswer(sdp) {
  console.log("Got answer");
- console.log(Pointer_stringify(sdp));
  const answer = new RTCSessionDescription({
   type: "answer",
   sdp: Pointer_stringify(sdp)
@@ -3204,10 +3203,8 @@ function _ApplyAnswer(sdp) {
  }));
 }
 function _ApplyIceCandidate(candidateData) {
- console.log(Pointer_stringify(candidateData));
  const candidate = JSON.parse(Pointer_stringify(candidateData));
  console.log("Generated candidate: ");
- console.log(candidate);
  Data.peerConnection.addIceCandidate(candidate).then((function() {
   console.log("Added ice candidate");
   console.log(candidate);
@@ -3666,7 +3663,6 @@ function _JS_WebRequest_SetTimeout(request, timeout) {
 }
 function _MakeAnswer(sdp, callerId) {
  console.log("making answer");
- console.log(Pointer_stringify(sdp));
  Data.peerConnection.setRemoteDescription(new RTCSessionDescription({
   type: "offer",
   sdp: Pointer_stringify(sdp)

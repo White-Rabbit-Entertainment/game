@@ -70,7 +70,6 @@ var WebRTCPlugin = {
 
   MakeAnswer: function(sdp, callerId) {
       console.log("making answer")
-      console.log(Pointer_stringify(sdp))
       Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: Pointer_stringify(sdp)}))
         .then(function() {
           Data.peerConnection.createAnswer()
@@ -88,7 +87,6 @@ var WebRTCPlugin = {
 
   ApplyAnswer: function(sdp) {
       console.log("Got answer")
-      console.log(Pointer_stringify(sdp))
       const answer = new RTCSessionDescription({type: "answer", sdp: Pointer_stringify(sdp)});
       Data.peerConnection.setRemoteDescription(answer).then(function() {
         console.log("Handle answer complete");
@@ -96,10 +94,8 @@ var WebRTCPlugin = {
   },
 
   ApplyIceCandidate: function(candidateData) {
-      console.log(Pointer_stringify(candidateData));
       const candidate = JSON.parse(Pointer_stringify(candidateData));
       console.log("Generated candidate: ")
-      console.log(candidate)
       Data.peerConnection.addIceCandidate(candidate).then(function() {
         console.log("Added ice candidate");
         console.log(candidate);
