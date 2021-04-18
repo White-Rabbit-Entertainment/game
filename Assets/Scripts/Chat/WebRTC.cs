@@ -66,7 +66,10 @@ public class WebRTC : MonoBehaviour {
 
         string sdpString = answer["sdp"];
         int callerId = Int32.Parse(answer["callerId"]);
+
+        Debug.Log("Parsed answerJson");
         Debug.Log(sdpString);
+        Debug.Log(callerId);
         View.RPC("HandleAnswer", PhotonNetwork.LocalPlayer.Get(callerId), sdpString);
     }
     
