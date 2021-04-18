@@ -62,6 +62,7 @@ var WebRTCPlugin = {
               .then(function() {
                 unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
                 console.log("Making offer")
+                console.log(sdp)
               });
         });
   },
@@ -69,8 +70,7 @@ var WebRTCPlugin = {
   MakeAnswer: function(sdp, callerId) {
       console.log("making answer")
       console.log(sdp)
-      const remoteDesc = new RTCSessionDescription({type: "offer", sdp: sdp})
-      Data.peerConnection.setRemoteDescription(remoteDesc)
+      Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp}))
         .then(function() {
           Data.peerConnection.createAnswer()
             .then(function(answer) {

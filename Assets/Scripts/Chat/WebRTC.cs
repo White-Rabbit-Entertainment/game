@@ -45,16 +45,21 @@ public class WebRTC : MonoBehaviour {
     }
 
     public void SendOffer(string sdp) {
+        Debug.Log("Send offer");
+        Debug.Log(sdp);
         View.RPC("HandleOffer", RpcTarget.OthersBuffered, sdp, PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
     [PunRPC]
     public void HandleOffer(string sdp, int callerId) {
         Debug.Log("Offer received");
+        Debug.Log(sdp);
         MakeAnswer(sdp, callerId);
     }
 
     public void SendAnswer(string sdp, int callerId) {
+        Debug.Log("Sending answer");
+        Debug.Log(sdp);
         View.RPC("HandleAnswer", PhotonNetwork.LocalPlayer.Get(callerId), sdp);
     }
     
