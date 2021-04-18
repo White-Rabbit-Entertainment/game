@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 using System.Runtime.InteropServices;
 using AOT;
 using UnityEngine;
@@ -57,10 +59,15 @@ public class WebRTC : MonoBehaviour {
         MakeAnswer(sdp, callerId);
     }
 
-    public void SendAnswer(string sdp, int callerId) {
+    public void SendAnswer(string answerJson) {
+
+        Dictionary<string, string> answer = JsonConvert.DeserializeObject<Dictionary<string, string>>(answerJson); 
         Debug.Log("Sending answer");
-        Debug.Log(sdp);
-        View.RPC("HandleAnswer", PhotonNetwork.LocalPlayer.Get(callerId), sdp);
+
+        string sdpString = answer["sdp"];
+        int callerId = Int32.Parse(answer["callerId"]);
+        Debug.Log(sdpString);
+        View.RPC("HandleAnswer", PhotonNetwork.LocalPlayer.Get(callerId), sdpString);
     }
     
     [PunRPC]

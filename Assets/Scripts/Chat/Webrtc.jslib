@@ -76,7 +76,8 @@ var WebRTCPlugin = {
             .then(function(answer) {
               Data.peerConnection.setLocalDescription(answer)
                 .then(function() {
-                  unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
+                  var answerData = {"callerId": callerId, "sdp": sdp}
+                  unityInstance.SendMessage("WebRTC", "SendAnswer", JSON.stringify(answerData));
                   console.log("Making answer")
                   console.log(answer.sdp)
                 });
