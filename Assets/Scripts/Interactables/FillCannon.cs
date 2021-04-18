@@ -6,16 +6,21 @@ public class FillCannon : Pickupable
 {
     public override void Reset()
     {
-       taskDescription = "Fill cannon by " + this.name;
+        taskDescription = "Fill cannon ";
         base.Reset();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+      
+
         if(collision.gameObject.tag == "Cannon")
         {
             Destroy(this.gameObject);
             task.Complete();
+            
         }
     }
+
+    
 }
