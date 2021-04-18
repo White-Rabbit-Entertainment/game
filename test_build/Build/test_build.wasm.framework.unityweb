@@ -3662,11 +3662,10 @@ function _JS_WebRequest_SetTimeout(request, timeout) {
 function _MakeAnswer(sdp, callerId) {
  console.log("making answer");
  console.log(sdp);
- const remoteDesc = new RTCSessionDescription({
+ Data.peerConnection.setRemoteDescription(new RTCSessionDescription({
   type: "offer",
   sdp: sdp
- });
- Data.peerConnection.setRemoteDescription(remoteDesc).then((function() {
+ })).then((function() {
   Data.peerConnection.createAnswer().then((function(answer) {
    Data.peerConnection.setLocalDescription(answer).then((function() {
     unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
@@ -3684,6 +3683,7 @@ function _MakeOffer() {
   Data.peerConnection.setLocalDescription(offer).then((function() {
    unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
    console.log("Making offer");
+   console.log(sdp);
   }));
  }));
 }
