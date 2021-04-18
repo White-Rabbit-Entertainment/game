@@ -3194,18 +3194,19 @@ var Data = {
 };
 function _ApplyAnswer(sdp) {
  console.log("Got answer");
- console.log(sdp);
+ console.log(Pointer_stringify(sdp));
  const answer = new RTCSessionDescription({
   type: "answer",
-  sdp: sdp
+  sdp: Pointer_stringify(sdp)
  });
  Data.peerConnection.setRemoteDescription(answer).then((function() {
   console.log("Handle answer complete");
  }));
 }
 function _ApplyIceCandidate(candidateData) {
- console.log(candidateData);
- Data.peerConnection.addIceCandidate(candidateData).then((function() {
+ console.log(Pointer_stringify(candidateData));
+ const candidate = JSON.parse(Pointer_stringify(candidateData));
+ Data.peerConnection.addIceCandidate(candidate).then((function() {
   console.log("Added ice candidate");
  }));
 }
@@ -3661,16 +3662,16 @@ function _JS_WebRequest_SetTimeout(request, timeout) {
 }
 function _MakeAnswer(sdp, callerId) {
  console.log("making answer");
- console.log(sdp);
+ console.log(Pointer_stringify(sdp));
  Data.peerConnection.setRemoteDescription(new RTCSessionDescription({
   type: "offer",
-  sdp: sdp
+  sdp: Pointer_stringify(sdp)
  })).then((function() {
   Data.peerConnection.createAnswer().then((function(answer) {
    Data.peerConnection.setLocalDescription(answer).then((function() {
     unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
     console.log("Making answer");
-    console.log(sdp);
+    console.log(answer.sdp);
    }));
   }));
  }));
@@ -3683,7 +3684,7 @@ function _MakeOffer() {
   Data.peerConnection.setLocalDescription(offer).then((function() {
    unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
    console.log("Making offer");
-   console.log(sdp);
+   console.log(offer.sdp);
   }));
  }));
 }
