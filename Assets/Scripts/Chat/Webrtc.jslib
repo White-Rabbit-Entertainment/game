@@ -32,6 +32,7 @@ var WebRTCPlugin = {
         }
     };
     Data.peerConnection.onconnectionstatechanged = function(event) {
+        console.log("Connection state changed to: " + Data.peerConnection.connectionState)
         // If peerConnection becomes connected
         if (Data.peerConnection.connectionState === 'connected') {
             // Peers connected!
@@ -97,8 +98,11 @@ var WebRTCPlugin = {
   ApplyIceCandidate: function(candidateData) {
       console.log(Pointer_stringify(candidateData));
       const candidate = JSON.parse(Pointer_stringify(candidateData));
+      console.log("Generated candidate: ")
+      console.log(candidate)
       Data.peerConnection.addIceCandidate(candidate).then(function() {
         console.log("Added ice candidate");
+        console.log(candidate);
       });
   },
 
