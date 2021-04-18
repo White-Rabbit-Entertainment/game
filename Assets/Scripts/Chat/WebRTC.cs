@@ -12,16 +12,16 @@ public class WebRTC : MonoBehaviour {
     private static extern void Init();
     
     [DllImport("__Internal")]
-    private static extern string MakeOffer();
+    private static extern void MakeOffer();
     
     [DllImport("__Internal")]
-    private static extern string MakeAnswer(string sdp, int callerId);
+    private static extern void MakeAnswer(string sdp, int callerId);
     
     [DllImport("__Internal")]
-    private static extern string ApplyAnswer(string sdp);
+    private static extern void ApplyAnswer(string sdp);
      
     [DllImport("__Internal")]
-    private static extern string ApplyIceCandidate(string candidateData);
+    private static extern void ApplyIceCandidate(string candidateData);
     
     [DllImport("__Internal")]
     private static extern void HelloString(string str);
@@ -35,8 +35,9 @@ public class WebRTC : MonoBehaviour {
     }
 
     public void InitWebRTC() {
-        string sdp = MakeOffer();
-        HelloString(sdp);
+        if (PhotonNetwork.IsMasterClient) {
+            MakeOffer();
+        }
     }
 
     public void Working(string thing) {

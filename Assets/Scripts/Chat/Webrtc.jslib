@@ -67,7 +67,10 @@ var WebRTCPlugin = {
   },
 
   MakeAnswer: function(sdp, callerId) {
-      Data.peerConnection.setRemoteDescription(new RTCSessionDescription({type: "offer", sdp: sdp}))
+      console.log("making answer")
+      console.log(sdp)
+      const remoteDesc = new RTCSessionDescription({type: "offer", sdp: sdp})
+      Data.peerConnection.setRemoteDescription(remoteDesc)
         .then(function() {
           Data.peerConnection.createAnswer()
             .then(function(answer) {
@@ -75,6 +78,7 @@ var WebRTCPlugin = {
                 .then(function() {
                   unityInstance.SendMessage("WebRTC", "SendAnswer", answer.sdp, callerId);
                   console.log("Making answer")
+                  console.log(sdp)
                 });
               });
           });
@@ -82,8 +86,8 @@ var WebRTCPlugin = {
 
   ApplyAnswer: function(sdp) {
       console.log("Got answer")
+      console.log(sdp)
       const answer = new RTCSessionDescription({type: "answer", sdp: sdp});
-      const remoteDesc = new RTCSessionDescription(answer);
       Data.peerConnection.setRemoteDescription(answer).then(function() {
         console.log("Handle answer complete");
       });
@@ -91,13 +95,9 @@ var WebRTCPlugin = {
 
   ApplyIceCandidate: function(candidateData) {
       console.log(candidateData);
-      try {
-        Data.peerConnection.addIceCandidate(candidateData).then(function() {
-          console.log("Added ice candidate");
-        });
-      } catch (e) {
-        console.error('Error adding received ice candidate', e);
-      }
+      Data.peerConnection.addIceCandidate(candidateData).then(function() {
+        console.log("Added ice candidate");
+      });
   },
 
   HelloString: function (str) {
