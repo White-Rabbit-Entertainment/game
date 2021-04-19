@@ -100,15 +100,15 @@ public class Task : MonoBehaviour {
       foreach (Task requirement in requirements) {
         requirement.CompleteRPC(true);
       }
-      if (TaskInteractable is Stealable) {
+      if (TaskInteractable is Placeable) {
         View.TransferOwnership(PhotonNetwork.LocalPlayer);
-        Stealable stealable = ((Stealable)TaskInteractable);
-        // When manually complete a stealable you dont want to also register
+        Placeable Placeable = ((Placeable)TaskInteractable);
+        // When manually complete a Placeable you dont want to also register
         // the collision with the endzone (and recomplete). Therefore we
         // disable the next collision.
-        stealable.ignoreNextCollision = true;
-        // Move stealable to endzone inorder to complete
-        TaskInteractable.transform.position = stealable.destination.transform.position;
+        Placeable.ignoreNextCollision = true;
+        // Move Placeable to endzone inorder to complete
+        TaskInteractable.transform.position = Placeable.destination.transform.position;
       }
       if (PhotonNetwork.IsMasterClient) {
         TaskInteractable.PlayItemAnimation();

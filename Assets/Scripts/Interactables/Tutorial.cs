@@ -1,1 +1,1 @@
-public class Tutorial : Stealable { }
+public class Tutorial : Placeable { }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-/// <summary><c>Stealable</c> extends <c>Pickupable</c> to allow the item to
+/// <summary><c>Placeable</c> extends <c>Pickupable</c> to allow the item to
 /// be picked up.</summary>
-public class Stealable : Pickupable {
+public class Placeable : Pickupable {
 
     public PickupDestination destination;
     public bool ignoreNextCollision = false;
@@ -15,7 +15,7 @@ public class Stealable : Pickupable {
         base.Reset();
     }
 
-    /// <summary> When a stealable item collides with the "endpoint" the item
+    /// <summary> When a Placeable item collides with the "endpoint" the item
     /// should be stolen on all clients. </summary>
     void OnCollisionEnter(Collision collision) {
         if (ignoreNextCollision) {
@@ -25,9 +25,7 @@ public class Stealable : Pickupable {
             task.Complete();
 	    }
 	}
-
     
-
     public override void PrimaryInteraction(Character character) {
         if (!isPickedUp && task != null && task.isCompleted) {
             task.Uncomplete();
@@ -52,5 +50,10 @@ public class Stealable : Pickupable {
                 EnableTaskMarker();
             }
         }
+    }
+
+    [PunRPC]
+    public void SetItemLocation(Vector3 position) {
+        transform.position = position;
     }
 }
