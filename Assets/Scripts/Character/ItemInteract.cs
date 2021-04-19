@@ -61,7 +61,14 @@ public class ItemInteract : MonoBehaviourPun {
         if (!character.HasItem()) {
             newInteractable = GetBestInteractable();
         }
-
+        else {
+            newInteractable = character.currentHeldItem;
+        }
+        // if (character.currentFixingItem != null) {
+        //     if (Input.GetButtonUp("Fire1")) {
+        //         character.currentFixingItem.PrimaryInteractionOff(character);
+        //     }
+        // }
         // If we are able to interact with stuff
         if (newInteractable != null) {
             // Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
@@ -69,6 +76,7 @@ public class ItemInteract : MonoBehaviourPun {
             // trying to interact with something new, then we need to disable
             // the other interaction (turn off its glow).
             if (newInteractable != currentInteractable && currentInteractable != null) {
+                Debug.Log("Whoopsie");
                 currentInteractable.InteractionGlowOff();
             }
             currentInteractable = newInteractable;
@@ -86,22 +94,19 @@ public class ItemInteract : MonoBehaviourPun {
         } 
         // Otherwise if we cant interact with anything but we were previously
         // interacting with something.
-        else if (currentInteractable != null) {
+        if (currentInteractable != null && (Input.GetButtonUp("Fire1") || newInteractable == null)) {
             // Then turn off the glow of that thing
             currentInteractable.InteractionGlowOff();
-
-            // And if bring the mouse button up
-            if (Input.GetButtonUp("Fire1")) {
               // Some item have a primary interaction off method, eg drop the
               // item after pickup. Therefore run this on mouse up.
-              if (possibleInteractables.Contains(currentInteractable)) {
-                possibleInteractables.Remove(currentInteractable);
-              }
+            //   if (possibleInteractables.Contains(currentInteractable)) {
+            //     possibleInteractables.Remove(currentInteractable);
+            //   }
               currentInteractable.PrimaryInteractionOff(character);
               currentInteractable = null;
             }
         }
-    }
+
 
     private Interactable ClosestInteractable() {
         float distance = float.PositiveInfinity;
