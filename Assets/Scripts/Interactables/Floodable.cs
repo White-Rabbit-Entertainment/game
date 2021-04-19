@@ -14,9 +14,8 @@ public class Floodable : Sabotageable
     }
 
     [PunRPC]
-    public override void Fix(int fixPlayerViewId) {   
-        base.Fix(fixPlayerViewId);
-        if (!isSabotaged) water.SetActive(false);
+    public override void Fix() {   
+        water.SetActive(false);
     }
 }
 

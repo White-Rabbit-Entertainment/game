@@ -30,18 +30,16 @@ public class Sabotageable : Interactable {
     }
 
     void Update() {
-        if (isSabotaged && numberOfPlayersFixing > 0) {
-            amountToFix -= numberOfPlayersFixing * Time.deltaTime;
-            if (Timer.SabotageTimer.IsComplete()) {gameSceneManager.EndGame(Team.Traitor);}
-            // if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID); 
-            if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID); 
+        if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged && numberOfPlayersFixing > 0) {
+            Debug.Log(numberOfPlayersFixing);
+            amountToFix -= numberOfPlayersFixing * 5 * Time.deltaTime;
+            if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All); 
+        }
+        if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
+            gameSceneManager.EndGame(Team.Traitor);
         }
     }
-    // void Update() {
-    //     if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
-    //         gameSceneManager.EndGame(Team.Traitor);
-    //     }
-    // }
+
     private void Reset() {
         team = Team.Traitor;
         taskTeam = Team.Real;
@@ -57,7 +55,7 @@ public class Sabotageable : Interactable {
             // View.RPC("Fix", RpcTarget.All, character.GetComponent<PhotonView>().ViewID);
             Timer.SabotageTimer.End();
             fixing = true;
-            View.RPC("IncrementNumberOffFixers", PhotonNetwork.MasterClient);
+            View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
             Reset();
         }
     }
@@ -65,7 +63,7 @@ public class Sabotageable : Interactable {
     public override void PrimaryInteractionOff(Character character) {
         if (fixing) {
             fixing = false;
-            View.RPC("DeccrementNumberOffFixers", PhotonNetwork.MasterClient);
+            View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
         }
     }
 
@@ -104,13 +102,8 @@ public class Sabotageable : Interactable {
     }
 
     [PunRPC]
-    public virtual void Fix(int fixPlayerViewId) {
-        PlayableCharacter fixPlayer = PhotonView.Find(fixPlayerViewId).GetComponent<PlayableCharacter>();
-        // TODO Show in UI that given character has fixed (same as voting)
-        playersThatFixed.Add(fixPlayer);
-
+    public virtual void Fix() {
         // If the sabotagable is fully fixed
-        if (numberOfPlayersToFix - playersThatFixed.Count <= 0) {
             isSabotaged = false;
             // Tell everyone that the task is now completed
             // TODO Delete the task for everyone
@@ -122,6 +115,6 @@ public class Sabotageable : Interactable {
 
             // After an item is fixed its no longer interactable for anyone
             Destroy(this);
-        }
+    
     }
 }
