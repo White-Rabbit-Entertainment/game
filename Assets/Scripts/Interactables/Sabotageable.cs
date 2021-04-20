@@ -59,7 +59,6 @@ public class Sabotageable : Interactable {
             if (!fixing) {
             sabotageManager.LocalPlayerFixing();    
             character.Fix(this);
-            Debug.Log("ON");
             fixing = true;
             View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
             }
@@ -68,7 +67,6 @@ public class Sabotageable : Interactable {
 
     
     public override void PrimaryInteractionOff(Character character) {
-        Debug.Log("PIF");
         if (fixing) {
         character.StopFix(this);
         fixing = false;

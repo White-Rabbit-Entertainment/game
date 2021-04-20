@@ -23,7 +23,6 @@ public class SabotageManager : MonoBehaviour
     void Update()
     {
         if (inSabotage) {
-            Debug.Log(amountToFix);
             // SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
             if (Timer.SabotageTimer.IsComplete()) {
             gameSceneManager.EndGame(Team.Traitor);
