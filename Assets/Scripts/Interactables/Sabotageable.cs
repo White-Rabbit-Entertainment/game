@@ -42,9 +42,6 @@ public class Sabotageable : Interactable {
                 sabotageManager.SabotageFixed();
             }
         }
-        // if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
-        //     gameSceneManager.EndGame(Team.Traitor);
-        // }
     }
 
     private void Reset() {

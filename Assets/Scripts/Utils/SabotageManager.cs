@@ -9,7 +9,7 @@ public class SabotageManager : MonoBehaviour
 {
     private bool inSabotage = false;
 
-    public TextMeshProUGUI SabotageTimeRemaining;
+    // public TextMeshProUGUI SabotageTimeRemaining;
     public GameSceneManager gameSceneManager;
 
     private float amountToFix;
@@ -24,7 +24,7 @@ public class SabotageManager : MonoBehaviour
     {
         if (inSabotage) {
             Debug.Log(amountToFix);
-            SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
+            // SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
             if (Timer.SabotageTimer.IsComplete()) {
             gameSceneManager.EndGame(Team.Traitor);
 
@@ -59,7 +59,7 @@ public class SabotageManager : MonoBehaviour
     }
 
     public void SetAmountToFix(float amount) {
-        GetComponent<PhotonView>().RPC("SabotageStartedRPC", RpcTarget.All);
+        GetComponent<PhotonView>().RPC("SetAmountToFixRPC", RpcTarget.All, amount);
     }
 
     [PunRPC]
