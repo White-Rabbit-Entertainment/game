@@ -7,7 +7,6 @@ public class SabotageManager : MonoBehaviour
 {
     private bool inSabotage = false;
 
-    private int numOfPlayers = 0;
     public GameSceneManager gameSceneManager;
     // Start is called before the first frame update
     void Start()
