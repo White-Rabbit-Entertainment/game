@@ -7,6 +7,7 @@ public class SabotageManager : MonoBehaviour
 {
     private bool inSabotage = false;
 
+    private int numOfPlayers = 0;
     public GameSceneManager gameSceneManager;
     // Start is called before the first frame update
     void Start()
@@ -44,5 +45,12 @@ public class SabotageManager : MonoBehaviour
         inSabotage = false;
     }
 
+    public void LocalPlayerFixing() {
+
+    }
+
+    public void LocalStopsFixing() {
+        
+    }
 
 }

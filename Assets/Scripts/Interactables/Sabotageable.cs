@@ -75,6 +75,7 @@ public class Sabotageable : Interactable {
         character.StopFix(this);
         fixing = false;
         View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
+        sabotageManager.SetNumOfPlayers(numberOfPlayersFixing);
         Debug.Log(numberOfPlayersFixing);   
         } 
         // if (fixing) {
