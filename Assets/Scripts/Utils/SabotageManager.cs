@@ -41,7 +41,7 @@ public class SabotageManager : MonoBehaviour
 
     [PunRPC]
     public void SabotageFixedRPC() {
-        inSabotage = true;
+        inSabotage = false;
     }
 
 

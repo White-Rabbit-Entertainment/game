@@ -59,6 +59,7 @@ public class Sabotageable : Interactable {
             sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
             if (!fixing) {
+            sabotageManager.LocalPlayerFixing();    
             character.Fix(this);
             Debug.Log("ON");
             fixing = true;
