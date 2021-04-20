@@ -1,14 +1,15 @@
 ﻿using System.Collections;
+using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using TMPro;
 
 public class SabotageManager : MonoBehaviour
 {
     private bool inSabotage = false;
 
-    public TextMeshProUGUI SabotageTimeRemaining;
+    // public TextMeshProUGUI SabotageTimeRemaining;
     public GameSceneManager gameSceneManager;
 
     private float amountToFix;
@@ -22,10 +23,9 @@ public class SabotageManager : MonoBehaviour
     void Update()
     {
         if (inSabotage) {
-            Debug.Log(amountToFix);
             // SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
             if (Timer.SabotageTimer.IsComplete()) {
-                gameSceneManager.EndGame(Team.Traitor);
+            gameSceneManager.EndGame(Team.Traitor);
 
       }
     }
@@ -58,7 +58,7 @@ public class SabotageManager : MonoBehaviour
     }
 
     public void SetAmountToFix(float amount) {
-        GetComponent<PhotonView>().RPC("SabotageStartedRPC", RpcTarget.All);
+        GetComponent<PhotonView>().RPC("SetAmountToFixRPC", RpcTarget.All, amount);
     }
 
     [PunRPC]

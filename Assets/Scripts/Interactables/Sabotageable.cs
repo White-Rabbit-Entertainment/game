@@ -42,9 +42,6 @@ public class Sabotageable : Interactable {
                 sabotageManager.SabotageFixed();
             }
         }
-        // if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
-        //     gameSceneManager.EndGame(Team.Traitor);
-        // }
     }
 
     private void Reset() {
@@ -62,7 +59,6 @@ public class Sabotageable : Interactable {
             if (!fixing) {
             sabotageManager.LocalPlayerFixing();    
             character.Fix(this);
-            Debug.Log("ON");
             fixing = true;
             View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
             }
@@ -71,19 +67,12 @@ public class Sabotageable : Interactable {
 
     
     public override void PrimaryInteractionOff(Character character) {
-        Debug.Log("PIF");
         if (fixing) {
         character.StopFix(this);
         fixing = false;
         View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
         Debug.Log(numberOfPlayersFixing);   
         } 
-        // if (fixing) {
-        //     Debug.Log("OFF");
-        //     fixing = false;
-        //     View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
-        //     Debug.Log(numberOfPlayersFixing);
-        // }
     }
 
     [PunRPC]
@@ -117,7 +106,6 @@ public class Sabotageable : Interactable {
         task.isUndoable = false;
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
-        sabotagedIndicator.SetActive(true);
         EnableTaskMarker();  
     }
 
@@ -129,7 +117,6 @@ public class Sabotageable : Interactable {
             // Tell everyone that the task is now completed
             // TODO Delete the task for everyone
             DisableTaskMarker();
-            sabotagedIndicator.SetActive(false);
             Timer.SabotageTimer.End();
             Destroy(GetComponent<Task>());
             task = null;
