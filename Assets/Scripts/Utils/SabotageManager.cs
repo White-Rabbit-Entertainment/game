@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -10,7 +12,7 @@ public class SabotageManager : MonoBehaviour
     public TextMeshProUGUI SabotageTimeRemaining;
     public GameSceneManager gameSceneManager;
 
-    private int amountToFix;
+    private float amountToFix;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,12 +58,12 @@ public class SabotageManager : MonoBehaviour
         
     }
 
-    public void SetAmountToFix(int amount) {
+    public void SetAmountToFix(float amount) {
         GetComponent<PhotonView>().RPC("SabotageStartedRPC", RpcTarget.All);
     }
 
     [PunRPC]
-    public void SetAmountToFixRPC(int amount) {
+    public void SetAmountToFixRPC(float amount) {
         amountToFix = amount;
     }
 
