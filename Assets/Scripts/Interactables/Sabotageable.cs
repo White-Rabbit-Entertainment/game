@@ -35,6 +35,7 @@ public class Sabotageable : Interactable {
     void Update() {
         if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged && numberOfPlayersFixing > 0) {
             Debug.Log(numberOfPlayersFixing);
+            sabotageManager.SetAmountToFix(amountToFix);
             amountToFix -= numberOfPlayersFixing * 10 * Time.deltaTime;
             if (amountToFix <= 0) {
                 View.RPC("Fix", RpcTarget.All); 
