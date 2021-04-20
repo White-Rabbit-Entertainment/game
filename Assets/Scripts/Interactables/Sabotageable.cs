@@ -17,8 +17,9 @@ public class Sabotageable : Interactable {
 
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
     
-    // private GameSceneManager gameSceneManager;
     private GameSceneManager gameSceneManager;
+
+    private SabotageManager sabotageManager;
     
     
     // Start is called before the first frame update
@@ -28,17 +29,21 @@ public class Sabotageable : Interactable {
         isSabotaged = false;
         base.Start();
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
+        sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();
     }
 
     void Update() {
         if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged && numberOfPlayersFixing > 0) {
             Debug.Log(numberOfPlayersFixing);
             amountToFix -= numberOfPlayersFixing * 10 * Time.deltaTime;
-            if (amountToFix <= 0) View.RPC("Fix", RpcTarget.All); 
+            if (amountToFix <= 0) {
+                View.RPC("Fix", RpcTarget.All); 
+                sabotageManager.SabotageFixed();
+            }
         }
-        if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
-            gameSceneManager.EndGame(Team.Traitor);
-        }
+        // if (isSabotaged && Timer.SabotageTimer.IsComplete()) {
+        //     gameSceneManager.EndGame(Team.Traitor);
+        // }
     }
 
     private void Reset() {
@@ -51,6 +56,7 @@ public class Sabotageable : Interactable {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
             Timer.SabotageTimer.Start(30);
             View.RPC("Sabotage", RpcTarget.All);
+            sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
             if (!fixing) {
             character.Fix(this);
@@ -120,11 +126,10 @@ public class Sabotageable : Interactable {
             task.CompleteRPC(false);
             // Tell everyone that the task is now completed
             // TODO Delete the task for everyone
-            Destroy(GetComponent<Task>());
-            sabotagedIndicator.SetActive(false);
             DisableTaskMarker();
+            sabotagedIndicator.SetActive(false);
             Timer.SabotageTimer.End();
-            
+            Destroy(GetComponent<Task>());
             task = null;
             // After an item is fixed its no longer interactable for anyone
             Destroy(this);
