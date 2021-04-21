@@ -41,7 +41,6 @@ public class AmountFixed : MonoBehaviour
             // fillAmount = normalizedValue;
             countdownCircle.fillAmount = normalizedValue;
            }
-  
     }
 
 }
