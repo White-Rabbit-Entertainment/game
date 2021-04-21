@@ -19,6 +19,10 @@ public class SabotageManager : MonoBehaviour
 
     public GameObject fixingProgress;
 
+    public int numPlayersFixing;
+
+    public TextMeshProUGUI playersFixing;
+
     public float amountToFix;
     // Start is called before the first frame update
     void Start()
@@ -63,6 +67,12 @@ public class SabotageManager : MonoBehaviour
 
     public void LocalPlayerFixing() {
         fixingProgress.SetActive(true);
+        // pfnum = new TextMeshProUGUI();
+        // pfnum.text = numPlayersFixing.ToString();
+        // pfnum.fontSize = 20;
+        // pfnum.color = Color.red;
+        playersFixing.text = "Players Fixing: " + numPlayersFixing;
+
     }
 
     public void LocalStopsFixing() {
@@ -94,4 +104,11 @@ public class SabotageManager : MonoBehaviour
         return isFixing;
     }
 
+    public void SetNumPlayersFixing(int num){
+        numPlayersFixing = num;
+    }
+
+    public int GetNumPlayersFixing(){
+        return numPlayersFixing;
+    }
 }

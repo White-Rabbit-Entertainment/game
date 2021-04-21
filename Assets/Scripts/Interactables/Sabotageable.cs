@@ -61,8 +61,9 @@ public class Sabotageable : Interactable {
             character.Fix(this);
             fixing = true;
             sabotageManager.SetIsFixing(fixing);
-            sabotageManager.LocalPlayerFixing();  
             View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
+            sabotageManager.LocalPlayerFixing();  //this must go after the previous line (increment...) because otherwise it doesn't get the number of players fixing
+            
             }
         }
         }
@@ -73,7 +74,7 @@ public class Sabotageable : Interactable {
         character.StopFix(this);
         fixing = false;
         sabotageManager.SetIsFixing(fixing);
-        sabotageManager.LocalStopsFixing();
+        sabotageManager.LocalStopsFixing(); //doesn't require number of players fixing so can go before.
         View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
         Debug.Log(numberOfPlayersFixing);   
         } 
@@ -82,11 +83,13 @@ public class Sabotageable : Interactable {
     [PunRPC]
     public void IncrementNumberOfFixers() {
         this.numberOfPlayersFixing++;
+        sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
     }
 
     [PunRPC]
     public void DecrementNumberOfFixers() {
         this.numberOfPlayersFixing--;
+        sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
     }
     public override bool CanInteract(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) return true;
