@@ -57,9 +57,11 @@ public class Sabotageable : Interactable {
             sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
             if (!fixing) {
-            sabotageManager.LocalPlayerFixing();    
+              
             character.Fix(this);
             fixing = true;
+            sabotageManager.SetIsFixing(fixing);
+            sabotageManager.LocalPlayerFixing();  
             View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
             }
         }
@@ -70,6 +72,8 @@ public class Sabotageable : Interactable {
         if (fixing) {
         character.StopFix(this);
         fixing = false;
+        sabotageManager.SetIsFixing(fixing);
+        sabotageManager.LocalStopsFixing();
         View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
         Debug.Log(numberOfPlayersFixing);   
         } 

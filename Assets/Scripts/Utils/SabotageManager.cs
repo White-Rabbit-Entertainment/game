@@ -7,12 +7,19 @@ using Photon.Pun;
 
 public class SabotageManager : MonoBehaviour
 {
-    private bool inSabotage = false;
+    public bool inSabotage = false;
 
-    // public TextMeshProUGUI SabotageTimeRemaining;
+    public bool isFixing = false;
+
+    public GameObject sabotageUI;
+    public GameObject warning;
+
+    public TextMeshProUGUI SabotageTimeRemaining;
     public GameSceneManager gameSceneManager;
 
-    private float amountToFix;
+    public GameObject fixingProgress;
+
+    public float amountToFix;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +30,9 @@ public class SabotageManager : MonoBehaviour
     void Update()
     {
         if (inSabotage) {
-            // SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
+            SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
             if (Timer.SabotageTimer.IsComplete()) {
-            gameSceneManager.EndGame(Team.Traitor);
+                gameSceneManager.EndGame(Team.Traitor);
 
       }
     }
@@ -33,11 +40,15 @@ public class SabotageManager : MonoBehaviour
 
     public void SabotageStarted() {
         GetComponent<PhotonView>().RPC("SabotageStartedRPC", RpcTarget.All);
+        
     }
 
     [PunRPC]
-    public void SabotageStartedRPC() {
+    public IEnumerator SabotageStartedRPC() {
         inSabotage = true;
+        sabotageUI.SetActive(true);
+        yield return new WaitForSeconds(7);
+        warning.SetActive(false);
     }
 
     public void SabotageFixed() {
@@ -47,14 +58,15 @@ public class SabotageManager : MonoBehaviour
     [PunRPC]
     public void SabotageFixedRPC() {
         inSabotage = false;
+        sabotageUI.SetActive(false);
     }
 
     public void LocalPlayerFixing() {
-
+        fixingProgress.SetActive(true);
     }
 
     public void LocalStopsFixing() {
-        
+        fixingProgress.SetActive(false);
     }
 
     public void SetAmountToFix(float amount) {
@@ -64,6 +76,22 @@ public class SabotageManager : MonoBehaviour
     [PunRPC]
     public void SetAmountToFixRPC(float amount) {
         amountToFix = amount;
+    }
+
+    public float GetAmountToFix(){
+        return amountToFix; 
+    }
+
+    public bool GetInSabotage(){
+        return inSabotage;
+    }
+
+    public void SetIsFixing(bool fixing){
+        isFixing = fixing;
+    }
+
+    public bool GetIsFixing(){
+        return isFixing;
     }
 
 }
