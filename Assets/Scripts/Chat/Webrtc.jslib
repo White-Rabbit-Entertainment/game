@@ -17,7 +17,7 @@ var WebRTCPlugin = {
 
     Data.remoteStream = new MediaStream();
     const remoteVideo = document.querySelector('#remoteVideo');
-    remoteVideo.srcObject = remoteStream;
+    remoteVideo.srcObject = Data.remoteStream;
 
     Data.peerConnection = new RTCPeerConnection(Data.configuration);
     Data.peerConnection.ontrack = function() {
