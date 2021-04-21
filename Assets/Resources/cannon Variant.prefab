@@ -26,6 +26,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9317f641c52c183dbe3dc17d6d99ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8563706244375164828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110838560622236418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6534ab461752ebef9ba0374b72f5d141, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: 
+  interactionColour: {r: 0, g: 0, b: 0, a: 0}
+  taskColour: {r: 0, g: 0, b: 0, a: 0}
+  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
+  softRequirementTypes: []
+  canBeMasterTask: 1
+  hardRequirements: []
+  singleUse: 0
+  team: 22
+  taskTeam: 22
+  outlineWidth: 5
+  inRange: 0
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 
+  task: {fileID: 0}
+--- !u!114 &6703236929569589833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110838560622236418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &957207080022896211
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81,12 +130,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4a42042874a2db894baccef023879107,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90.00001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4a42042874a2db894baccef023879107,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 90.00001
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a42042874a2db894baccef023879107,
         type: 3}

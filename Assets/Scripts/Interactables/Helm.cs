@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotateRudder : Interactable
+public class Helm : Interactable
 {
     public Animator animator;
 

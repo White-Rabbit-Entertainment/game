@@ -5,50 +5,52 @@ using Photon.Pun;
 using TypeReferences;
 
 public class CannonBall : Placeable {
-    public List<TypeReference> destinationTypes;
+  public List<TypeReference> destinationTypes;
+  private List<PickupDestination> destinations;
 
-    [PunRPC]
-    public void AddDestination(int viewId) {
-        PhotonView itemView = PhotonView.Find(viewId);
-        destination = itemView.gameObject.GetComponent<PickupDestination>();
+  public void Start() {
+    base.Start();
+    destinations = new List<PickupDestination>(FindObjectsOfType<PickupDestination>());
+    Debug.Log(destinations);
+    if (destination == null) {
+      SetDestination(destinations);
     }
+  }
 
-    public void SetDestination(List<Transform> interactables) {
-    List<PickupDestination> possibleDestinations = GetPossibleDestinations(interactables);
+  [PunRPC]
+  public void AddDestination(int viewId) {
+      PhotonView itemView = PhotonView.Find(viewId);
+      Debug.Log($"itemView {viewId}: {itemView}");
+      destination = itemView.gameObject.GetComponent<PickupDestination>();
+  }
+
+  public void SetDestination(List<PickupDestination> destinations) {
+    List<PickupDestination> possibleDestinations = GetPossibleDestinations(destinations);
     if (possibleDestinations.Count > 0) {
       System.Random random = new System.Random(System.Guid.NewGuid().GetHashCode());
       int randomIndex = random.Next(possibleDestinations.Count);
+      Debug.Log(possibleDestinations[randomIndex]);
+      Debug.Log($"id in set destination {possibleDestinations[randomIndex].GetComponent<PhotonView>().ViewID}");
       View.RPC("AddDestination", RpcTarget.All, possibleDestinations[randomIndex].GetComponent<PhotonView>().ViewID);
     }
   }
 
-    public virtual List<PickupDestination> GetPossibleDestinations(List<Transform> interactables) {
+  public List<PickupDestination> GetPossibleDestinations(List<PickupDestination> destinations) {
     List<PickupDestination> possibleDestinations = new List<PickupDestination>();
-    foreach (Transform interactable in interactables) {
+    foreach (PickupDestination destination in destinations) {
       bool hasCorrectType = false;
       foreach(TypeReference type in destinationTypes) {
-        if (interactable.GetComponent(type.Type) != null) hasCorrectType = true;
+        if (destination.GetComponent(type.Type) != null) hasCorrectType = true;
       }
-      if (interactable.GetComponent<PickupDestination>() != null
-      && hasCorrectType
-      && !interactable.GetComponent<Interactable>().HasTask()) {
-        possibleDestinations.Add(interactable.GetComponent<PickupDestination>());
+      if (destination != null && hasCorrectType) {
+        possibleDestinations.Add(destination);
       }
     }
     return possibleDestinations;
   }
 
-    public override void Reset() {
-        taskDescription = "Fill cannon";
-        base.Reset();
-    }
-
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Cannon") {
-            Destroy(this.gameObject);
-            task.Complete();
-        }
-    }
-
-    
+  public override void Reset() {
+      taskDescription = "Fill cannon";
+      base.Reset();
+  }
 }
