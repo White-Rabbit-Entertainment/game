@@ -16,8 +16,12 @@ var WebRTCPlugin = {
     const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
 
     Data.remoteStream = new MediaStream();
+    const remoteVideo = document.querySelector('#remoteVideo');
+    remoteVideo.srcObject = remoteStream;
+
     Data.peerConnection = new RTCPeerConnection(Data.configuration);
     Data.peerConnection.ontrack = function() {
+      console.log("Got track");
       Data.remoteStream.addTrack(event.track, Data.remoteStream);
     };
     Data.peerConnection.onnegotiationneeded = function(event) {
