@@ -63,6 +63,7 @@ public class SabotageManager : MonoBehaviour
     public void SabotageFixedRPC() {
         inSabotage = false;
         sabotageUI.SetActive(false);
+        fixingProgress.SetActive(false);
     }
 
     public void LocalPlayerFixing() {

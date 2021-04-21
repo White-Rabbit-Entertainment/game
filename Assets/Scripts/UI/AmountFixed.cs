@@ -33,7 +33,7 @@ public class AmountFixed : MonoBehaviour
             if (SabotageManager.amountToFix <= 0f)
             {
                // Stop the countdown               
-            //    updateAmountToFix = false;
+               updateAmountToFix = false;
                currentAmountToFix = 0.0f;
             }
             countdownText.text = (int)((startAmountToFix-currentAmountToFix)/1.0f)+ "%";
@@ -41,5 +41,7 @@ public class AmountFixed : MonoBehaviour
             // fillAmount = normalizedValue;
             countdownCircle.fillAmount = normalizedValue;
            }
+  
     }
+
 }
