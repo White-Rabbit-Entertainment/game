@@ -19,7 +19,7 @@ public class SabotageManager : MonoBehaviour
 
     public GameObject fixingProgress;
 
-    public int numPlayersFixing;
+    public int numPlayersFixing = 0;
 
     public TextMeshProUGUI playersFixing;
 
