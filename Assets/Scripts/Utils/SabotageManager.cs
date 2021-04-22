@@ -97,10 +97,14 @@ public class SabotageManager : MonoBehaviour
         return isFixing;
     }
 
-    public void SetNumPlayersFixing(int num){
-        numPlayersFixing = num;
+    public void SetNumOfPlayersFixing(int num) {
+        GetComponent<PhotonView>().RPC("SetNumOfPlayersFixing", RpcTarget.All, num);
     }
 
+    [PunRPC]
+    public void SetNumOfPlayersFixingRPC(int num) {
+        numPlayersFixing = num;
+    }
     public int GetNumPlayersFixing(){
         return numPlayersFixing;
     }
