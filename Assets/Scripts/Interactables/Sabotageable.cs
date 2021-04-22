@@ -20,6 +20,10 @@ public class Sabotageable : Interactable {
     private GameSceneManager gameSceneManager;
 
     private SabotageManager sabotageManager;
+
+    public int fixTimeFactor = 7;
+
+    public int sabotageDelaySeconds = 5;
     
     
     // Start is called before the first frame update
@@ -33,10 +37,14 @@ public class Sabotageable : Interactable {
     }
 
     void Update() {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged && numberOfPlayersFixing > 0) {
+        /* Master client checks if sabotage is sabotaged and then broadcasts how much is left for each player to fix, the number of players
+        currently fixing and updating the amount of fixing needing to be done
+        */
+        if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged) {
             sabotageManager.SetAmountToFix(amountToFix);
             sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
-            amountToFix -= numberOfPlayersFixing * 10 * Time.deltaTime;
+            amountToFix -= numberOfPlayersFixing * fixTimeFactor * Time.deltaTime;
+            //If there is no more to fix then call fix RPC for all players i.e. tell each player that sabotage is fixed and finished and inform the sabotagen manager of that
             if (amountToFix <= 0) {
                 View.RPC("Fix", RpcTarget.All); 
                 sabotageManager.SabotageFixed();
@@ -51,11 +59,13 @@ public class Sabotageable : Interactable {
     }
 
     public override void PrimaryInteraction(Character character) {
+        //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
             Timer.SabotageTimer.Start(30);
             View.RPC("Sabotage", RpcTarget.All);
             sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
+            // If a sabotage has started then any player can attempt to fix
             if (!fixing) {
             sabotageManager.LocalPlayerFixing();    
             character.Fix(this);
@@ -67,8 +77,11 @@ public class Sabotageable : Interactable {
 
     
     public override void PrimaryInteractionOff(Character character) {
+        //If a player is fixing sabotage but lets go of mouseclick then they stop fixing
+        // the master client is notified that one less player is fixing
         if (fixing) {
         character.StopFix(this);
+        sabotageManager.LocalPlayerStoppedFixing();    
         fixing = false;
         View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
         } 
@@ -83,8 +96,12 @@ public class Sabotageable : Interactable {
     public void DecrementNumberOfFixers() {
         this.numberOfPlayersFixing--;
     }
+
+    
     public override bool CanInteract(Character character) {
+        //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) return true;
+        // If a sabotage has started then any player can attempt to fix        
         if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
         return true;
         
@@ -101,11 +118,18 @@ public class Sabotageable : Interactable {
 
     [PunRPC]
     public virtual void Sabotage() {
+        StartCoroutine(SabotageEnumerator());  
+    }
+
+    //Start sabotage after a given number of seconds
+    //Set task, set as true and give marker
+    public IEnumerator SabotageEnumerator() {
+        yield return new WaitForSeconds(5);
         AddTaskWithTimerRPC(Timer.SabotageTimer);
         task.isUndoable = false;
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
-        EnableTaskMarker();  
+        EnableTaskMarker(); 
     }
 
     [PunRPC]

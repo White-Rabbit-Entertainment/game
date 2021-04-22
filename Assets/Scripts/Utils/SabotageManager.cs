@@ -33,6 +33,7 @@ public class SabotageManager : MonoBehaviour
                 gameSceneManager.EndGame(Team.Traitor);
 
             }
+            playersFixing.text = "Players Fixing: " + numPlayersFixing;
         }
     }
 
@@ -64,11 +65,12 @@ public class SabotageManager : MonoBehaviour
     }
 
     public void LocalPlayerFixing() {
+        isFixing = true;
         fixingProgress.SetActive(true);
-        playersFixing.text = "Players Fixing: " + numPlayersFixing;
     }
 
-    public void LocalStopsFixing() {
+    public void LocalPlayerStoppedFixing() {
+        isFixing = false;
         fixingProgress.SetActive(false);
     }
 
@@ -78,7 +80,7 @@ public class SabotageManager : MonoBehaviour
 
     [PunRPC]
     public void SetAmountToFixRPC(float amount) {
-        amountToFix = amount;
+        this.amountToFix = amount;
     }
 
     public float GetAmountToFix(){
@@ -87,10 +89,6 @@ public class SabotageManager : MonoBehaviour
 
     public bool GetInSabotage(){
         return inSabotage;
-    }
-
-    public void SetIsFixing(bool fixing){
-        isFixing = fixing;
     }
 
     public bool GetIsFixing(){
@@ -103,7 +101,7 @@ public class SabotageManager : MonoBehaviour
 
     [PunRPC]
     public void SetNumPlayersFixingRPC(int num) {
-        numPlayersFixing = num;
+        this.numPlayersFixing = num;
     }
     public int GetNumPlayersFixing(){
         return numPlayersFixing;

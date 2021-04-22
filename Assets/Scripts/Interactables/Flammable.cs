@@ -21,7 +21,7 @@ public class Flammable : Sabotageable
     }
 
     public IEnumerator StartFire(){
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(sabotageDelaySeconds);
         smallFires.SetActive(true); 
     }
 
