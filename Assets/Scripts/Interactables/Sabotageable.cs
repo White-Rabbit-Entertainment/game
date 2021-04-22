@@ -49,10 +49,11 @@ public class Sabotageable : Interactable {
 
     public override void PrimaryInteraction(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
-            Timer.SabotageTimer.Start(30);
             View.RPC("Sabotage", RpcTarget.All);
+            // Timer.SabotageTimer.Start(30);
             sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
+            Debug.Log("isSabotaged!");
             if (!fixing) {
               
             character.Fix(this);
@@ -106,10 +107,20 @@ public class Sabotageable : Interactable {
 
     [PunRPC]
     public virtual void Sabotage() {
+        StartCoroutine(SabotageDelayed());
+    }
+
+    public IEnumerator SabotageDelayed(){
+        yield return new WaitForSeconds(5); 
+        Debug.Log("2");
         AddTaskWithTimerRPC(Timer.SabotageTimer);
+        Debug.Log("3");
         task.isUndoable = false;
+        Debug.Log("4");
         task.description = "Fix the " + this.name + "";
+        Debug.Log("5");
         isSabotaged = true;
+        Debug.Log("6");
         EnableTaskMarker();  
     }
 

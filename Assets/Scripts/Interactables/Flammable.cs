@@ -9,8 +9,9 @@ public class Flammable : Sabotageable
 
     [PunRPC]
     public override void Sabotage() {
-        smallFires.SetActive(true);    
+        StartCoroutine(StartFire());
         base.Sabotage();
+         
     }
 
     [PunRPC]
@@ -18,6 +19,12 @@ public class Flammable : Sabotageable
         smallFires.SetActive(false);
         base.Fix(); 
     }
+
+    public IEnumerator StartFire(){
+        yield return new WaitForSeconds(5);
+        smallFires.SetActive(true); 
+    }
+
 
 
 }

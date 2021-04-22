@@ -9,7 +9,7 @@ public class Floodable : Sabotageable
 
     [PunRPC]
     public override void Sabotage() {
-        water.SetActive(true);
+        StartCoroutine(StartFlood());
         base.Sabotage();
     }
 
@@ -17,6 +17,11 @@ public class Floodable : Sabotageable
     public override void Fix() { 
         water.SetActive(false); 
         base.Fix(); 
+    }
+
+    public IEnumerator StartFlood(){
+        yield return new WaitForSeconds(5);
+        water.SetActive(true);
     }
 }
 
