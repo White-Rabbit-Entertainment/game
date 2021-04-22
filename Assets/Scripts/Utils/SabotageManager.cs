@@ -44,6 +44,7 @@ public class SabotageManager : MonoBehaviour
     [PunRPC]
     public IEnumerator SabotageStartedRPC() {
         yield return new WaitForSeconds(5);
+        numPlayersFixing = 0;
         Timer.SabotageTimer.Start(30);
         inSabotage = true;
         sabotageUI.SetActive(true);

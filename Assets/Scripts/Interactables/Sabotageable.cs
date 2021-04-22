@@ -23,7 +23,9 @@ public class Sabotageable : Interactable {
     
     
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
+        // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
         base.Start();
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
@@ -32,8 +34,8 @@ public class Sabotageable : Interactable {
 
     void Update() {
         if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged && numberOfPlayersFixing > 0) {
-            Debug.Log(numberOfPlayersFixing);
             sabotageManager.SetAmountToFix(amountToFix);
+            sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
             amountToFix -= numberOfPlayersFixing * 10 * Time.deltaTime;
             if (amountToFix <= 0) {
                 View.RPC("Fix", RpcTarget.All); 
@@ -45,55 +47,47 @@ public class Sabotageable : Interactable {
     private void Reset() {
         team = Team.Traitor;
         taskTeam = Team.Real;
+        // base.Reset();
     }
 
     public override void PrimaryInteraction(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
+            Timer.SabotageTimer.Start(30);
             View.RPC("Sabotage", RpcTarget.All);
-            // Timer.SabotageTimer.Start(30);
             sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
-            Debug.Log("isSabotaged!");
             if (!fixing) {
-              
+            sabotageManager.LocalPlayerFixing();    
             character.Fix(this);
             fixing = true;
-            sabotageManager.SetIsFixing(fixing);
             View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
-            sabotageManager.LocalPlayerFixing();  //this must go after the previous line (increment...) because otherwise it doesn't get the number of players fixing
-            
             }
         }
-    }
+        }
 
     
     public override void PrimaryInteractionOff(Character character) {
         if (fixing) {
-            character.StopFix(this);
-            fixing = false;
-            sabotageManager.SetIsFixing(fixing);
-            sabotageManager.LocalStopsFixing(); //doesn't require number of players fixing so can go before.
-            View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
-            Debug.Log(numberOfPlayersFixing);   
+        character.StopFix(this);
+        fixing = false;
+        View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
         } 
     }
 
     [PunRPC]
     public void IncrementNumberOfFixers() {
         this.numberOfPlayersFixing++;
-        sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
     }
 
     [PunRPC]
     public void DecrementNumberOfFixers() {
         this.numberOfPlayersFixing--;
-        sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
     }
-
     public override bool CanInteract(Character character) {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) return true;
         if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
-        return false;
+        return true;
+        
     }
 
     public override void SetTaskGlow() {
@@ -107,35 +101,26 @@ public class Sabotageable : Interactable {
 
     [PunRPC]
     public virtual void Sabotage() {
-        StartCoroutine(SabotageDelayed());
-    }
-
-    public IEnumerator SabotageDelayed(){
-        yield return new WaitForSeconds(5); 
-        Debug.Log("2");
         AddTaskWithTimerRPC(Timer.SabotageTimer);
-        Debug.Log("3");
         task.isUndoable = false;
-        Debug.Log("4");
         task.description = "Fix the " + this.name + "";
-        Debug.Log("5");
         isSabotaged = true;
-        Debug.Log("6");
         EnableTaskMarker();  
     }
 
     [PunRPC]
     public virtual void Fix() {
         // If the sabotagable is fully fixed
-        isSabotaged = false;
-        task.CompleteRPC(false);
-        // Tell everyone that the task is now completed
-        // TODO Delete the task for everyone
-        DisableTaskMarker();
-        Timer.SabotageTimer.End();
-        Destroy(GetComponent<Task>());
-        task = null;
-        // After an item is fixed its no longer interactable for anyone
-        Destroy(this);
+            isSabotaged = false;
+            task.CompleteRPC(false);
+            // Tell everyone that the task is now completed
+            // TODO Delete the task for everyone
+            DisableTaskMarker();
+            Timer.SabotageTimer.End();
+            Destroy(GetComponent<Task>());
+            task = null;
+            // After an item is fixed its no longer interactable for anyone
+            Destroy(this);
+    
     }
 }
