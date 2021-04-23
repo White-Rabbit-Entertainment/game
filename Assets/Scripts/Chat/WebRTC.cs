@@ -37,9 +37,7 @@ public class WebRTC : MonoBehaviour {
     }
 
     public void InitWebRTC() {
-        if (PhotonNetwork.IsMasterClient) {
-            MakeOffer();
-        }
+        MakeOffer();
     }
 
     public void Working(string thing) {
