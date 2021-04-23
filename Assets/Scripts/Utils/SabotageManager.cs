@@ -60,12 +60,15 @@ public class SabotageManager : MonoBehaviour
     }
 
     public IEnumerator NotifySabotage(){
-        SabotageNotificationUI.text = "Sabotaged";
-        SabotageTraitorCountdownUI.SetActive(true);
-        Timer.TraitorSabotageTimer.Start(5);
-        yield return new WaitForSeconds(5f);
-        SabotageNotificationUI.text = "";
-        SabotageTraitorCountdownUI.SetActive(false);
+        if (NetworkManager.instance.GetMe() is Traitor){
+            SabotageNotificationUI.text = "Sabotaged";
+            SabotageTraitorCountdownUI.SetActive(true);
+            Timer.TraitorSabotageTimer.Start(5);
+            yield return new WaitForSeconds(5f);
+            SabotageNotificationUI.text = "";
+            SabotageTraitorCountdownUI.SetActive(false);
+        }
+        
     }
 
     public void SabotageFixed() {
