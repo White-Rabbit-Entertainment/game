@@ -11,8 +11,10 @@ public class ContextTaskUI : TaskUI {
   
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
 
-    void Start(){
-      
+    public void Init(){
+      if (NetworkManager.instance.GetMe() is Traitor){
+        yourTask.SetActive(false);
+      }
       // yourTask.SetActive(false);
     }
     public void ShowTask() {

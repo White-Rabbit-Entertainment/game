@@ -14,6 +14,8 @@ public class LoadingScreen : MonoBehaviour {
   public Button closeButton;
   public TeleType teleType;
 
+  public ContextTaskUI contextTaskUI;
+
   [TextArea(15,20)]
   private string traitorTitle = "You are a Traitor!";
   private string loyalTitle = "You are a Loyal crewmate!";
@@ -49,6 +51,7 @@ public class LoadingScreen : MonoBehaviour {
 
   void CloseMenu() {
     playersUI.Init();
+    contextTaskUI.Init();
     taskCompletionUI.UpdateBar();
     Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;
