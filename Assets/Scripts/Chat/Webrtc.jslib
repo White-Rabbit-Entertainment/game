@@ -13,7 +13,15 @@ var WebRTCPlugin = {
   Init: function() {
   
     const constraints = {'video': true, 'audio': true}
-    const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+    const configuration = {
+        'iceServers': [
+            {
+                urls: 'turn:157.90.119.115:3478',
+                username: 'test',
+                credential: 'test123'
+            }
+        ]
+    }
 
     Data.remoteStream = new MediaStream();
     const remoteVideo = document.querySelector('#remoteVideo');
