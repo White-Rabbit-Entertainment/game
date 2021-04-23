@@ -14,6 +14,11 @@ public class SabotageManager : MonoBehaviour
     public GameObject sabotageUI;
     public GameObject warning;
 
+    public TextMeshProUGUI SabotageNotificationUI;
+    public TextMeshProUGUI ClickAndHoldReminderUI;
+
+    public GameObject SabotageTraitorCountdownUI;
+
     public TextMeshProUGUI SabotageTimeRemaining;
     public GameSceneManager gameSceneManager;
 
@@ -44,6 +49,7 @@ public class SabotageManager : MonoBehaviour
 
     [PunRPC]
     public IEnumerator SabotageStartedRPC() {
+        StartCoroutine(NotifySabotage());
         yield return new WaitForSeconds(5);
         numPlayersFixing = 0;
         Timer.SabotageTimer.Start(30);
@@ -51,6 +57,15 @@ public class SabotageManager : MonoBehaviour
         sabotageUI.SetActive(true);
         yield return new WaitForSeconds(7);
         warning.SetActive(false);
+    }
+
+    public IEnumerator NotifySabotage(){
+        SabotageNotificationUI.text = "Sabotaged";
+        SabotageTraitorCountdownUI.SetActive(true);
+        Timer.TraitorSabotageTimer.Start(5);
+        yield return new WaitForSeconds(5f);
+        SabotageNotificationUI.text = "";
+        SabotageTraitorCountdownUI.SetActive(false);
     }
 
     public void SabotageFixed() {
@@ -65,13 +80,22 @@ public class SabotageManager : MonoBehaviour
     }
 
     public void LocalPlayerFixing() {
+        ClickAndHoldReminderUI.text = "";
         isFixing = true;
         fixingProgress.SetActive(true);
     }
 
     public void LocalPlayerStoppedFixing() {
         isFixing = false;
+        StartCoroutine(ClickAndHold());
         fixingProgress.SetActive(false);
+        
+    }
+
+    public IEnumerator ClickAndHold(){
+        ClickAndHoldReminderUI.text = "Click and hold to fix!";
+        yield return new WaitForSeconds(2f);
+        ClickAndHoldReminderUI.text = "";
     }
 
     public void SetAmountToFix(float amount) {

@@ -9,6 +9,8 @@ public abstract class TaskUI : MonoBehaviour {
     public TaskManager taskManager;
     public TextMeshProUGUI allTasksTmp;
 
+    public GameObject yourTask;
+
     public GameObject AllTasks; //AllTasks is an empty gameObject which contains taskList,allTaskstmp.
 
     private Color urgentTaskColour = new Color(1f, 0f, 0f, 1f);
