@@ -1902,6 +1902,10 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
+  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
+ })
+}, {
+ func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_gc_cpp();
  })
 }, {
@@ -1915,10 +1919,6 @@ __ATINIT__.push({
 }, {
  func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_vm_cpp();
- })
-}, {
- func: (function() {
-  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
  })
 }, {
  func: (function() {
@@ -3220,7 +3220,9 @@ function _Init() {
  };
  const configuration = {
   "iceServers": [ {
-   "urls": "stun:stun.l.google.com:19302"
+   urls: "turn:157.90.119.115:3478",
+   username: "test",
+   credential: "test123"
   } ]
  };
  Data.remoteStream = new MediaStream;
