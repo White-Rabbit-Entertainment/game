@@ -34,7 +34,9 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     
     public override void OnJoinedRoom() {
         lobbyPage.Open();
-        webRTC.InitWebRTC();
+        foreach (Player player in NetworkManager.instance.GetPlayers()) {
+            webRTC.Call(player.ActorNumber);
+        }
     }
    
     public override void OnLeftRoom() {

@@ -45,7 +45,7 @@ public class WebRTC : MonoBehaviour {
         // The player to send the offer to
         int receiverId = Int32.Parse(data["peerId"]);
         // Set the peerid to out id
-        data["peerId"] = (string)PhotonNetwork.LocalPlayer.ActorNumber;
+        data["peerId"] = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
 
         View.RPC("HandleOffer", PhotonNetwork.LocalPlayer.Get(receiverId), JsonConvert.SerializeObject(data));
     }
@@ -60,7 +60,7 @@ public class WebRTC : MonoBehaviour {
         // Who is recieveing the answer
         int receiverId = Int32.Parse(answer["peerId"]);
         // Set the peer id back to our id (so the receiver knows who sent the answer)
-        answer["peerId"] = (string)PhotonNetwork.LocalPlayer.ActorNumber;
+        answer["peerId"] = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
         View.RPC("HandleAnswer", PhotonNetwork.LocalPlayer.Get(receiverId), JsonConvert.SerializeObject(answer));
     }
     
@@ -74,7 +74,7 @@ public class WebRTC : MonoBehaviour {
         // Which player should we send the ice candidate to?
         int receiverId = Int32.Parse(dataObj["peerId"]);
         // Set the peerid to us (the player which send the ice candidate)
-        dataObj["peerId"] = (string)PhotonNetwork.LocalPlayer.ActorNumber;
+        dataObj["peerId"] = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
         View.RPC("HandleIceCandidate", PhotonNetwork.LocalPlayer.Get(receiverId), JsonConvert.SerializeObject(dataObj));
     }
 
