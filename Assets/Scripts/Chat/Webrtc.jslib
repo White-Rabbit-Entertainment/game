@@ -3,7 +3,7 @@ var WebRTCPlugin = {
   $Data: {
     peerConnections: {},
     localStream: null,
-    remoteStream: null,
+    remoteStream: null
   },
   
   Hello: function () {
@@ -21,12 +21,11 @@ var WebRTCPlugin = {
         .catch(function(error) {
             console.error('Error accessing media devices.', error);
         });
-  },
+  }
 
 
 
 };
 
 autoAddDeps(WebRTCPlugin, '$Data');
-autoAddDeps(WebRTCPlugin, 'CreatePeerConnection');
 mergeInto(LibraryManager.library, WebRTCPlugin);

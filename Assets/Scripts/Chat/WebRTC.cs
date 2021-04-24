@@ -25,8 +25,8 @@ public class WebRTC : MonoBehaviour {
     // [DllImport("__Internal")]
     // private static extern void ApplyIceCandidate(string data);
     
-    [DllImport("__Internal")]
-    private static extern void HelloString(string str);
+    //[DllImport("__Internal")]
+    //private static extern void HelloString(string str);
 
     PhotonView View {
         get {return GetComponent<PhotonView>();}

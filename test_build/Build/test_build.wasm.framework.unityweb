@@ -1299,7 +1299,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3727792;
+STATICTOP = STATIC_BASE + 3727696;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -3181,84 +3181,25 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3727792;
+var STATIC_BUMP = 3727696;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
 STATICTOP += 16;
 assert(tempDoublePtr % 8 == 0);
 var Data = {
- peerConnection: null,
+ peerConnections: {},
  localStream: null,
  remoteStream: null
 };
-function _ApplyAnswer(sdp) {
- console.log("Got answer");
- const answer = new RTCSessionDescription({
-  type: "answer",
-  sdp: Pointer_stringify(sdp)
- });
- Data.peerConnection.setRemoteDescription(answer).then((function() {
-  console.log("Handle answer complete");
- }));
-}
-function _ApplyIceCandidate(candidateData) {
- const candidate = JSON.parse(Pointer_stringify(candidateData));
- console.log("Generated candidate: ");
- Data.peerConnection.addIceCandidate(candidate).then((function() {
-  console.log("Added ice candidate");
-  console.log(candidate);
- }));
-}
-function _HelloString(str) {
- window.alert(Pointer_stringify(str));
-}
 function _Init() {
  const constraints = {
   "video": true,
   "audio": true
  };
- const configuration = {
-  "iceServers": [ {
-   urls: "turn:157.90.119.115:3478",
-   username: "test",
-   credential: "test123"
-  } ]
- };
- Data.remoteStream = new MediaStream;
- const remoteVideo = document.querySelector("#remoteVideo");
- remoteVideo.srcObject = Data.remoteStream;
- Data.peerConnection = new RTCPeerConnection(configuration);
- Data.peerConnection.ontrack = (function() {
-  console.log("Got track");
-  Data.remoteStream.addTrack(event.track, Data.remoteStream);
- });
- Data.peerConnection.onnegotiationneeded = (function(event) {
-  console.log("Negotiation needed!");
- });
- Data.peerConnection.onicecandidate = (function(event) {
-  console.log("icecandidate happened");
-  if (event.candidate) {
-   console.log("icecandidate really happened");
-   var candidateData = JSON.stringify(event.candidate);
-   unityInstance.SendMessage("WebRTC", "SendIceCandidate", candidateData);
-  }
- });
- Data.peerConnection.onconnectionstatechanged = (function(event) {
-  console.log("Connection state changed to: " + Data.peerConnection.connectionState);
-  if (Data.peerConnection.connectionState === "connected") {
-   console.log("CONNECTED!!!!!!");
-   unityInstance.SendMessage("WebRTC", "OnConnected");
-  }
- });
  navigator.mediaDevices.getUserMedia(constraints).then((function(stream) {
   console.log("Got MediaStream:", stream);
   Data.localStream = stream;
-  Data.localStream.getTracks().forEach((function(track) {
-   console.log("Sending track");
-   console.log(track);
-   Data.peerConnection.addTrack(track, Data.localStream);
-  }));
  })).catch((function(error) {
   console.error("Error accessing media devices.", error);
  }));
@@ -3665,37 +3606,6 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 }
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
-}
-function _MakeAnswer(sdp, callerId) {
- console.log("making answer");
- Data.peerConnection.setRemoteDescription(new RTCSessionDescription({
-  type: "offer",
-  sdp: Pointer_stringify(sdp)
- })).then((function() {
-  Data.peerConnection.createAnswer().then((function(answer) {
-   Data.peerConnection.setLocalDescription(answer).then((function() {
-    var answerData = {
-     "callerId": callerId,
-     "sdp": answer.sdp
-    };
-    unityInstance.SendMessage("WebRTC", "SendAnswer", JSON.stringify(answerData));
-    console.log("Making answer");
-    console.log(answer.sdp);
-   }));
-  }));
- }));
-}
-function _MakeOffer() {
- Data.peerConnection.createOffer({
-  offerToReceiveAudio: true,
-  offerToReceiveVideo: true
- }).then((function(offer) {
-  Data.peerConnection.setLocalDescription(offer).then((function() {
-   unityInstance.SendMessage("WebRTC", "SendOffer", offer.sdp);
-   console.log("Making offer");
-   console.log(offer.sdp);
-  }));
- }));
 }
 var webSocketInstances = [];
 function _SocketClose(socketInstance) {
@@ -19290,9 +19200,6 @@ Module.asmLibraryArg = {
  "invoke_vijjji": invoke_vijjji,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
- "_ApplyAnswer": _ApplyAnswer,
- "_ApplyIceCandidate": _ApplyIceCandidate,
- "_HelloString": _HelloString,
  "_Init": _Init,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
  "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
@@ -19340,8 +19247,6 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetRequestHeader": _JS_WebRequest_SetRequestHeader,
  "_JS_WebRequest_SetResponseHandler": _JS_WebRequest_SetResponseHandler,
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
- "_MakeAnswer": _MakeAnswer,
- "_MakeOffer": _MakeOffer,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,
  "_SocketError": _SocketError,
