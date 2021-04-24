@@ -32,6 +32,7 @@ var WebRTCPlugin = {
         .then(function(offer) {
             peerConnection.setLocalDescription(offer)
               .then(function() {
+                console.log("Made offer");
                 var offerData = {"offer": offer, "peerId": id}
                 unityInstance.SendMessage("WebRTC", "SendOffer", JSON.stringify(offerData));
               });
@@ -49,6 +50,7 @@ var WebRTCPlugin = {
             .then(function(answer) {
               peerConnection.setLocalDescription(answer)
                 .then(function() {
+                  console.log("Made answer");
                   var answerData = {"peerId": data.peerId, "answer": answer}
                   unityInstance.SendMessage("WebRTC", "SendAnswer", JSON.stringify(answerData));
                 });
@@ -80,5 +82,4 @@ var WebRTCPlugin = {
 };
 
 autoAddDeps(WebRTCPlugin, '$Data');
-autoAddDeps(WebRTCPlugin, 'CreatePeerConnection');
 mergeInto(LibraryManager.library, WebRTCPlugin);
