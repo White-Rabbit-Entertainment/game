@@ -103,7 +103,7 @@ Module["WebRTCPre"].CreatePeerConnection = (function(id, localStream) {
  peerConnection.onicecandidate = (function(event) {
   if (event.candidate) {
    var data = JSON.stringify({
-    "candidate": event.candidate,
+    "candidate": JSON.stringify(event.candidate),
     "peerId": peerConnection.peerId
    });
    unityInstance.SendMessage("WebRTC", "SendIceCandidate", data);
@@ -1331,7 +1331,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3727760;
+STATICTOP = STATIC_BASE + 3727776;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -3213,7 +3213,7 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3727760;
+var STATIC_BUMP = 3727776;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
@@ -3226,6 +3226,7 @@ var Data = {
 };
 function _ApplyAnswer(jsonData) {
  const data = JSON.parse(Pointer_stringify(jsonData));
+ data.answer = JSON.parse(data.answer);
  var peerConnection = Data.peerConnections[data.peerId];
  const answer = new RTCSessionDescription({
   type: "answer",
@@ -3237,6 +3238,7 @@ function _ApplyAnswer(jsonData) {
 }
 function _ApplyIceCandidate(candidateData) {
  const data = JSON.parse(Pointer_stringify(candidateData));
+ data.candidate = JSON.parse(data.candidate);
  Data.peerConnections[data.peerId].addIceCandidate(data.candidate).then((function() {
   console.log(data.candidate);
  }));
@@ -3661,6 +3663,7 @@ function _JS_WebRequest_SetTimeout(request, timeout) {
 }
 function _MakeAnswer(jsonData) {
  const data = JSON.parse(Pointer_stringify(jsonData));
+ data.offer = JSON.parse(data.offer);
  var peerConnection = Module.WebRTCPre.CreatePeerConnection(data.peerId, Data.localStream);
  peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer)).then((function() {
   peerConnection.createAnswer().then((function(answer) {
@@ -3668,7 +3671,7 @@ function _MakeAnswer(jsonData) {
     console.log("Made answer");
     var answerData = {
      "peerId": data.peerId,
-     "answer": answer
+     "answer": JSON.stringify(answer)
     };
     unityInstance.SendMessage("WebRTC", "SendAnswer", JSON.stringify(answerData));
    }));
@@ -3686,9 +3689,10 @@ function _MakeOffer(id) {
   peerConnection.setLocalDescription(offer).then((function() {
    console.log("Made offer");
    var offerData = {
-    "offer": offer,
+    "offer": JSON.stringify(offer),
     "peerId": id
    };
+   console.log(JSON.stringify(offerData));
    unityInstance.SendMessage("WebRTC", "SendOffer", JSON.stringify(offerData));
   }));
  }));
