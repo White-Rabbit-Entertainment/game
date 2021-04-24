@@ -17,7 +17,7 @@ Module['WebRTCPre'].CreatePeerConnection = function (id, localStream) {
       peerConnection.onnegotiationneeded = function(event) {console.log("Negotiation needed!")};
       peerConnection.onicecandidate = function(event) {
           if (event.candidate) {
-              var data = JSON.stringify({"candidate": event.candidate, "peerId": peerConnection.peerId});
+              var data = JSON.stringify({"candidate": JSON.stringify(event.candidate), "peerId": peerConnection.peerId});
               unityInstance.SendMessage("WebRTC", "SendIceCandidate", data);
           }
       };
