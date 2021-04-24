@@ -1,6 +1,6 @@
 Module['WebRTCPre'] = Module['WebRTCPre'] || {};
 
-Module['WebRTCPre'].CreatePeerConnection = function (id) {
+Module['WebRTCPre'].CreatePeerConnection = function (id, localStream) {
       const peerConnection = new RTCPeerConnection(Data.configuration)
       peerConnection.peerId = id
       Data.peerConnections[id] = peerConnection

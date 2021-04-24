@@ -24,7 +24,7 @@ var WebRTCPlugin = {
   },
 
   MakeOffer: function(id) {
-      var peerConnection = Module.WebRTCPre.CreatePeerConnection(id)
+      var peerConnection = Module.WebRTCPre.CreatePeerConnection(id, Data.localStream)
       Data.peerConnections[id] = peerConnection
       peerConnection.peerId = id
 
@@ -42,7 +42,7 @@ var WebRTCPlugin = {
   MakeAnswer: function(jsonData) {
       const data = JSON.parse(Pointer_stringify(jsonData));
 
-      var peerConnection = Module.WebRTCPre.CreatePeerConnection(data.peerId)
+      var peerConnection = Module.WebRTCPre.CreatePeerConnection(data.peerId, Data.localStream)
       // Sender Id (Who we are sending the answer to
       peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer))
         .then(function() {
