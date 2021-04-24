@@ -83,7 +83,7 @@ function SendMessage(gameObject, func, param) {
 }
 Module["SendMessage"] = SendMessage;
 Module["WebRTCPre"] = Module["WebRTCPre"] || {};
-Module["WebRTCPre"].CreatePeerConnection = (function(id) {
+Module["WebRTCPre"].CreatePeerConnection = (function(id, localStream) {
  const peerConnection = new RTCPeerConnection(Data.configuration);
  peerConnection.peerId = id;
  Data.peerConnections[id] = peerConnection;
@@ -3661,7 +3661,7 @@ function _JS_WebRequest_SetTimeout(request, timeout) {
 }
 function _MakeAnswer(jsonData) {
  const data = JSON.parse(Pointer_stringify(jsonData));
- var peerConnection = Module.WebRTCPre.CreatePeerConnection(data.peerId);
+ var peerConnection = Module.WebRTCPre.CreatePeerConnection(data.peerId, Data.localStream);
  peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer)).then((function() {
   peerConnection.createAnswer().then((function(answer) {
    peerConnection.setLocalDescription(answer).then((function() {
@@ -3676,7 +3676,7 @@ function _MakeAnswer(jsonData) {
  }));
 }
 function _MakeOffer(id) {
- var peerConnection = Module.WebRTCPre.CreatePeerConnection(id);
+ var peerConnection = Module.WebRTCPre.CreatePeerConnection(id, Data.localStream);
  Data.peerConnections[id] = peerConnection;
  peerConnection.peerId = id;
  peerConnection.createOffer({
