@@ -13,17 +13,17 @@ public class WebRTC : MonoBehaviour {
     [DllImport("__Internal")]
     private static extern void Init();
     
-    [DllImport("__Internal")]
-    private static extern void MakeOffer(int playerId);
-    
-    [DllImport("__Internal")]
-    private static extern void MakeAnswer(string data);
-    
-    [DllImport("__Internal")]
-    private static extern void ApplyAnswer(string data);
-     
-    [DllImport("__Internal")]
-    private static extern void ApplyIceCandidate(string data);
+    // [DllImport("__Internal")]
+    // private static extern void MakeOffer(int playerId);
+    // 
+    // [DllImport("__Internal")]
+    // private static extern void MakeAnswer(string data);
+    // 
+    // [DllImport("__Internal")]
+    // private static extern void ApplyAnswer(string data);
+    //  
+    // [DllImport("__Internal")]
+    // private static extern void ApplyIceCandidate(string data);
     
     [DllImport("__Internal")]
     private static extern void HelloString(string str);
@@ -37,7 +37,7 @@ public class WebRTC : MonoBehaviour {
     }
 
     public void Call(int playerId) {
-        MakeOffer(playerId);
+        // MakeOffer(playerId);
     }
 
     public void SendOffer(string offerJson) {
@@ -52,7 +52,7 @@ public class WebRTC : MonoBehaviour {
 
     [PunRPC]
     public void HandleOffer(string data) {
-        MakeAnswer(data);
+        // MakeAnswer(data);
     }
 
     public void SendAnswer(string answerJson) {
@@ -66,7 +66,7 @@ public class WebRTC : MonoBehaviour {
     
     [PunRPC]
     public void HandleAnswer(string data) {
-        ApplyAnswer(data);
+        // ApplyAnswer(data);
     }
     
     public void SendIceCandidate(string data) {
@@ -80,7 +80,7 @@ public class WebRTC : MonoBehaviour {
 
     [PunRPC]
     public void HandleIceCandidate(string candidateData) {
-        ApplyIceCandidate(candidateData);
+        // ApplyIceCandidate(candidateData);
     }
 }
 
