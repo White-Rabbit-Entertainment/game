@@ -36,16 +36,16 @@ var WebRTCPlugin = {
       videoElement.playsinline = true;
       videoElement.srcObject = stream;
   
-      peerConnection.ontrack = () => stream.addTrack(event.track, stream)
-      peerConnection.onnegotiationneeded = (event) => console.log("Negotiation needed!");
-      peerConnection.onicecandidate = (event) => {
+      peerConnection.ontrack = function() {stream.addTrack(event.track, stream)}
+      peerConnection.onnegotiationneeded = function(event) {console.log("Negotiation needed!")};
+      peerConnection.onicecandidate = function(event) {
           if (event.candidate) {
               var data = JSON.stringify({"candidate": event.candidate, "peerId": peerConnection.peerId});
               unityInstance.SendMessage("WebRTC", "SendIceCandidate", data);
           }
       };
       // Add out local video and audio
-      localStream.getTracks().forEach(track => {
+      localStream.getTracks().forEach(function(track) {
           peerConnection.addTrack(track, localStream);
       });
       
