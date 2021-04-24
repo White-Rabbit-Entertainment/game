@@ -82,6 +82,38 @@ function SendMessage(gameObject, func, param) {
  if (param === undefined) Module.ccall("SendMessage", null, [ "string", "string" ], [ gameObject, func ]); else if (typeof param === "string") Module.ccall("SendMessageString", null, [ "string", "string", "string" ], [ gameObject, func, param ]); else if (typeof param === "number") Module.ccall("SendMessageFloat", null, [ "string", "string", "number" ], [ gameObject, func, param ]); else throw "" + param + " is does not have a type which is supported by SendMessage.";
 }
 Module["SendMessage"] = SendMessage;
+Module["WebRTCPre"] = Module["WebRTCPre"] || {};
+Module["WebRTCPre"].CreatePeerConnection = (function(id) {
+ const peerConnection = new RTCPeerConnection(Data.configuration);
+ peerConnection.peerId = id;
+ Data.peerConnections[id] = peerConnection;
+ const stream = new MediaStream;
+ var videoElement = document.createElement("video");
+ document.body.appendChild(videoElement);
+ videoElement.autoplay = true;
+ videoElement.controls = "false";
+ videoElement.playsinline = true;
+ videoElement.srcObject = stream;
+ peerConnection.ontrack = (function() {
+  stream.addTrack(event.track, stream);
+ });
+ peerConnection.onnegotiationneeded = (function(event) {
+  console.log("Negotiation needed!");
+ });
+ peerConnection.onicecandidate = (function(event) {
+  if (event.candidate) {
+   var data = JSON.stringify({
+    "candidate": event.candidate,
+    "peerId": peerConnection.peerId
+   });
+   unityInstance.SendMessage("WebRTC", "SendIceCandidate", data);
+  }
+ });
+ localStream.getTracks().forEach((function(track) {
+  peerConnection.addTrack(track, localStream);
+ }));
+ return peerConnection;
+});
 var moduleOverrides = {};
 var key;
 for (key in Module) {
@@ -3187,37 +3219,6 @@ Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
 STATICTOP += 16;
 assert(tempDoublePtr % 8 == 0);
-function _CreatePeerConnection(id) {
- const peerConnection = new RTCPeerConnection(Data.configuration);
- peerConnection.peerId = id;
- Data.peerConnections[id] = peerConnection;
- const stream = new MediaStream;
- var videoElement = document.createElement("video");
- document.body.appendChild(videoElement);
- videoElement.autoplay = true;
- videoElement.controls = "false";
- videoElement.playsinline = true;
- videoElement.srcObject = stream;
- peerConnection.ontrack = (function() {
-  stream.addTrack(event.track, stream);
- });
- peerConnection.onnegotiationneeded = (function(event) {
-  console.log("Negotiation needed!");
- });
- peerConnection.onicecandidate = (function(event) {
-  if (event.candidate) {
-   var data = JSON.stringify({
-    "candidate": event.candidate,
-    "peerId": peerConnection.peerId
-   });
-   unityInstance.SendMessage("WebRTC", "SendIceCandidate", data);
-  }
- });
- localStream.getTracks().forEach((function(track) {
-  peerConnection.addTrack(track, localStream);
- }));
- return peerConnection;
-}
 var Data = {
  peerConnections: {},
  localStream: null,
@@ -3660,10 +3661,11 @@ function _JS_WebRequest_SetTimeout(request, timeout) {
 }
 function _MakeAnswer(jsonData) {
  const data = JSON.parse(Pointer_stringify(jsonData));
- var peerConnection = CreatePeerConnection(data.peerId);
+ var peerConnection = Module.WebRTCPre.CreatePeerConnection(data.peerId);
  peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer)).then((function() {
   peerConnection.createAnswer().then((function(answer) {
    peerConnection.setLocalDescription(answer).then((function() {
+    console.log("Made answer");
     var answerData = {
      "peerId": data.peerId,
      "answer": answer
@@ -3674,7 +3676,7 @@ function _MakeAnswer(jsonData) {
  }));
 }
 function _MakeOffer(id) {
- var peerConnection = CreatePeerConnection(id);
+ var peerConnection = Module.WebRTCPre.CreatePeerConnection(id);
  Data.peerConnections[id] = peerConnection;
  peerConnection.peerId = id;
  peerConnection.createOffer({
@@ -3682,6 +3684,7 @@ function _MakeOffer(id) {
   offerToReceiveVideo: true
  }).then((function(offer) {
   peerConnection.setLocalDescription(offer).then((function() {
+   console.log("Made offer");
    var offerData = {
     "offer": offer,
     "peerId": id
@@ -19285,7 +19288,6 @@ Module.asmLibraryArg = {
  "invoke_vjji": invoke_vjji,
  "_ApplyAnswer": _ApplyAnswer,
  "_ApplyIceCandidate": _ApplyIceCandidate,
- "_CreatePeerConnection": _CreatePeerConnection,
  "_HelloString": _HelloString,
  "_Init": _Init,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
