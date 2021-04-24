@@ -50,7 +50,7 @@ var WebRTCPlugin = {
       });
       
       return peerConnection
-  },
+  }
 
 
 
