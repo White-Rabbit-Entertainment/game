@@ -12,9 +12,11 @@ public class SabotageManager : MonoBehaviour
     public bool isFixing = false;
 
     public GameObject sabotageUI;
+
+    public GameObject backgroundAlphaImage;
     public GameObject warning;
 
-    public TextMeshProUGUI SabotageNotificationUI;
+    public GameObject SabotageNotificationUI;
     public TextMeshProUGUI ClickAndHoldReminderUI;
 
     public GameObject SabotageTraitorCountdownUI;
@@ -27,6 +29,8 @@ public class SabotageManager : MonoBehaviour
     public int numPlayersFixing = 0;
 
     public TextMeshProUGUI playersFixing;
+
+    public TextMeshProUGUI sabotageInfoTMP;
 
     public float amountToFix;
 
@@ -54,19 +58,36 @@ public class SabotageManager : MonoBehaviour
         numPlayersFixing = 0;
         Timer.SabotageTimer.Start(30);
         inSabotage = true;
+        warning.SetActive(true);
         sabotageUI.SetActive(true);
         yield return new WaitForSeconds(7);
         warning.SetActive(false);
     }
 
+    public void SetBackgroundImageColor(Sabotageable sabotageable){
+        Image image = backgroundAlphaImage.GetComponent<Image>();
+        TextMeshProUGUI warningText = warning.GetComponent<TextMeshProUGUI>();
+        if (sabotageable is Flammable){
+            image.color = new Color(255f/255f,102f/255f,0f,54f/255f);
+            warningText.text = "Warning - Fire on ship";
+            sabotageInfoTMP.text = "Find and put out the fire before the timer ends.";
+        } else {
+            image.color = new Color(0f,155f/255f,248f/255f,54f/255f);
+            warningText.text = "Warning - hole in ship";
+            sabotageInfoTMP.text = "Find and fix the hole in the ship before the timer ends.";
+        };
+    }
+
     public IEnumerator NotifySabotage(){
         if (NetworkManager.instance.GetMe() is Traitor){
-            SabotageNotificationUI.text = "Sabotaged";
-            SabotageTraitorCountdownUI.SetActive(true);
+            // SabotageNotificationUI.text = "Sabotaged";
+            SabotageNotificationUI.SetActive(true);
+            // SabotageTraitorCountdownUI.SetActive(true);
             Timer.TraitorSabotageTimer.Start(5);
             yield return new WaitForSeconds(5f);
-            SabotageNotificationUI.text = "";
-            SabotageTraitorCountdownUI.SetActive(false);
+            // SabotageNotificationUI.text = "";
+            // SabotageTraitorCountdownUI.SetActive(false);
+            SabotageNotificationUI.SetActive(false);
         }
         
     }

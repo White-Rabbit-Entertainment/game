@@ -61,6 +61,7 @@ public class Sabotageable : Interactable {
     public override void PrimaryInteraction(Character character) {
         //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
         if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
+            sabotageManager.SetBackgroundImageColor(this);
             Timer.SabotageTimer.Start(30);
             View.RPC("Sabotage", RpcTarget.All);
             sabotageManager.SabotageStarted();
