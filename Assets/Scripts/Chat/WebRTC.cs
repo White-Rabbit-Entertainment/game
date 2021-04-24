@@ -41,13 +41,16 @@ public class WebRTC : MonoBehaviour {
     }
 
     public void SendOffer(string offerJson) {
+        Debug.Log(offerJson);
         Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(offerJson); 
         // The player to send the offer to
         int receiverId = Int32.Parse(data["peerId"]);
+        console.log(receiverId)
         // Set the peerid to out id
         data["peerId"] = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
 
         View.RPC("HandleOffer", PhotonNetwork.LocalPlayer.Get(receiverId), JsonConvert.SerializeObject(data));
+        Debug.Log("Sent offer");
     }
 
     [PunRPC]

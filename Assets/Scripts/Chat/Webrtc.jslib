@@ -34,6 +34,7 @@ var WebRTCPlugin = {
               .then(function() {
                 console.log("Made offer");
                 var offerData = {"offer": offer, "peerId": id}
+                console.log(JSON.stringify(offerData));
                 unityInstance.SendMessage("WebRTC", "SendOffer", JSON.stringify(offerData));
               });
         });
