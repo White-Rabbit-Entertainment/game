@@ -33,7 +33,7 @@ var WebRTCPlugin = {
             peerConnection.setLocalDescription(offer)
               .then(function() {
                 console.log("Made offer");
-                var offerData = {"offer": offer, "peerId": id}
+                var offerData = {"offer": JSON.stringify(offer), "peerId": id}
                 console.log(JSON.stringify(offerData));
                 unityInstance.SendMessage("WebRTC", "SendOffer", JSON.stringify(offerData));
               });
@@ -42,6 +42,7 @@ var WebRTCPlugin = {
 
   MakeAnswer: function(jsonData) {
       const data = JSON.parse(Pointer_stringify(jsonData));
+      data.offer = JSON.parse(data.offer);
 
       var peerConnection = Module.WebRTCPre.CreatePeerConnection(data.peerId, Data.localStream)
       // Sender Id (Who we are sending the answer to
@@ -52,7 +53,7 @@ var WebRTCPlugin = {
               peerConnection.setLocalDescription(answer)
                 .then(function() {
                   console.log("Made answer");
-                  var answerData = {"peerId": data.peerId, "answer": answer}
+                  var answerData = {"peerId": data.peerId, "answer": JSON.stringify(answer)}
                   unityInstance.SendMessage("WebRTC", "SendAnswer", JSON.stringify(answerData));
                 });
               });
@@ -61,6 +62,7 @@ var WebRTCPlugin = {
 
   ApplyAnswer: function(jsonData) {
       const data = JSON.parse(Pointer_stringify(jsonData));
+      data.answer = JSON.parse(data.answer);
       var peerConnection = Data.peerConnections[data.peerId]
 
       const answer = new RTCSessionDescription({type: "answer", sdp: Pointer_stringify(sdp)});
