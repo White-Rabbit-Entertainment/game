@@ -1299,7 +1299,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3727696;
+STATICTOP = STATIC_BASE + 3727760;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -3181,17 +3181,68 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3727696;
+var STATIC_BUMP = 3727760;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
 STATICTOP += 16;
 assert(tempDoublePtr % 8 == 0);
+function _CreatePeerConnection(id) {
+ const peerConnection = new RTCPeerConnection(Data.configuration);
+ peerConnection.peerId = id;
+ Data.peerConnections[id] = peerConnection;
+ const stream = new MediaStream;
+ var videoElement = document.createElement("video");
+ document.body.appendChild(videoElement);
+ videoElement.autoplay = true;
+ videoElement.controls = "false";
+ videoElement.playsinline = true;
+ videoElement.srcObject = stream;
+ peerConnection.ontrack = (function() {
+  stream.addTrack(event.track, stream);
+ });
+ peerConnection.onnegotiationneeded = (function(event) {
+  console.log("Negotiation needed!");
+ });
+ peerConnection.onicecandidate = (function(event) {
+  if (event.candidate) {
+   var data = JSON.stringify({
+    "candidate": event.candidate,
+    "peerId": peerConnection.peerId
+   });
+   unityInstance.SendMessage("WebRTC", "SendIceCandidate", data);
+  }
+ });
+ localStream.getTracks().forEach((function(track) {
+  peerConnection.addTrack(track, localStream);
+ }));
+ return peerConnection;
+}
 var Data = {
  peerConnections: {},
  localStream: null,
  remoteStream: null
 };
+function _ApplyAnswer(jsonData) {
+ const data = JSON.parse(Pointer_stringify(jsonData));
+ var peerConnection = Data.peerConnections[data.peerId];
+ const answer = new RTCSessionDescription({
+  type: "answer",
+  sdp: Pointer_stringify(sdp)
+ });
+ peerConnection.setRemoteDescription(data.answer).then((function() {
+  console.log("Handle answer complete");
+ }));
+}
+function _ApplyIceCandidate(candidateData) {
+ const data = JSON.parse(Pointer_stringify(candidateData));
+ Data.peerConnections[data.peerId].addIceCandidate(data.candidate).then((function() {
+  console.log(data.candidate);
+ }));
+}
+function _HelloString(str) {
+ window.alert(Pointer_stringify(str));
+}
 function _Init() {
  const constraints = {
   "video": true,
@@ -3606,6 +3657,38 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 }
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
+}
+function _MakeAnswer(jsonData) {
+ const data = JSON.parse(Pointer_stringify(jsonData));
+ var peerConnection = CreatePeerConnection(data.peerId);
+ peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer)).then((function() {
+  peerConnection.createAnswer().then((function(answer) {
+   peerConnection.setLocalDescription(answer).then((function() {
+    var answerData = {
+     "peerId": data.peerId,
+     "answer": answer
+    };
+    unityInstance.SendMessage("WebRTC", "SendAnswer", JSON.stringify(answerData));
+   }));
+  }));
+ }));
+}
+function _MakeOffer(id) {
+ var peerConnection = CreatePeerConnection(id);
+ Data.peerConnections[id] = peerConnection;
+ peerConnection.peerId = id;
+ peerConnection.createOffer({
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
+ }).then((function(offer) {
+  peerConnection.setLocalDescription(offer).then((function() {
+   var offerData = {
+    "offer": offer,
+    "peerId": id
+   };
+   unityInstance.SendMessage("WebRTC", "SendOffer", JSON.stringify(offerData));
+  }));
+ }));
 }
 var webSocketInstances = [];
 function _SocketClose(socketInstance) {
@@ -19200,6 +19283,10 @@ Module.asmLibraryArg = {
  "invoke_vijjji": invoke_vijjji,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
+ "_ApplyAnswer": _ApplyAnswer,
+ "_ApplyIceCandidate": _ApplyIceCandidate,
+ "_CreatePeerConnection": _CreatePeerConnection,
+ "_HelloString": _HelloString,
  "_Init": _Init,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
  "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
@@ -19247,6 +19334,8 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetRequestHeader": _JS_WebRequest_SetRequestHeader,
  "_JS_WebRequest_SetResponseHandler": _JS_WebRequest_SetResponseHandler,
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
+ "_MakeAnswer": _MakeAnswer,
+ "_MakeOffer": _MakeOffer,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,
  "_SocketError": _SocketError,
