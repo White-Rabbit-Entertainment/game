@@ -65,7 +65,7 @@ var WebRTCPlugin = {
       data.answer = JSON.parse(data.answer);
       var peerConnection = Data.peerConnections[data.peerId]
 
-      const answer = new RTCSessionDescription({type: "answer", sdp: Pointer_stringify(sdp)});
+      const answer = new RTCSessionDescription(data.answer);
       peerConnection.setRemoteDescription(data.answer).then(function() {
         console.log("Handle answer complete");
       });
