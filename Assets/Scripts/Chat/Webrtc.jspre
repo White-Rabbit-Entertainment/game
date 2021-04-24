@@ -1,7 +1,17 @@
 Module['WebRTCPre'] = Module['WebRTCPre'] || {};
 
 Module['WebRTCPre'].CreatePeerConnection = function (id, localStream) {
-      const peerConnection = new RTCPeerConnection(Data.configuration)
+
+      const configuration = {
+          'iceServers': [
+              {
+                  urls: 'turn:157.90.119.115:3478',
+                  username: 'test',
+                  credential: 'test123'
+              }
+          ]
+      }
+      const peerConnection = new RTCPeerConnection(configuration)
       peerConnection.peerId = id
       Data.peerConnections[id] = peerConnection
       

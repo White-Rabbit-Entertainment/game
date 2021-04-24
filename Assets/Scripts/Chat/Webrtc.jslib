@@ -75,6 +75,7 @@ var WebRTCPlugin = {
       const data = JSON.parse(Pointer_stringify(candidateData));
       data.candidate = JSON.parse(data.candidate)
       Data.peerConnections[data.peerId].addIceCandidate(data.candidate).then(function() {
+        console.log("Applied ice candidate");
         console.log(data.candidate);
       });
   },
