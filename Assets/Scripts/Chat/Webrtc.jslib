@@ -4,15 +4,6 @@ var WebRTCPlugin = {
     peerConnections: {},
     localStream: null,
     remoteStream: null,
-    configuration = {
-        'iceServers': [
-            {
-                urls: 'turn:157.90.119.115:3478',
-                username: 'test',
-                credential: 'test123'
-            }
-        ]
-    },
   },
   
   Hello: function () {
