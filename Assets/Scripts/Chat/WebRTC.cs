@@ -14,16 +14,16 @@ public class WebRTC : MonoBehaviour {
     private static extern void Init();
     
     [DllImport("__Internal")]
-    private static extern void MakeOffer();
+    private static extern void MakeOffer(int playerId);
     
     [DllImport("__Internal")]
-    private static extern void MakeAnswer(string sdp, int callerId);
+    private static extern void MakeAnswer(string data);
     
     [DllImport("__Internal")]
-    private static extern void ApplyAnswer(string sdp);
+    private static extern void ApplyAnswer(string data);
      
     [DllImport("__Internal")]
-    private static extern void ApplyIceCandidate(string candidateData);
+    private static extern void ApplyIceCandidate(string data);
     
     [DllImport("__Internal")]
     private static extern void HelloString(string str);
@@ -36,53 +36,46 @@ public class WebRTC : MonoBehaviour {
         Init();
     }
 
-    public void InitWebRTC() {
-        MakeOffer();
+    public void Call(int playerId) {
+        MakeOffer(playerId);
     }
 
-    public void Working(string thing) {
-        HelloString(thing);
-    }
+    public void SendOffer(string offerJson) {
+        Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(offerJson); 
+        // The player to send the offer to
+        int receiverId = Int32.Parse(data["peerId"]);
+        // Set the peerid to out id
+        data["peerId"] = PhotonNetwork.LocalPlayer.ActorNumber;
 
-    public void SendOffer(string sdp) {
-        Debug.Log("Send offer");
-        Debug.Log(sdp);
-        View.RPC("HandleOffer", RpcTarget.OthersBuffered, sdp, PhotonNetwork.LocalPlayer.ActorNumber);
+        View.RPC("HandleOffer", PhotonNetwork.LocalPlayer.Get(receiverId), JsonConvert.SerializeObject(data));
     }
 
     [PunRPC]
-    public void HandleOffer(string sdp, int callerId) {
-        Debug.Log("Offer received");
-        Debug.Log(sdp);
-        MakeAnswer(sdp, callerId);
+    public void HandleOffer(string data) {
+        MakeAnswer(data);
     }
 
     public void SendAnswer(string answerJson) {
-
         Dictionary<string, string> answer = JsonConvert.DeserializeObject<Dictionary<string, string>>(answerJson); 
-        Debug.Log("Sending answer");
-
-        string sdpString = answer["sdp"];
-        int callerId = Int32.Parse(answer["callerId"]);
-
-        Debug.Log("Parsed answerJson");
-        Debug.Log(sdpString);
-        Debug.Log(callerId);
-        View.RPC("HandleAnswer", PhotonNetwork.LocalPlayer.Get(callerId), sdpString);
+        // Who is recieveing the answer
+        int receiverId = Int32.Parse(answer["peerId"]);
+        // Set the peer id back to our id (so the receiver knows who sent the answer)
+        answer["peerId"] = PhotonNetwork.LocalPlayer.ActorNumber;
+        View.RPC("HandleAnswer", PhotonNetwork.LocalPlayer.Get(receiverId), JsonConvert.SerializeObject(answer));
     }
     
     [PunRPC]
-    public void HandleAnswer(string sdp) {
-        ApplyAnswer(sdp);
+    public void HandleAnswer(string data) {
+        ApplyAnswer(data);
     }
     
-    public void OnConnected() {
-        Debug.Log("Connected!");
-        HelloString("Connected");
-    }
-
-    public void SendIceCandidate(string candidate) {
-        View.RPC("HandleIceCandidate", RpcTarget.OthersBuffered, candidate);
+    public void SendIceCandidate(string data) {
+        Dictionary<string, string> dataObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(data); 
+        // Which player should we send the ice candidate to?
+        int receiverId = Int32.Parse(dataObj["peerId"]);
+        // Set the peerid to us (the player which send the ice candidate)
+        dataObj["peerId"] = PhotonNetwork.LocalPlayer.ActorNumber;
+        View.RPC("HandleIceCandidate", PhotonNetwork.LocalPlayer.Get(receiverId), JsonConvert.SerializeObject(dataObj));
     }
 
     [PunRPC]
