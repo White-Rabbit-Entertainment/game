@@ -41,10 +41,10 @@ public class MenuManager: MonoBehaviourPunCallbacks {
         }
     }
 
-    public override void OnPlayerEnterRoom(Player player) {
-        Debug.Log("Calling joined player");
-        webRTC.Call(player.ActorNumber);
-    }
+    // public override void OnPlayerEnteredRoom(Player player) {
+    //     Debug.Log("Calling joined player");
+    //     webRTC.Call(player.ActorNumber);
+    // }
    
     public override void OnLeftRoom() {
         joinRoomPage.Open();
