@@ -26,6 +26,9 @@ public class WebRTC : MonoBehaviour {
     private static extern void ApplyIceCandidate(string data);
     
     [DllImport("__Internal")]
+    private static extern void RemovePeerConnection(int playerId);
+    
+    [DllImport("__Internal")]
     private static extern void HelloString(string str);
 
     PhotonView View {
@@ -86,6 +89,10 @@ public class WebRTC : MonoBehaviour {
     [PunRPC]
     public void HandleIceCandidate(string candidateData) {
         ApplyIceCandidate(candidateData);
+    }
+
+    public void EndCall(int playerId) {
+        RemovePeerConnection(playerId);
     }
 }
 

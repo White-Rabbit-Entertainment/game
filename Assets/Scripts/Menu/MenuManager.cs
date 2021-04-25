@@ -34,6 +34,8 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     
     public override void OnJoinedRoom() {
         lobbyPage.Open();
+
+        // Call all the players in the room
         foreach (Player player in NetworkManager.instance.GetPlayers()) {
             if (PhotonNetwork.LocalPlayer != player) {
                 webRTC.Call(player.ActorNumber);
@@ -41,13 +43,17 @@ public class MenuManager: MonoBehaviourPunCallbacks {
         }
     }
 
-    // public override void OnPlayerEnteredRoom(Player player) {
-    //     Debug.Log("Calling joined player");
-    //     webRTC.Call(player.ActorNumber);
-    // }
-   
     public override void OnLeftRoom() {
         joinRoomPage.Open();
+        foreach (Player player in NetworkManager.instance.GetPlayers()) {
+            if (PhotonNetwork.LocalPlayer != player) {
+                webRTC.EndCall(player.ActorNumber);
+            }
+        }
+    }
+
+    public override void OnPlayerLeftRoom(Player player) {
+        webRTC.EndCall(player.ActorNumber);
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {

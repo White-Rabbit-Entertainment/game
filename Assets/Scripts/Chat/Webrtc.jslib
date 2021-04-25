@@ -23,6 +23,7 @@ var WebRTCPlugin = {
             videoElement.controls = "false";
             videoElement.playsinline = true;
             videoElement.srcObject = stream;
+            videoElement.muted = true;
         })
         .catch(function(error) {
             console.error('Error accessing media devices.', error);
@@ -86,8 +87,15 @@ var WebRTCPlugin = {
       });
   },
 
+  RemovePeerConnection: function(playerId) {
+      const peerConnection = Data.peerConnections[playerId]
+      peerConnection.videoElement.remove()
+      peerConnection.close()
+      delete Data.peerConnections[playerId]
+  },
+
   HelloString: function (str) {
-    window.alert(Pointer_stringify(str));
+      window.alert(Pointer_stringify(str));
   }
 
 };

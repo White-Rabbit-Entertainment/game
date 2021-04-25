@@ -22,6 +22,7 @@ Module['WebRTCPre'].CreatePeerConnection = function (id, localStream) {
       videoElement.controls = "false";
       videoElement.playsinline = true;
       videoElement.srcObject = stream;
+      peerConnection.videoElement = videoElement;
   
       peerConnection.ontrack = function() {stream.addTrack(event.track, stream)}
       peerConnection.onnegotiationneeded = function(event) {console.log("Negotiation needed!")};
