@@ -35,7 +35,7 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public override void OnJoinedRoom() {
         lobbyPage.Open();
         foreach (Player player in NetworkManager.instance.GetPlayers()) {
-            if (PhotonNetwork.LocalPlayer != Player) {
+            if (PhotonNetwork.LocalPlayer != player) {
                 webRTC.Call(player.ActorNumber);
             }
         }

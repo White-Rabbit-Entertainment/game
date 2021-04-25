@@ -84,7 +84,14 @@ function SendMessage(gameObject, func, param) {
 Module["SendMessage"] = SendMessage;
 Module["WebRTCPre"] = Module["WebRTCPre"] || {};
 Module["WebRTCPre"].CreatePeerConnection = (function(id, localStream) {
- const peerConnection = new RTCPeerConnection(Data.configuration);
+ const configuration = {
+  "iceServers": [ {
+   urls: "turn:157.90.119.115:3478",
+   username: "test",
+   credential: "test123"
+  } ]
+ };
+ const peerConnection = new RTCPeerConnection(configuration);
  peerConnection.peerId = id;
  Data.peerConnections[id] = peerConnection;
  const stream = new MediaStream;
@@ -1331,7 +1338,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3727776;
+STATICTOP = STATIC_BASE + 3727856;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -3213,7 +3220,7 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3727776;
+var STATIC_BUMP = 3727856;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
@@ -3237,6 +3244,7 @@ function _ApplyIceCandidate(candidateData) {
  const data = JSON.parse(Pointer_stringify(candidateData));
  data.candidate = JSON.parse(data.candidate);
  Data.peerConnections[data.peerId].addIceCandidate(data.candidate).then((function() {
+  console.log("Applied ice candidate");
   console.log(data.candidate);
  }));
 }
