@@ -101,6 +101,7 @@ Module["WebRTCPre"].CreatePeerConnection = (function(id, localStream) {
  videoElement.controls = "false";
  videoElement.playsinline = true;
  videoElement.srcObject = stream;
+ peerConnection.videoElement = videoElement;
  peerConnection.ontrack = (function() {
   stream.addTrack(event.track, stream);
  });
@@ -1338,7 +1339,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3727776;
+STATICTOP = STATIC_BASE + 3728192;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -1941,6 +1942,10 @@ __ATINIT__.push({
  })
 }, {
  func: (function() {
+  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
+ })
+}, {
+ func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_gc_cpp();
  })
 }, {
@@ -1954,10 +1959,6 @@ __ATINIT__.push({
 }, {
  func: (function() {
   __GLOBAL__sub_I_Lump_libil2cpp_vm_cpp();
- })
-}, {
- func: (function() {
-  __GLOBAL__sub_I_Il2CppCodeRegistration_cpp();
  })
 }, {
  func: (function() {
@@ -3220,7 +3221,7 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3727776;
+var STATIC_BUMP = 3728192;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
@@ -3248,6 +3249,9 @@ function _ApplyIceCandidate(candidateData) {
   console.log(data.candidate);
  }));
 }
+function _GetPeerVolume(playerId) {
+ return Data.peerConnections[playerId].videoElement.volume;
+}
 function _HelloString(str) {
  window.alert(Pointer_stringify(str));
 }
@@ -3265,6 +3269,7 @@ function _Init() {
   videoElement.controls = "false";
   videoElement.playsinline = true;
   videoElement.srcObject = stream;
+  videoElement.muted = true;
  })).catch((function(error) {
   console.error("Error accessing media devices.", error);
  }));
@@ -3707,6 +3712,15 @@ function _MakeOffer(id) {
    unityInstance.SendMessage("WebRTC", "SendOffer", JSON.stringify(offerData));
   }));
  }));
+}
+function _RemovePeerConnection(playerId) {
+ const peerConnection = Data.peerConnections[playerId];
+ peerConnection.videoElement.remove();
+ peerConnection.close();
+ delete Data.peerConnections[playerId];
+}
+function _SetPeerVolume(playerId, volume) {
+ Data.peerConnections[playerId].videoElement.volume = volume;
 }
 var webSocketInstances = [];
 function _SocketClose(socketInstance) {
@@ -19303,6 +19317,7 @@ Module.asmLibraryArg = {
  "invoke_vjji": invoke_vjji,
  "_ApplyAnswer": _ApplyAnswer,
  "_ApplyIceCandidate": _ApplyIceCandidate,
+ "_GetPeerVolume": _GetPeerVolume,
  "_HelloString": _HelloString,
  "_Init": _Init,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
@@ -19353,6 +19368,8 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
  "_MakeAnswer": _MakeAnswer,
  "_MakeOffer": _MakeOffer,
+ "_RemovePeerConnection": _RemovePeerConnection,
+ "_SetPeerVolume": _SetPeerVolume,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,
  "_SocketError": _SocketError,
