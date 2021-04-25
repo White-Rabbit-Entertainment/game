@@ -29,9 +29,13 @@ public class SettingsMenu : MonoBehaviour {
     }
 
     public void InitPlayerVolumes() {
+      playerVolumesList.DestroyChildren();
+
       foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
         GameObject item = Instantiate(playerVolumeItem, playerVolumesList.transform);
-        item.GetComponentInChildren<Image>().color = player.Colour; 
+        foreach (Image image in item.GetComponentsInChildren<Image>()) {
+          image.color = player.Colour; 
+        }
 
         Slider slider = item.GetComponentInChildren<Slider>();
         slider.onValueChanged.AddListener(delegate {
