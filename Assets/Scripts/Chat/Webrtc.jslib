@@ -93,6 +93,14 @@ var WebRTCPlugin = {
       peerConnection.close()
       delete Data.peerConnections[playerId]
   },
+  
+  SetPeerVolume: function(playerId, volume) {
+      Data.peerConnections[playerId].videoElement.volume = volume
+  },
+  
+  GetPeerVolume: function(playerId) {
+      return Data.peerConnections[playerId].videoElement.volume
+  },
 
   HelloString: function (str) {
       window.alert(Pointer_stringify(str));

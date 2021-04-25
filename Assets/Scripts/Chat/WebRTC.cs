@@ -29,6 +29,12 @@ public class WebRTC : MonoBehaviour {
     private static extern void RemovePeerConnection(int playerId);
     
     [DllImport("__Internal")]
+    private static extern void SetPeerVolume(int playerId, float volume);
+    
+    [DllImport("__Internal")]
+    private static extern float GetPeerVolume(int playerId);
+    
+    [DllImport("__Internal")]
     private static extern void HelloString(string str);
 
     PhotonView View {
@@ -93,6 +99,14 @@ public class WebRTC : MonoBehaviour {
 
     public void EndCall(int playerId) {
         RemovePeerConnection(playerId);
+    }
+
+    public void SetVolume(int playerId, float volume) {
+        SetPeerVolume(playerId, volume);
+    }
+    
+    public float GetVolume(int playerId) {
+        return GetPeerVolume(playerId);
     }
 }
 
