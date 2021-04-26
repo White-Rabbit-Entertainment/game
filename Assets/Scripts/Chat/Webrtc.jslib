@@ -17,13 +17,14 @@ var WebRTCPlugin = {
         .then(function(stream) {
             console.log('Got MediaStream:', stream);
             Data.localStream = stream;
-            var videoElement = document.createElement("video");
-            document.body.appendChild(videoElement);
-            videoElement.autoplay = true;
-            videoElement.controls = "false";
-            videoElement.playsinline = true;
-            videoElement.srcObject = stream;
-            videoElement.muted = true;
+            // Show local stream
+            // var videoElement = document.createElement("video");
+            // document.body.appendChild(videoElement);
+            // videoElement.autoplay = true;
+            // videoElement.controls = "false";
+            // videoElement.playsinline = true;
+            // videoElement.srcObject = stream;
+            // videoElement.muted = true;
         })
         .catch(function(error) {
             console.error('Error accessing media devices.', error);
