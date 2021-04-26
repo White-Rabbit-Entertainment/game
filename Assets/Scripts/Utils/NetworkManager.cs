@@ -254,6 +254,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       return !CheckAnyPlayers<Team>("Team", Team.Traitor);
     }
 
+    public int NumberOfTeamRemaining(Team team) {
+      int count = 0;
+      foreach (Player player in GetPlayers()) {
+        if(PlayerPropertyIs<Team>("Team", team, player)) {
+          count++;
+        }
+      }
+      return count;
+    }
+
     // Return true is all players have readied up.
     public bool AllPlayersReady() {
       return CheckAllPlayers<bool>("Ready", true);

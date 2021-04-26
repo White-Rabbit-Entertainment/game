@@ -26,7 +26,6 @@ public class Pocketable : Interactable {
     gameObject.SetActive(true);
     transform.position = position;
     NetworkManager.instance.GetMe().GetComponent<ItemInteract>().RemovePossibleInteractable(this);
-    SetTaskGlow();
   }
 
   public override void PrimaryInteraction(Character character) {

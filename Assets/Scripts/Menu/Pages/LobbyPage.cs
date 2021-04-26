@@ -14,6 +14,7 @@ public class LobbyPage : MenuPage {
     public Button toggleReadyButton;
     public GameObject readyPlayerItemPrefab;
     public GameObject unreadyPlayerItemPrefab;
+    [SerializeField] private ChatManager chatManager;
 
     public JoinRoomPage joinRoomPage;
     public Button back;
@@ -32,6 +33,7 @@ public class LobbyPage : MenuPage {
       enteredRoom = false;
       back.onClick.AddListener(Back);
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
+      chatManager.JoinRoomChat(PhotonNetwork.CurrentRoom);
     }
 
     void Update() {
@@ -82,6 +84,7 @@ public class LobbyPage : MenuPage {
     
     void Back() {
       NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
+      chatManager.LeaveRoomChat(PhotonNetwork.CurrentRoom);
       PhotonNetwork.LeaveRoom(false);
     }
 }

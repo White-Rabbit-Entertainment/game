@@ -13,6 +13,12 @@ ModelImporter:
       name: Alpha_Body_MAT
     second: {fileID: -905690159841262435, guid: d9d64eb2896abb13ab08fa13ccd0f5be,
       type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Alpha_Joints_MAT
+    second: {fileID: -840037777384891287, guid: 4c57b55d1705773afb736a09d02bd151,
+      type: 3}
   materials:
     materialImportMode: 1
     materialName: 0

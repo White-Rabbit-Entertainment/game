@@ -104,7 +104,7 @@ public class VotingManager : MonoBehaviour {
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
         suspectedPlayer.Kill();
-        if (NetworkManager.instance.NoLoyalsRemaining()) {
+        if (NetworkManager.instance.NumberOfTeamRemaining(Team.Loyal) == NetworkManager.instance.NumberOfTeamRemaining(Team.Traitor)) {
           gameSceneManager.EndGame(Team.Traitor);
         }
         if (NetworkManager.instance.NoTraitorsRemaining()) {

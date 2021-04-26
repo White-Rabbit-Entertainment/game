@@ -108,15 +108,6 @@ public class Sabotageable : Interactable {
         
     }
 
-    public override void SetTaskGlow() {
-        Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
-        if (inRange && team == Team.Traitor && !isSabotaged) {
-            SetGlow(undoTaskColour);
-        } else {
-            base.SetTaskGlow();
-        }
-    }
-
     [PunRPC]
     public virtual void Sabotage() {
         StartCoroutine(SabotageEnumerator());  
