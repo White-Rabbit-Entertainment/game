@@ -58,7 +58,9 @@ public class ItemInteract : MonoBehaviourPun {
         Interactable newInteractable = null; 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
-        newInteractable = character.HasItem() ? character.currentHeldItem : GetBestInteractable();
+        if (!character.HasItem()) {
+            newInteractable = GetBestInteractable();
+        }
 
         // If we are able to interact with stuff
         if (newInteractable != null) {
@@ -82,17 +84,24 @@ public class ItemInteract : MonoBehaviourPun {
                 }
             }
         } 
-        // If we cant interact with anything but we were previously
-        // interacting with something or we were previously interacting with
-        // something and we are now trying to do a mouse up.
-        if (currentInteractable != null && (Input.GetButtonUp("Fire1") || newInteractable == null)) {
-            // Then turn off the glow of that thing and do the interaction off
+        // Otherwise if we cant interact with anything but we were previously
+        // interacting with something.
+        else if (currentInteractable != null) {
+            // Then turn off the glow of that thing
             currentInteractable.InteractionGlowOff();
-            currentInteractable.PrimaryInteractionOff(character);
-            currentInteractable = null;
+
+            // And if bring the mouse button up
+            if (Input.GetButtonUp("Fire1")) {
+              // Some item have a primary interaction off method, eg drop the
+              // item after pickup. Therefore run this on mouse up.
+              if (possibleInteractables.Contains(currentInteractable)) {
+                possibleInteractables.Remove(currentInteractable);
+              }
+              currentInteractable.PrimaryInteractionOff(character);
+              currentInteractable = null;
+            }
         }
     }
-
 
     private Interactable ClosestInteractable() {
         float distance = float.PositiveInfinity;

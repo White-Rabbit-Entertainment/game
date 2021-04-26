@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 4117370648762688828}
   currentHeldItem: {fileID: 0}
-  currentFixingItem: {fileID: 0}
   pocketedItem: {fileID: 0}
   inventoryUI: {fileID: 0}
   team: 1
