@@ -9,14 +9,19 @@ public class Floodable : Sabotageable
 
     [PunRPC]
     public override void Sabotage() {
+        StartCoroutine(StartFlood());
         base.Sabotage();
-        water.SetActive(true);
     }
 
     [PunRPC]
-    public override void Fix(int fixPlayerViewId) {   
-        base.Fix(fixPlayerViewId);
-        if (!isSabotaged) water.SetActive(false);
+    public override void Fix() { 
+        water.SetActive(false); 
+        base.Fix(); 
+    }
+
+    public IEnumerator StartFlood(){
+        yield return new WaitForSeconds(5);
+        water.SetActive(true);
     }
 }
 

@@ -10,8 +10,18 @@ public class ContextTaskUI : TaskUI {
     private Task task;
   
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
+
+    public void Init(){
+      if (NetworkManager.instance.GetMe() is Traitor){
+        yourTask.SetActive(false);
+      }
+      // yourTask.SetActive(false);
+    }
     public void ShowTask() {
       UnshowTask(); 
+      if (NetworkManager.traitorNames.Contains(NetworkManager.myCharacter.ToString())){
+        yourTask.SetActive(false);
+      }
       AddTask(task, masterTaskPrefab);
     }
 
