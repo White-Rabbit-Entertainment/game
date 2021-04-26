@@ -19,7 +19,10 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public List<RoomInfo> roomList;
 
     void Start() {
-        webRTC.Initialize();
+
+        #if UNITY_WEBGL
+            webRTC.Initialize();
+        #endif
         if (PhotonNetwork.LocalPlayer.NickName == null || PhotonNetwork.LocalPlayer.NickName == "") {
             nameInputPage.Open();
         } else if (PhotonNetwork.CurrentRoom != null) {
@@ -37,24 +40,31 @@ public class MenuManager: MonoBehaviourPunCallbacks {
         lobbyPage.Open();
 
         // Call all the players in the room
-        foreach (Player player in NetworkManager.instance.GetPlayers()) {
-            if (PhotonNetwork.LocalPlayer != player) {
-                webRTC.Call(player.ActorNumber);
+        #if UNITY_WEBGL
+            foreach (Player player in NetworkManager.instance.GetPlayers()) {
+                if (PhotonNetwork.LocalPlayer != player) {
+                    webRTC.Call(player.ActorNumber);
+                }
             }
-        }
+        #endif
     }
 
     public override void OnLeftRoom() {
         joinRoomPage.Open();
-        foreach (Player player in NetworkManager.instance.GetPlayers()) {
-            if (PhotonNetwork.LocalPlayer != player) {
-                webRTC.EndCall(player.ActorNumber);
+        
+        #if UNITY_WEBGL
+            foreach (Player player in NetworkManager.instance.GetPlayers()) {
+                if (PhotonNetwork.LocalPlayer != player) {
+                    webRTC.EndCall(player.ActorNumber);
+                }
             }
-        }
+        #endif
     }
 
     public override void OnPlayerLeftRoom(Player player) {
-        webRTC.EndCall(player.ActorNumber);
+        #if UNITY_WEBGL
+            webRTC.EndCall(player.ActorNumber);
+        #endif
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
