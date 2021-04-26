@@ -41,8 +41,11 @@ public class SettingsMenu : MonoBehaviour {
           Slider slider = item.GetComponentInChildren<Slider>();
           slider.onValueChanged.AddListener(delegate {
             webRTC.SetVolume(player.Owner.ActorNumber, slider.value);
+            Debug.Log("Slider value being set");
+            Debug.Log(slider.value);
           });
           slider.value = webRTC.GetVolume(player.Owner.ActorNumber);
+          Debug.Log(webRTC.GetVolume(player.Owner.ActorNumber));
         }
       }
     }
