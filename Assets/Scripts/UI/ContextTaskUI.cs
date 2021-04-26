@@ -8,8 +8,15 @@ using TMPro;
 public class ContextTaskUI : TaskUI {
 
     private Task task;
+    public GameObject yourTask;
   
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
+
+    void Start(){
+      if (NetworkManager.instance.GetMe() is Traitor){
+        yourTask.SetActive(false);
+      }
+    }
     public void ShowTask() {
       UnshowTask(); 
       AddTask(task, masterTaskPrefab);

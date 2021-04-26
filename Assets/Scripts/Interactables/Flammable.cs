@@ -9,13 +9,15 @@ public class Flammable : Sabotageable
 
     [PunRPC]
     public override void Sabotage() {
+        smallFires.SetActive(true);    
         base.Sabotage();
-        smallFires.SetActive(true);
     }
 
     [PunRPC]
-    public override void Fix(int fixPlayerViewId) {   
-        base.Fix(fixPlayerViewId);
-        if (!isSabotaged) smallFires.SetActive(false);
+    public override void Fix() {  
+        smallFires.SetActive(false);
+        base.Fix(); 
     }
+
+
 }
