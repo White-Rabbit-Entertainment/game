@@ -15,7 +15,9 @@ public class GameSceneManager : MonoBehaviour {
     private bool starting = false;
     private bool initialized = false;
 
-    public LoadingScreen loadingScreen;
+    private GameObject loadingScreen;
+    public GameObject TraitorLoadingScreen;
+    public GameObject LoyalLoadingScreen;
     public TimerCountdown timerCountdown;
     public TaskCompletionUI taskCompletionUI;
 
@@ -26,7 +28,14 @@ public class GameSceneManager : MonoBehaviour {
     public Text traitorName;
 
     
-
+    void Start() {
+        if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Loyal")) {
+            loadingScreen = LoyalLoadingScreen;
+        } else {
+            loadingScreen = TraitorLoadingScreen;
+        }
+        loadingScreen.SetActive(true);
+    }
 
     void Update() {
         if (!initialized) {
@@ -36,7 +45,7 @@ public class GameSceneManager : MonoBehaviour {
             }
         }
         if (initialized && !starting && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
-            loadingScreen.EnableButton();
+            loadingScreen.GetComponent<LoadingScreen>().EnableButton();
             if (PhotonNetwork.IsMasterClient) {
               StartRoundTimer();
             }

@@ -8,7 +8,6 @@ public class SettingsMenu : MonoBehaviour {
     private bool menuOpen = false;
 
     [SerializeField] private Slider mouseSensitivitySlider;
-    [SerializeField] private GameObject settingsPanel;
 
     [SerializeField] private GameObject playerVolumesList;
     [SerializeField] private GameObject playerVolumeItem;
@@ -54,14 +53,14 @@ public class SettingsMenu : MonoBehaviour {
       menuOpen = true;
       mouseSensitivitySlider.value = NetworkManager.instance.GetMe().GetComponentInChildren<CameraMouseLook>().mouseSensitivity;
       NetworkManager.instance.GetMe().Freeze();
-      settingsPanel.SetActive(true);
+      gameObject.SetActive(true);
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
       InitPlayerVolumes();
     }
     
     public void CloseMenu() {
-      settingsPanel.SetActive(false);
+      gameObject.SetActive(false);
       NetworkManager.instance.GetMe().Unfreeze();
       Cursor.lockState = CursorLockMode.Locked;
       Cursor.visible = false;

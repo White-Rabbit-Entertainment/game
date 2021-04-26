@@ -5,7 +5,6 @@ using TMPro;
 public abstract class TaskUI : MonoBehaviour {
     public GameObject masterTaskPrefab;
     public GameObject subTaskPrefab;
-    public GameObject taskList;
     public TaskManager taskManager;
     public TextMeshProUGUI allTasksTmp;
 
@@ -20,7 +19,7 @@ public abstract class TaskUI : MonoBehaviour {
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
     public void AddTask(Task task, GameObject taskPrefab) {
       // Instantiate a new task list item
-      GameObject item = Instantiate(taskPrefab, taskList.transform);
+      GameObject item = Instantiate(taskPrefab, gameObject.transform);
 
       // Get the togggle component 
       TextMeshProUGUI text = item.GetComponentInChildren<TextMeshProUGUI>();

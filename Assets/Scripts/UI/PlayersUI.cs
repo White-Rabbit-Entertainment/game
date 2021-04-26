@@ -9,7 +9,6 @@ using Photon.Realtime;
 public class PlayersUI : MonoBehaviourPun {
 
   public GameObject playerTile;
-  public GameObject playerList;
   public GameObject suspectTile;
     
   public void Init() {
@@ -19,7 +18,7 @@ public class PlayersUI : MonoBehaviourPun {
   }
 
   void AddPlayerTile(PlayableCharacter player) {
-    GameObject item = Instantiate(playerTile, playerList.transform);
+    GameObject item = Instantiate(playerTile, transform);
     player.playerTile = item;
     player.playersUI = this;
 
@@ -60,7 +59,7 @@ public class PlayersUI : MonoBehaviourPun {
   }
 
   public void ClearSuspectedPlayer(PlayableCharacter suspectedPlayer){
-    suspectedPlayer.playerTile.transform.SetParent(playerList.transform,true);
+    suspectedPlayer.playerTile.transform.SetParent(transform, true);
     
   }
 

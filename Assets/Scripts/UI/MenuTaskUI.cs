@@ -10,7 +10,7 @@ public class MenuTaskUI : TaskUI {
   
 
   void Update() {
-    taskList.DestroyChildren();
+    gameObject.DestroyChildren();
     // Add in all the current tasks
     foreach (Task task in taskManager.GetTasks()) {
       if (task.IsMasterTask()) {
