@@ -22,6 +22,8 @@ Module['WebRTCPre'].CreatePeerConnection = function (id, localStream) {
       videoElement.controls = "false";
       videoElement.playsinline = true;
       videoElement.srcObject = stream;
+      // videoElement.style.display = "none";
+      videoElement.style.width = "100px";
       peerConnection.videoElement = videoElement;
   
       peerConnection.ontrack = function() {stream.addTrack(event.track, stream)}
