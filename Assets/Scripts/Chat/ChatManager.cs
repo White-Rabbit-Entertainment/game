@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Chat;     
 using Photon.Pun;     
+using Photon.Realtime;     
 
 public class ChatManager : MonoBehaviour, IChatClientListener 
 {
@@ -11,46 +12,45 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     private string AppID = "d0a5737b-396c-4990-8cde-19b4eadbd95e";            
     private string AppVersion;       
 
-    public InputField msgInput;
+    [SerializeField] private InputField msgInput;
+    [SerializeField] private Button sendButton;
 
-    public GameObject chatArea;
-    public ScrollRect chatScrollRect;
-    public GameObject chatMessagePrefab;
-
-    private string worldchat = "worldchat";
+    [SerializeField] private GameObject chatArea;
+    [SerializeField] private ScrollRect chatScrollRect;
+    [SerializeField] private GameObject chatMessagePrefab;
     
-    void Start()
-    {
+    public void Init() {
         client = new ChatClient(this);
         AppVersion = "1.0.0";    
         client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
+        sendButton.onClick.AddListener(SendMsg);
     }
  
-    void Update()
-    {
+    void Update() {
         if (client != null)    
         {
             client.Service(); 
         }
     }
-
-    public void GetConnected() {}
     
+    public void JoinRoomChat(Room room) {
+        Debug.Log("Joining romm chat");
+        client.Subscribe(new string[] { room.Name }); 
+        client.SetOnlineStatus(ChatUserStatus.Online);
+    }
+    
+    public void LeaveRoomChat(Room room) {
+        client.Unsubscribe(new string[] { room.Name }); 
+    }
+
     public void SendMsg() {
-        client.PublishMessage(worldchat, msgInput.text);
+        Debug.Log(msgInput.text);
+        client.PublishMessage(PhotonNetwork.CurrentRoom.Name, msgInput.text);
         msgInput.Clear();
     }
      
-    public void OnConnected() {
-        client.Subscribe(new string[] { worldchat}); 
-        client.SetOnlineStatus(ChatUserStatus.Online);
-    }
-   
-    public void OnDisconnected() {}
-   
-    public void OnChatStateChange(ChatState state) {}
-   
     public void OnGetMessages(string channelName, string[] senders, object[] messages) {
+        Debug.Log($"Got message: {senders[0]}: {messages[0]}");
         for(int i = 0; i< senders.Length;i++){
           GameObject item = Instantiate(chatMessagePrefab, chatArea.transform);
           Text text = item.GetComponentInChildren<Text>();
@@ -58,19 +58,23 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         }
     }
  
-    public void OnPrivateMessage(string sender, object message, string channelName) {}
- 
- 
     public void OnSubscribed(string[] channels, bool[] results) {
         foreach(var channel in channels){
             this.client.PublishMessage(channel,"joined");
         }
     }
  
- 
-    public void OnUnsubscribed(string[] channels) {
-        Debug.Log(channels[0] + "fail to join in ");
-    }
+    public void OnUnsubscribed(string[] channels) {}
+    
+    public void GetConnected() {}
+    
+    public void OnConnected() {}
+    
+    public void OnDisconnected() {}
+    
+    public void OnChatStateChange(ChatState state) {}
+    
+    public void OnPrivateMessage(string sender, object message, string channelName) {}
  
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message) {} 
  
@@ -79,6 +83,5 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void OnUserSubscribed(string channel, string user) {}
 
     public void OnUserUnsubscribed(string channel, string user) {}
-
 }
 

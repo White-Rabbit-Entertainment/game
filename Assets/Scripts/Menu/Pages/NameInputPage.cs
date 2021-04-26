@@ -5,9 +5,11 @@ using Photon.Pun;
 using System.Text.RegularExpressions;
 
 public class NameInputPage : MenuPage {
-    public TMP_InputField playerNameInput;
-    public Button startButton;
-    public JoinRoomPage joinRoomPage;
+    [SerializeField] private TMP_InputField playerNameInput;
+    [SerializeField] private Button startButton;
+    [SerializeField] private JoinRoomPage joinRoomPage;
+    [SerializeField] private ChatManager chatManager;
+    
     string pattern = @"^[a-zA-Z0-9]+$";
     Regex inputChecker;
 
@@ -26,6 +28,7 @@ public class NameInputPage : MenuPage {
     void StartButton() {
         if (inputChecker.IsMatch(playerNameInput.text)) {
             PhotonNetwork.LocalPlayer.NickName = playerNameInput.text;
+            chatManager.Init();
             joinRoomPage.Open();
         } else {
             Debug.Log("Please enter a valid name");

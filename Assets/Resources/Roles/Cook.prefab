@@ -83,6 +83,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cook
       objectReference: {fileID: 0}
+    - target: {fileID: 5822821947120931875, guid: 40b066557db52ab9e9ef760e34bc6c82,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 40b066557db52ab9e9ef760e34bc6c82, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 40b066557db52ab9e9ef760e34bc6c82, type: 3}

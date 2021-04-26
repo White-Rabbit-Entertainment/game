@@ -70,11 +70,6 @@ public class Task : MonoBehaviour {
     isAssigned = false;
     isUndone = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
-   
-    if (parent !=  null) {
-      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
-    }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);;
     taskManager.CheckAllTasksCompleted();
 
     //Enable & Disable relevant targets
@@ -129,10 +124,6 @@ public class Task : MonoBehaviour {
     isCompleted = false;
     isAssigned = false;
     isUndone = true;
-    if (parent != null) {
-      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
-    }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);
     
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskUncomplete();

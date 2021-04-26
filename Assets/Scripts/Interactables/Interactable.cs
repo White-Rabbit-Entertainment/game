@@ -111,27 +111,6 @@ public abstract class Interactable : MonoBehaviourPun {
     task.Uncomplete();
   }
 
-  [PunRPC]
-  public void SetTaskGlowRPC() {
-    SetTaskGlow();
-  }
-
-  public virtual void SetTaskGlow() {
-    //if (inRange) {
-    //  Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
-    //  if (team == Team.Traitor && HasUndoTask()) {
-    //    SetGlow(undoTaskColour);
-    //  } else if (HasTask() && task.AllChildrenCompleted()) {
-    //    SetGlow(taskColour);
-    //  } else {
-    //    outline.enabled = false;
-    //  }
-    //} else {
-    //  outline.enabled = false;
-    //}
-    outline.enabled = false;
-  }
-
   public void SetGlow(Color colour) {
     outline.OutlineColor = colour;
     outline.enabled = true;
@@ -144,7 +123,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   /// <summary> Remove glow. </summary>
   public void InteractionGlowOff() {
-    SetTaskGlow();
+    outline.enabled = false;
   }
 
   public void EnableTaskMarker() {
@@ -201,8 +180,6 @@ public abstract class Interactable : MonoBehaviourPun {
         }
       }
       
-      // Set outline colour and turn on
-      View.RPC("SetTaskGlowRPC", RpcTarget.All);
       if (parentTask != null) {
         task.parent = parentTask;
       } else {
