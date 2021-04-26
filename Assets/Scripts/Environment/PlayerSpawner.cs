@@ -59,7 +59,7 @@ public class PlayerSpawner : MonoBehaviour {
     // players are in the scene before spawninng any objects.
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
         // Set meal scene to true when swtiching to meal scene
-        NetworkManager.instance.SetLocalPlayerProperty("CurrentScene", SceneManager.GetActiveScene().name);
+        NetworkManager.instance.SetLocalPlayerProperty("CurrentScene", scene.name);
     }
 
     // Spawn in a player prefab (of the correct team) for the local players.

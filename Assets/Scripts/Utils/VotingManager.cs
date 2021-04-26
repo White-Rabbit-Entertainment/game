@@ -27,6 +27,7 @@ public class VotingManager : MonoBehaviour {
 
   public GameObject votingOutcomeUI;
   public GameObject voteUnsuccess;
+  public GameObject voteTopRightUI;
   public TextMeshProUGUI voteResult;
   public TextMeshProUGUI voteUnsuccessful;
   
@@ -40,15 +41,15 @@ public class VotingManager : MonoBehaviour {
   public void Update() {
     // Check if the vote has run out of time, if so end the vote
     if (voteStarted) {
-      voteTimeRemaining.text = $"{(int)Timer.VoteTimer.TimeRemaining()}s remaining.";
+      voteTimeRemaining.text = $"{(int)Timer.VoteTimer.TimeRemaining()}s";
       if (Timer.VoteTimer.IsComplete()) {
         EndVote();
       }
     }
     if (voteStarted && !hasVoted && NetworkManager.instance.GetMe() != suspectedPlayer) {
-      if (Input.GetKeyDown(KeyCode.K)) {
+      if (Input.GetKeyDown(KeyCode.Y)) {
         SubmitVote(Vote.For);
-      } else if (Input.GetKeyDown(KeyCode.L)) {
+      } else if (Input.GetKeyDown(KeyCode.N)) {
         SubmitVote(Vote.Against);
       }
     }
@@ -65,7 +66,7 @@ public class VotingManager : MonoBehaviour {
 
   IEnumerator ShowVoteInProgress() {
     voteInProgress.SetActive(true);
-    yield return new WaitForSeconds(2);
+    yield return new WaitForSeconds(4);
     voteInProgress.SetActive(false);
   }
 
@@ -74,9 +75,12 @@ public class VotingManager : MonoBehaviour {
     playersVotingFor = new List<PlayableCharacter>();
     playersVotingAgainst = new List<PlayableCharacter>();
     suspectedPlayer = PhotonView.Find(suspectedPlayerId).GetComponent<PlayableCharacter>();
+    playersUI.SetSuspectedPlayer(suspectedPlayer);
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
+
     hasVoted = false;
+    voteTopRightUI.SetActive(true);
     
     currentVoteUI.SetActive(true);
     votesFor.text = $"For: 0";
@@ -84,16 +88,16 @@ public class VotingManager : MonoBehaviour {
 
     bool voteIsOnYou = NetworkManager.instance.GetMe() == suspectedPlayer;
     voteTitle.text = voteIsOnYou ? "You are being voted on." : $"{suspectedPlayer.Owner.NickName} is being voted on.";
-    if (!voteIsOnYou) {
-      setVoteUI.SetActive(true);
-      votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
-    }
+    setVoteUI.SetActive(true);
+    votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
 
   public void EndVote() {
     setVoteUI.SetActive(false);
     currentVoteUI.SetActive(false);
-    foreach (PlayableCharacter character in playersVotingFor.Concat(playersVotingAgainst)) {
+    voteTopRightUI.SetActive(false);
+    playersUI.ClearSuspectedPlayer(suspectedPlayer);
+    foreach (PlayableCharacter character in FindObjectsOfType<PlayableCharacter>()) {
       playersUI.ClearVote(character);
     }
     voteStarted = false;
@@ -168,5 +172,4 @@ public class VotingManager : MonoBehaviour {
         voteUnsuccess.SetActive(false);
     }
 }
-
 

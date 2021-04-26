@@ -9,6 +9,8 @@ using Photon.Realtime;
 public abstract class Character : MonoBehaviour {
   public Transform pickupDestination; 
   public Pickupable currentHeldItem; 
+
+  public Sabotageable currentFixingItem;
   public Pocketable pocketedItem;
   
   public InventoryUI inventoryUI;
@@ -32,7 +34,7 @@ public abstract class Character : MonoBehaviour {
   protected virtual void Start() {}
 
   public bool HasItem() {
-    return currentHeldItem != null; 
+    return currentHeldItem != null;
   }
 
   public bool HasItem(Interactable item) {
@@ -64,7 +66,15 @@ public abstract class Character : MonoBehaviour {
     // with the player.
     item.transform.parent = pickupDestination;
   }
-  
+
+    public virtual void Fix(Sabotageable item) {
+    currentFixingItem = item;
+    if (currentFixingItem != null) Debug.Log("fixing");
+  }
+
+    public virtual void StopFix(Sabotageable item) {
+    currentFixingItem = null;
+  }  
   public virtual void PutDown(Pickupable item) {
     currentHeldItem = null;
     if (item.View != null) {
