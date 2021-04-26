@@ -32,7 +32,7 @@ public class SettingsMenu : MonoBehaviour {
       playerVolumesList.DestroyChildren();
 
       foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
-        if (!player.IsMe) {
+        if (!player.IsMe()) {
           GameObject item = Instantiate(playerVolumeItem, playerVolumesList.transform);
           foreach (Image image in item.GetComponentsInChildren<Image>()) {
             image.color = player.Colour; 
