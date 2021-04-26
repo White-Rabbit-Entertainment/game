@@ -29,7 +29,7 @@ public class GameSceneManager : MonoBehaviour {
 
     
     void Start() {
-        if (NetworkManager.instance.LocalPlayerPropertyIs<string>("Team", "Loyal")) {
+        if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
             loadingScreen = LoyalLoadingScreen;
         } else {
             loadingScreen = TraitorLoadingScreen;

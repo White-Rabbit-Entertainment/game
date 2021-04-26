@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TaskNotificationUI : MonoBehaviour
-{
+public class TaskNotificationUI : MonoBehaviour {
 
     public TextMeshProUGUI notificationPrefab;
     private string taskCompleteMessage = "Task Complete";
