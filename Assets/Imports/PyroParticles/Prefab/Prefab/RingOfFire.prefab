@@ -9711,6 +9711,8 @@ GameObject:
   - component: {fileID: 486202}
   - component: {fileID: 11471502}
   - component: {fileID: 11469812}
+  - component: {fileID: 3335490052438918271}
+  - component: {fileID: -5575185152371039668}
   m_Layer: 8
   m_Name: RingOfFire
   m_TagString: Untagged
@@ -9735,6 +9737,7 @@ Transform:
   - {fileID: 499470}
   - {fileID: 437064}
   - {fileID: 439712}
+  - {fileID: 396307463816347585}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9775,6 +9778,59 @@ MonoBehaviour:
   IntensityMaxRange:
     Minimum: 0
     Maximum: 8
+--- !u!114 &3335490052438918271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c8e8909f525448385c813109645718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: 
+  interactionColour: {r: 0, g: 0, b: 0, a: 0}
+  taskColour: {r: 0, g: 0, b: 0, a: 0}
+  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
+  softRequirementTypes: []
+  canBeMasterTask: 1
+  hardRequirements: []
+  singleUse: 0
+  team: 4
+  taskTeam: 6
+  outlineWidth: 5
+  inRange: 0
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 
+  task: {fileID: 0}
+  isSabotaged: 0
+  numberOfPlayersToFix: 1
+  sabotagedIndicator: {fileID: 0}
+  playersThatFixed: []
+--- !u!114 &-5575185152371039668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &195822
 GameObject:
   m_ObjectHideFlags: 0
@@ -19112,3 +19168,78 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1001 &213163369868728362
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 486202}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.27
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+        type: 3}
+      propertyPath: m_Name
+      value: exclamationMark
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949, type: 3}
+--- !u!4 &396307463816347585 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7bcb03c71c1fb1d13bd4d93f6e22b949,
+    type: 3}
+  m_PrefabInstance: {fileID: 213163369868728362}
+  m_PrefabAsset: {fileID: 0}
