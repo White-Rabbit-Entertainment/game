@@ -10,43 +10,49 @@ using Photon.Realtime;
 
 public class WebRTC : MonoBehaviour {
 
-    [DllImport("__Internal")]
-    private static extern void Init();
-    
-    [DllImport("__Internal")]
-    private static extern void MakeOffer(int playerId);
-    
-    [DllImport("__Internal")]
-    private static extern void MakeAnswer(string data);
-    
-    [DllImport("__Internal")]
-    private static extern void ApplyAnswer(string data);
-     
-    [DllImport("__Internal")]
-    private static extern void ApplyIceCandidate(string data);
-    
-    [DllImport("__Internal")]
-    private static extern void RemovePeerConnection(int playerId);
-    
-    [DllImport("__Internal")]
-    private static extern void SetPeerVolume(int playerId, float volume);
-    
-    [DllImport("__Internal")]
-    private static extern float GetPeerVolume(int playerId);
-    
-    [DllImport("__Internal")]
-    private static extern void HelloString(string str);
+    #if !UNITY_EDITOR && UNITY_WEBGL
+        [DllImport("__Internal")]
+        private static extern void Init();
+        
+        [DllImport("__Internal")]
+        private static extern void MakeOffer(int playerId);
+        
+        [DllImport("__Internal")]
+        private static extern void MakeAnswer(string data);
+        
+        [DllImport("__Internal")]
+        private static extern void ApplyAnswer(string data);
+         
+        [DllImport("__Internal")]
+        private static extern void ApplyIceCandidate(string data);
+        
+        [DllImport("__Internal")]
+        private static extern void RemovePeerConnection(int playerId);
+        
+        [DllImport("__Internal")]
+        private static extern void SetPeerVolume(int playerId, float volume);
+        
+        [DllImport("__Internal")]
+        private static extern float GetPeerVolume(int playerId);
+        
+        [DllImport("__Internal")]
+        private static extern void HelloString(string str);
+    #endif
 
     PhotonView View {
         get {return GetComponent<PhotonView>();}
     }
 
     public void Initialize() {
-        Init();
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            Init();
+        #endif
     }
 
     public void Call(int playerId) {
-        MakeOffer(playerId);
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            MakeOffer(playerId);
+        #endif
     }
 
     public void SendOffer(string offerJson) {
@@ -66,7 +72,9 @@ public class WebRTC : MonoBehaviour {
 
     [PunRPC]
     public void HandleOffer(string data) {
-        MakeAnswer(data);
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            MakeAnswer(data);
+        #endif
     }
 
     public void SendAnswer(string answerJson) {
@@ -80,7 +88,9 @@ public class WebRTC : MonoBehaviour {
     
     [PunRPC]
     public void HandleAnswer(string data) {
-        ApplyAnswer(data);
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            ApplyAnswer(data);
+        #endif
     }
     
     public void SendIceCandidate(string data) {
@@ -94,19 +104,28 @@ public class WebRTC : MonoBehaviour {
 
     [PunRPC]
     public void HandleIceCandidate(string candidateData) {
-        ApplyIceCandidate(candidateData);
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            ApplyIceCandidate(candidateData);
+        #endif
     }
 
     public void EndCall(int playerId) {
-        RemovePeerConnection(playerId);
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            RemovePeerConnection(playerId);
+        #endif
     }
 
     public void SetVolume(int playerId, float volume) {
-        SetPeerVolume(playerId, volume);
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            SetPeerVolume(playerId, volume);
+        #endif
     }
     
     public float GetVolume(int playerId) {
-        return GetPeerVolume(playerId);
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            return GetPeerVolume(playerId);
+        #endif
+        return 0;
     }
 }
 
