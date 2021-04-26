@@ -41,7 +41,7 @@ public class WebRTC : MonoBehaviour {
         get {return GetComponent<PhotonView>();}
     }
 
-    void Awake() {
+    public void Initialize() {
         Init();
     }
 

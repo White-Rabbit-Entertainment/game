@@ -19,6 +19,7 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public List<RoomInfo> roomList;
 
     void Start() {
+        webRTC.Initialize();
         if (PhotonNetwork.LocalPlayer.NickName == null || PhotonNetwork.LocalPlayer.NickName == "") {
             nameInputPage.Open();
         } else if (PhotonNetwork.CurrentRoom != null) {

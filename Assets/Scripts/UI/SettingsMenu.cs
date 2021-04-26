@@ -32,16 +32,18 @@ public class SettingsMenu : MonoBehaviour {
       playerVolumesList.DestroyChildren();
 
       foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
-        GameObject item = Instantiate(playerVolumeItem, playerVolumesList.transform);
-        foreach (Image image in item.GetComponentsInChildren<Image>()) {
-          image.color = player.Colour; 
-        }
+        if (!player.IsMe) {
+          GameObject item = Instantiate(playerVolumeItem, playerVolumesList.transform);
+          foreach (Image image in item.GetComponentsInChildren<Image>()) {
+            image.color = player.Colour; 
+          }
 
-        Slider slider = item.GetComponentInChildren<Slider>();
-        slider.onValueChanged.AddListener(delegate {
-          webRTC.SetVolume(player.Owner.ActorNumber, slider.value);
-        });
-        slider.value = webRTC.GetVolume(player.Owner.ActorNumber);
+          Slider slider = item.GetComponentInChildren<Slider>();
+          slider.onValueChanged.AddListener(delegate {
+            webRTC.SetVolume(player.Owner.ActorNumber, slider.value);
+          });
+          slider.value = webRTC.GetVolume(player.Owner.ActorNumber);
+        }
       }
     }
     
