@@ -101,6 +101,7 @@ Module["WebRTCPre"].CreatePeerConnection = (function(id, localStream) {
  videoElement.controls = "false";
  videoElement.playsinline = true;
  videoElement.srcObject = stream;
+ videoElement.style.width = "100px";
  peerConnection.videoElement = videoElement;
  peerConnection.ontrack = (function() {
   stream.addTrack(event.track, stream);
@@ -1339,7 +1340,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3728192;
+STATICTOP = STATIC_BASE + 3728256;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_Transform_cpp();
@@ -3221,7 +3222,7 @@ __ATINIT__.push({
   ___cxx_global_var_init_188();
  })
 });
-var STATIC_BUMP = 3728192;
+var STATIC_BUMP = 3728256;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
