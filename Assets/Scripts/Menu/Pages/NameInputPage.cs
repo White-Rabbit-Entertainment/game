@@ -9,6 +9,7 @@ public class NameInputPage : MenuPage {
     [SerializeField] private Button startButton;
     [SerializeField] private JoinRoomPage joinRoomPage;
     [SerializeField] private ChatManager chatManager;
+    [SerializeField] private GameObject invalidNameText;
     
     string pattern = @"^[a-zA-Z0-9]+$";
     Regex inputChecker;
@@ -19,6 +20,7 @@ public class NameInputPage : MenuPage {
         playerNameInput.Select();
         playerNameInput.ActivateInputField(); 
         startButton.onClick.AddListener(StartButton);
+        invalidNameText.SetActive(false);
     }
 
     public override void OnConnectedToMaster() {
@@ -31,7 +33,7 @@ public class NameInputPage : MenuPage {
             chatManager.Init();
             joinRoomPage.Open();
         } else {
-            Debug.Log("Please enter a valid name");
+            invalidNameText.SetActive(true);
         }    
     }
 }
