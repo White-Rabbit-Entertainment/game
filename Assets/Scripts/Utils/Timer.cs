@@ -8,6 +8,7 @@ public enum Timer {
   RoundTimer,
   SabotageTimer,
   VoteTimer,
+  TraitorSabotageTimer,
 }
 
 public static class TimerUtils {

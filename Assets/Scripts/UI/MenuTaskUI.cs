@@ -7,6 +7,7 @@ using TMPro;
 /// <summary> UI to show tasks in the GameScene </summary>
 public class MenuTaskUI : TaskUI {
   private bool taskListOpen = false;
+  
 
   void Update() {
     taskList.DestroyChildren();
@@ -27,10 +28,10 @@ public class MenuTaskUI : TaskUI {
 
   void ToggleTaskList() {
     if (taskListOpen) {
-      taskList.SetActive(false);
+      AllTasks.SetActive(false);
       taskListOpen = false;
     } else {
-      taskList.SetActive(true);
+      AllTasks.SetActive(true);
       taskListOpen = true;
     }
   }
