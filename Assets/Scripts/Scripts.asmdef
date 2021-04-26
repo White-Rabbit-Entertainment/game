@@ -11,7 +11,8 @@
         "PhotonChat",
         "TypeReferences",
         "Unity.TextMeshPro",
-        "Target"
+        "Target",
+        "Unity.WebRTC"
     ],
     "includePlatforms": [],
     "excludePlatforms": [

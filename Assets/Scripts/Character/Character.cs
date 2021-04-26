@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -24,6 +25,10 @@ public abstract class Character : MonoBehaviour {
   
   public PhotonView View {
       get { return GetComponent<PhotonView>(); }
+    }
+
+  public Color Colour {
+      get { return roleInfo.colour; } 
     }
 
   protected virtual void Start() {}

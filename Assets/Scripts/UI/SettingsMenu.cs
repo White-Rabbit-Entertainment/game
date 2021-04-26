@@ -7,8 +7,13 @@ public class SettingsMenu : MonoBehaviour {
 
     private bool menuOpen = false;
 
-    public Slider mouseSensitivitySlider;
-    public GameObject settingsPanel;
+    [SerializeField] private Slider mouseSensitivitySlider;
+    [SerializeField] private GameObject settingsPanel;
+
+    [SerializeField] private GameObject playerVolumesList;
+    [SerializeField] private GameObject playerVolumeItem;
+
+    [SerializeField] private WebRTC webRTC;
 
     // Start is called before the first frame update
     void Start() {
@@ -22,6 +27,28 @@ public class SettingsMenu : MonoBehaviour {
         OpenMenu();
       }
     }
+
+    public void InitPlayerVolumes() {
+      playerVolumesList.DestroyChildren();
+
+      foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
+        if (!player.IsMe()) {
+          GameObject item = Instantiate(playerVolumeItem, playerVolumesList.transform);
+          foreach (Image image in item.GetComponentsInChildren<Image>()) {
+            image.color = player.Colour; 
+          }
+
+          Slider slider = item.GetComponentInChildren<Slider>();
+          slider.onValueChanged.AddListener(delegate {
+            webRTC.SetVolume(player.Owner.ActorNumber, slider.value);
+            Debug.Log("Slider value being set");
+            Debug.Log(slider.value);
+          });
+          slider.value = webRTC.GetVolume(player.Owner.ActorNumber);
+          Debug.Log(webRTC.GetVolume(player.Owner.ActorNumber));
+        }
+      }
+    }
     
     public void OpenMenu() {
       menuOpen = true;
@@ -30,6 +57,7 @@ public class SettingsMenu : MonoBehaviour {
       settingsPanel.SetActive(true);
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
+      InitPlayerVolumes();
     }
     
     public void CloseMenu() {
