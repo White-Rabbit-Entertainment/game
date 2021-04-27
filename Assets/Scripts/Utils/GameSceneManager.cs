@@ -27,6 +27,9 @@ public class GameSceneManager : MonoBehaviour {
     public Button nextButton;
     public Text traitorName;
 
+    public Color traitorColor = new Color(0.93f, 0.035f, 0.009f);
+    public Color loyalColor = new Color(0.0f, 0.436f, 1.0f);
+
     
     void Start() {
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
