@@ -11,7 +11,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject ghostPrefab;
     public GameObject loyalPrefab;
     public InventoryUI inventoryUI;
-    public ContextTaskUI contextTaskUI;
+    public CurrentTaskUI currentTaskUI;
     public GameSceneManager gameSceneManager;
     public TaskNotificationUI taskNotificationUI;
     public GameObject agentPrefab;
@@ -111,7 +111,7 @@ public class PlayerSpawner : MonoBehaviour {
 
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
-        character.contextTaskUI = contextTaskUI;
+        character.currentTaskUI = currentTaskUI;
         character.taskNotificationUI = taskNotificationUI;
         NetworkManager.myCharacter = character;
 

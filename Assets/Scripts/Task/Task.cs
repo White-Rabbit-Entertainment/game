@@ -170,7 +170,7 @@ public class Task : MonoBehaviour {
   public void AssignSubTaskToCharacter(PlayableCharacter character) {
     Task subTask = FindIncompleteChild(this);
     character.assignedSubTask = subTask;
-    character.contextTaskUI.SetTask(subTask);
+    character.currentTaskUI.SetTask(subTask);
     subTask.EnableTaskMarker();
   }
 

@@ -9,7 +9,7 @@ public class LoadingScreen : MonoBehaviour {
   public PlayersUI playersUI;
   public TaskCompletionUI taskCompletionUI;
   public Button closeButton;
-  public ContextTaskUI contextTaskUI;
+  public CurrentTaskUI currentTaskUI;
 
   void Start() {
     Cursor.lockState = CursorLockMode.None;
@@ -23,7 +23,7 @@ public class LoadingScreen : MonoBehaviour {
 
   void CloseLoadingScreen() {
     playersUI.Init();
-    contextTaskUI.Init();
+    currentTaskUI.Init();
     taskCompletionUI.UpdateBar();
     Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;

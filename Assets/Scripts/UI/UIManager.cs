@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour {
             settingsMenu.GetComponent<SettingsMenu>().ToggleMenu();
         }
         if (Input.GetKeyDown(KeyCode.Tab)) {
-            taskListUI.GetComponent<MenuTaskUI>().ToggleTaskList();
+            taskListUI.GetComponent<TaskListUI>().ToggleTaskList();
         }
     }
 }
