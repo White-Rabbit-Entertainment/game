@@ -5,18 +5,20 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary> UI to show tasks in the GameScene </summary>
-public class ContextTaskUI : TaskUI {
+public class CurrentTaskUI : TaskUI {
 
     private Task task;
+    public GameObject yourTask;
   
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
 
-    public void Init(){
+    public void Init() {
       if (NetworkManager.instance.GetMe() is Traitor){
         yourTask.SetActive(false);
       }
       // yourTask.SetActive(false);
     }
+
     public void ShowTask() {
       UnshowTask(); 
       if (NetworkManager.traitorNames.Contains(NetworkManager.myCharacter.ToString())){

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class PlayableCharacter : Character {
     public GameObject ghostPrefab;
 
-    public ContextTaskUI contextTaskUI;
+    public CurrentTaskUI currentTaskUI;
 
     public TaskNotificationUI taskNotificationUI;
 

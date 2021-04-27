@@ -6,14 +6,9 @@ public abstract class TaskUI : MonoBehaviour {
     public GameObject masterTaskPrefab;
     public GameObject subTaskPrefab;
     public TaskManager taskManager;
-    public TextMeshProUGUI allTasksTmp;
-
-    public GameObject yourTask;
-
-    public GameObject AllTasks; //AllTasks is an empty gameObject which contains taskList,allTaskstmp.
+  //  public TextMeshProUGUI allTasksTmp;
 
     private Color urgentTaskColour = new Color(1f, 0f, 0f, 1f);
-
     private Color yourTaskColor = new Color(1f, 0.14f, 0.38f, 0.85f);
 
     /// <summary> Adds a task to the list of tasks in the UI. </summary>

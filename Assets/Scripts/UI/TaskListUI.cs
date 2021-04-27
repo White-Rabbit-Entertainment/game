@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary> UI to show tasks in the GameScene </summary>
-public class MenuTaskUI : TaskUI {
+public class TaskListUI : TaskUI {
   private bool taskListOpen = false;
   
 
@@ -28,10 +28,10 @@ public class MenuTaskUI : TaskUI {
 
   public void ToggleTaskList() {
     if (taskListOpen) {
-      AllTasks.SetActive(false);
+      gameObject.SetActive(false);
       taskListOpen = false;
     } else {
-      AllTasks.SetActive(true);
+      gameObject.SetActive(true);
       taskListOpen = true;
     }
   }
