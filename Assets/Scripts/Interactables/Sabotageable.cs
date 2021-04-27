@@ -27,8 +27,7 @@ public class Sabotageable : Interactable {
     
     
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
         base.Start();
@@ -68,23 +67,23 @@ public class Sabotageable : Interactable {
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
             // If a sabotage has started then any player can attempt to fix
             if (!fixing) {
-            sabotageManager.LocalPlayerFixing();    
-            character.Fix(this);
-            fixing = true;
-            View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
+                sabotageManager.LocalPlayerFixing();    
+                character.Fix(this);
+                fixing = true;
+                View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
             }
         }
-        }
+    }
 
     
     public override void PrimaryInteractionOff(Character character) {
         //If a player is fixing sabotage but lets go of mouseclick then they stop fixing
         // the master client is notified that one less player is fixing
         if (fixing) {
-        character.StopFix(this);
-        sabotageManager.LocalPlayerStoppedFixing();    
-        fixing = false;
-        View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
+            character.StopFix(this);
+            sabotageManager.LocalPlayerStoppedFixing();    
+            fixing = false;
+            View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
         } 
     }
 
