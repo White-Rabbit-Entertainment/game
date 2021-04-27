@@ -5,37 +5,18 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary> UI to show tasks in the GameScene </summary>
-public class CurrentTaskUI : TaskUI {
+public class CurrentTaskUI : MonoBehaviour {
 
-    private Task task;
-  
+    [SerializeField] TMP_Text taskText;
+
     /// <summary> Adds a task to the list of tasks in the UI. </summary>
-
     public void Init() {
       if (NetworkManager.instance.GetMe() is Traitor){
         gameObject.SetActive(false);
       }
-      // yourTask.SetActive(false);
-    }
-
-    public void ShowTask() {
-      UnshowTask(); 
-      AddTask(task, masterTaskPrefab);
     }
 
     public void SetTask(Task task) {
-      if (task != this.task) {
-        this.task = task; 
-        ShowTask();
-      }
-    }
-    
-    public void RemoveTask() {
-      this.task = null;
-      UnshowTask();
-    }
-    
-    public void UnshowTask() {
-      gameObject.DestroyChildren();
+      taskText.text = task.description;
     }
 }
