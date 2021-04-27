@@ -127,16 +127,15 @@ public class Sabotageable : Interactable {
     [PunRPC]
     public virtual void Fix() {
         // If the sabotagable is fully fixed
-            isSabotaged = false;
-            task.CompleteRPC(false);
-            // Tell everyone that the task is now completed
-            // TODO Delete the task for everyone
-            DisableTaskMarker();
-            Timer.SabotageTimer.End();
-            Destroy(GetComponent<Task>());
-            task = null;
-            // After an item is fixed its no longer interactable for anyone
-            Destroy(this);
-    
+        isSabotaged = false;
+        task.CompleteRPC(false);
+        // Tell everyone that the task is now completed
+        // TODO Delete the task for everyone
+        DisableTaskMarker();
+        Timer.SabotageTimer.End();
+        Destroy(GetComponent<Task>());
+        task = null;
+        // After an item is fixed its no longer interactable for anyone
+        Destroy(this);
     }
 }

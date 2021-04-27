@@ -38,9 +38,11 @@ public class SabotageManager : MonoBehaviour
     void Update() {
         if (inSabotage) {
             SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
-            if (Timer.SabotageTimer.IsComplete()) {
-                gameSceneManager.EndGame(Team.Traitor);
 
+            // If the sabotage has not been completed in the time
+            if (Timer.SabotageTimer.IsComplete()) {
+                // End the game
+                gameSceneManager.EndGame(Team.Traitor);
             }
             playersFixing.text = "Players Fixing: " + numPlayersFixing;
         }
@@ -48,7 +50,6 @@ public class SabotageManager : MonoBehaviour
 
     public void SabotageStarted() {
         GetComponent<PhotonView>().RPC("SabotageStartedRPC", RpcTarget.All);
-        
     }
 
     [PunRPC]
@@ -80,13 +81,9 @@ public class SabotageManager : MonoBehaviour
 
     public IEnumerator NotifySabotage(){
         if (NetworkManager.instance.GetMe() is Traitor){
-            // SabotageNotificationUI.text = "Sabotaged";
             SabotageNotificationUI.SetActive(true);
-            // SabotageTraitorCountdownUI.SetActive(true);
             Timer.TraitorSabotageTimer.Start(5);
             yield return new WaitForSeconds(5f);
-            // SabotageNotificationUI.text = "";
-            // SabotageTraitorCountdownUI.SetActive(false);
             SabotageNotificationUI.SetActive(false);
         }
         
@@ -149,7 +146,7 @@ public class SabotageManager : MonoBehaviour
 
     [PunRPC]
     public void SetNumPlayersFixingRPC(int num) {
-        this.numPlayersFixing = num;
+        numPlayersFixing = num;
     }
     public int GetNumPlayersFixing(){
         return numPlayersFixing;
