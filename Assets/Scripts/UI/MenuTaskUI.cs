@@ -26,7 +26,7 @@ public class MenuTaskUI : TaskUI {
     }
   }
 
-  void ToggleTaskList() {
+  public void ToggleTaskList() {
     if (taskListOpen) {
       AllTasks.SetActive(false);
       taskListOpen = false;
