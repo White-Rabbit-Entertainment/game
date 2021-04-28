@@ -18,10 +18,11 @@ public class VotingManager : MonoBehaviour {
   public TextMeshProUGUI votingUIText;
   public PlayersUI playersUI;
   public GameSceneManager gameSceneManager;
+  [SerializeField] private TimerManager timerManager;
 
   public TextMeshProUGUI votesFor;
   public TextMeshProUGUI votesAgainst;
-  public TextMeshProUGUI voteTimeRemaining;
+  public TextMeshProUGUI voteTimeremaining;
   public TextMeshProUGUI voteTitle;
   public GameObject currentVoteUI;
 
@@ -41,8 +42,8 @@ public class VotingManager : MonoBehaviour {
   public void Update() {
     // Check if the vote has run out of time, if so end the vote
     if (voteStarted) {
-      voteTimeRemaining.text = $"{(int)Timer.VoteTimer.TimeRemaining()}s";
-      if (Timer.VoteTimer.IsComplete()) {
+      voteTimeremaining.text = $"{(int)Timer.voteTimer.TimeRemaining()}s";
+      if (Timer.voteTimer.IsComplete()) {
         EndVote();
       }
     }
@@ -57,7 +58,7 @@ public class VotingManager : MonoBehaviour {
 
   public void InitVote(int suspectedPlayerId, int voteLeaderId) {
     if (!voteStarted) {
-      Timer.VoteTimer.Start(30);
+      timerManager.StartTimer(Timer.voteTimer);
       GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, suspectedPlayerId, voteLeaderId);
     } else {
       StartCoroutine(ShowVoteInProgress());

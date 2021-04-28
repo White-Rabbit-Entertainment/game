@@ -14,7 +14,7 @@ public class Task : MonoBehaviour {
   public bool isUndoable = true;
   public bool isUndone = false;
 
-  public Timer timer = Timer.None;
+  public Timer timer = null;
 
   private Interactable TaskInteractable {
     get { return GetComponent<Interactable>(); }

@@ -5,42 +5,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class SabotageManager : MonoBehaviour
-{
-    public bool inSabotage = false;
+public class SabotageManager : MonoBehaviour{
+    private bool inSabotage = false;
+    private int numPlayersFixing = 0;
+    private bool isFixing = false;
 
-    public bool isFixing = false;
+    [SerializeField] private  GameObject sabotageUI;
 
-    public GameObject sabotageUI;
-
-    public GameObject backgroundAlphaImage;
-    public GameObject warning;
-
-    public GameObject SabotageNotificationUI;
-    public TextMeshProUGUI ClickAndHoldReminderUI;
-
-    public GameObject SabotageTraitorCountdownUI;
-
-    public TextMeshProUGUI SabotageTimeRemaining;
-    public GameSceneManager gameSceneManager;
-
-    public GameObject fixingProgress;
-
-    public int numPlayersFixing = 0;
-
-    public TextMeshProUGUI playersFixing;
-
-    public TextMeshProUGUI sabotageInfoTMP;
-
+    [SerializeField] private GameObject backgroundAlphaImage;
+    [SerializeField] private GameObject warning;
+                             
+    [SerializeField] private GameObject SabotageNotificationUI;
+    [SerializeField] private TextMeshProUGUI ClickAndHoldReminderUI;
+                             
+    [SerializeField] private GameObject SabotageTraitorCountdownUI;
+                             
+    [SerializeField] private TextMeshProUGUI sabotageTimeremaining;
+    [SerializeField] private GameSceneManager gameSceneManager;
+                             
+    [SerializeField] private GameObject fixingProgress;
+    [SerializeField] private TextMeshProUGUI playersFixing;
+                             
+    [SerializeField] private TextMeshProUGUI sabotageInfoTMP;
+                             
+    [SerializeField] private TimerManager timerManager;
+                             
     public float amountToFix;
 
     // Update is called once per frame
     void Update() {
         if (inSabotage) {
-            SabotageTimeRemaining.text = $"{(int)Timer.SabotageTimer.TimeRemaining()}s";
+            sabotageTimeremaining.text = $"{(int)Timer.sabotageTimer.TimeRemaining()}s";
 
             // If the sabotage has not been completed in the time
-            if (Timer.SabotageTimer.IsComplete()) {
+            if (Timer.sabotageTimer.IsComplete()) {
                 // End the game
                 gameSceneManager.EndGame(Team.Traitor);
             }
@@ -57,7 +55,7 @@ public class SabotageManager : MonoBehaviour
         StartCoroutine(NotifySabotage());
         yield return new WaitForSeconds(5);
         numPlayersFixing = 0;
-        Timer.SabotageTimer.Start(30);
+        timerManager.StartTimer(Timer.sabotageTimer);
         inSabotage = true;
         warning.SetActive(true);
         sabotageUI.SetActive(true);
@@ -82,7 +80,7 @@ public class SabotageManager : MonoBehaviour
     public IEnumerator NotifySabotage(){
         if (NetworkManager.instance.GetMe() is Traitor){
             SabotageNotificationUI.SetActive(true);
-            Timer.TraitorSabotageTimer.Start(5);
+            timerManager.StartTimer(Timer.sabotageTimer);
             yield return new WaitForSeconds(5f);
             SabotageNotificationUI.SetActive(false);
         }

@@ -12,7 +12,7 @@ public class CountdownTraitorSabotage : MonoBehaviour
      private bool updateTime;
      private void Start()
      { 
-        currentTime = (float)Timer.TraitorSabotageTimer.TimeRemaining();
+        currentTime = (float)Timer.traitorSabotageTimer.TimeRemaining();
         startTime = currentTime;
         countdownCircleTimer.fillAmount = 1.0f;
          // Easy way to represent only the seconds and skip the
@@ -26,8 +26,8 @@ public class CountdownTraitorSabotage : MonoBehaviour
           if (updateTime)
           {
             // currentTime -= Time.deltaTime;
-            currentTime = (float)Timer.TraitorSabotageTimer.TimeRemaining();
-            if (Timer.SabotageTimer.IsComplete())
+            currentTime = (float)Timer.traitorSabotageTimer.TimeRemaining();
+            if (Timer.sabotageTimer.IsComplete())
             {
                // Stop the countdown timer              
                updateTime = false;

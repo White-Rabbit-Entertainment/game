@@ -20,12 +20,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
-    public static List<string> traitorNames;
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     void Start() {
       PhotonNetwork.ConnectUsingSettings();
-      traitorNames = new List<string>();
     }
 
     /// <summary> Before a game is able to start various things need to be
@@ -39,7 +37,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           SetRoomProperty("NumberOfTasksInitiallyCompleted", 2);
           
           List<Player> players = GetPlayers();
-          int numberOfTraitors = 0;
+          int numberOfTraitors = 1;
 
           List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
 
@@ -50,7 +48,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
             SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
-            traitorNames.Add(players[i].NickName);
           }
 
           for (int i = numberOfTraitors; i < players.Count; i++) {
@@ -293,7 +290,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void ResetRoom() {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
-      Timer.RoundTimer.End();
+      Timer.roundTimer.End();
 
       SetLocalPlayerProperty("CurrentScene", "LobbyScene");
       SetLocalPlayerProperty("Ready", false);
@@ -306,7 +303,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         && RoomPropertyIs<bool>("GameStarted", false)
         && CheckAllPlayers<string>("CurrentScene", "LobbyScene")
         && CheckAllPlayers<bool>("Spawned", false)
-        && !Timer.RoundTimer.IsStarted();
+        && !Timer.roundTimer.IsStarted();
     } 
 
     public void CreateRoom (bool isVisible = true) {
@@ -333,5 +330,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     public PlayableCharacter GetMe() {
       return myCharacter;
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged) {
+      Debug.Log(propertiesThatChanged);
     }
 }

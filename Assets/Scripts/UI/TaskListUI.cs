@@ -52,7 +52,7 @@ public class TaskListUI : MonoBehaviour {
     // Set the toggle text
     text.text = task.description;
     Image image = item.GetComponentInChildren<Image>();
-    if (task.timer != Timer.None && task.timer.IsStarted()) {
+    if (task.timer != null && task.timer.IsStarted()) {
       text.text += task.timer.FormatTime();
       image.color = urgentTaskColour;
     }

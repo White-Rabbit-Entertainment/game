@@ -18,7 +18,7 @@ public class Sabotageable : Interactable {
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
     
     private GameSceneManager gameSceneManager;
-
+    private TimerManager timerManager;
     private SabotageManager sabotageManager;
 
     public int fixTimeFactor = 7;
@@ -33,6 +33,7 @@ public class Sabotageable : Interactable {
         base.Start();
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
         sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();
+        timerManager = GameObject.Find("/TimerManager").GetComponent<TimerManager>();
     }
 
     void Update() {
@@ -59,9 +60,9 @@ public class Sabotageable : Interactable {
 
     public override void PrimaryInteraction(Character character) {
         //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
-        if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) {
+        if (!isSabotaged && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) {
             sabotageManager.SetBackgroundImageColor(this);
-            Timer.SabotageTimer.Start(30);
+            timerManager.StartTimer(Timer.sabotageTimer);
             View.RPC("Sabotage", RpcTarget.All);
             sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
@@ -100,7 +101,7 @@ public class Sabotageable : Interactable {
     
     public override bool CanInteract(Character character) {
         //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
-        if (!isSabotaged && character.team == Team.Traitor && !Timer.SabotageTimer.IsStarted()) return true;
+        if (!isSabotaged && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) return true;
         // If a sabotage has started then any player can attempt to fix        
         if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
         return true;
@@ -116,7 +117,7 @@ public class Sabotageable : Interactable {
     //Set task, set as true and give marker
     public IEnumerator SabotageEnumerator() {
         yield return new WaitForSeconds(5);
-        AddTaskWithTimerRPC(Timer.SabotageTimer);
+        AddTaskWithTimerRPC(Timer.sabotageTimer);
         task.isUndoable = false;
         task.description = "Fix the " + this.name + "";
         isSabotaged = true;
@@ -131,7 +132,7 @@ public class Sabotageable : Interactable {
         // Tell everyone that the task is now completed
         // TODO Delete the task for everyone
         DisableTaskMarker();
-        Timer.SabotageTimer.End();
+        Timer.sabotageTimer.End();
         Destroy(GetComponent<Task>());
         task = null;
         // After an item is fixed its no longer interactable for anyone

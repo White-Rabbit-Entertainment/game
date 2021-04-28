@@ -7,12 +7,13 @@ using TMPro;
 
 public class TimerCountdown : MonoBehaviour {
 
+    public TimerManager timerManager;
     public TextMeshProUGUI timerText;
     public bool stopped = false;
 
     void Update() {
         if (!stopped) {
-            timerText.text = Timer.RoundTimer.FormatTime();
+            timerText.text = Timer.roundTimer.FormatTime();
         }
     }
 

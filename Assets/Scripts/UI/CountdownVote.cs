@@ -12,7 +12,7 @@ public class CountdownVote : MonoBehaviour
      private bool updateTime;
      private void Start()
      { 
-        currentTime = (float)Timer.VoteTimer.TimeRemaining();
+        currentTime = (float)Timer.voteTimer.TimeRemaining();
         startTime = currentTime;
         countdownCircleTimer.fillAmount = 1.0f;
          // Easy way to represent only the seconds and skip the
@@ -26,8 +26,8 @@ public class CountdownVote : MonoBehaviour
           if (updateTime)
           {
             // currentTime -= Time.deltaTime;
-            currentTime = (float)Timer.VoteTimer.TimeRemaining();
-            if (Timer.VoteTimer.IsComplete())
+            currentTime = (float)Timer.voteTimer.TimeRemaining();
+            if (Timer.voteTimer.IsComplete())
             {
                // Stop the countdown timer              
                updateTime = false;

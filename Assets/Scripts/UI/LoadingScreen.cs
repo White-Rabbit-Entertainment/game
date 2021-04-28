@@ -27,7 +27,6 @@ public class LoadingScreen : MonoBehaviour {
     taskCompletionUI.UpdateBar();
     Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;
-    Destroy(gameObject);
-    Destroy(this);
+    gameObject.SetActive(false);
   }
 }

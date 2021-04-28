@@ -16,11 +16,12 @@ public class GameSceneManager : MonoBehaviour {
     private bool initialized = false;
 
     private GameObject loadingScreen;
-    public GameObject TraitorLoadingScreen;
-    public GameObject LoyalLoadingScreen;
-    public TimerCountdown timerCountdown;
-    public TaskCompletionUI taskCompletionUI;
+    [SerializeField] private GameObject TraitorLoadingScreen;
+    [SerializeField] private GameObject LoyalLoadingScreen;
+    [SerializeField] private TimerCountdown timerCountdown;
+    [SerializeField] private TaskCompletionUI taskCompletionUI;
 
+    [SerializeField] private TimerManager timerManager;
     [SerializeField] private GameOverUI gameOverUI;
 
     public Color traitorColor = new Color(0.93f, 0.035f, 0.009f);
@@ -46,13 +47,13 @@ public class GameSceneManager : MonoBehaviour {
         if (initialized && !starting && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
             loadingScreen.GetComponent<LoadingScreen>().EnableButton();
             if (PhotonNetwork.IsMasterClient) {
-              StartRoundTimer();
+              StartroundTimer();
             }
             starting = true;
         }
 
         if (starting) {
-            if (Timer.RoundTimer.IsStarted()) {
+            if (Timer.roundTimer.IsStarted()) {
                 started = true;
             } 
         }
@@ -78,10 +79,15 @@ public class GameSceneManager : MonoBehaviour {
     ///     lobby. 
     ///   <list>     
     public void CheckTimer() {
-      if (Timer.RoundTimer.IsComplete()) {
-        Debug.Log("Time ran out");
-        EndGame(Team.Traitor);
-      } 
+        // Debug.Log("Checking timer");
+        // Debug.Log(Timer.roundTimer.IsStarted());
+        // Debug.Log(Timer.roundTimer.TimeRemaining());
+        if (Timer.roundTimer.IsComplete()) {
+          Debug.Log("Time ran out");
+          // If the timer has round out for us we can stop the local timer directly
+          Timer.roundTimer.End();
+          EndGame(Team.Traitor);
+        } 
     }
 
     public void EndGame(Team winningTeam) {
@@ -108,9 +114,9 @@ public class GameSceneManager : MonoBehaviour {
       return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
     }
     
-    public void StartRoundTimer() {
+    public void StartroundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        Timer.RoundTimer.Start(1000);
+        timerManager.StartTimer(Timer.roundTimer);
       }
     }
     

@@ -15,6 +15,8 @@ public abstract class PlayableCharacter : Character {
     public Task assignedMasterTask = null;
     public Task assignedSubTask = null;
 
+    public Team startingTeam; 
+
     protected override void Start() { 
       base.Start();
     }
@@ -74,6 +76,7 @@ public abstract class PlayableCharacter : Character {
         PlayableCharacter newCharacter = PhotonView.Find(newPlayerViewId).GetComponent<PlayableCharacter>();
         newCharacter.playerTile = playerTile;
         newCharacter.playersUI = playersUI;
+        newCharacter.startingTeam = startingTeam;
         playersUI.SetToDead(newCharacter);
         
         Destroy(gameObject);
