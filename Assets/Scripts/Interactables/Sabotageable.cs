@@ -12,11 +12,15 @@ public class Sabotageable : Interactable {
 
     public int numberOfPlayersFixing = 0;
     public GameObject sabotagedIndicator;
+    public Color color;
+    public string warningText;
+    public string infoText;
 
     public float amountToFix = 100f;
 
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
-    
+    [SerializeField] private GameObject animationObject;
+    private Target sabotageMarker;
     private GameSceneManager gameSceneManager;
     private TimerManager timerManager;
     private SabotageManager sabotageManager;
@@ -31,6 +35,12 @@ public class Sabotageable : Interactable {
         // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
         base.Start();
+
+        sabotageMarker = gameObject.AddComponent<Target>() as Target;
+        sabotageMarker.boxText = "SABOTAGE";
+        sabotageMarker.TargetColor = Color.red;
+        sabotageMarker.enabled = false;
+    
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
         sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();
         timerManager = GameObject.Find("/TimerManager").GetComponent<TimerManager>();
@@ -40,6 +50,11 @@ public class Sabotageable : Interactable {
         /* Master client checks if sabotage is sabotaged and then broadcasts how much is left for each player to fix, the number of players
         currently fixing and updating the amount of fixing needing to be done
         */
+        if (isSabotaged) {
+            DisableSabotageMarker();
+        } else {
+            EnableSabotageMarker();
+        }
         if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged) {
             sabotageManager.SetAmountToFix(amountToFix);
             sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
@@ -52,15 +67,25 @@ public class Sabotageable : Interactable {
         }
     }
 
+    private void EnableSabotageMarker() {
+        if (NetworkManager.instance.GetMe() is Traitor) {
+            sabotageMarker.enabled = true;
+        }
+    }
+
+    private void DisableSabotageMarker() {
+        sabotageMarker.enabled = false;
+    }
+
     private void Reset() {
         team = Team.Traitor;
         taskTeam = Team.Real;
-        // base.Reset();
     }
 
     public override void PrimaryInteraction(Character character) {
         //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
         if (!isSabotaged && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) {
+            DisableSabotageMarker();
             sabotageManager.SetBackgroundImageColor(this);
             timerManager.StartTimer(Timer.sabotageTimer);
             View.RPC("Sabotage", RpcTarget.All);
@@ -110,7 +135,8 @@ public class Sabotageable : Interactable {
 
     [PunRPC]
     public virtual void Sabotage() {
-        StartCoroutine(SabotageEnumerator());  
+        StartCoroutine(SabotageEnumerator());
+        StartCoroutine(StartAnimation());
     }
 
     //Start sabotage after a given number of seconds
@@ -135,7 +161,13 @@ public class Sabotageable : Interactable {
         Timer.sabotageTimer.End();
         Destroy(GetComponent<Task>());
         task = null;
+        animationObject.SetActive(false);
         // After an item is fixed its no longer interactable for anyone
         Destroy(this);
+    }
+
+    public IEnumerator StartAnimation(){
+        yield return new WaitForSeconds(5);
+        animationObject.SetActive(true);
     }
 }

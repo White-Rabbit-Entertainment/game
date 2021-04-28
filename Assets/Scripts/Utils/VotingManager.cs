@@ -22,7 +22,7 @@ public class VotingManager : MonoBehaviour {
 
   public TextMeshProUGUI votesFor;
   public TextMeshProUGUI votesAgainst;
-  public TextMeshProUGUI voteTimeremaining;
+  public TextMeshProUGUI voteTimeRemaining;
   public TextMeshProUGUI voteTitle;
   public GameObject currentVoteUI;
 
@@ -42,7 +42,7 @@ public class VotingManager : MonoBehaviour {
   public void Update() {
     // Check if the vote has run out of time, if so end the vote
     if (voteStarted) {
-      voteTimeremaining.text = $"{(int)Timer.voteTimer.TimeRemaining()}s";
+      voteTimeRemaining.text = $"{(int)Timer.voteTimer.TimeRemaining()}s";
       if (Timer.voteTimer.IsComplete()) {
         EndVote();
       }
@@ -108,8 +108,11 @@ public class VotingManager : MonoBehaviour {
         if (NetworkManager.instance.NumberOfTeamRemaining(Team.Loyal) == NetworkManager.instance.NumberOfTeamRemaining(Team.Traitor)) {
           gameSceneManager.EndGame(Team.Traitor);
         }
-        if (NetworkManager.instance.NoTraitorsRemaining()) {
+        else if (NetworkManager.instance.NoTraitorsRemaining()) {
           gameSceneManager.EndGame(Team.Loyal);
+        }
+        else if (NetworkManager.instance.NoLoyalsRemaining()) {
+          gameSceneManager.EndGame(Team.Traitor);
         }
       }
       // Show UI to say someone was voted off

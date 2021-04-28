@@ -11,10 +11,10 @@ public class PlayerTile : MonoBehaviour {
     private GameObject votingMark;
 
     public void Start() {
-        votingFor = GameObject.Find("VoteFor");
-        votingAgainst = GameObject.Find("VoteAgainst");
-        cross = GameObject.Find("Cross");
-        votingMark = GameObject.Find("votingMarkAppear");
+        votingFor = transform.Find("VoteFor").gameObject;
+        votingAgainst = transform.Find("VoteAgainst").gameObject;
+        cross = transform.Find("Cross").gameObject;
+        votingMark = transform.Find("votingMarkAppear").gameObject;
     }
 
     public void Init(PlayableCharacter player) {

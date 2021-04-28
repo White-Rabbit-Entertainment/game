@@ -23,6 +23,7 @@ public class GameSceneManager : MonoBehaviour {
 
     [SerializeField] private TimerManager timerManager;
     [SerializeField] private GameOverUI gameOverUI;
+    [SerializeField] private DeathUI deathUI;
 
     public Color traitorColor = new Color(0.93f, 0.035f, 0.009f);
     public Color loyalColor = new Color(0.0f, 0.436f, 1.0f);
@@ -100,6 +101,7 @@ public class GameSceneManager : MonoBehaviour {
     public void EndGameRPC(Team winningTeam) {
         taskCompletionUI.UpdateBar();
         timerCountdown.Stop();
+        deathUI.gameObject.SetActive(false);
         gameOverUI.OnGameOver(winningTeam);
         
         Cursor.lockState = CursorLockMode.None;

@@ -11,7 +11,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject ghostPrefab;
     public GameObject loyalPrefab;
     public InventoryUI inventoryUI;
-    public GameObject deathUI;
+    public DeathUI deathUI;
     public CurrentTaskUI currentTaskUI;
     public GameSceneManager gameSceneManager;
     public TaskNotificationUI taskNotificationUI;

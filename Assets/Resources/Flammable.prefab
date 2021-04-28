@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 8664862684670449037}
   - component: {fileID: 2552095970128318747}
   - component: {fileID: 5764555759701917775}
-  - component: {fileID: 8487999508668354410}
   - component: {fileID: 6857161381338441003}
   - component: {fileID: 884054557737646813}
+  - component: {fileID: 8860319963050082242}
   m_Layer: 0
   m_Name: Flammable
   m_TagString: Untagged
@@ -158,41 +158,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.23700002}
   m_TimeToStationary: 0.5
---- !u!114 &8487999508668354410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3197310655502759624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56c8a5f455053fc998a3986c5756b78c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: 
-  interactionColour: {r: 0, g: 0, b: 0, a: 0}
-  taskColour: {r: 0, g: 0, b: 0, a: 0}
-  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
-  softRequirementTypes: []
-  canBeMasterTask: 1
-  hardRequirements: []
-  singleUse: 0
-  team: 4
-  taskTeam: 6
-  outlineWidth: 5
-  inRange: 0
-  itemAnimationTrigger: 
-  playerAnimationTrigger: 
-  task: {fileID: 0}
-  isSabotaged: 0
-  numberOfPlayersToFix: 1
-  fixing: 0
-  numberOfPlayersFixing: 0
-  sabotagedIndicator: {fileID: 0}
-  amountToFix: 100
-  playersThatFixed: []
-  smallFires: {fileID: 7780256929691103153}
 --- !u!64 &6857161381338441003
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -220,6 +185,46 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.0000001, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8860319963050082242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3197310655502759624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c8e8909f525448385c813109645718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: Put out the fire
+  interactionColour: {r: 0, g: 0, b: 0, a: 0}
+  taskColour: {r: 0, g: 0, b: 0, a: 0}
+  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
+  softRequirementTypes: []
+  canBeMasterTask: 0
+  hardRequirements: []
+  singleUse: 0
+  team: 4
+  taskTeam: 6
+  outlineWidth: 5
+  inRange: 0
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 
+  task: {fileID: 0}
+  isSabotaged: 0
+  numberOfPlayersToFix: 1
+  fixing: 0
+  numberOfPlayersFixing: 0
+  sabotagedIndicator: {fileID: 0}
+  color: {r: 0.9339623, g: 0.32212156, b: 0.017621916, a: 0.29411766}
+  warningText: Warning - Fire on ship
+  infoText: Find and put out the fire before the timer ends.
+  amountToFix: 100
+  playersThatFixed: []
+  animationObject: {fileID: 0}
+  fixTimeFactor: 7
+  sabotageDelaySeconds: 5
 --- !u!1001 &7780256929691035539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -281,12 +286,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18faec2a14493684d905501076799765, type: 3}
---- !u!1 &7780256929691103153 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 198690, guid: 18faec2a14493684d905501076799765,
-    type: 3}
-  m_PrefabInstance: {fileID: 7780256929691035539}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7780256929691441191 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 458676, guid: 18faec2a14493684d905501076799765,

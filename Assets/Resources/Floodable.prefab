@@ -4868,7 +4868,7 @@ GameObject:
   - component: {fileID: 2093510894526531398}
   - component: {fileID: 7348801234581863986}
   - component: {fileID: 3164953032108336063}
-  - component: {fileID: 750903137576927672}
+  - component: {fileID: 4818355669361270165}
   m_Layer: 0
   m_Name: Floodable
   m_TagString: Untagged
@@ -5016,7 +5016,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9128045354096079297}
-  m_Material: {fileID: 13400000, guid: 42f09312a07995948980601c8901b6b8, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -5036,7 +5036,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.75660944, y: 1.9986813, z: 0.44184583}
   m_Center: {x: 0, y: -0.010848491, z: 0.23559916}
---- !u!114 &750903137576927672
+--- !u!114 &4818355669361270165
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5045,10 +5045,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 9128045354096079297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb1e9d35d626ea553a54e7ad493cd39c, type: 3}
+  m_Script: {fileID: 11500000, guid: c4c8e8909f525448385c813109645718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: 
+  taskDescription: Fix the leak
   interactionColour: {r: 0, g: 0, b: 0, a: 0}
   taskColour: {r: 0, g: 0, b: 0, a: 0}
   undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
@@ -5056,8 +5056,8 @@ MonoBehaviour:
   canBeMasterTask: 1
   hardRequirements: []
   singleUse: 0
-  team: 22
-  taskTeam: 22
+  team: 4
+  taskTeam: 6
   outlineWidth: 5
   inRange: 0
   itemAnimationTrigger: 
@@ -5068,6 +5068,11 @@ MonoBehaviour:
   fixing: 0
   numberOfPlayersFixing: 0
   sabotagedIndicator: {fileID: 0}
+  color: {r: 0.11961552, g: 0.40338278, b: 0.7924528, a: 0.29411766}
+  warningText: Warning - hole in ship
+  infoText: Find and fix the hole in the ship before the timer ends.
   amountToFix: 100
   playersThatFixed: []
-  water: {fileID: 750903137948635293}
+  animationObject: {fileID: 0}
+  fixTimeFactor: 7
+  sabotageDelaySeconds: 5

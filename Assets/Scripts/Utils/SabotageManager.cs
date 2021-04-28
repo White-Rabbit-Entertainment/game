@@ -12,15 +12,13 @@ public class SabotageManager : MonoBehaviour{
 
     [SerializeField] private  GameObject sabotageUI;
 
-    [SerializeField] private GameObject backgroundAlphaImage;
-    [SerializeField] private GameObject warning;
+    [SerializeField] private Image colorOverlay;
+    [SerializeField] private TextMeshProUGUI warningText;
                              
-    [SerializeField] private GameObject SabotageNotificationUI;
-    [SerializeField] private TextMeshProUGUI ClickAndHoldReminderUI;
-                             
-    [SerializeField] private GameObject SabotageTraitorCountdownUI;
-                             
-    [SerializeField] private TextMeshProUGUI sabotageTimeremaining;
+    [SerializeField] private GameObject sabotageNotificationUI;
+    [SerializeField] private TextMeshProUGUI clickAndHoldReminderUI;
+    
+    [SerializeField] private TextMeshProUGUI sabotageTimeRemaining;
     [SerializeField] private GameSceneManager gameSceneManager;
                              
     [SerializeField] private GameObject fixingProgress;
@@ -35,11 +33,12 @@ public class SabotageManager : MonoBehaviour{
     // Update is called once per frame
     void Update() {
         if (inSabotage) {
-            sabotageTimeremaining.text = $"{(int)Timer.sabotageTimer.TimeRemaining()}s";
+            sabotageTimeRemaining.text = $"{(int)Timer.sabotageTimer.TimeRemaining()}s";
 
             // If the sabotage has not been completed in the time
             if (Timer.sabotageTimer.IsComplete()) {
                 // End the game
+                Timer.sabotageTimer.End();
                 gameSceneManager.EndGame(Team.Traitor);
             }
             playersFixing.text = "Players Fixing: " + numPlayersFixing;
@@ -57,32 +56,24 @@ public class SabotageManager : MonoBehaviour{
         numPlayersFixing = 0;
         timerManager.StartTimer(Timer.sabotageTimer);
         inSabotage = true;
-        warning.SetActive(true);
+        warningText.gameObject.SetActive(true);
         sabotageUI.SetActive(true);
         yield return new WaitForSeconds(7);
-        warning.SetActive(false);
+        warningText.gameObject.SetActive(false);
     }
 
     public void SetBackgroundImageColor(Sabotageable sabotageable){
-        Image image = backgroundAlphaImage.GetComponent<Image>();
-        TextMeshProUGUI warningText = warning.GetComponent<TextMeshProUGUI>();
-        if (sabotageable is Flammable){
-            image.color = new Color(255f/255f,102f/255f,0f,54f/255f);
-            warningText.text = "Warning - Fire on ship";
-            sabotageInfoTMP.text = "Find and put out the fire before the timer ends.";
-        } else {
-            image.color = new Color(0f,155f/255f,248f/255f,54f/255f);
-            warningText.text = "Warning - hole in ship";
-            sabotageInfoTMP.text = "Find and fix the hole in the ship before the timer ends.";
-        };
+        colorOverlay.color = sabotageable.color;
+        warningText.text = sabotageable.warningText;
+        sabotageInfoTMP.text = sabotageable.infoText;
     }
 
     public IEnumerator NotifySabotage(){
         if (NetworkManager.instance.GetMe() is Traitor){
-            SabotageNotificationUI.SetActive(true);
-            timerManager.StartTimer(Timer.sabotageTimer);
+            sabotageNotificationUI.SetActive(true);
+            timerManager.StartTimer(Timer.traitorSabotageTimer);
             yield return new WaitForSeconds(5f);
-            SabotageNotificationUI.SetActive(false);
+            sabotageNotificationUI.SetActive(false);
         }
         
     }
@@ -99,7 +90,7 @@ public class SabotageManager : MonoBehaviour{
     }
 
     public void LocalPlayerFixing() {
-        ClickAndHoldReminderUI.text = "";
+        clickAndHoldReminderUI.text = "";
         isFixing = true;
         fixingProgress.SetActive(true);
     }
@@ -112,9 +103,9 @@ public class SabotageManager : MonoBehaviour{
     }
 
     public IEnumerator ClickAndHold(){
-        ClickAndHoldReminderUI.text = "Click and hold to fix!";
+        clickAndHoldReminderUI.text = "Click and hold to fix!";
         yield return new WaitForSeconds(2f);
-        ClickAndHoldReminderUI.text = "";
+        clickAndHoldReminderUI.text = "";
     }
 
     public void SetAmountToFix(float amount) {
