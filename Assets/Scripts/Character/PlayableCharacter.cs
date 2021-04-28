@@ -6,7 +6,7 @@ public abstract class PlayableCharacter : Character {
     public GameObject ghostPrefab;
 
     public CurrentTaskUI currentTaskUI;
-
+    public GameObject deathUI;
     public TaskNotificationUI taskNotificationUI;
 
     public PlayerTile playerTile;
@@ -69,6 +69,7 @@ public abstract class PlayableCharacter : Character {
 
         PlayableCharacter newCharacter = newPlayer.GetComponent<PlayableCharacter>(); 
         NetworkManager.myCharacter = newCharacter; 
+        deathUI.SetActive(true);
     }
 
     [PunRPC]

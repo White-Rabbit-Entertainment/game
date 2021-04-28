@@ -11,6 +11,7 @@ public class PlayerSpawner : MonoBehaviour {
     public GameObject ghostPrefab;
     public GameObject loyalPrefab;
     public InventoryUI inventoryUI;
+    public GameObject deathUI;
     public CurrentTaskUI currentTaskUI;
     public GameSceneManager gameSceneManager;
     public TaskNotificationUI taskNotificationUI;
@@ -113,6 +114,7 @@ public class PlayerSpawner : MonoBehaviour {
         character.inventoryUI = inventoryUI;
         character.currentTaskUI = currentTaskUI;
         character.taskNotificationUI = taskNotificationUI;
+        character.deathUI = deathUI;
         NetworkManager.myCharacter = character;
        
         // Set the players starting team (so we can reference at the end of the
