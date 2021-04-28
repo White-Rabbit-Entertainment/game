@@ -8,35 +8,24 @@ using System;
 using TMPro;
 
 
-public class SettlementUI : MonoBehaviour
-{ 
+public class GameOverUI : MonoBehaviour { 
 
-    public GameSceneManager gameSceneManager;
-    public TaskManager taskManager;
+    [SerializeField] private GameSceneManager gameSceneManager;
 
     [SerializeField] private TMP_Text winningTeamText;
-    [SerializeField] private GameObject winnersGrid;
+    [SerializeField] private Transform winnersGrid;
     [SerializeField] private Button continueButton;
-    private Image backgroundImage;
-
-    void Start() {
-        backgroundImage = GetComponent<Image>();
-    }
+    
+    [SerializeField] private GameObject playerNamePrefab;
 
     // Update is called once per frame
-    public void OnGameOver(Team team) {
+    public void OnGameOver(Team winningTeam) {
+        GetComponent<Image>().color = winningTeam == Team.Traitor ? gameSceneManager.traitorColor : gameSceneManager.loyalColor; 
+        continueButton.onClick.AddListener(gameSceneManager.GoToLobby);
 
-        backgroundImage.color = team == Team.Traitor ? gameSceneManager.traitorColor : gameSceneManager.loyalColor; 
-
-        continueButton.onClick.AddListener(GoToLobby);
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        winningTeamText.text = NetworkManager.traitorNames.ToString();
-    }
-
-    void GoToLobby() {
-        NetworkManager.instance.ChangeScene("LobbyScene");
+        winningTeamText.text = "${Team} have won!";
+        foreach (string name in NetworkManager.traitorNames) {
+            PlayerTile tile = Instantiate(playerNamePrefab, winnersGrid).GetComponent<PlayerTile>();
+        }
     }
 }

@@ -9,7 +9,7 @@ public abstract class PlayableCharacter : Character {
 
     public TaskNotificationUI taskNotificationUI;
 
-    public GameObject playerTile;
+    public PlayerTile playerTile;
     public PlayersUI playersUI;
 
     public Task assignedMasterTask = null;

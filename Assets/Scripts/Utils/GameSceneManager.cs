@@ -21,11 +21,7 @@ public class GameSceneManager : MonoBehaviour {
     public TimerCountdown timerCountdown;
     public TaskCompletionUI taskCompletionUI;
 
-    public GameObject playersWonUI;
-    public GameObject traitorInfoUI;
-    public TextMeshProUGUI playerDescriptionText;
-    public Button nextButton;
-    public Text traitorName;
+    [SerializeField] private GameOverUI gameOverUI;
 
     public Color traitorColor = new Color(0.93f, 0.035f, 0.009f);
     public Color loyalColor = new Color(0.0f, 0.436f, 1.0f);
@@ -98,20 +94,11 @@ public class GameSceneManager : MonoBehaviour {
     public void EndGameRPC(Team winningTeam) {
         taskCompletionUI.UpdateBar();
         timerCountdown.Stop();
+        gameOverUI.OnGameOver(winningTeam);
         
-        nextButton.onClick.AddListener(GoToLobby);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.instance.GetMe().Freeze();
-
-        traitorName.text = string.Join(", ", NetworkManager.traitorNames);
-        playersWonUI.SetActive(true);
-        if (winningTeam == Team.Traitor) {
-            playerDescriptionText.text = "Traitors Won!";
-        }
-        else {
-            playerDescriptionText.text = "Loyals Won!";
-        }
     }
 
 
@@ -138,7 +125,7 @@ public class GameSceneManager : MonoBehaviour {
         return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
     }
 
-    void GoToLobby() {
+    public void GoToLobby() {
         NetworkManager.instance.ChangeScene("MenuScene");
     }
 }
