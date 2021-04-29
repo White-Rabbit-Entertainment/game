@@ -87,7 +87,6 @@ public class Sabotageable : Interactable {
         //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
         if (!isSabotaged && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) {
             DisableSabotageMarker();
-            sabotageManager.SetBackgroundImageColor(this);
             timerManager.StartTimer(Timer.sabotageTimer);
             View.RPC("Sabotage", RpcTarget.All);
             sabotageManager.SabotageStarted();
@@ -144,6 +143,7 @@ public class Sabotageable : Interactable {
     //Set task, set as true and give marker
     public IEnumerator SabotageEnumerator() {
         yield return new WaitForSeconds(5);
+        sabotageManager.SetBackgroundImageColor(this);
         AddTaskWithTimerRPC(Timer.sabotageTimer);
         task.isUndoable = false;
         task.description = "Fix the " + this.name + "";
