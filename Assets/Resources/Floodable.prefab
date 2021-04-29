@@ -5073,6 +5073,6 @@ MonoBehaviour:
   infoText: Find and fix the hole in the ship before the timer ends.
   amountToFix: 100
   playersThatFixed: []
-  animationObject: {fileID: 0}
+  animationObject: {fileID: 750903137948635293}
   fixTimeFactor: 7
   sabotageDelaySeconds: 5

@@ -216,7 +216,7 @@ MonoBehaviour:
   numberOfPlayersToFix: 1
   fixing: 0
   numberOfPlayersFixing: 0
-  sabotagedIndicator: {fileID: 0}
+  sabotagedIndicator: {fileID: 7780256929691103153}
   color: {r: 0.9339623, g: 0.32212156, b: 0.017621916, a: 0.29411766}
   warningText: Warning - Fire on ship
   infoText: Find and put out the fire before the timer ends.
@@ -286,6 +286,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18faec2a14493684d905501076799765, type: 3}
+--- !u!1 &7780256929691103153 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 198690, guid: 18faec2a14493684d905501076799765,
+    type: 3}
+  m_PrefabInstance: {fileID: 7780256929691035539}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7780256929691441191 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 458676, guid: 18faec2a14493684d905501076799765,
