@@ -11,7 +11,8 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Alpha_Body_MAT
-    second: {fileID: 2100000, guid: 9e401b4863ea5614887ee8a9eecccec8, type: 2}
+    second: {fileID: -8848810374240701247, guid: d9d64eb2896abb13ab08fa13ccd0f5be,
+      type: 3}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

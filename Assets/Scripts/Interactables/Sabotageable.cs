@@ -40,6 +40,7 @@ public class Sabotageable : Interactable {
         sabotageMarker.boxText = "SABOTAGE";
         sabotageMarker.TargetColor = Color.red;
         sabotageMarker.enabled = false;
+        sabotageMarker.NeedArrowIndicator = false;
     
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
         sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();
