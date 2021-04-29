@@ -222,7 +222,7 @@ MonoBehaviour:
   infoText: Find and put out the fire before the timer ends.
   amountToFix: 100
   playersThatFixed: []
-  animationObject: {fileID: 0}
+  animationObject: {fileID: 7780256929691103153}
   fixTimeFactor: 7
   sabotageDelaySeconds: 5
 --- !u!1001 &7780256929691035539
