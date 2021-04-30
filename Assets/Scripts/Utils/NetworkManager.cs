@@ -40,7 +40,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           int numberOfTraitors = 1;
 
           
-          List<GameObject> playerColorPrefabs = new List<GameObject>(Resources.LoadAll("Colors", typeof(GameObject)).Cast<GameObject>().ToArray());
+          List<GameObject> playerColorPrefabs = new List<GameObject>(Resources.LoadAll("PlayerPrefabs/Alive", typeof(GameObject)).Cast<GameObject>().ToArray());
           List<PlayerInfo> playerColors = new List<PlayerInfo>();
           foreach(GameObject playerColorPrefab in playerColorPrefabs) {
             playerColors.Add(playerColorPrefab.GetComponent<PlayerInfo>());
