@@ -12,8 +12,10 @@ public class PlayerInfo : MonoBehaviour {
 
     void Reset() {
         assetPath = AssetDatabase.GetAssetPath(gameObject);
-        assetPath = assetPath.Remove(assetPath.Length - ".prefab".Length, ".prefab".Length);
-        assetPath = assetPath.Remove(0, "Assets/Resources/".Length);
+        Debug.Log(assetPath);
+        assetPath = assetPath.Replace(".prefab", "");
+        assetPath = assetPath.Replace("Assets/Resources/", "");
+        Debug.Log(assetPath);
     }
 
     public static PlayerInfo Get(string assetPath) {

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &6104157456713734891
+--- !u!114 &-6595840063868633817
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16,7 +16,7 @@ MonoBehaviour:
   avatar: {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
   modelPrefab: {fileID: 0}
-  assetPath: Assets/Resources/Colors/Cook.prefab
+  assetPath: Colors/Cook
 --- !u!1001 &7843323068306382686
 PrefabInstance:
   m_ObjectHideFlags: 0
