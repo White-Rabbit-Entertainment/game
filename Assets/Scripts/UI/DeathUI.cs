@@ -9,9 +9,15 @@ public class DeathUI : MonoBehaviour {
 
     void OnEnable() {
         continueButton.onClick.AddListener(Continue);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        NetworkManager.instance.GetMe().Freeze();
     }
 
     void Continue() {
         gameObject.SetActive(false);
+        NetworkManager.instance.GetMe().Unfreeze();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }

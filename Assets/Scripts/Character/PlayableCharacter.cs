@@ -62,7 +62,7 @@ public abstract class PlayableCharacter : Character {
         UnassignTask();
 
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
-        GameObject newPlayer = PhotonNetwork.Instantiate(playerInfo.ghostPrefab.name, new Vector3(1,10,-10), Quaternion.identity);
+        GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,10,-10), Quaternion.identity);
 
         // Kill the player for everyone else
         GetComponent<PhotonView>().RPC("KillPlayer", RpcTarget.All, newPlayer.GetComponent<PhotonView>().ViewID);
@@ -70,6 +70,9 @@ public abstract class PlayableCharacter : Character {
         PlayableCharacter newCharacter = newPlayer.GetComponent<PlayableCharacter>(); 
         NetworkManager.myCharacter = newCharacter; 
         deathUI.gameObject.SetActive(true);
+
+
+        FindObjectOfType<OffScreenIndicator>().SetCamera();
     }
 
     [PunRPC]
@@ -79,6 +82,10 @@ public abstract class PlayableCharacter : Character {
         newCharacter.playersUI = playersUI;
         newCharacter.startingTeam = startingTeam;
         playersUI.SetToDead(newCharacter);
+      
+        GameObject body = Instantiate(playerInfo.ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
+        body.transform.parent = newCharacter.transform; // Sets the parent of the body to the player
+        // body.transform.position = newCharacter.transform.position + new Vector3(0,-1.2f, -0.2f);
 
         Destroy(gameObject);
     }
