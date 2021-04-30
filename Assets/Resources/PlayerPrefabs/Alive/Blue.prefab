@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorName: Blue
   avatar: {fileID: 9000000, guid: 109cf1011b598e4129eabec4230c1774, type: 3}
-  color: {r: 0, g: 0.47320843, b: 1, a: 0}
-  assetPath: Colors/Blue
+  color: {r: 0, g: 0.47320843, b: 1, a: 1}
+  assetPath: PlayerPrefabs/Alive/Blue
+  ghostPrefab: {fileID: 3609673097082007146, guid: 7d196459e34ef1820b6a34fd1d7a7fc4,
+    type: 3}
 --- !u!1001 &7504662416684098524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81,7 +83,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 109cf1011b598e4129eabec4230c1774,
         type: 3}
       propertyPath: m_Name
-      value: Swabby
+      value: Blue
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 109cf1011b598e4129eabec4230c1774, type: 3}

@@ -8,13 +8,12 @@ public class PlayerInfo : MonoBehaviour {
     public Avatar avatar;
     public Color color;
     public string assetPath;
+    public GameObject ghostPrefab;
 
     void Reset() {
         assetPath = AssetDatabase.GetAssetPath(gameObject);
-        Debug.Log(assetPath);
         assetPath = assetPath.Replace(".prefab", "");
         assetPath = assetPath.Replace("Assets/Resources/", "");
-        Debug.Log(assetPath);
     }
 
     public static PlayerInfo Get(string assetPath) {
