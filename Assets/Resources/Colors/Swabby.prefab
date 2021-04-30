@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-678898531403229620
+--- !u!114 &3948006311055739240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7270080168392334989}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d34e0849acb71140daaeecf23d602c0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d58961d564b105e8a0dd6fdb51c7049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Swabby
-  role: 3
-  avatar: {fileID: 9000000, guid: 109cf1011b598e4129eabec4230c1774, type: 3}
-  colour: {r: 0, g: 0.07825279, b: 1, a: 1}
+  colorName: 
+  avatar: {fileID: 0}
+  color: {r: 0, g: 0, b: 0, a: 0}
+  modelPrefab: {fileID: 0}
+  assetPath: Assets/Resources/Colors/Swabby.prefab
 --- !u!1001 &7504662416684098524
 PrefabInstance:
   m_ObjectHideFlags: 0

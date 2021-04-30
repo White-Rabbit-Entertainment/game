@@ -19,7 +19,7 @@ public class PlayerTile : MonoBehaviour {
 
     public void Init(PlayableCharacter player) {
         // Set colour of tile to match player role
-        GetComponent<Image>().color = player.roleInfo.colour; 
+        GetComponent<Image>().color = player.playerInfo.color; 
 
         // Set text to name
         TextMeshProUGUI playerName = GetComponentInChildren<TextMeshProUGUI>();

@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour {
 
   public Team team;
 
-  public RoleInfo roleInfo;
+  public PlayerInfo playerInfo;
 
   public Player Owner {
       get { return GetComponent<PhotonView>().Owner; }
@@ -27,8 +27,8 @@ public abstract class Character : MonoBehaviour {
       get { return GetComponent<PhotonView>(); }
     }
 
-  public Color Colour {
-      get { return roleInfo.colour; } 
+  public Color Color {
+      get { return playerInfo.color; } 
     }
 
   protected virtual void Start() {}
@@ -122,17 +122,15 @@ public abstract class Character : MonoBehaviour {
   }
 
   public bool Spawned() {
-    return roleInfo != null;
+    return playerInfo != null;
   } 
 
   [PunRPC]
-  public void AssignRole (Role role) {
-      string prefabName = role.ToString();
-      GameObject prefab = (GameObject)Resources.Load("Roles/" + prefabName, typeof(GameObject));
-      GameObject body = Instantiate(prefab, new Vector3(0,0,0), Quaternion.identity);
+  public void AssignRole (string assetPath) {
+      playerInfo = PlayerInfo.Get(assetPath);
+      GameObject body = Instantiate(playerInfo.modelPrefab, new Vector3(0,0,0), Quaternion.identity);
       body.transform.parent = transform; // Sets the parent of the body to the player
       body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
-      roleInfo = body.GetComponent<RoleInfo>();
-      GetComponent<Animator>().avatar = roleInfo.avatar;
+      GetComponent<Animator>().avatar = playerInfo.avatar;
   }
 }

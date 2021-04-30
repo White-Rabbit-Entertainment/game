@@ -34,7 +34,7 @@ public class SettingsMenu : MonoBehaviour {
         if (!player.IsMe()) {
           GameObject item = Instantiate(playerVolumeItem, playerVolumesList.transform);
           foreach (Image image in item.GetComponentsInChildren<Image>()) {
-            image.color = player.Colour; 
+            image.color = player.playerInfo.color; 
           }
 
           Slider slider = item.GetComponentInChildren<Slider>();

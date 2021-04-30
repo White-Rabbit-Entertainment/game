@@ -25,7 +25,7 @@ public class PlayerSpawner : MonoBehaviour {
     public List<GameObject> rolesPrefabs;
     public List<string> traitors; 
 
-    public RoleInfo roleInfo;
+    public PlayerInfo playerInfo;
 
     void Update() {
         // Wait till all players are in the scene.
@@ -33,7 +33,7 @@ public class PlayerSpawner : MonoBehaviour {
 
             // Then load in all the players
             LoadPlayer();
-            LoadAgents();
+            //LoadAgents();
 
             NetworkManager.instance.SetLocalPlayerProperty("Spawned", true);
             // Then this script has done its job (loaded in the player) so we can
@@ -67,18 +67,18 @@ public class PlayerSpawner : MonoBehaviour {
     // Each player runs this once all the players are in the scene.
     // TODO Potentially add mutliple spawn points, atm players are just spawned in at a set
     // location.
-    void LoadAgents() {
-        // Otherwise load in n agents which have the same role as the player
-        for(int i = 0; i < numberOfAgentsPerPlayer; i++){
-            // Spawn in the agent
-            GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, gameSceneManager.RandomNavmeshLocation(), Quaternion.identity);
-            agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
+    // void LoadAgents() {
+    //     // Otherwise load in n agents which have the same role as the player
+    //     for(int i = 0; i < numberOfAgentsPerPlayer; i++){
+    //         // Spawn in the agent
+    //         GameObject agent = PhotonNetwork.Instantiate(agentPrefab.name, gameSceneManager.RandomNavmeshLocation(), Quaternion.identity);
+    //         agent.GetComponent<AgentController>().interactablesGameObject = interactablesGameObject;
 
-            // Assign the same role as the player to the agent
-            Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
-            agent.GetComponent<PhotonView>().RPC("AssignRole", RpcTarget.All, role);
-        }
-    }
+    //         // Assign the same role as the player to the agent
+    //         Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
+    //         agent.GetComponent<PhotonView>().RPC("AssignRole", RpcTarget.All, role);
+    //     }
+    // }
 
     void LoadPlayer() {
         GameObject player;
@@ -107,8 +107,7 @@ public class PlayerSpawner : MonoBehaviour {
         PhotonView playerView = player.GetComponent<PhotonView>();
 
         // Assign a role
-        Role role = NetworkManager.instance.GetLocalPlayerProperty<Role>("Role");
-        playerView.RPC("AssignRole", RpcTarget.All, role);
+        playerView.RPC("AssignRole", RpcTarget.All, NetworkManager.instance.GetLocalPlayerProperty<string>("Color"));
 
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;

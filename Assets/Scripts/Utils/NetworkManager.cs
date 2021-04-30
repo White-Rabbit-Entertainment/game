@@ -39,20 +39,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           List<Player> players = GetPlayers();
           int numberOfTraitors = 1;
 
-          List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+          
+          List<GameObject> playerColorPrefabs = new List<GameObject>(Resources.LoadAll("Colors", typeof(GameObject)).Cast<GameObject>().ToArray());
+          List<PlayerInfo> playerColors = new List<PlayerInfo>();
+          foreach(GameObject playerColorPrefab in playerColorPrefabs) {
+            playerColors.Add(playerColorPrefab.GetComponent<PlayerInfo>());
+            Debug.Log("added item to playerinfo list");
+          }
 
           // Shuffle players and roles to ensure random team and role are assigned
-          roles.Shuffle();
+          playerColors.Shuffle();
           players.Shuffle();
 
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
-            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+            SetPlayerProperty("Color", playerColors[i % playerColors.Count].assetPath, players[i]);
           }
 
           for (int i = numberOfTraitors; i < players.Count; i++) {
             SetPlayerProperty("Team", Team.Loyal, players[i]);
-            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+            SetPlayerProperty("Color", playerColors[i % playerColors.Count].assetPath, players[i]);
           }
           SetRoomProperty("GameReady", true);
 

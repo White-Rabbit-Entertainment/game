@@ -16,7 +16,7 @@ public class Task : MonoBehaviour {
 
   public Timer timer = null;
 
-  private Interactable TaskInteractable {
+  public Interactable TaskInteractable {
     get { return GetComponent<Interactable>(); }
   }
   // This is the list of requirements that must be completed before this task

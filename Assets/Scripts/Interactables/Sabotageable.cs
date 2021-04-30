@@ -100,7 +100,6 @@ public class Sabotageable : Interactable {
             }
         }
     }
-
     
     public override void PrimaryInteractionOff(Character character) {
         //If a player is fixing sabotage but lets go of mouseclick then they stop fixing
