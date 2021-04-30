@@ -10,10 +10,10 @@ public class LobbyPage : MenuPage {
     public Text playerCounter;
     public Text roomName;
 
+    public Dictionary<int, GameObject> playerTiles = new Dictionary<int, GameObject>();
     public GameObject playerList;
     public Button toggleReadyButton;
-    public GameObject readyPlayerItemPrefab;
-    public GameObject unreadyPlayerItemPrefab;
+    public GameObject playerTilePrefab;
     [SerializeField] private ChatManager chatManager;
 
     public JoinRoomPage joinRoomPage;
@@ -45,7 +45,6 @@ public class LobbyPage : MenuPage {
         initialized = true;
       }
       if (initialized) {
-        SetText();
         if (NetworkManager.instance.AllPlayersReady()) {
           NetworkManager.instance.SetupGame();
           if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
@@ -57,25 +56,32 @@ public class LobbyPage : MenuPage {
       }
     }
 
-    void SetText() {
-      playerList.DestroyChildren();
-      foreach (Player player in NetworkManager.instance.GetPlayers()) {
-        GameObject playerItemPrefab; 
-        if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
-          playerItemPrefab = readyPlayerItemPrefab;
-        } else {
-          playerItemPrefab = unreadyPlayerItemPrefab;
-        }
-        GameObject item = Instantiate(playerItemPrefab, transform);
-        item.GetComponent<PlayerTile>().Init(player.NickName, new Color(255,0,0));
-        item.transform.SetParent(playerList.transform);
-        if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
-          item.GetComponent<PlayerTile>().EnableVotingFor();
-        } else {
-          item.GetComponent<PlayerTile>().EnableVotingAgainst();
-        }
+    public override void OnJoinedRoom() {
+      AddTile(PhotonNetwork.LocalPlayer);
+    }
+
+    public override void OnPlayerLeftRoom(Player player) {
+      Debug.Log(playerTiles.ToStringFull());
+      Destroy(playerTiles[player.ActorNumber]);
+      playerTiles.Remove(player.ActorNumber);
+    }
+
+    public override void OnPlayerEnteredRoom(Player player) {
+      AddTile(player);
+    }
+
+    void AddTile(Player player) {
+      GameObject item = Instantiate(playerTilePrefab, transform);
+      Debug.Log("adding playerTile to disct");
+      playerTiles.Add(player.ActorNumber, item);
+      item.GetComponent<PlayerTile>().Init(player.NickName, new Color(255,0,0));
+      item.transform.SetParent(playerList.transform);
+      item.GetComponent<PlayerTile>().Start();
+      if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
+        item.GetComponent<PlayerTile>().EnableVotingFor();
+      } else {
+        item.GetComponent<PlayerTile>().EnableVotingAgainst();
       }
-      
       playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
     }
 

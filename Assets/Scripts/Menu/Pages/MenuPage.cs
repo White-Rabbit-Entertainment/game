@@ -19,5 +19,6 @@ public class MenuPage: MonoBehaviourPunCallbacks {
 
   public virtual void Close() {
     gameObject.SetActive(false);
-  } 
+  }
+
 }

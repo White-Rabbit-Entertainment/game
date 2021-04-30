@@ -15,6 +15,8 @@ public class PlayerTile : MonoBehaviour {
         votingAgainst = transform.Find("VoteAgainst").gameObject;
         cross = transform.Find("Cross").gameObject;
         votingMark = transform.Find("votingMarkAppear").gameObject;
+        Debug.Log(votingFor);
+        Debug.Log(votingAgainst);
     }
 
     public void Init(string name, Color color) {
