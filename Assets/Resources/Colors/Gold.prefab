@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d58961d564b105e8a0dd6fdb51c7049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorName: 
-  avatar: {fileID: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
-  modelPrefab: {fileID: 0}
-  assetPath: Colors/Captain
+  colorName: Gold
+  avatar: {fileID: 9000000, guid: d0a6a212442e5abe2a313bd6db38bc35, type: 3}
+  color: {r: 1, g: 0.76540077, b: 0, a: 0}
+  assetPath: Colors/Gold
 --- !u!1001 &6429171320383892322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82,7 +81,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d0a6a212442e5abe2a313bd6db38bc35,
         type: 3}
       propertyPath: m_Name
-      value: Captain
+      value: Gold
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: d0a6a212442e5abe2a313bd6db38bc35, type: 3}

@@ -7,7 +7,6 @@ public class PlayerInfo : MonoBehaviour {
     public string colorName;
     public Avatar avatar;
     public Color color;
-    public GameObject modelPrefab;
     public string assetPath;
 
     void Reset() {
@@ -19,14 +18,16 @@ public class PlayerInfo : MonoBehaviour {
     }
 
     public static PlayerInfo Get(string assetPath) {
-        Debug.Log(assetPath);
         return Resources.Load<GameObject>(assetPath).GetComponent<PlayerInfo>();
     }
+    
+    public static GameObject GetPrefab(string assetPath) {
+        return Resources.Load<GameObject>(assetPath);
+    }
 
-    public PlayerInfo(string colorName, Avatar avatar, Color color, GameObject modelPrefab) {
+    public PlayerInfo(string colorName, Avatar avatar, Color color) {
         this.colorName = colorName;
         this.avatar = avatar;
         this.color = color;
-        this.modelPrefab = modelPrefab;
     }
 }

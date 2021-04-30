@@ -127,8 +127,9 @@ public abstract class Character : MonoBehaviour {
 
   [PunRPC]
   public void AssignRole (string assetPath) {
-      playerInfo = PlayerInfo.Get(assetPath);
-      GameObject body = Instantiate(playerInfo.modelPrefab, new Vector3(0,0,0), Quaternion.identity);
+      GameObject playerPrefab = PlayerInfo.GetPrefab(assetPath);
+      playerInfo = playerPrefab.GetComponent<PlayerInfo>();
+      GameObject body = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
       body.transform.parent = transform; // Sets the parent of the body to the player
       body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
       GetComponent<Animator>().avatar = playerInfo.avatar;
