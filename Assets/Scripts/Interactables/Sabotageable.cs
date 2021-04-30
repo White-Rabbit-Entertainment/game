@@ -129,8 +129,7 @@ public class Sabotageable : Interactable {
         if (!isSabotaged && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) return true;
         // If a sabotage has started then any player can attempt to fix        
         if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
-        return true;
-        
+        return false;
     }
 
     [PunRPC]
