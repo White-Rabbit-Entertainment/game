@@ -17,6 +17,11 @@ public class PlayerTile : MonoBehaviour {
         votingMark = transform.Find("votingMarkAppear").gameObject;
     }
 
+    public void Init(string name, Color color) {
+        GetComponentInChildren<TextMeshProUGUI>().text = name;
+        GetComponent<Image>().color = color;
+    }
+
     public void Init(PlayableCharacter player) {
         // Set colour of tile to match player role
         GetComponent<Image>().color = player.playerInfo.color; 
