@@ -60,6 +60,9 @@ public class PlayerMovement : MonoBehaviourPun
         Vector3 finalMove = move.x * transform.right + move.y * transform.up + move.z * transform.forward;
         playerController.Move(finalMove);
 
+        if (Input.GetKeyDown(KeyCode.K)) {
+            NetworkManager.instance.GetMe().Kill();
+        }
     }
 
 }

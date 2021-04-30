@@ -5,8 +5,7 @@ public class Ghost : PlayableCharacter {
 
   public override void Freeze() {
     // When GHOST movement is added this will need to change
-    GetComponent<PlayerMovement>().enabled = false;
-    GetComponentInChildren<CameraMouseLook>().enabled = false;
+    base.Freeze();
   }
 }
                                          
