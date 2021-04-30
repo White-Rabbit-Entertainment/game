@@ -67,7 +67,7 @@ public class LobbyPage : MenuPage {
           playerItemPrefab = unreadyPlayerItemPrefab;
         }
         GameObject item = Instantiate(playerItemPrefab, transform);
-        item.GetComponentInChildren<Text>().text = player.NickName;
+        item.GetComponent<PlayerTile>().Init(player.NickName, new Color(255,0,0));
         item.transform.SetParent(playerList.transform);
       }
       
