@@ -10,11 +10,13 @@ public class PlayerInfo : MonoBehaviour {
     public string assetPath;
     public GameObject ghostPrefab;
 
-    void Reset() {
-        assetPath = AssetDatabase.GetAssetPath(gameObject);
-        assetPath = assetPath.Replace(".prefab", "");
-        assetPath = assetPath.Replace("Assets/Resources/", "");
-    }
+    #if UNITY_EDITOR
+        void Reset() {
+            assetPath = AssetDatabase.GetAssetPath(gameObject);
+            assetPath = assetPath.Replace(".prefab", "");
+            assetPath = assetPath.Replace("Assets/Resources/", "");
+        }
+    #endif
 
     public static PlayerInfo Get(string assetPath) {
         return Resources.Load<GameObject>(assetPath).GetComponent<PlayerInfo>();

@@ -69,6 +69,11 @@ public class LobbyPage : MenuPage {
         GameObject item = Instantiate(playerItemPrefab, transform);
         item.GetComponent<PlayerTile>().Init(player.NickName, new Color(255,0,0));
         item.transform.SetParent(playerList.transform);
+        if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
+          item.GetComponent<PlayerTile>().EnableVotingFor();
+        } else {
+          item.GetComponent<PlayerTile>().EnableVotingAgainst();
+        }
       }
       
       playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
