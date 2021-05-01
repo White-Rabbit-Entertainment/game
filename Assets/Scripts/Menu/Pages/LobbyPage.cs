@@ -28,12 +28,14 @@ public class LobbyPage : MenuPage {
     }
 
     void OnEnable() {
+      Debug.Log("happening");
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
       initialized = false;
       enteredRoom = false;
       back.onClick.AddListener(Back);
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
+      // chatManager.Init();
       chatManager.JoinRoomChat(PhotonNetwork.CurrentRoom);
       playerTiles = new Dictionary<Player, GameObject>();
      
