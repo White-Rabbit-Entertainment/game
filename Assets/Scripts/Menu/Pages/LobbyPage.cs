@@ -57,7 +57,16 @@ public class LobbyPage : MenuPage {
     }
 
     public override void OnJoinedRoom() {
-      AddTile(PhotonNetwork.LocalPlayer);
+      foreach (Player player in NetworkManager.instance.GetPlayers()) {
+        AddTile(player);
+      }
+    }
+
+    public override void OnLeftRoom() {
+      foreach (Player player in NetworkManager.instance.GetPlayers()) {
+        Destroy(playerTiles[player.ActorNumber]);
+        playerTiles.Remove(player.ActorNumber);
+      }
     }
 
     public override void OnPlayerLeftRoom(Player player) {
