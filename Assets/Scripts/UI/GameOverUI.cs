@@ -14,16 +14,23 @@ public class GameOverUI : MonoBehaviour {
 
     [SerializeField] private TMP_Text winningTeamText;
     [SerializeField] private Transform winnersGrid;
-    [SerializeField] private Button continueButton;
+    // [SerializeField] private Button continueButton;
     
     [SerializeField] private GameObject playerNamePrefab;
+    
+    IEnumerator SwitchScenes() {
+        yield return new WaitForSeconds(4f);
+        gameSceneManager.GoToLobby();
+    }
 
     // Update is called once per frame
     public void OnGameOver(Team winningTeam) {
+    
+        
 
         Debug.Log("Ongame over happening");
         GetComponent<Image>().color = winningTeam == Team.Traitor ? gameSceneManager.traitorColor : gameSceneManager.loyalColor; 
-        continueButton.onClick.AddListener(gameSceneManager.GoToLobby);
+        // continueButton.onClick.AddListener(gameSceneManager.GoToLobby);
 
         int numberOfTraitors = 0;
         foreach (PlayableCharacter player in FindObjectsOfType<PlayableCharacter>()) {
