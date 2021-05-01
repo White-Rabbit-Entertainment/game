@@ -6,8 +6,7 @@ using Photon.Chat;
 using Photon.Pun;     
 using Photon.Realtime;     
 
-public class ChatManager : MonoBehaviour, IChatClientListener 
-{
+public class ChatManager : MonoBehaviour, IChatClientListener {
     private ChatClient Client {
         get {return NetworkManager.chatClient;}
     }     
