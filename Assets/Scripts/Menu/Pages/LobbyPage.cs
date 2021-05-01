@@ -5,12 +5,13 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyPage : MenuPage {
     public Text playerCounter;
     public Text roomName;
 
-    public Dictionary<int, GameObject> playerTiles = new Dictionary<int, GameObject>();
+    public Dictionary<Player, GameObject> playerTiles = new Dictionary<Player, GameObject>();
     public GameObject playerList;
     public Button toggleReadyButton;
     public GameObject playerTilePrefab;
@@ -34,7 +35,7 @@ public class LobbyPage : MenuPage {
       back.onClick.AddListener(Back);
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
       chatManager.JoinRoomChat(PhotonNetwork.CurrentRoom);
-      playerTiles = new Dictionary<int, GameObject>();
+      playerTiles = new Dictionary<Player, GameObject>();
     }
 
     void Update() {
@@ -67,18 +68,12 @@ public class LobbyPage : MenuPage {
       Debug.Log("DestroyingChildren");
       playerList.DestroyChildren();
       playerTiles = null;
-      // Destroy(playerTiles[PhotonNetwork.LocalPlayer.ActorNumber]);
-      // playerTiles.Remove(PhotonNetwork.LocalPlayer.ActorNumber);
-      // foreach (Player player in NetworkManager.instance.GetPlayers()) {
-      //   Destroy(playerTiles[player.ActorNumber]);
-      //   playerTiles.Remove(player.ActorNumber);
-      // }
     }
 
     public override void OnPlayerLeftRoom(Player player) {
       Debug.Log(playerTiles.ToStringFull());
-      Destroy(playerTiles[player.ActorNumber]);
-      playerTiles.Remove(player.ActorNumber);
+      Destroy(playerTiles[player]);
+      playerTiles.Remove(player);
     }
 
     public override void OnPlayerEnteredRoom(Player player) {
@@ -88,7 +83,7 @@ public class LobbyPage : MenuPage {
     void AddTile(Player player) {
       GameObject item = Instantiate(playerTilePrefab, transform);
       Debug.Log("adding playerTile to disct");
-      playerTiles.Add(player.ActorNumber, item);
+      playerTiles.Add(player, item);
       item.GetComponent<PlayerTile>().Init(player.NickName, new Color(255,0,0));
       item.transform.SetParent(playerList.transform);
       item.GetComponent<PlayerTile>().Start();
@@ -98,6 +93,19 @@ public class LobbyPage : MenuPage {
         item.GetComponent<PlayerTile>().EnableVotingAgainst();
       }
       playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player player, Hashtable changedProperties) {
+      Debug.Log("player properties update");
+      if (changedProperties.ContainsKey("Ready")) {
+        if (NetworkManager.instance.GetProperty<bool>("Ready", changedProperties)) {
+          playerTiles[player].GetComponent<PlayerTile>().DisableVotingAgainst();
+          playerTiles[player].GetComponent<PlayerTile>().EnableVotingFor();
+        } else {
+          playerTiles[player].GetComponent<PlayerTile>().DisableVotingFor();
+          playerTiles[player].GetComponent<PlayerTile>().EnableVotingAgainst();
+        }
+      }
     }
 
     void ToggleReady() {

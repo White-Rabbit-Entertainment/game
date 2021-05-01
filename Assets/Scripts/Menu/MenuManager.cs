@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class MenuManager: MonoBehaviourPunCallbacks {
 
@@ -55,6 +56,10 @@ public class MenuManager: MonoBehaviourPunCallbacks {
                 webRTC.EndCall(player.ActorNumber);
             }
         }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player player, Hashtable changedProperties) {
+        currentPage.OnPlayerPropertiesUpdate(player, changedProperties);
     }
 
     public override void OnPlayerEnteredRoom(Player player) {
