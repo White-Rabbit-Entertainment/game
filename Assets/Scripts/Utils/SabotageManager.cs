@@ -11,6 +11,7 @@ public class SabotageManager : MonoBehaviour{
     private bool isFixing = false;
 
     [SerializeField] private  GameObject sabotageUI;
+    [SerializeField] private  GameObject taskUI;
 
     [SerializeField] private Image colorOverlay;
     [SerializeField] private TextMeshProUGUI warningText;
@@ -58,6 +59,7 @@ public class SabotageManager : MonoBehaviour{
         inSabotage = true;
         warningText.gameObject.SetActive(true);
         sabotageUI.SetActive(true);
+        taskUI.SetActive(false);
         yield return new WaitForSeconds(7);
         warningText.gameObject.SetActive(false);
     }
@@ -86,6 +88,7 @@ public class SabotageManager : MonoBehaviour{
     public void SabotageFixedRPC() {
         inSabotage = false;
         sabotageUI.SetActive(false);
+        taskUI.SetActive(true);
         fixingProgress.SetActive(false);
     }
 
