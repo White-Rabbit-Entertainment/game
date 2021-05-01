@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine;
+using Photon.Chat;     
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -20,6 +21,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
+
+    // Static chat client reference (shared between scenes)
+    public static ChatClient chatClient;
+
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     void Start() {

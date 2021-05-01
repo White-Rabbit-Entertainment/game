@@ -8,7 +8,9 @@ using Photon.Realtime;
 
 public class ChatManager : MonoBehaviour, IChatClientListener 
 {
-    private ChatClient client;       
+    private ChatClient Client {
+        get {return NetworkManager.chatClient;}
+    }     
     private string AppID = "d0a5737b-396c-4990-8cde-19b4eadbd95e";            
     private string AppVersion;       
 
@@ -20,33 +22,35 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     [SerializeField] private GameObject chatMessagePrefab;
     
     public void Init() {
-        client = new ChatClient(this);
-        AppVersion = "1.0.0";    
-        client.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
-        sendButton.onClick.AddListener(SendMsg);
-        DontDestroyOnLoad(gameObject);
+        if (NetworkManager.chatClient == null) {
+            NetworkManager.chatClient = new ChatClient(this);
+            AppVersion = "1.0.0";    
+            NetworkManager.chatClient.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
+            sendButton.onClick.AddListener(SendMsg);
+            DontDestroyOnLoad(gameObject);
+        }
     }
  
     void Update() {
-        if (client != null)    
+        if (Client != null)    
         {
-            client.Service(); 
+            Client.Service(); 
         }
     }
     
     public void JoinRoomChat(Room room) {
         Debug.Log("Joining romm chat");
-        client.Subscribe(new string[] { room.Name }); 
-        client.SetOnlineStatus(ChatUserStatus.Online);
+        Client.Subscribe(new string[] { room.Name }); 
+        Client.SetOnlineStatus(ChatUserStatus.Online);
     }
     
     public void LeaveRoomChat(Room room) {
-        client.Unsubscribe(new string[] { room.Name }); 
+        Client.Unsubscribe(new string[] { room.Name }); 
     }
 
     public void SendMsg() {
         Debug.Log(msgInput.text);
-        client.PublishMessage(PhotonNetwork.CurrentRoom.Name, msgInput.text);
+        Client.PublishMessage(PhotonNetwork.CurrentRoom.Name, msgInput.text);
         msgInput.Clear();
     }
      
@@ -61,7 +65,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
  
     public void OnSubscribed(string[] channels, bool[] results) {
         foreach(var channel in channels){
-            this.client.PublishMessage(channel,"joined");
+            Client.PublishMessage(channel,"joined");
         }
     }
  
