@@ -26,8 +26,6 @@ public class GameOverUI : MonoBehaviour {
     // Update is called once per frame
     public void OnGameOver(Team winningTeam) {
     
-        StartCoroutine("SwitchScenes");
-
         Debug.Log("Ongame over happening");
         GetComponent<Image>().color = winningTeam == Team.Traitor ? gameSceneManager.traitorColor : gameSceneManager.loyalColor; 
         // continueButton.onClick.AddListener(gameSceneManager.GoToLobby);
@@ -56,5 +54,6 @@ public class GameOverUI : MonoBehaviour {
         }
         
         gameObject.SetActive(true);
+        StartCoroutine("SwitchScenes");
     }
 }
