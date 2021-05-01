@@ -47,8 +47,8 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     }
 
     public override void OnLeftRoom() {
-        joinRoomPage.Open();
         currentPage.OnLeftRoom();
+        joinRoomPage.Open();
         
         foreach (Player player in NetworkManager.instance.GetPlayers()) {
             if (PhotonNetwork.LocalPlayer != player) {

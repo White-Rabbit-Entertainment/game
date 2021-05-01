@@ -34,6 +34,7 @@ public class LobbyPage : MenuPage {
       back.onClick.AddListener(Back);
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
       chatManager.JoinRoomChat(PhotonNetwork.CurrentRoom);
+      playerTiles = new Dictionary<int, GameObject>();
     }
 
     void Update() {
@@ -63,12 +64,15 @@ public class LobbyPage : MenuPage {
     }
 
     public override void OnLeftRoom() {
-      Destroy(playerTiles[PhotonNetwork.LocalPlayer.ActorNumber]);
-        playerTiles.Remove(PhotonNetwork.LocalPlayer.ActorNumber);
-      foreach (Player player in NetworkManager.instance.GetPlayers()) {
-        Destroy(playerTiles[player.ActorNumber]);
-        playerTiles.Remove(player.ActorNumber);
-      }
+      Debug.Log("DestroyingChildren");
+      playerList.DestroyChildren();
+      playerTiles = null;
+      // Destroy(playerTiles[PhotonNetwork.LocalPlayer.ActorNumber]);
+      // playerTiles.Remove(PhotonNetwork.LocalPlayer.ActorNumber);
+      // foreach (Player player in NetworkManager.instance.GetPlayers()) {
+      //   Destroy(playerTiles[player.ActorNumber]);
+      //   playerTiles.Remove(player.ActorNumber);
+      // }
     }
 
     public override void OnPlayerLeftRoom(Player player) {
