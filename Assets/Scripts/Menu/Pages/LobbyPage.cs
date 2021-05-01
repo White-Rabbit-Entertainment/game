@@ -36,6 +36,11 @@ public class LobbyPage : MenuPage {
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
       chatManager.JoinRoomChat(PhotonNetwork.CurrentRoom);
       playerTiles = new Dictionary<Player, GameObject>();
+     
+      // Draw all the palyer tiles
+      foreach (Player player in NetworkManager.instance.GetPlayers()) {
+        AddTile(player);
+      }
     }
 
     void Update() {
@@ -58,11 +63,7 @@ public class LobbyPage : MenuPage {
       }
     }
 
-    public override void OnJoinedRoom() {
-      foreach (Player player in NetworkManager.instance.GetPlayers()) {
-        AddTile(player);
-      }
-    }
+    public override void OnJoinedRoom() {}
 
     public override void OnLeftRoom() {
       Debug.Log("DestroyingChildren");

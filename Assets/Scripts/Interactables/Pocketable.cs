@@ -43,7 +43,7 @@ public class Pocketable : Interactable {
  
   public override void OnParentTaskUncomplete() {
     // Move to random position
-    View.RPC("SetItemDropConditions", RpcTarget.All, gameSceneManager.RandomNavmeshLocation(50f));
+    View.RPC("SetItemDropConditions", RpcTarget.All, gameSceneManager.RandomNavmeshLocation(50f) + new Vector3(0f, 1f, 0f));
     task.Uncomplete();
   }
 }
