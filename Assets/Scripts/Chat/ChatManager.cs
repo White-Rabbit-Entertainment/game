@@ -27,13 +27,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             AppVersion = "1.0.0";    
             NetworkManager.chatClient.Connect(AppID, AppVersion, new Photon.Chat.AuthenticationValues(PhotonNetwork.LocalPlayer.NickName));
             sendButton.onClick.AddListener(SendMsg);
-            DontDestroyOnLoad(gameObject);
         }
     }
  
     void Update() {
-        if (Client != null)    
-        {
+        if (Client != null) {
             Client.Service(); 
         }
     }
