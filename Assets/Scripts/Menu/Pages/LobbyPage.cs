@@ -63,6 +63,8 @@ public class LobbyPage : MenuPage {
     }
 
     public override void OnLeftRoom() {
+      Destroy(playerTiles[PhotonNetwork.LocalPlayer.ActorNumber]);
+        playerTiles.Remove(PhotonNetwork.LocalPlayer.ActorNumber);
       foreach (Player player in NetworkManager.instance.GetPlayers()) {
         Destroy(playerTiles[player.ActorNumber]);
         playerTiles.Remove(player.ActorNumber);
