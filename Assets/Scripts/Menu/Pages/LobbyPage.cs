@@ -99,10 +99,10 @@ public class LobbyPage : MenuPage {
       Debug.Log("player properties update");
       if (changedProperties.ContainsKey("Ready")) {
         if (NetworkManager.instance.GetProperty<bool>("Ready", changedProperties)) {
-          playerTiles[player].GetComponent<PlayerTile>().DisableVotingAgainst();
+          playerTiles[player].GetComponent<PlayerTile>().EnableVotingAgainst(false);
           playerTiles[player].GetComponent<PlayerTile>().EnableVotingFor();
         } else {
-          playerTiles[player].GetComponent<PlayerTile>().DisableVotingFor();
+          playerTiles[player].GetComponent<PlayerTile>().EnableVotingFor(false);
           playerTiles[player].GetComponent<PlayerTile>().EnableVotingAgainst();
         }
       }
