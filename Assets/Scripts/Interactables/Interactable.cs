@@ -149,7 +149,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void OnParentTaskUncomplete() {}
 
   // When we remove iteractablility from an item it should stop glowing.
-  void OnDestroy() {
+  protected virtual void OnDestroy() {
     outline.enabled = false;
   }
 
@@ -293,6 +293,15 @@ public abstract class Interactable : MonoBehaviourPun {
       }
     }
     return softRequirements;
+  }
+
+  public virtual void OnEnterPlayerRadius() {
+    inRange = true;
+  }
+  
+  public virtual void OnExitPlayerRadius() {
+    if (task != null) task.DisableUndoneMarker();
+    inRange = false;
   }
 
 }

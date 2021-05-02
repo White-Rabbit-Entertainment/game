@@ -53,6 +53,7 @@ public class SabotageManager : MonoBehaviour{
     [PunRPC]
     public IEnumerator SabotageStartedRPC() {
         StartCoroutine(NotifySabotage());
+        // Wait till sabotage starts
         yield return new WaitForSeconds(5);
         numPlayersFixing = 0;
         timerManager.StartTimer(Timer.sabotageTimer);
@@ -60,6 +61,12 @@ public class SabotageManager : MonoBehaviour{
         warningText.gameObject.SetActive(true);
         sabotageUI.SetActive(true);
         taskUI.SetActive(false);
+
+        PlayableCharacter me = NetworkManager.instance.GetMe();
+        if (me is Loyal) {
+            me.DisableTaskMarker();
+        }
+
         yield return new WaitForSeconds(7);
         warningText.gameObject.SetActive(false);
     }
@@ -77,19 +84,14 @@ public class SabotageManager : MonoBehaviour{
             yield return new WaitForSeconds(5f);
             sabotageNotificationUI.SetActive(false);
         }
-        
     }
 
     public void SabotageFixed() {
-        GetComponent<PhotonView>().RPC("SabotageFixedRPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    public void SabotageFixedRPC() {
         inSabotage = false;
         sabotageUI.SetActive(false);
         taskUI.SetActive(true);
         fixingProgress.SetActive(false);
+        Timer.sabotageTimer.End();
     }
 
     public void LocalPlayerFixing() {

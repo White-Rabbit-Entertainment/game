@@ -57,6 +57,18 @@ public abstract class PlayableCharacter : Character {
         assignedMasterTask = null;
     }
 
+    public void DisableTaskMarker() {
+        if (assignedSubTask != null) {
+            assignedSubTask.DisableTaskMarker();
+        }
+    }
+    
+    public void EnableTaskMarker() {
+        if (assignedSubTask != null) {
+            assignedSubTask.EnableTaskMarker();
+        }
+    }
+
     [PunRPC]
     public void Kill() {
         UnassignTask();

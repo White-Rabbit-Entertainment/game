@@ -51,11 +51,6 @@ public class Sabotageable : Interactable {
         /* Master client checks if sabotage is sabotaged and then broadcasts how much is left for each player to fix, the number of players
         currently fixing and updating the amount of fixing needing to be done
         */
-        if (isSabotaged) {
-            DisableSabotageMarker();
-        } else {
-            EnableSabotageMarker();
-        }
         if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged) {
             sabotageManager.SetAmountToFix(amountToFix);
             sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
@@ -63,7 +58,6 @@ public class Sabotageable : Interactable {
             //If there is no more to fix then call fix RPC for all players i.e. tell each player that sabotage is fixed and finished and inform the sabotagen manager of that
             if (amountToFix <= 0) {
                 View.RPC("Fix", RpcTarget.All); 
-                sabotageManager.SabotageFixed();
             }
         }
     }
@@ -140,6 +134,7 @@ public class Sabotageable : Interactable {
     //Start sabotage after a given number of seconds
     //Set task, set as true and give marker
     public IEnumerator SabotageEnumerator() {
+        DisableSabotageMarker();
         yield return new WaitForSeconds(5);
         sabotageManager.SetBackgroundImageColor(this);
         AddTaskWithTimerRPC(Timer.sabotageTimer);
@@ -153,14 +148,23 @@ public class Sabotageable : Interactable {
     public virtual void Fix() {
         // If the sabotagable is fully fixed
         isSabotaged = false;
-        task.CompleteRPC(false);
+
         // Tell everyone that the task is now completed
-        // TODO Delete the task for everyone
-        DisableTaskMarker();
-        Timer.sabotageTimer.End();
-        Destroy(GetComponent<Task>());
+        task.CompleteRPC(false);
         task = null;
+        Destroy(GetComponent<Task>());
+        DisableTaskMarker();
+        
+        sabotageManager.SabotageFixed();
         animationObject.SetActive(false);
+
+        PlayableCharacter me = NetworkManager.instance.GetMe();
+        if (inRange && me is Traitor) {
+            EnableSabotageMarker();
+        } else if (me is Loyal) {
+            me.EnableTaskMarker();
+        }
+
         // After an item is fixed its no longer interactable for anyone
         Destroy(this);
     }
@@ -168,5 +172,24 @@ public class Sabotageable : Interactable {
     public IEnumerator StartAnimation(){
         yield return new WaitForSeconds(5);
         animationObject.SetActive(true);
+    }
+
+    public override void OnEnterPlayerRadius() {
+        Debug.Log("On enter player radius");
+        base.OnEnterPlayerRadius();
+        if (NetworkManager.instance.GetMe() is Traitor && !isSabotaged) {
+            EnableSabotageMarker();
+        }
+    }
+    
+    public override void OnExitPlayerRadius() {
+        Debug.Log("On exit player radius");
+        base.OnExitPlayerRadius();
+        DisableSabotageMarker();
+    }
+
+    protected virtual void OnDestroy() {
+        base.OnDestroy();
+        DisableSabotageMarker();
     }
 }
