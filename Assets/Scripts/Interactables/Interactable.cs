@@ -37,8 +37,8 @@ public abstract class Interactable : MonoBehaviourPun {
   public string playerAnimationTrigger;
 
   private Outline outline;
-  private Target taskMarker;
-  private Target undoneMarker;
+  protected Target taskMarker;
+  protected Target undoneMarker;
   
   public Task task;
   public PhotonView View {
@@ -183,7 +183,9 @@ public abstract class Interactable : MonoBehaviourPun {
       if (parentTask != null) {
         task.parent = parentTask;
       } else {
-        task.taskManager.AddTask(task);
+        if (!(this is Sabotageable)) {
+          task.taskManager.AddTask(task);
+        }
       }
   }
 

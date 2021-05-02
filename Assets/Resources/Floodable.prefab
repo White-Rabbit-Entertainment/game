@@ -5071,6 +5071,7 @@ MonoBehaviour:
   color: {r: 0.11961552, g: 0.40338278, b: 0.7924528, a: 0.29411766}
   warningText: Warning - hole in ship
   infoText: Find and fix the hole in the ship before the timer ends.
+  sabotageTargetText: Flood
   amountToFix: 100
   playersThatFixed: []
   animationObject: {fileID: 750903137948635293}

@@ -15,6 +15,7 @@ public class Sabotageable : Interactable {
     public Color color;
     public string warningText;
     public string infoText;
+    [SerializeField] private string sabotageTargetText; 
 
     public float amountToFix = 100f;
 
@@ -41,6 +42,9 @@ public class Sabotageable : Interactable {
         sabotageMarker.TargetColor = Color.red;
         sabotageMarker.enabled = false;
         sabotageMarker.NeedArrowIndicator = false;
+
+        taskMarker.TargetColor = Color.red;
+        taskMarker.boxText = sabotageTargetText;  
     
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
         sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();

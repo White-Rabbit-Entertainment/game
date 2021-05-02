@@ -220,6 +220,7 @@ MonoBehaviour:
   color: {r: 0.9339623, g: 0.32212156, b: 0.017621916, a: 0.29411766}
   warningText: Warning - Fire on ship
   infoText: Find and put out the fire before the timer ends.
+  sabotageTargetText: Fire
   amountToFix: 100
   playersThatFixed: []
   animationObject: {fileID: 7780256929691103153}

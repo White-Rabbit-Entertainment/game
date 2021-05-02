@@ -23,6 +23,8 @@ public class TaskManager : MonoBehaviourPun {
 
   void Start() {
     tasks = new List<Task>();
+
+    // Every 5 seconds update the task bar ui
     InvokeRepeating("UpdateTaskBar", 5f, 5f);
   }
 
