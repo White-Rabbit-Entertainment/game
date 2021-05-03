@@ -26,6 +26,7 @@ public class Sabotageable : Interactable {
     private GameSceneManager gameSceneManager;
     private TimerManager timerManager;
     private SabotageManager sabotageManager;
+    private VotingManager votingManager;
 
     public int fixTimeFactor = 7;
 
@@ -51,6 +52,7 @@ public class Sabotageable : Interactable {
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
         sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();
         timerManager = GameObject.Find("/TimerManager").GetComponent<TimerManager>();
+        votingManager = GameObject.Find("/VoteManager").GetComponent<VotingManager>();
     }
 
     void Update() {
@@ -124,7 +126,7 @@ public class Sabotageable : Interactable {
     
     public override bool CanInteract(Character character) {
         //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
-        if (!isSabotaged && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) return true;
+        if (!isSabotaged && !votingManager.voteInProgress && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) return true;
         // If a sabotage has started then any player can attempt to fix        
         if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
         return false;

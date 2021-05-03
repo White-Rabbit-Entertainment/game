@@ -57,7 +57,7 @@ public class VotingManager : MonoBehaviour {
   }      
 
   public void InitVote(int suspectedPlayerId, int voteLeaderId) {
-    if (!voteStarted) {
+    if (!voteStarted && !Timer.sabotageTimer.IsStarted()) {
       timerManager.StartTimer(Timer.voteTimer);
       GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, suspectedPlayerId, voteLeaderId);
     } else {
