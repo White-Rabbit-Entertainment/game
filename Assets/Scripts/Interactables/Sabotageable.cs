@@ -52,7 +52,7 @@ public class Sabotageable : Interactable {
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
         sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();
         timerManager = GameObject.Find("/TimerManager").GetComponent<TimerManager>();
-        votingManager = GameObject.Find("/VoteManager").GetComponent<VotingManager>();
+        votingManager = GameObject.Find("/VotingManager").GetComponent<VotingManager>();
     }
 
     void Update() {
