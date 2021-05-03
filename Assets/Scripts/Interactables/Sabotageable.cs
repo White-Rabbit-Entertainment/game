@@ -17,6 +17,7 @@ public class Sabotageable : Interactable {
     public string infoText;
     [SerializeField] private string sabotageTargetText; 
 
+    public float startingAmountToFix = 100f;
     public float amountToFix = 100f;
 
     public List<PlayableCharacter> playersThatFixed = new List<PlayableCharacter>();
@@ -35,6 +36,7 @@ public class Sabotageable : Interactable {
     void Start() {
         // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
+        amountToFix = 100f;
         base.Start();
 
         sabotageMarker = gameObject.AddComponent<Target>() as Target;
@@ -55,11 +57,11 @@ public class Sabotageable : Interactable {
         /* Master client checks if sabotage is sabotaged and then broadcasts how much is left for each player to fix, the number of players
         currently fixing and updating the amount of fixing needing to be done
         */
+        amountToFix -= numberOfPlayersFixing * fixTimeFactor * Time.deltaTime;
         if (PhotonNetwork.LocalPlayer.IsMasterClient && isSabotaged) {
-            sabotageManager.SetAmountToFix(amountToFix);
-            sabotageManager.SetNumPlayersFixing(numberOfPlayersFixing);
-            amountToFix -= numberOfPlayersFixing * fixTimeFactor * Time.deltaTime;
-            //If there is no more to fix then call fix RPC for all players i.e. tell each player that sabotage is fixed and finished and inform the sabotagen manager of that
+            // If there is no more to fix then call fix RPC for all players
+            // i.e.  tell each player that sabotage is fixed and finished and
+            // inform the sabotagen manager of that
             if (amountToFix <= 0) {
                 View.RPC("Fix", RpcTarget.All); 
             }
@@ -87,14 +89,13 @@ public class Sabotageable : Interactable {
             DisableSabotageMarker();
             timerManager.StartTimer(Timer.sabotageTimer);
             View.RPC("Sabotage", RpcTarget.All);
-            sabotageManager.SabotageStarted();
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
             // If a sabotage has started then any player can attempt to fix
             if (!fixing) {
                 sabotageManager.LocalPlayerFixing();    
                 character.Fix(this);
                 fixing = true;
-                View.RPC("IncrementNumberOfFixers", PhotonNetwork.MasterClient);
+                View.RPC("IncrementNumberOfFixers", RpcTarget.All);
             }
         }
     }
@@ -106,7 +107,7 @@ public class Sabotageable : Interactable {
             character.StopFix(this);
             sabotageManager.LocalPlayerStoppedFixing();    
             fixing = false;
-            View.RPC("DecrementNumberOfFixers", PhotonNetwork.MasterClient);
+            View.RPC("DecrementNumberOfFixers", RpcTarget.All);
         } 
     }
 
@@ -131,6 +132,7 @@ public class Sabotageable : Interactable {
 
     [PunRPC]
     public virtual void Sabotage() {
+        StartCoroutine(sabotageManager.SabotageStarted(this));
         StartCoroutine(SabotageEnumerator());
         StartCoroutine(StartAnimation());
     }
