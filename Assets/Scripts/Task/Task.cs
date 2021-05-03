@@ -120,10 +120,11 @@ public class Task : MonoBehaviour {
   }
   
   [PunRPC]
-  public void UncompleteRPC() {
+  public void UncompleteRPC(bool isUndoneByTraitor) {
     isCompleted = false;
     isAssigned = false;
-    isUndone = true;
+
+    if (isUndoneByTraitor) this.isUndone = true;
     
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskUncomplete();
@@ -131,15 +132,18 @@ public class Task : MonoBehaviour {
     
     if (NetworkManager.instance.GetMe() is Traitor) {
       DisableTaskMarker();
-    } else if (TaskInteractable.inRange && IsUndone()) {
+    } else if (isUndoneByTraitor && TaskInteractable.inRange && IsUndone()) {
       EnableUndoneMarker();
     }
   }
 
-  public void Uncomplete() {
+  // isUndone says if the traitor is doing the undoing and therefore if the
+  // task will be marked as undone after this uncomplete.
+  public void Uncomplete(bool isUndone = true) {
     PlayableCharacter me =  NetworkManager.instance.GetMe();
     me.taskNotificationUI.SetNotification(false);
-    View.RPC("UncompleteRPC", RpcTarget.All);
+  
+    View.RPC("UncompleteRPC", RpcTarget.All, isUndone);
   }
 
   public bool IsRequired() {

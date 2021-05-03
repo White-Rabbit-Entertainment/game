@@ -16,9 +16,10 @@ public abstract class Character : MonoBehaviour {
   public InventoryUI inventoryUI;
 
   public Team team;
+  public Team startingTeam; 
 
   public PlayerInfo playerInfo;
-
+    
   public Player Owner {
       get { return GetComponent<PhotonView>().Owner; }
     }
@@ -126,12 +127,16 @@ public abstract class Character : MonoBehaviour {
   } 
 
   [PunRPC]
-  public void AssignRole (string assetPath) {
+  public void AssignColourAndTeam (string assetPath) {
       GameObject playerPrefab = PlayerInfo.GetPrefab(assetPath);
       playerInfo = playerPrefab.GetComponent<PlayerInfo>();
       GameObject body = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
       body.transform.parent = transform; // Sets the parent of the body to the player
       body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
       GetComponent<Animator>().avatar = playerInfo.avatar;
+
+      // Set the players starting team (so we can reference at the end of the
+      // game, even after they have died)
+      startingTeam = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team", Team.Loyal);
   }
 }

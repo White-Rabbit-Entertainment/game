@@ -44,7 +44,6 @@ public class SabotageManager : MonoBehaviour{
 
     public IEnumerator SabotageStarted(Sabotageable sabotageable) {
         this.sabotageable = sabotageable;
-        Debug.Log("SabotageStarted");
         StartCoroutine(NotifySabotage());
         // Wait till sabotage starts
         yield return new WaitForSeconds(5);
@@ -71,7 +70,6 @@ public class SabotageManager : MonoBehaviour{
     public IEnumerator NotifySabotage(){
         if (NetworkManager.instance.GetMe() is Traitor){
             sabotageNotificationUI.SetActive(true);
-            Debug.Log("Notication uI enabled");
             timerManager.StartTimer(Timer.traitorSabotageTimer);
             yield return new WaitForSeconds(5f);
             sabotageNotificationUI.SetActive(false);
