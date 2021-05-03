@@ -97,6 +97,7 @@ public class VotingManager : MonoBehaviour {
     setVoteUI.SetActive(false);
     currentVoteUI.SetActive(false);
     voteTopRightUI.SetActive(false);
+    Timer.voteTimer.End();
     playersUI.ClearSuspectedPlayer(suspectedPlayer);
     foreach (PlayableCharacter character in FindObjectsOfType<PlayableCharacter>()) {
       playersUI.ClearVote(character);
