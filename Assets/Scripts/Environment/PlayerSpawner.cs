@@ -116,10 +116,6 @@ public class PlayerSpawner : MonoBehaviour {
         character.deathUI = deathUI;
         NetworkManager.myCharacter = character;
        
-        // Set the players starting team (so we can reference at the end of the
-        // game, even after they have died)
-        character.startingTeam = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team", Team.Loyal);
-
         //sets player layer to "raycast ignore" layer
         player.SetLayerRecursively(2);
    

@@ -15,8 +15,6 @@ public abstract class PlayableCharacter : Character {
     public Task assignedMasterTask = null;
     public Task assignedSubTask = null;
 
-    public Team startingTeam; 
-
     protected override void Start() { 
       base.Start();
     }
