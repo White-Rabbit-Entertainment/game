@@ -98,6 +98,7 @@ public class GameSceneManager : MonoBehaviour {
     [PunRPC]
     // Show the UI for the gameover
     public void EndGameRPC(Team winningTeam) {
+        Timer.roundTimer.End();
         taskCompletionUI.UpdateBar();
         timerCountdown.Stop();
         deathUI.gameObject.SetActive(false);
