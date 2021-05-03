@@ -83,7 +83,7 @@ public class SabotageManager : MonoBehaviour{
         Timer.sabotageTimer.End();
     }
 
-    public void LocalPlayerFixing() {
+    public void LocalPlayerStartedFixing() {
         clickAndHoldReminderUI.text = "";
         fixingProgress.SetActive(true);
     }

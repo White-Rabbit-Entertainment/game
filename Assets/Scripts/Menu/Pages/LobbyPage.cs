@@ -5,17 +5,19 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyPage : MenuPage {
-    public Text playerCounter;
-    public Text roomName;
+    public TMP_Text playerCounter;
+    public TMP_Text roomName;
 
     public Dictionary<Player, GameObject> playerTiles = new Dictionary<Player, GameObject>();
     public GameObject playerList;
     public Button toggleReadyButton;
     public GameObject playerTilePrefab;
     [SerializeField] private ChatManager chatManager;
+    public GameObject titleText;
 
     public JoinRoomPage joinRoomPage;
     public Button back;
@@ -65,6 +67,16 @@ public class LobbyPage : MenuPage {
       }
     }
 
+    public override void Open() {
+      base.Open();
+      titleText.SetActive(false);
+    }
+
+    public override void Close() {
+      base.Close();
+      titleText.SetActive(true);
+    }
+
     public override void OnJoinedRoom() {}
 
     public override void OnLeftRoom() {
@@ -85,7 +97,6 @@ public class LobbyPage : MenuPage {
 
     void AddTile(Player player) {
       GameObject item = Instantiate(playerTilePrefab, transform);
-      Debug.Log("adding playerTile to disct");
       playerTiles.Add(player, item);
       item.GetComponent<PlayerTile>().Init(player.NickName, new Color(255,0,0));
       item.transform.SetParent(playerList.transform);
@@ -95,7 +106,7 @@ public class LobbyPage : MenuPage {
       } else {
         item.GetComponent<PlayerTile>().EnableVotingAgainst();
       }
-      playerCounter.text = NetworkManager.instance.GetPlayers().Count.ToString();
+      playerCounter.text = $"Players: {NetworkManager.instance.GetPlayers().Count.ToString()}/10";
     }
 
     public override void OnPlayerPropertiesUpdate(Player player, Hashtable changedProperties) {

@@ -9,7 +9,7 @@ using System;
 public class MenuPage: MonoBehaviourPunCallbacks {
   public MenuManager menuManager;
 
-  public void Open() {
+  public virtual void Open() {
     gameObject.SetActive(true);
     if (menuManager.currentPage != null) {
       menuManager.currentPage.Close();

@@ -94,7 +94,7 @@ public class Sabotageable : Interactable {
         } else if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) {
             // If a sabotage has started then any player can attempt to fix
             if (!fixing) {
-                sabotageManager.LocalPlayerFixing();    
+                sabotageManager.LocalPlayerStartedFixing();    
                 character.Fix(this);
                 fixing = true;
                 View.RPC("IncrementNumberOfFixers", RpcTarget.All);
