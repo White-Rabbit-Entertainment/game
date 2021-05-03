@@ -20,11 +20,14 @@ public abstract class Interactable : MonoBehaviourPun {
 
   [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
   public List<TypeReference> softRequirementTypes;
+  // The probability a soft requirement is assigned
+  public float softRequirementProbability = 0.5f;
 
   public bool canBeMasterTask = true;
   public List<Interactable> hardRequirements;
   
   public bool singleUse;
+  public bool interactionDisabled = false;
  
   public Team team = Team.All;
   public Team taskTeam = Team.All;
@@ -249,6 +252,7 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
+    if (interactionDisabled) return false;
     if (character is Loyal && ((Loyal)character).assignedSubTask == task) return true;
     if (character is Traitor && (HasUndoTask() || task == null)) return true;
     if (character is Agent && task == null) return true;

@@ -26,7 +26,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9317f641c52c183dbe3dc17d6d99ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8563706244375164828
+--- !u!114 &2521812571505537882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -35,17 +35,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 110838560622236418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6534ab461752ebef9ba0374b72f5d141, type: 3}
+  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   taskDescription: 
   interactionColour: {r: 0, g: 0, b: 0, a: 0}
   taskColour: {r: 0, g: 0, b: 0, a: 0}
   undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
-  softRequirementTypes: []
+  softRequirementTypes:
+  - GuidAssignmentFailed: 0
+    GUID: e9c79b4c2f9cc0e26aa14a25ee76a84d
+    TypeNameAndAssembly: CannonBall, Scripts
+    _suppressLogs: 0
+  softRequirementProbability: 1
   canBeMasterTask: 1
   hardRequirements: []
   singleUse: 0
+  interactionDisabled: 1
   team: 22
   taskTeam: 22
   outlineWidth: 5
