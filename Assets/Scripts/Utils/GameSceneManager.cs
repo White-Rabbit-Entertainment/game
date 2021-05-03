@@ -83,8 +83,7 @@ public class GameSceneManager : MonoBehaviour {
         // Debug.Log("Checking timer");
         // Debug.Log(Timer.roundTimer.IsStarted());
         // Debug.Log(Timer.roundTimer.TimeRemaining());
-        if (Timer.roundTimer.IsComplete()) {
-          Debug.Log("Time ran out");
+        if (PhotonNetwork.IsMasterClient && Timer.roundTimer.IsComplete()) {
           // If the timer has round out for us we can stop the local timer directly
           Timer.roundTimer.End();
           EndGame(Team.Traitor);
