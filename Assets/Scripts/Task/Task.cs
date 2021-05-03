@@ -171,8 +171,18 @@ public class Task : MonoBehaviour {
     }
   }
 
-  public void AssignSubTaskToCharacter(PlayableCharacter character) {
-    Task subTask = FindIncompleteChild(this);
+  public void AssignSubTaskToCharacter(PlayableCharacter character, Task subTask = null) {
+    // If no explicit task provided then pick one
+    if (subTask == null) {
+      subTask = FindIncompleteChild(this);
+    }
+
+    // If the character already has a subtask
+    if (character.assignedSubTask != null) {
+      // Disable its marker
+      character.assignedSubTask.DisableTaskMarker();
+    }
+
     character.assignedSubTask = subTask;
     character.currentTaskUI.SetTask(subTask);
     subTask.EnableTaskMarker();

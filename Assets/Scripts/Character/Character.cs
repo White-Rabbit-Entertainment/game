@@ -8,9 +8,9 @@ using Photon.Realtime;
 [RequireComponent(typeof(Animator))]
 public abstract class Character : MonoBehaviour {
   public Transform pickupDestination; 
-  public Pickupable currentHeldItem; 
 
   public Sabotageable currentFixingItem;
+  public Pickupable currentHeldItem; 
   public Pocketable pocketedItem;
   
   public InventoryUI inventoryUI;
