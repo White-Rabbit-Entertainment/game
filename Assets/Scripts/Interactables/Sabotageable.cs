@@ -127,7 +127,7 @@ public class Sabotageable : Interactable {
     public override bool CanInteract(Character character) {
         //If a sabotage hasn't started and character is a traitor, they can trigger a sabotage on this sabotageable
         Debug.Log(votingManager.voteInProgress);
-        if (!isSabotaged && timerManager.voteTimer.IsStarted() && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) return true;
+        if (!isSabotaged && Timer.voteTimer.IsStarted() && character.team == Team.Traitor && !Timer.sabotageTimer.IsStarted()) return true;
         // If a sabotage has started then any player can attempt to fix        
         if (isSabotaged && (Team.Real | Team.Ghost).HasFlag(character.team)) return true;
         return false;
