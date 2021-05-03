@@ -28,14 +28,8 @@ public class CannonBall : Pickupable {
         }
     }
 
-    public override bool CanInteract(Character character) {
-        return true;
-    }
-
     void OnCollisionEnter(Collision collision) {
-        Debug.Log("collision");
         if(task != null && collision.gameObject == task.parent.gameObject) {
-            Debug.Log("collision of right thing");
             task.parent.Complete();
         }
     }
@@ -58,6 +52,7 @@ public class CannonBall : Pickupable {
     [PunRPC]
     public void SetOutCannonConditions(Vector3 newPosition) {
         gameObject.SetActive(true);
+        inCannon = false;
         transform.position = newPosition;
     }
 }
