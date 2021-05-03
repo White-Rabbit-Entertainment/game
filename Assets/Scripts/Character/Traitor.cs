@@ -3,5 +3,6 @@
   protected override void Start() {
     base.Start();
     team = Team.Traitor;
+    startingTeam = team;
   }  
 }

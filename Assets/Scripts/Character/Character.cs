@@ -128,16 +128,12 @@ public abstract class Character : MonoBehaviour {
   } 
 
   [PunRPC]
-  public void AssignColourAndTeam (string assetPath) {
+  public void AssignColor (string assetPath) {
       GameObject playerPrefab = PlayerInfo.GetPrefab(assetPath);
       playerInfo = playerPrefab.GetComponent<PlayerInfo>();
       GameObject body = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
       body.transform.parent = transform; // Sets the parent of the body to the player
       body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
       GetComponent<Animator>().avatar = playerInfo.avatar;
-
-      // Set the players starting team (so we can reference at the end of the
-      // game, even after they have died)
-      startingTeam = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team", Team.Loyal);
   }
 }

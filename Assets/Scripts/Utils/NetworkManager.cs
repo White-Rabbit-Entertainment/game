@@ -47,9 +47,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           
           List<GameObject> playerColorPrefabs = new List<GameObject>(Resources.LoadAll("PlayerPrefabs/Alive", typeof(GameObject)).Cast<GameObject>().ToArray());
           List<PlayerInfo> playerColors = new List<PlayerInfo>();
+          Debug.Log(playerColorPrefabs.Count);
           foreach(GameObject playerColorPrefab in playerColorPrefabs) {
             playerColors.Add(playerColorPrefab.GetComponent<PlayerInfo>());
             Debug.Log("added item to playerinfo list");
+            Debug.Log(playerColorPrefab);
           }
 
           // Shuffle players and roles to ensure random team and role are assigned
