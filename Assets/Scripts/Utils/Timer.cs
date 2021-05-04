@@ -6,7 +6,7 @@ using Photon.Pun;
 public static class TimerUtils {
   // List of all timers
   public static List<Timer> timers = new List<Timer>();
-  public static Timer roundTimer = new Timer(10, "roundTimer");
+  public static Timer roundTimer = new Timer(1000, "roundTimer");
   public static Timer voteTimer = new Timer(30, "voteTimer");
   public static Timer sabotageTimer = new Timer(30, "sabotageTimer");
   public static Timer traitorSabotageTimer = new Timer(5, "traitorSabotageTimer");
