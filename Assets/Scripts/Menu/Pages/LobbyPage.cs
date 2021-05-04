@@ -17,6 +17,7 @@ public class LobbyPage : MenuPage {
     public Button toggleReadyButton;
     public GameObject playerTilePrefab;
     [SerializeField] private ChatManager chatManager;
+    [SerializeField] private WebRTC webRTC;
     public GameObject titleText;
 
     public JoinRoomPage joinRoomPage;
@@ -130,9 +131,15 @@ public class LobbyPage : MenuPage {
       }
     }
     
-    void Back() {
-      NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
+    void Back() {        
+      foreach (Player player in NetworkManager.instance.GetPlayers()) {
+          if (PhotonNetwork.LocalPlayer != player) {
+              webRTC.EndCall(player.ActorNumber);
+          }
+      }
+      // NetworkManager.instance.SetLocalPlayerProperty("Ready", false);
       chatManager.LeaveRoomChat(PhotonNetwork.CurrentRoom);
-      PhotonNetwork.LeaveRoom(false);
+      PhotonNetwork.LeaveLobby();
+      PhotonNetwork.LeaveRoom();
     }
 }

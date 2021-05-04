@@ -17,7 +17,8 @@ public class MenuManager: MonoBehaviourPunCallbacks {
 
     public WebRTC webRTC;
     
-    public List<RoomInfo> roomList;
+    private TypedLobby lobby = new TypedLobby(null, LobbyType.Default);
+    public Dictionary<string, RoomInfo> roomList = new Dictionary<string, RoomInfo>();
 
     void Start() {
 
@@ -32,7 +33,30 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     }
 
     public override void OnConnectedToMaster() {
-        PhotonNetwork.JoinLobby();
+        PhotonNetwork.JoinLobby(lobby);
+    }
+
+    private void UpdateCachedRoomList(List<RoomInfo> roomUpdatesList) {
+        for(int i=0; i< roomUpdatesList.Count; i++) {
+            RoomInfo info = roomUpdatesList[i];
+            if (info.RemovedFromList) {
+                roomList.Remove(info.Name);
+            } else {
+                roomList[info.Name] = info;
+            }
+        }
+    }
+
+    public override void OnJoinedLobby() {
+        roomList.Clear();
+    }
+    
+    public override void OnLeftLobby() {
+        roomList.Clear();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause) {
+        roomList.Clear();
     }
     
     public override void OnJoinedRoom() {
@@ -48,14 +72,11 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     }
 
     public override void OnLeftRoom() {
+        Debug.Log("On left room");
         currentPage.OnLeftRoom();
         joinRoomPage.Open();
-        
-        foreach (Player player in NetworkManager.instance.GetPlayers()) {
-            if (PhotonNetwork.LocalPlayer != player) {
-                webRTC.EndCall(player.ActorNumber);
-            }
-        }
+        PhotonNetwork.JoinLobby();
+        base.OnLeftRoom();
     }
 
     public override void OnPlayerPropertiesUpdate(Player player, Hashtable changedProperties) {
@@ -71,9 +92,11 @@ public class MenuManager: MonoBehaviourPunCallbacks {
         webRTC.EndCall(player.ActorNumber);
     }
     
-    public override void OnRoomListUpdate(List<RoomInfo> roomList) {
-        this.roomList = roomList;
-        currentPage.OnRoomListUpdate(roomList);
+    public override void OnRoomListUpdate(List<RoomInfo> roomUpdatesList) {
+        UpdateCachedRoomList(roomUpdatesList);
+        if (currentPage is RoomListPage) {
+            ((RoomListPage)currentPage).OnCachedRoomListUpdate(roomList);
+        }
     }
 }
 
