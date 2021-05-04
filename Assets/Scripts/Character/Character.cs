@@ -74,12 +74,14 @@ public abstract class Character : MonoBehaviour {
     currentFixingItem = null;
   }  
   public virtual void PutDown(Pickupable item) {
-    Debug.Log($"Character putting down {gameObject}");
-    currentHeldItem = null;
-    item.ResetItemConditions(this);
-    Debug.Log($"Reset item conditions");
-    item.transform.parent = GameObject.Find("/Environment").transform;
-    Debug.Log($"Put the item in the game scene");
+    if (HasItem(item)) {
+      Debug.Log($"Character putting down {gameObject}");
+      currentHeldItem = null;
+      item.ResetItemConditions(this);
+      Debug.Log($"Reset item conditions");
+      item.transform.parent = GameObject.Find("/Environment").transform;
+      Debug.Log($"Put the item in the game scene");
+    }
   }
 
   public void AddItemToInventory(Pocketable item) {

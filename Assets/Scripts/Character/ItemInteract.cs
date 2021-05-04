@@ -17,6 +17,7 @@ public class ItemInteract : MonoBehaviourPun {
     private RaycastHit raycastFocus;
     private bool interactableInRange = false;
     private Interactable currentInteractable;
+    public bool hasInteractedWithCurrentInteractble = false;
     private PlayableCharacter character;
 
     public SphereCollider itemCollider;
@@ -83,6 +84,7 @@ public class ItemInteract : MonoBehaviourPun {
                 if (Input.GetButtonDown("Fire1")) {
                   // Do whatever the primary interaction of this interactable is.
                   currentInteractable.PrimaryInteraction(character);
+                  hasInteractedWithCurrentInteractble = true;
                 }
             }
         } 
@@ -92,9 +94,11 @@ public class ItemInteract : MonoBehaviourPun {
         if (currentInteractable != null && (Input.GetButtonUp("Fire1") || newInteractable == null)) {
             Debug.Log($"Dropping {newInteractable}");
             // Then turn off the glow of that thing and do the interaction off
-            currentInteractable.InteractionGlowOff();
-            currentInteractable.PrimaryInteractionOff(character);
+            if (hasInteractedWithCurrentInteractble) {
+                currentInteractable.InteractionGlowOff();
+            }
             currentInteractable = null;
+            hasInteractedWithCurrentInteractble = false;
         }
     }
 
