@@ -30,7 +30,8 @@ public abstract class PlayableCharacter : Character {
     public override void PutDown(Pickupable item) {
       base.PutDown(item);
     }
-     public bool IsMe() {
+     
+    public bool IsMe() {
       return Owner == PhotonNetwork.LocalPlayer;
     }
 

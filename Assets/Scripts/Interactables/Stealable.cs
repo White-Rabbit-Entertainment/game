@@ -40,6 +40,7 @@ public class Stealable : Pickupable {
     }
     
     public override void PrimaryInteractionOff(Character character) {
+        Debug.Log($"Dropping");
         base.PrimaryInteractionOff(character);
         // destination.indicator.SetActive(false);
         if (destination != null) {
