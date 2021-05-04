@@ -98,7 +98,7 @@ public class LobbyPage : MenuPage {
     void AddTile(Player player) {
       GameObject item = Instantiate(playerTilePrefab, transform);
       playerTiles.Add(player, item);
-      item.GetComponent<PlayerTile>().Init(player.NickName, new Color(255,0,0));
+      item.GetComponent<PlayerTile>().Init(player.NickName, new Color(0,0,0));
       item.transform.SetParent(playerList.transform);
       item.GetComponent<PlayerTile>().Start();
       if (NetworkManager.instance.PlayerPropertyIs("Ready", true, player)) {
