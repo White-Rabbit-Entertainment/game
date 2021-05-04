@@ -94,9 +94,13 @@ public class ItemInteract : MonoBehaviourPun {
         if (currentInteractable != null && (Input.GetButtonUp("Fire1") || newInteractable == null)) {
             Debug.Log($"Dropping {newInteractable}");
             // Then turn off the glow of that thing and do the interaction off
+            currentInteractable.InteractionGlowOff();
+
+            // If we havent interacted with the thing then we cannot uninteract
             if (hasInteractedWithCurrentInteractble) {
-                currentInteractable.InteractionGlowOff();
+                currentInteractable.PrimaryInteractionOff(character);
             }
+
             currentInteractable = null;
             hasInteractedWithCurrentInteractble = false;
         }

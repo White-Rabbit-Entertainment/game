@@ -15,6 +15,10 @@ public abstract class PlayableCharacter : Character {
     public Task assignedMasterTask = null;
     public Task assignedSubTask = null;
 
+    public Camera Camera {
+        get { return GetComponentInChildren<Camera>(); }
+    }
+
     protected override void Start() { 
       base.Start();
     }
