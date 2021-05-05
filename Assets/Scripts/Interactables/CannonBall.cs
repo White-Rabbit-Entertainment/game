@@ -8,6 +8,12 @@ public class CannonBall : Pickupable {
     // the child of a Cannon.
     
     bool inCannon = false;
+    GameSceneManager gameSceneManager;
+
+    public override void Start() {
+        base.Start();
+        gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
+    }
     
     public override void Reset() {
         canBeMasterTask = false;
@@ -39,7 +45,7 @@ public class CannonBall : Pickupable {
     }
 
     public override void OnParentTaskUncomplete() {
-        View.RPC("SetOutCannonConditions", RpcTarget.All, new Vector3(0f, 1f, 0f));
+        View.RPC("SetOutCannonConditions", RpcTarget.All, gameSceneManager.RandomNavmeshLocation());
         task.Uncomplete();
     }
 

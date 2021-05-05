@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Cannon : Interactable {
 
+    public override void Reset() {
+        base.Reset();
+        taskDescription = "Load the cannon";
+        softRequirementProbability = 1f;
+    }
+
     // Cannons will always have 1 cannonball requirement
     CannonBall CannonBall {
         get { 

@@ -91,7 +91,9 @@ public class TaskManager : MonoBehaviourPun {
         Interactable interactable = possibleMasterTaskables[i].GetComponent<Interactable>();
         if (interactable.HasSoftRequirements()) {
             float giveSubTaskWeight = UnityEngine.Random.Range(0f, 1f); 
-            if (giveSubTaskWeight < interactable.softRequirementProbability) {
+            Debug.Log($"Soft requiemnetProbability is: {interactable.softRequirementProbability}");
+            if (giveSubTaskWeight <= interactable.softRequirementProbability) {
+                Debug.Log($"Giving requirement to {interactable.gameObject}");
                 interactable.PickHardRequirements(possibleTaskables);
             }
         }
