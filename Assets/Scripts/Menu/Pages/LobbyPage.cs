@@ -20,14 +20,21 @@ public class LobbyPage : MenuPage {
     [SerializeField] private WebRTC webRTC;
     public GameObject titleText;
 
+    // Start game UI
+    public Button startGameButton; 
+    public GameObject startGameUI;
+
     public JoinRoomPage joinRoomPage;
     public Button back;
+
+    public bool gameStarted = false;
 
     bool initialized;
     bool enteredRoom; 
 
     void Start() {
       toggleReadyButton.onClick.AddListener(ToggleReady);
+      startGameButton.onClick.AddListener(StartGame);
     }
 
     void OnEnable() {
@@ -57,15 +64,30 @@ public class LobbyPage : MenuPage {
         initialized = true;
       }
       if (initialized) {
-        if (NetworkManager.instance.AllPlayersReady()) {
-          NetworkManager.instance.SetupGame();
-          if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
-            NetworkManager.instance.SetRoomProperty("GameStarted", true);
-            NetworkManager.instance.ChangeScene("GameScene");
-            Destroy(this);
-          }
+        // If all the players are ready then the master clint can start the game
+        if (PhotonNetwork.IsMasterClient && NetworkManager.instance.AllPlayersReady()) {
+          startGameUI.SetActive(true);
+        } else if (!gameStarted) {
+          startGameUI.SetActive(false);
         }
       }
+    }
+
+    public void StartGame() {
+      if (!gameStarted) {
+        gameStarted = true;
+        NetworkManager.instance.SetupGame();
+        if (NetworkManager.instance.RoomPropertyIs<bool>("GameReady", true)) {
+          NetworkManager.instance.SetRoomProperty("GameStarted", true);
+          GetComponent<PhotonView>().RPC("StartGameRPC", RpcTarget.All);
+        }
+      }
+    }
+
+    [PunRPC]
+    public void StartGameRPC() {
+      gameStarted = true;
+      NetworkManager.instance.ChangeScene("GameScene");
     }
 
     public override void Open() {
