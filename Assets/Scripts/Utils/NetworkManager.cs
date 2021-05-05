@@ -36,6 +36,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void SetupGame() {
       if (RoomPropertyIs<bool>("GameStarted", false)) {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          // When a game starts we dont want people to be able to join
+          PhotonNetwork.CurrentRoom.IsVisible = false;
           SetRoomProperty("TasksSet", false);
           SetRoomProperty("WinningTeam", "None");
           SetRoomProperty("NumberOfTasks", 10);
