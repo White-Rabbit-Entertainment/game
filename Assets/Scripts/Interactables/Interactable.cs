@@ -130,6 +130,7 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public void EnableTaskMarker() {
+    DisableUndoneMarker();
     taskMarker.enabled = true;
   }
   
