@@ -107,6 +107,9 @@ public class GameSceneManager : MonoBehaviour {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.instance.GetMe().Freeze();
+
+        // After a game has ended people can join again
+        PhotonNetwork.CurrentRoom.IsVisible = true;
     }
 
 

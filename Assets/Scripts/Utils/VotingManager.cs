@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Linq;
 using System.Collections;
@@ -56,10 +57,40 @@ public class VotingManager : MonoBehaviour {
     }
   }      
 
-  public void InitVote(int suspectedPlayerId, int voteLeaderId) {
+  [PunRPC]
+  /// <summary> When a vote is started, the voting player makes a request to
+  /// the master client to start the vote. This ensures only one vote can take
+  /// place at a time. </summary>
+  public void RequestVote(int suspectedPlayerId, int voteLeaderId) {
     if (!voteStarted && !Timer.sabotageTimer.IsStarted()) {
+      voteStarted = true;
       timerManager.StartTimer(Timer.voteTimer);
       GetComponent<PhotonView>().RPC("StartVote", RpcTarget.All, suspectedPlayerId, voteLeaderId);
+    } else {
+      // Find the player which called the vote
+      Player callingVotePlayer = PhotonView.Find(voteLeaderId).Owner;
+      StartCoroutine(ShowVoteInProgress());
+    }
+  }
+
+  [PunRPC]
+  /// <summary> When a vote cannot be started because a vote is in progress it
+  /// can be rejected by the master client with this funciton. This is called
+  /// on the vote caller. </summary>
+  public void RejectVote() {
+      StartCoroutine(ShowVoteInProgress());
+  }
+
+
+  /// <summary> When a vote is started, we fist check if we think there is
+  /// already one in progress. If so we cannot start a vote. If there is not
+  /// vote in progress we then request the master client to start a vote. The
+  /// master client will not allow 2 votes to be started so this request could
+  /// be rejected. If rejected RejectVote will be called on this machine.
+  /// </summary>
+  public void InitVote(int suspectedPlayerId, int voteLeaderId) {
+    if (!voteStarted && !Timer.sabotageTimer.IsStarted()) {
+      GetComponent<PhotonView>().RPC("RequestVote", RpcTarget.MasterClient, suspectedPlayerId, voteLeaderId);
     } else {
       StartCoroutine(ShowVoteInProgress());
     }
