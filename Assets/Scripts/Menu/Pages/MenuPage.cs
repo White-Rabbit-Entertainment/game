@@ -10,10 +10,10 @@ public class MenuPage: MonoBehaviourPunCallbacks {
   public MenuManager menuManager;
 
   public virtual void Open() {
-    gameObject.SetActive(true);
     if (menuManager.currentPage != null) {
       menuManager.currentPage.Close();
     }
+    gameObject.SetActive(true);
     menuManager.currentPage = this;
   }
 
