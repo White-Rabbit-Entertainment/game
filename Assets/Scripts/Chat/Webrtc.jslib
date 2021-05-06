@@ -40,7 +40,7 @@ var WebRTCPlugin = {
               .catch(function(error) {
                   unityInstance.SendMessage("WebRTC", "FailedToGet", false);
                   console.log('Failed to get audio MediaStream:', stream);
-              }
+              })
         });
   },
 
