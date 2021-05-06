@@ -61,4 +61,9 @@ public class CannonBall : Pickupable {
         inCannon = false;
         transform.position = newPosition;
     }
+
+    public override void AddTask(Task parentTask = null) {
+        base.AddTask(parentTask);
+        task.isUndoable = false;
+    }
 }
