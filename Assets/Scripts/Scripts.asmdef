@@ -7,12 +7,10 @@
         "PhotonUnityNetworking.Utilities.PhotonPlayer.Editor",
         "PhotonRealtime",
         "Outline",
-        "QuantumUI",
         "PhotonChat",
         "TypeReferences",
         "Unity.TextMeshPro",
-        "Target",
-        "Unity.WebRTC"
+        "Target"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
