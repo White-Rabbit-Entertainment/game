@@ -14,6 +14,7 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public NameInputPage nameInputPage;
     public LobbyPage lobbyPage;
     public JoinRoomPage joinRoomPage;
+    public GameObject clickToPlayPage;
 
     public WebRTC webRTC;
     
@@ -24,6 +25,7 @@ public class MenuManager: MonoBehaviourPunCallbacks {
 
         webRTC.Initialize();
         if (PhotonNetwork.LocalPlayer.NickName == null || PhotonNetwork.LocalPlayer.NickName == "") {
+            // clickToPlayPage.SetActive(true);
             nameInputPage.Open();
         } else if (PhotonNetwork.CurrentRoom != null) {
             lobbyPage.Open();
