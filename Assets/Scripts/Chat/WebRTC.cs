@@ -127,5 +127,13 @@ public class WebRTC : MonoBehaviour {
         #endif
         return 0;
     }
+
+    public void FailedToGet(bool gotAudio) {
+        if (gotAudio) {
+            Debug.Log("Failed to get access to camera.");
+        } else {
+            Debug.Log("Failed to get access to microphone and camera.");
+        }
+    }
 }
 
