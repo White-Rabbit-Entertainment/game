@@ -16,9 +16,9 @@ public class ClickToPlayPage : MenuPage
 
     void ClickToPlay(){
         gameObject.SetActive(false);
-        nameInputPage.Open();
         camera.GetComponent<Animator>().enabled = true;
-
+        nameInputPage.Open();
+        
     }
 
     // Update is called once per frame

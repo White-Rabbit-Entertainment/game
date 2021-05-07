@@ -53,9 +53,9 @@ public class NameInputPage : MenuPage {
             chatManager.Init();
             joinRoomPage.Open();
         } else {
-            // tooLongNameText.SetActive(false);
+            tooLongNameText.SetActive(false);
             playerNameInput.text = "";
-            StartCoroutine(SetText(invalidNameText,4f));
+            StartCoroutine(SetText(invalidNameText,3f));
         }    
     }
 
