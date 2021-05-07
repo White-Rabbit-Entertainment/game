@@ -9,18 +9,18 @@ public class EmotionRecorder : MonoBehaviour
 
     AsynchronousFaceDetectionWebCamTextureExample asynchronousFaceDetectionWebCamTextureExample;
     // Start is called before the first frame update
-    void Start()
-    {
-        lastEmotion = "";
-        asynchronousFaceDetectionWebCamTextureExample = GetComponent<AsynchronousFaceDetectionWebCamTextureExample>();
+    // void Start()
+    // {
+    //     lastEmotion = "";
+    //     asynchronousFaceDetectionWebCamTextureExample = GetComponent<AsynchronousFaceDetectionWebCamTextureExample>();
 
-    }
+    // }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (asynchronousFaceDetectionWebCamTextureExample.lastEmotion != lastEmotion) {
-            lastEmotion = asynchronousFaceDetectionWebCamTextureExample.lastEmotion;
-        }
-    }
+    // // Update is called once per frame
+    // void Update()
+    // {
+    //     if (asynchronousFaceDetectionWebCamTextureExample.lastEmotion != lastEmotion) {
+    //         lastEmotion = asynchronousFaceDetectionWebCamTextureExample.lastEmotion;
+    //     }
+    // }
 }
