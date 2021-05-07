@@ -7,7 +7,10 @@ using Photon.Pun;
 
 public class SabotageManager : MonoBehaviour{
     [SerializeField] private  GameObject sabotageUI;
+    [SerializeField] private GameObject sabotageMiddleUI;
     [SerializeField] private  GameObject taskUI;
+
+    [SerializeField] private GameObject taskNotificationUI;
 
     [SerializeField] private Image colorOverlay;
     [SerializeField] private TextMeshProUGUI warningText;
@@ -24,6 +27,8 @@ public class SabotageManager : MonoBehaviour{
     [SerializeField] private TextMeshProUGUI sabotageInfoTMP;
                              
     [SerializeField] private TimerManager timerManager;
+
+  
                              
     public Sabotageable sabotageable;
 
@@ -50,8 +55,12 @@ public class SabotageManager : MonoBehaviour{
         timerManager.StartTimer(Timer.sabotageTimer);
         warningText.gameObject.SetActive(true);
         sabotageUI.SetActive(true);
+        // if (NetworkManager.instance.GetMe() is Loyal){
+        //     sabotageMiddleUI.SetActive(true);
+        // }
+        sabotageMiddleUI.SetActive(true);
         taskUI.SetActive(false);
-
+        taskNotificationUI.SetActive(false);
         PlayableCharacter me = NetworkManager.instance.GetMe();
         if (me is Loyal) {
             me.DisableTaskMarker();
@@ -78,7 +87,9 @@ public class SabotageManager : MonoBehaviour{
 
     public void SabotageFixed() {
         sabotageUI.SetActive(false);
+        sabotageMiddleUI.SetActive(false);
         taskUI.SetActive(true);
+        taskNotificationUI.SetActive(true);
         fixingProgress.SetActive(false);
         Timer.sabotageTimer.End();
     }
