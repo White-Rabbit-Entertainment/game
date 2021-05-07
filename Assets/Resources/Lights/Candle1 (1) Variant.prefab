@@ -106,8 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   light: {fileID: 3017685214474230725}
-  minIntensity: 0
-  maxIntensity: 0.2
+  minIntensity: 0.8
+  maxIntensity: 1.2
   smoothing: 20
 --- !u!1001 &8572553118719261953
 PrefabInstance:
