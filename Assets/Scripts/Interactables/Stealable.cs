@@ -10,9 +10,9 @@ public class Stealable : Pickupable {
     public PickupDestination destination;
     public bool ignoreNextCollision = false;
 
-    public override void Reset() {
-        taskDescription = "Steal the " + this.name;
-        base.Reset();
+    public override void Start() {
+        taskDescription = "Take the " + this.name;
+        base.Start();
     }
 
     /// <summary> When a stealable item collides with the "endpoint" the item
