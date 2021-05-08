@@ -22,13 +22,9 @@ public class Target : MonoBehaviour
     public Sprite arrowImage;
     public string boxText;
     public string arrowText;
-
-    /// <summary>
-    /// Please do not assign its value yourself without understanding its use.
-    /// A reference to the target's indicator, 
-    /// its value is assigned at runtime by the offscreen indicator script.
-    /// </summary>
-    [HideInInspector] public Indicator indicator;
+    
+    [HideInInspector] public Indicator boxIndicator;
+    [HideInInspector] public Indicator arrowIndicator;
 
     /// <summary>
     /// Gets the color for the target indicator.
