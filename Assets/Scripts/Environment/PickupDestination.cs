@@ -5,14 +5,23 @@ using UnityEngine;
 public class PickupDestination : MonoBehaviour {
 
     [SerializeField] public string name;
+    [SerializeField] private GameObject destinationZoneIndicator;
 
     public void EnableTaskMarker() {
-        gameObject.SetActive(true);
+        EnableDestinationZone();
         GetComponent<Target>().enabled = true;
     }
     
     public void DisableTaskMarker() {
-        gameObject.SetActive(false);
+        DisableDestinationZone();
         GetComponent<Target>().enabled = false;
+    }
+
+    public void EnableDestinationZone() {
+        destinationZoneIndicator.SetActive(true);
+    }
+    
+    public void DisableDestinationZone() {
+        destinationZoneIndicator.SetActive(false);
     }
 }

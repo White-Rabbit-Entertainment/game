@@ -36,6 +36,9 @@ public class Stealable : Pickupable {
             // destination.indicator.SetActive(true);
             destination.EnableTaskMarker();
         }
+        if (task != null && destination != null && character is Traitor) {
+            destination.EnableDestinationZone();
+        }
         DisableTaskMarker();
     }
     
