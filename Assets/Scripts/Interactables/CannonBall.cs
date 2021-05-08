@@ -10,6 +10,15 @@ public class CannonBall : Pickupable {
     bool inCannon = false;
     GameSceneManager gameSceneManager;
 
+    public Cannon Cannon {
+        get { 
+            if (task != null && task.parent != null) {
+                return task.parent.GetComponent<Cannon>();
+            }
+            return null;
+        }
+    }
+
     public override void Start() {
         base.Start();
         gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
@@ -35,7 +44,7 @@ public class CannonBall : Pickupable {
     }
 
     void OnCollisionEnter(Collision collision) {
-        if(task != null && collision.gameObject == task.parent.gameObject) {
+        if(Cannon.IsPartOfCannonEndZone(collision.gameObject)) {
             task.parent.Complete();
         }
     }

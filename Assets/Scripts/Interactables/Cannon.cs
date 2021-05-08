@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PickupDestination))]
 public class Cannon : Interactable {
 
     public override void Reset() {
@@ -27,5 +28,10 @@ public class Cannon : Interactable {
         }
         Debug.Log("Cannon interact");
         return false;
+    }
+
+    public bool IsPartOfCannonEndZone(GameObject queryGameObject) {
+        if (queryGameObject == gameObject) return true;
+        return GetComponent<PickupDestination>().IsPartOfPickUpDestination(queryGameObject);
     }
 }
