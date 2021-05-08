@@ -1,30 +1,12 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &7113778030873668095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8340734995418616151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
---- !u!54 &672051246227519238
+--- !u!54 &8211597118929189166
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964575769969250015}
+  m_GameObject: {fileID: 8340734995418616151}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -34,27 +16,14 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &3110833306292638014
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964575769969250015}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.016763292, y: 0.038821436, z: 0.03946506}
-  m_Center: {x: 0.0003972315, y: 0.000094918556, z: -0.000042542815}
---- !u!95 &382869328220588576
+--- !u!95 &6160106513074578428
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964575769969250015}
+  m_GameObject: {fileID: 8340734995418616151}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 7ee9731fc729a48dd9b3bd9f7ee08e3a, type: 2}
@@ -66,13 +35,13 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5782501533837786828
+--- !u!114 &2923088259164134439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964575769969250015}
+  m_GameObject: {fileID: 8340734995418616151}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -88,19 +57,19 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &6972341625318592239
+--- !u!114 &3725190654523571936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964575769969250015}
+  m_GameObject: {fileID: 8340734995418616151}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  taskDescription: Steer the ship
+  taskDescription: Steer the wheel
   interactionColour: {r: 0, g: 0, b: 0, a: 0}
   taskColour: {r: 0, g: 0, b: 0, a: 0}
   undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
@@ -114,7 +83,7 @@ MonoBehaviour:
   taskTeam: 22
   outlineWidth: 5
   inRange: 0
-  itemAnimationTrigger: steer
+  itemAnimationTrigger: Steer
   playerAnimationTrigger: 
   task: {fileID: 0}
 --- !u!1001 &9151692229810957318
@@ -209,12 +178,6 @@ PrefabInstance:
 --- !u!1 &8340734995418616151 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d981fbd3a40e34a69b66dc7ff2eab752,
-    type: 3}
-  m_PrefabInstance: {fileID: 9151692229810957318}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1964575769969250015 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7224553190233924313, guid: d981fbd3a40e34a69b66dc7ff2eab752,
     type: 3}
   m_PrefabInstance: {fileID: 9151692229810957318}
   m_PrefabAsset: {fileID: 0}
