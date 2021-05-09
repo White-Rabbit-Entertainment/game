@@ -98,20 +98,6 @@ public class Outline : MonoBehaviour {
     // Apply material properties immediately
     needsUpdate = true;
 
-    foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) {
-        if (skinnedMeshRenderer.sharedMesh.subMeshCount > 1) {
-            skinnedMeshRenderer.sharedMesh.subMeshCount = skinnedMeshRenderer.sharedMesh.subMeshCount + 1;
-            skinnedMeshRenderer.sharedMesh.SetTriangles(skinnedMeshRenderer.sharedMesh.triangles, skinnedMeshRenderer.sharedMesh.subMeshCount - 1);
-        }
- 
-    }
- 
-    foreach (var meshFilter in GetComponentsInChildren<MeshFilter>()) {
-        if (meshFilter.sharedMesh.subMeshCount > 1) {
-            meshFilter.sharedMesh.subMeshCount = meshFilter.sharedMesh.subMeshCount + 1;
-            meshFilter.sharedMesh.SetTriangles(meshFilter.sharedMesh.triangles, meshFilter.sharedMesh.subMeshCount - 1);
-        }
-    }
   }
 
   void OnEnable() {
@@ -173,6 +159,19 @@ public class Outline : MonoBehaviour {
   }
 
   void Bake() {
+    foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) {
+        if (skinnedMeshRenderer.sharedMesh.subMeshCount > 1) {
+            skinnedMeshRenderer.sharedMesh.subMeshCount = skinnedMeshRenderer.sharedMesh.subMeshCount + 1;
+            skinnedMeshRenderer.sharedMesh.SetTriangles(skinnedMeshRenderer.sharedMesh.triangles, skinnedMeshRenderer.sharedMesh.subMeshCount - 1);
+        }
+    }
+ 
+    foreach (var meshFilter in GetComponentsInChildren<MeshFilter>()) {
+        if (meshFilter.sharedMesh.subMeshCount > 1) {
+            meshFilter.sharedMesh.subMeshCount = meshFilter.sharedMesh.subMeshCount + 1;
+            meshFilter.sharedMesh.SetTriangles(meshFilter.sharedMesh.triangles, meshFilter.sharedMesh.subMeshCount - 1);
+        }
+    }
 
     // Generate smooth normals for each mesh
     var bakedMeshes = new HashSet<Mesh>();
