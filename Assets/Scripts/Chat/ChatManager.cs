@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Chat;     
 using Photon.Pun;     
-using Photon.Realtime;     
+using Photon.Realtime;  
+using TMPro;
 
 public class ChatManager : MonoBehaviour, IChatClientListener {
     private ChatClient Client {
@@ -55,7 +56,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener {
         Debug.Log($"Got message: {senders[0]}: {messages[0]}");
         for(int i = 0; i< senders.Length;i++){
           GameObject item = Instantiate(chatMessagePrefab, chatArea.transform);
-          Text text = item.GetComponentInChildren<Text>();
+          TextMeshProUGUI text = item.GetComponentInChildren<TextMeshProUGUI>();
           text.text = senders[i] + ":" + messages[i] + "\n";
         }
     }
