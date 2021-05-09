@@ -243,15 +243,19 @@ MonoBehaviour:
   taskColour: {r: 0, g: 0, b: 0, a: 0}
   undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
   softRequirementTypes: []
+  softRequirementProbability: 0.5
   canBeMasterTask: 1
   hardRequirements: []
   singleUse: 0
+  interactionDisabled: 0
   team: 6
   taskTeam: 6
   outlineWidth: 5
   inRange: 0
+  manualOutline: 1
   itemAnimationTrigger: 
   playerAnimationTrigger: 
+  outline: {fileID: 0}
   task: {fileID: 0}
   votingManager: {fileID: 0}
 --- !u!114 &805310061385908361
@@ -314,6 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxInteractionDistance: 2
   cameraTransform: {fileID: 3314237579269030611}
+  hasInteractedWithCurrentInteractble: 0
   itemCollider: {fileID: 3229952636936988353}
   interactablesInRange: []
   possibleInteractables: []
@@ -477,11 +482,36 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: -0.19121987
       objectReference: {fileID: 0}
+    - target: {fileID: 5095910019788212423, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095910019788212423, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].Name
+      value: Blend
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095910019788212423, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095910019788212423, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5206915737222148019, guid: d759674618dad8007acd33ec36b2e696,
         type: 3}
       propertyPath: playerController
       value: 
       objectReference: {fileID: 954105655732077785}
+    - target: {fileID: 6094173422653336580, guid: d759674618dad8007acd33ec36b2e696,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b3e1d11740456407cbc87e4ed70fd873, type: 2}
     - target: {fileID: 6139389214403663009, guid: d759674618dad8007acd33ec36b2e696,
         type: 3}
       propertyPath: viewIdField

@@ -44,7 +44,7 @@ public class CannonBall : Pickupable {
     }
 
     void OnCollisionEnter(Collision collision) {
-        if(Cannon.IsPartOfCannonEndZone(collision.gameObject)) {
+        if(Cannon != null && Cannon.IsPartOfCannonEndZone(collision.gameObject)) {
             task.parent.Complete();
         }
     }

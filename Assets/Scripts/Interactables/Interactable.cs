@@ -35,11 +35,12 @@ public abstract class Interactable : MonoBehaviourPun {
   public float outlineWidth = 5f;
   
   public bool inRange = false;
+  public bool manualOutline = false;
   
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
 
-  [SerializeField] public Outline outline;
+  [SerializeField] public Outline outline = null;
   protected Target taskMarker;
   protected Target undoneMarker;
   
@@ -51,7 +52,8 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void Reset() {}
 
   public virtual void Start() {
-    if (outline == null) {
+    if (outline == null && !manualOutline) {
+      Debug.Log($"Does not have outline: {gameObject}");
       outline = gameObject.AddComponent<Outline>() as Outline;
     }
     outline.OutlineWidth = outlineWidth;
