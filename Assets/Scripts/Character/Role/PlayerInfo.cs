@@ -9,6 +9,7 @@ public class PlayerInfo : MonoBehaviour {
     public Color color;
     public string assetPath;
     public GameObject ghostPrefab;
+    public Outline outline;
 
     #if UNITY_EDITOR
         void Reset() {
