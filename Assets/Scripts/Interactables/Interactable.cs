@@ -39,7 +39,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
 
-  private Outline outline;
+  [SerializeField] public Outline outline;
   protected Target taskMarker;
   protected Target undoneMarker;
   
@@ -51,7 +51,9 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void Reset() {}
 
   public virtual void Start() {
-    outline = gameObject.AddComponent<Outline>() as Outline;
+    if (outline == null) {
+      outline = gameObject.AddComponent<Outline>() as Outline;
+    }
     outline.OutlineWidth = outlineWidth;
     outline.enabled = false;
   
