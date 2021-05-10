@@ -83,7 +83,7 @@ public class PlayerSpawner : MonoBehaviour {
         PlayableCharacter character = player.GetComponent<PlayableCharacter>();
         PhotonView playerView = player.GetComponent<PhotonView>();
 
-        // Assign a role
+        // Assign a colour 
         playerView.RPC("AssignColor", RpcTarget.All, NetworkManager.instance.GetLocalPlayerProperty<string>("Color"));
 
         // Set the inventoryUI
