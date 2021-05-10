@@ -41,6 +41,7 @@ public class SabotageManager : MonoBehaviour{
             if (Timer.sabotageTimer.IsComplete()) {
                 // End the game
                 Timer.sabotageTimer.End();
+                sabotageable.Fix();
                 gameSceneManager.EndGame(Team.Traitor);
             }
             playersFixing.text = "Players Fixing: " + sabotageable.numberOfPlayersFixing;

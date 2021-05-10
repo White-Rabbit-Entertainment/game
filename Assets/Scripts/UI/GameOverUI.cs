@@ -17,10 +17,19 @@ public class GameOverUI : MonoBehaviour {
     // [SerializeField] private Button continueButton;
     
     [SerializeField] private GameObject playerNamePrefab;
+
+    [SerializeField] public AudioSource playerWonAudio;
+    [SerializeField] public AudioSource playerLostAudio;
     
     IEnumerator SwitchScenes() {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(30f);
         gameSceneManager.GoToLobby();
+    }
+
+    public void PlayEndGameAudio(Team winningTeam){
+        if (NetworkManager.instance.GetMe().startingTeam == winningTeam){
+            playerWonAudio.Play();
+        } else {playerLostAudio.Play();};
     }
 
     // Update is called once per frame
@@ -40,6 +49,7 @@ public class GameOverUI : MonoBehaviour {
                 PlayerTile tile = Instantiate(playerNamePrefab, winnersGrid).GetComponent<PlayerTile>();
                 tile.Init(player);
             }
+
         }
         
         // Set winning text
