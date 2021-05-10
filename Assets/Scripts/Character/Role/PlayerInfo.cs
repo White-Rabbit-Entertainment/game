@@ -10,7 +10,7 @@ public class PlayerInfo : MonoBehaviour {
     public string assetPath;
     public GameObject ghostPrefab;
     public Outline outline;
-    public Material coatMaterial;
+    public GameObject localHiddenMesh;
 
     #if UNITY_EDITOR
         void Reset() {
