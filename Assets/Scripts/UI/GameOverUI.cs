@@ -20,6 +20,7 @@ public class GameOverUI : MonoBehaviour {
 
     [SerializeField] public AudioSource playerWonAudio;
     [SerializeField] public AudioSource playerLostAudio;
+    [SerializeField] private AudioSource backgroundMusic;
     
     IEnumerator SwitchScenes() {
         yield return new WaitForSeconds(30f);
@@ -27,6 +28,7 @@ public class GameOverUI : MonoBehaviour {
     }
 
     public void PlayEndGameAudio(Team winningTeam){
+        backgroundMusic.Stop();
         if (NetworkManager.instance.GetMe().startingTeam == winningTeam){
             playerWonAudio.Play();
         } else {playerLostAudio.Play();};

@@ -21,6 +21,7 @@ public class VotingManager : MonoBehaviour {
   public GameSceneManager gameSceneManager;
   [SerializeField] private TimerManager timerManager;
   [SerializeField] private AudioSource votingMusic;
+  [SerializeField] private AudioSource backgroundMusic;
 
   public TextMeshProUGUI votesFor;
   public TextMeshProUGUI votesAgainst;
@@ -109,6 +110,7 @@ public class VotingManager : MonoBehaviour {
     playersVotingAgainst = new List<PlayableCharacter>();
     suspectedPlayer = PhotonView.Find(suspectedPlayerId).GetComponent<PlayableCharacter>();
     playersUI.SetSuspectedPlayer(suspectedPlayer);
+    backgroundMusic.Pause();
     votingMusic.Play();
     voteLeader = PhotonView.Find(voteLeaderId).GetComponent<PlayableCharacter>();
     voteStarted = true;
@@ -131,6 +133,7 @@ public class VotingManager : MonoBehaviour {
     currentVoteUI.SetActive(false);
     voteTopRightUI.SetActive(false);
     votingMusic.Stop();
+    backgroundMusic.UnPause();
     Timer.voteTimer.End();
     playersUI.ClearSuspectedPlayer(suspectedPlayer);
     foreach (PlayableCharacter character in FindObjectsOfType<PlayableCharacter>()) {
