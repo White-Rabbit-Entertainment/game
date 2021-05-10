@@ -10,6 +10,7 @@ public class PlayerInfo : MonoBehaviour {
     public string assetPath;
     public GameObject ghostPrefab;
     public Outline outline;
+    public Material coatMaterial;
 
     #if UNITY_EDITOR
         void Reset() {
