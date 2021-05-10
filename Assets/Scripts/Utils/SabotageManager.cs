@@ -28,6 +28,8 @@ public class SabotageManager : MonoBehaviour{
                              
     [SerializeField] private TimerManager timerManager;
 
+    [SerializeField] private AudioSource sabotageMusic;
+
   
                              
     public Sabotageable sabotageable;
@@ -56,6 +58,7 @@ public class SabotageManager : MonoBehaviour{
         timerManager.StartTimer(Timer.sabotageTimer);
         warningText.gameObject.SetActive(true);
         sabotageUI.SetActive(true);
+        sabotageMusic.Play();
         // if (NetworkManager.instance.GetMe() is Loyal){
         //     sabotageMiddleUI.SetActive(true);
         // }
@@ -92,6 +95,7 @@ public class SabotageManager : MonoBehaviour{
         taskUI.SetActive(true);
         taskNotificationUI.SetActive(true);
         fixingProgress.SetActive(false);
+        sabotageMusic.Stop();
         Timer.sabotageTimer.End();
     }
 
