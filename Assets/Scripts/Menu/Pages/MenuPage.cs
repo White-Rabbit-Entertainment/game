@@ -9,15 +9,16 @@ using System;
 public class MenuPage: MonoBehaviourPunCallbacks {
   public MenuManager menuManager;
 
-  public void Open() {
-    gameObject.SetActive(true);
+  public virtual void Open() {
     if (menuManager.currentPage != null) {
       menuManager.currentPage.Close();
     }
+    gameObject.SetActive(true);
     menuManager.currentPage = this;
   }
 
   public virtual void Close() {
     gameObject.SetActive(false);
-  } 
+  }
+
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine;
+using Photon.Chat;     
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -20,12 +21,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     // Singleton stuff see GameManager for details.
     public static NetworkManager instance;
     public static PlayableCharacter myCharacter;
-    public static List<string> traitorNames;
+
+    // Static chat client reference (shared between scenes)
+    public static ChatClient chatClient;
+
     private string roomNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     void Start() {
       PhotonNetwork.ConnectUsingSettings();
-      traitorNames = new List<string>();
     }
 
     /// <summary> Before a game is able to start various things need to be
@@ -33,6 +36,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void SetupGame() {
       if (RoomPropertyIs<bool>("GameStarted", false)) {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          // When a game starts we dont want people to be able to join
+          PhotonNetwork.CurrentRoom.IsVisible = false;
           SetRoomProperty("TasksSet", false);
           SetRoomProperty("WinningTeam", "None");
           SetRoomProperty("NumberOfTasks", 10);
@@ -41,21 +46,28 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           List<Player> players = GetPlayers();
           int numberOfTraitors = 1;
 
-          List<Role> roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+          
+          List<GameObject> playerColorPrefabs = new List<GameObject>(Resources.LoadAll("PlayerPrefabs/Alive", typeof(GameObject)).Cast<GameObject>().ToArray());
+          List<PlayerInfo> playerColors = new List<PlayerInfo>();
+          Debug.Log(playerColorPrefabs.Count);
+          foreach(GameObject playerColorPrefab in playerColorPrefabs) {
+            playerColors.Add(playerColorPrefab.GetComponent<PlayerInfo>());
+            Debug.Log("added item to playerinfo list");
+            Debug.Log(playerColorPrefab);
+          }
 
           // Shuffle players and roles to ensure random team and role are assigned
-          roles.Shuffle();
+          playerColors.Shuffle();
           players.Shuffle();
 
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
-            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
-            traitorNames.Add(players[i].NickName);
+            SetPlayerProperty("Color", playerColors[i % playerColors.Count].assetPath, players[i]);
           }
 
           for (int i = numberOfTraitors; i < players.Count; i++) {
             SetPlayerProperty("Team", Team.Loyal, players[i]);
-            SetPlayerProperty("Role", roles[i % roles.Count], players[i]);
+            SetPlayerProperty("Color", playerColors[i % playerColors.Count].assetPath, players[i]);
           }
           SetRoomProperty("GameReady", true);
 
@@ -249,6 +261,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
       return !CheckAnyPlayers<Team>("Team", Team.Traitor);
     }
 
+    public int NumberOfTeamRemaining(Team team) {
+      int count = 0;
+      foreach (Player player in GetPlayers()) {
+        if(PlayerPropertyIs<Team>("Team", team, player)) {
+          count++;
+        }
+      }
+      return count;
+    }
+
     // Return true is all players have readied up.
     public bool AllPlayersReady() {
       return CheckAllPlayers<bool>("Ready", true);
@@ -283,7 +305,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void ResetRoom() {
       SetRoomProperty("GameReady", false);
       SetRoomProperty("GameStarted", false);
-      Timer.RoundTimer.End();
+      Timer.roundTimer.End();
 
       SetLocalPlayerProperty("CurrentScene", "LobbyScene");
       SetLocalPlayerProperty("Ready", false);
@@ -296,7 +318,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         && RoomPropertyIs<bool>("GameStarted", false)
         && CheckAllPlayers<string>("CurrentScene", "LobbyScene")
         && CheckAllPlayers<bool>("Spawned", false)
-        && !Timer.RoundTimer.IsStarted();
+        && !Timer.roundTimer.IsStarted();
     } 
 
     public void CreateRoom (bool isVisible = true) {
@@ -323,5 +345,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     public PlayableCharacter GetMe() {
       return myCharacter;
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged) {
+      Debug.Log(propertiesThatChanged);
     }
 }

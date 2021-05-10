@@ -23,6 +23,8 @@ public class TaskManager : MonoBehaviourPun {
 
   void Start() {
     tasks = new List<Task>();
+
+    // Every 5 seconds update the task bar ui
     InvokeRepeating("UpdateTaskBar", 5f, 5f);
   }
 
@@ -86,14 +88,17 @@ public class TaskManager : MonoBehaviourPun {
 
     // Assign the first few items a Task
     for (int i = 0; i < numberOfTasks; i++) {
-        if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
-            int numberOfSubTasks = UnityEngine.Random.Range(0, 2);
-            if (numberOfSubTasks > 0) {
-                  possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
+        Interactable interactable = possibleMasterTaskables[i].GetComponent<Interactable>();
+        if (interactable.HasSoftRequirements()) {
+            float giveSubTaskWeight = UnityEngine.Random.Range(0f, 1f); 
+            Debug.Log($"Soft requiemnetProbability is: {interactable.softRequirementProbability}");
+            if (giveSubTaskWeight <= interactable.softRequirementProbability) {
+                Debug.Log($"Giving requirement to {interactable.gameObject}");
+                interactable.PickHardRequirements(possibleTaskables);
             }
         }
         expectedNumberOfTasks++;
-        PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
+        PhotonView view = interactable.GetComponent<PhotonView>();
         if (i < numberOfTasksInitiallyCompleted) {
           view.RPC("AddCompletedTaskRPC", RpcTarget.All);
         } else {

@@ -13,6 +13,7 @@
         "Unity.TextMeshPro",
         "Target",
         "EnoxSoftware.OpenCVForUnity"
+        "Unity.WebRTC"
     ],
     "includePlatforms": [],
     "excludePlatforms": [

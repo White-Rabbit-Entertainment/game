@@ -30,6 +30,10 @@ public class OffScreenIndicator : MonoBehaviour
         TargetStateChanged += HandleTargetStateChanged;
     }
 
+    public void SetCamera(Camera camera = null) {
+        mainCamera = camera == null ? Camera.main : camera;
+    }
+
     void LateUpdate()
     {
         DrawIndicators();

@@ -20,7 +20,7 @@ public class Stealable : Pickupable {
     void OnCollisionEnter(Collision collision) {
         if (ignoreNextCollision) {
             ignoreNextCollision = false;
-        } else if(collision.gameObject == destination.gameObject && PhotonNetwork.LocalPlayer.IsMasterClient) {
+        } else if(collision.gameObject == destination.gameObject && PhotonNetwork.LocalPlayer.IsMasterClient && task != null) {
             // Calls the steal rpc on all clients
             task.Complete();
 	    }
@@ -40,6 +40,7 @@ public class Stealable : Pickupable {
     }
     
     public override void PrimaryInteractionOff(Character character) {
+        Debug.Log($"Dropping");
         base.PrimaryInteractionOff(character);
         // destination.indicator.SetActive(false);
         if (destination != null) {

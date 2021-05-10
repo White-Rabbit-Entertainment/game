@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 4876101927155672708}
   - component: {fileID: 4276992508382683120}
   - component: {fileID: 8451829114104496765}
-  - component: {fileID: 3035610208391905193}
   m_Layer: 0
   m_Name: Gold bar
   m_TagString: Untagged
@@ -168,17 +167,6 @@ MonoBehaviour:
   inRange: 0
   itemAnimationTrigger: 
   playerAnimationTrigger: Pickup
-  taskMarkerBoxImageOverride: {fileID: 0}
-  taskMarkerArrowImageOverride: {fileID: 0}
-  taskMarkerBoxTextOverride: TASK
-  taskMarkerArrowTextOverride: 
-  taskMarkerColour: {r: 0, g: 1, b: 0, a: 1}
-  undoneMarkerBoxImageOverride: {fileID: 21300000, guid: 80bc7fb0f3659b2459a46e076d24f562,
-    type: 3}
-  undoneMarkerArrowImageOverride: {fileID: 0}
-  undoneMarkerBoxTextOverride: 
-  undoneMarkerArrowTextOverride: 
-  undoneMarkerColour: {r: 0, g: 0, b: 0, a: 0}
   task: {fileID: 0}
   isPickedUp: 0
   destination: {fileID: 0}
@@ -226,24 +214,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.75660944, y: 1.9986813, z: 0.44184583}
   m_Center: {x: 0, y: -0.010848491, z: 0.23559916}
---- !u!114 &3035610208391905193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2309103251000201219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetColor: {r: 0, g: 1, b: 0, a: 1}
-  needBoxIndicator: 1
-  needArrowIndicator: 1
-  needDistanceText: 1
-  boxImage: {fileID: 0}
-  arrowImage: {fileID: 0}
-  boxText: 
-  arrowText: 
-  indicator: {fileID: 0}

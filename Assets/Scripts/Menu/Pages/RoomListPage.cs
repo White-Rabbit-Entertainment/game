@@ -10,13 +10,15 @@ public class RoomListPage : MenuPage {
     public GameObject roomNamePrefab;
  
     void OnEnable(){
-        OnRoomListUpdate(menuManager.roomList);
+        OnCachedRoomListUpdate(menuManager.roomList);
     }
-    
-    public override void OnRoomListUpdate(List<RoomInfo> roomList) {
+
+    public void OnCachedRoomListUpdate(Dictionary<string, RoomInfo> roomList) {
         gridLayout.gameObject.DestroyChildren();
-        foreach (var room in roomList) {
+        foreach (RoomInfo room in roomList.Values) {
+            Debug.Log($"Room: {room.Name}, Number of players: {room.PlayerCount}, IsVisible: {room.IsVisible}");
             if (room.IsVisible && room.PlayerCount > 0) {
+                Debug.Log($"Found a visible room with some players");
                 GameObject newRoom = Instantiate(roomNamePrefab, gridLayout.position, Quaternion.identity);
                 newRoom.GetComponentInChildren<Text>().text = room.Name; //+ "(" + room.PlayerCount + ")";
                 newRoom.transform.SetParent(gridLayout);

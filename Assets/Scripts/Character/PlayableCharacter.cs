@@ -5,15 +5,19 @@ using UnityEngine;
 public abstract class PlayableCharacter : Character {
     public GameObject ghostPrefab;
 
-    public ContextTaskUI contextTaskUI;
-
+    public CurrentTaskUI currentTaskUI;
+    public DeathUI deathUI;
     public TaskNotificationUI taskNotificationUI;
 
-    public GameObject playerTile;
+    public PlayerTile playerTile;
     public PlayersUI playersUI;
 
     public Task assignedMasterTask = null;
     public Task assignedSubTask = null;
+
+    public Camera Camera {
+        get { return GetComponentInChildren<Camera>(); }
+    }
 
     protected override void Start() { 
       base.Start();
@@ -30,7 +34,8 @@ public abstract class PlayableCharacter : Character {
     public override void PutDown(Pickupable item) {
       base.PutDown(item);
     }
-     public bool IsMe() {
+     
+    public bool IsMe() {
       return Owner == PhotonNetwork.LocalPlayer;
     }
 
@@ -55,18 +60,34 @@ public abstract class PlayableCharacter : Character {
         assignedMasterTask = null;
     }
 
+    public void DisableTaskMarker() {
+        if (assignedSubTask != null) {
+            assignedSubTask.DisableTaskMarker();
+        }
+    }
+    
+    public void EnableTaskMarker() {
+        if (assignedSubTask != null) {
+            assignedSubTask.EnableTaskMarker();
+        }
+    }
+
     [PunRPC]
     public void Kill() {
         UnassignTask();
 
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
-        GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,2,-10), Quaternion.identity);
+        GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,10,-10), Quaternion.identity);
 
         // Kill the player for everyone else
         GetComponent<PhotonView>().RPC("KillPlayer", RpcTarget.All, newPlayer.GetComponent<PhotonView>().ViewID);
 
         PlayableCharacter newCharacter = newPlayer.GetComponent<PlayableCharacter>(); 
         NetworkManager.myCharacter = newCharacter; 
+        deathUI.gameObject.SetActive(true);
+
+
+        FindObjectOfType<OffScreenIndicator>().SetCamera();
     }
 
     [PunRPC]
@@ -74,8 +95,12 @@ public abstract class PlayableCharacter : Character {
         PlayableCharacter newCharacter = PhotonView.Find(newPlayerViewId).GetComponent<PlayableCharacter>();
         newCharacter.playerTile = playerTile;
         newCharacter.playersUI = playersUI;
+        newCharacter.startingTeam = startingTeam;
         playersUI.SetToDead(newCharacter);
-        
+      
+        GameObject body = Instantiate(playerInfo.ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
+        body.transform.parent = newCharacter.transform; // Sets the parent of the body to the player
+
         Destroy(gameObject);
     }
 }

@@ -3,47 +3,77 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public enum Timer {
-  None,
-  RoundTimer,
-  SabotageTimer,
-  VoteTimer,
+public static class TimerUtils {
+  // List of all timers
+  public static List<Timer> timers = new List<Timer>();
+  public static Timer roundTimer = new Timer(1000, "roundTimer");
+  public static Timer voteTimer = new Timer(30, "voteTimer");
+  public static Timer sabotageTimer = new Timer(30, "sabotageTimer");
+  public static Timer traitorSabotageTimer = new Timer(5, "traitorSabotageTimer");
 }
 
-public static class TimerUtils {
-    // Start the timer for the game, but assigning the start time and round length (which all clients use)
-    public static void Start(this Timer timer, double roundLength) {
-      NetworkManager.instance.SetRoomProperty(timer.ToString() + "length", roundLength);
-      NetworkManager.instance.SetRoomProperty(timer.ToString() + "start", PhotonNetwork.Time);
-      NetworkManager.instance.SetRoomProperty(timer.ToString() + "started", true);
-    }
+public class Timer {
+  bool started = false;
+  double startTime;
+  double length;
+  public string id;
 
-    public static void End(this Timer timer) {
-      NetworkManager.instance.SetRoomProperty(timer.ToString() + "started", false);
+  public static Timer roundTimer {
+    get {return TimerUtils.roundTimer;}
+  }
+  public static Timer voteTimer {
+    get {return TimerUtils.voteTimer;}
+  }
+  public static Timer sabotageTimer {
+    get {return TimerUtils.sabotageTimer;}
+  }
+  public static Timer traitorSabotageTimer{
+    get {return TimerUtils.traitorSabotageTimer;}
+  }
+
+  public Timer(double length, string id) {
+    this.length = length;
+    Debug.Log(TimerUtils.timers);
+    TimerUtils.timers.Add(this);
+    this.id = id;
+  }
+
+  public static Timer Get(string id) {
+    foreach (Timer timer in TimerUtils.timers) {
+      if (timer.id == id) return timer;
     }
+    return default;
+  }
+
+  public void Start(double startTime) {
+    started = true;
+    this.startTime = startTime;
+  }
+
+  public void End() {
+    started = false;
+  }
+
+  public bool IsStarted() {
+    return started;
+  }
     
-    public static bool IsStarted(this Timer timer) {
-      if (timer == Timer.None) return false;
-      return NetworkManager.instance.RoomPropertyIs<bool>(timer.ToString() + "started", true);
-    }
+  public double TimeRemaining() {
+    return length - (PhotonNetwork.Time - startTime);
+  }
+
+  public bool IsComplete() {
+    return started && TimeRemaining() <= 0;
+  }
     
-    // Returns round time remaining (or 0 if not started)
-    public static double TimeRemaining(this Timer timer) {
-      return NetworkManager.instance.GetRoomProperty<double>(timer.ToString() + "length", 0f) - (PhotonNetwork.Time - NetworkManager.instance.GetRoomProperty<double>(timer.ToString() + "start", 0f));
-    }
-
-    public static bool IsComplete(this Timer timer) {
-      return timer.IsStarted() && timer.TimeRemaining() <= 0;
-    }
-
-    public static string FormatTime(this Timer timer) {
-      int secondsLeft = (int)(timer.TimeRemaining());
-      int minutes = secondsLeft / 60;
-      int seconds = secondsLeft % 60;
-      string secondsStr = seconds.ToString();
-      string minutesStr = minutes.ToString();
-      if (minutes < 10) minutesStr = "0" + minutesStr;
-      if (seconds < 10) secondsStr = "0" + secondsStr;
-      return minutesStr + ":" + secondsStr;
-    }
+  public string FormatTime() {
+    int secondsLeft = (int)(TimeRemaining());
+    int minutes = secondsLeft / 60;
+    int seconds = secondsLeft % 60;
+    string secondsStr = seconds.ToString();
+    string minutesStr = minutes.ToString();
+    if (minutes < 10) minutesStr = "0" + minutesStr;
+    if (seconds < 10) secondsStr = "0" + secondsStr;
+    return minutesStr + ":" + secondsStr;
+  }
 }

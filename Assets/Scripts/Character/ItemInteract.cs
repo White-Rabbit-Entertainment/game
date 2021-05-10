@@ -17,6 +17,7 @@ public class ItemInteract : MonoBehaviourPun {
     private RaycastHit raycastFocus;
     private bool interactableInRange = false;
     private Interactable currentInteractable;
+    public bool hasInteractedWithCurrentInteractble = false;
     private PlayableCharacter character;
 
     public SphereCollider itemCollider;
@@ -35,6 +36,7 @@ public class ItemInteract : MonoBehaviourPun {
     public List<Interactable> possibleInteractables = new List<Interactable>();
     
     public Interactable GetBestInteractable() {
+        Debug.Log("Getting best interactable");
         float angle = float.PositiveInfinity;
         Interactable bestInteractable = null;
         foreach(Interactable interactable in possibleInteractables) {
@@ -58,12 +60,12 @@ public class ItemInteract : MonoBehaviourPun {
         Interactable newInteractable = null; 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
-        if (!character.HasItem()) {
-            newInteractable = GetBestInteractable();
-        }
+        newInteractable = character.HasItem() ? character.currentHeldItem : GetBestInteractable();
+        Debug.Log($"Best interactable is {newInteractable}");
 
         // If we are able to interact with stuff
         if (newInteractable != null) {
+            Debug.Log($"Doing things with {newInteractable}");
             // Interactable newInteractable = raycastFocus.collider.transform.GetComponent<Interactable>();
             // If we are already interacting with something but we are now
             // trying to interact with something new, then we need to disable
@@ -74,6 +76,7 @@ public class ItemInteract : MonoBehaviourPun {
             currentInteractable = newInteractable;
             
             if (currentInteractable != null && currentInteractable.CanInteract(character)) {
+                Debug.Log($"Can interact with thing: {newInteractable}");
                 // If we are able to interact with the new interactable then turn on its glow
                 newInteractable.InteractionGlowOn();
 
@@ -81,27 +84,28 @@ public class ItemInteract : MonoBehaviourPun {
                 if (Input.GetButtonDown("Fire1")) {
                   // Do whatever the primary interaction of this interactable is.
                   currentInteractable.PrimaryInteraction(character);
+                  hasInteractedWithCurrentInteractble = true;
                 }
             }
         } 
-        // Otherwise if we cant interact with anything but we were previously
-        // interacting with something.
-        else if (currentInteractable != null) {
-            // Then turn off the glow of that thing
+        // If we cant interact with anything but we were previously
+        // interacting with something or we were previously interacting with
+        // something and we are now trying to do a mouse up.
+        if (currentInteractable != null && (Input.GetButtonUp("Fire1") || newInteractable == null)) {
+            Debug.Log($"Dropping {newInteractable}");
+            // Then turn off the glow of that thing and do the interaction off
             currentInteractable.InteractionGlowOff();
 
-            // And if bring the mouse button up
-            if (Input.GetButtonUp("Fire1")) {
-              // Some item have a primary interaction off method, eg drop the
-              // item after pickup. Therefore run this on mouse up.
-              if (possibleInteractables.Contains(currentInteractable)) {
-                possibleInteractables.Remove(currentInteractable);
-              }
-              currentInteractable.PrimaryInteractionOff(character);
-              currentInteractable = null;
+            // If we havent interacted with the thing then we cannot uninteract
+            if (hasInteractedWithCurrentInteractble) {
+                currentInteractable.PrimaryInteractionOff(character);
             }
+
+            currentInteractable = null;
+            hasInteractedWithCurrentInteractble = false;
         }
     }
+
 
     private Interactable ClosestInteractable() {
         float distance = float.PositiveInfinity;
@@ -119,16 +123,14 @@ public class ItemInteract : MonoBehaviourPun {
      public void OnTriggerEnter(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null) {
-            if (interactable.task != null && interactable.task.IsUndone()) interactable.task.EnableUndoneMarker();
-            interactable.inRange = true;
+            interactable.OnEnterPlayerRadius();
         }
      }
 
      public void OnTriggerExit(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
         if (interactable != null) {
-            if (interactable.task != null) interactable.task.DisableUndoneMarker();
-            interactable.inRange = false;
+            interactable.OnExitPlayerRadius();
         }
      }
 
