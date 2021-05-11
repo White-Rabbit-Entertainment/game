@@ -14,17 +14,23 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public NameInputPage nameInputPage;
     public LobbyPage lobbyPage;
     public JoinRoomPage joinRoomPage;
+    public ClickToPlayPage clickToPlayPage;
+    
+        // public GameObject clickToPlayPage;
 
     public WebRTC webRTC;
     
     private TypedLobby lobby = new TypedLobby(null, LobbyType.Default);
     public Dictionary<string, RoomInfo> roomList = new Dictionary<string, RoomInfo>();
 
-    void Start() {
+    public bool isConnected = false;
 
+    void Start() {
         webRTC.Initialize();
         if (PhotonNetwork.LocalPlayer.NickName == null || PhotonNetwork.LocalPlayer.NickName == "") {
-            nameInputPage.Open();
+            // clickToPlayPage.SetActive(true);
+            clickToPlayPage.Open();
+            // nameInputPage.Open();
         } else if (PhotonNetwork.CurrentRoom != null) {
             lobbyPage.Open();
         } else {
@@ -34,6 +40,9 @@ public class MenuManager: MonoBehaviourPunCallbacks {
 
     public override void OnConnectedToMaster() {
         PhotonNetwork.JoinLobby(lobby);
+        isConnected = true;
+        currentPage.OnConnectedToMaster();
+
     }
 
     private void UpdateCachedRoomList(List<RoomInfo> roomUpdatesList) {

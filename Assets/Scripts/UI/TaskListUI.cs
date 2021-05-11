@@ -11,6 +11,8 @@ public class TaskListUI : MonoBehaviour {
   public GameObject masterTaskPrefab;
   public GameObject subTaskPrefab;
   public TaskManager taskManager;
+
+  public GameObject allTasksUI;
     
   private Color urgentTaskColour = new Color(1f, 0f, 0f, 1f);
   private Color yourTaskColor = new Color(1f, 0.14f, 0.38f, 0.85f);
@@ -34,10 +36,10 @@ public class TaskListUI : MonoBehaviour {
 
   public void ToggleTaskList() {
     if (taskListOpen) {
-      gameObject.SetActive(false);
+      allTasksUI.SetActive(false);
       taskListOpen = false;
     } else {
-      gameObject.SetActive(true);
+      allTasksUI.SetActive(true);
       taskListOpen = true;
     }
   }

@@ -92,12 +92,13 @@ public class PlayerSpawner : MonoBehaviour {
         character.taskNotificationUI = taskNotificationUI;
         character.deathUI = deathUI;
         NetworkManager.myCharacter = character;
-       
+
         //sets player layer to "raycast ignore" layer
         player.SetLayerRecursively(2);
    
         // Set up the camera for offScreenIndicator
         offScreenIndicator.SetActive(true);
 
+        Debug.Log("Player spanwed!");
     }
 }
