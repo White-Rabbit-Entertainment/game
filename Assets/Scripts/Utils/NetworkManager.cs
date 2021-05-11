@@ -44,7 +44,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           SetRoomProperty("NumberOfTasksInitiallyCompleted", 2);
           
           List<Player> players = GetPlayers();
-          int numberOfTraitors = 1;
+          int numberOfTraitors = 0;
 
           
           List<GameObject> playerColorPrefabs = new List<GameObject>(Resources.LoadAll("PlayerPrefabs/Alive", typeof(GameObject)).Cast<GameObject>().ToArray());
