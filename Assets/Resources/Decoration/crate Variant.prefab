@@ -77,10 +77,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4683669308469848369, guid: 9d6eab9f1c0364003b86ed81af8c1b3f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -5423730058349959353, guid: 24ab24270ada96940a12f33471752e74,
+        type: 3}
+    - target: {fileID: -1461304994638716399, guid: 9d6eab9f1c0364003b86ed81af8c1b3f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -5423730058349959353, guid: 24ab24270ada96940a12f33471752e74,
+        type: 3}
+    - target: {fileID: -1461304994638716399, guid: 9d6eab9f1c0364003b86ed81af8c1b3f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 7806100501455280664, guid: d981fbd3a40e34a69b66dc7ff2eab752,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 9d6eab9f1c0364003b86ed81af8c1b3f,
         type: 3}
       propertyPath: m_Name
-      value: crate
+      value: crate Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d6eab9f1c0364003b86ed81af8c1b3f, type: 3}
