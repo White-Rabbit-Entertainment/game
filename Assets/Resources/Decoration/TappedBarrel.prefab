@@ -109,6 +109,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 343904273334005789, guid: f2b94df998c9047f89b0b41b7f948a90,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 343904273334005789, guid: f2b94df998c9047f89b0b41b7f948a90,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 533116566001175753, guid: f2b94df998c9047f89b0b41b7f948a90,
         type: 3}
       propertyPath: viewIdField
