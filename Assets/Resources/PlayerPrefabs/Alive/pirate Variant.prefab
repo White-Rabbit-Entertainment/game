@@ -19,8 +19,7 @@ MonoBehaviour:
   ghostPrefab: {fileID: 919132149155446097, guid: 55f9c04f09c7d388b9a768886b5e841b,
     type: 3}
   outline: {fileID: 4619737043197351117}
-  coatMaterial: {fileID: -382652638819485698, guid: e014a6985ba524065aa1aa2e4a381702,
-    type: 3}
+  localHiddenMesh: {fileID: 0}
 --- !u!114 &4619737043197351117
 MonoBehaviour:
   m_ObjectHideFlags: 0
