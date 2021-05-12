@@ -130,11 +130,11 @@ public abstract class Character : MonoBehaviour {
       playerInfo = playerPrefab.GetComponent<PlayerInfo>();
 
       // Dont spawn your own body
-      if (Owner != PhotonNetwork.LocalPlayer) {
+      //if (Owner != PhotonNetwork.LocalPlayer) {
         GameObject body = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
         body.transform.parent = transform; // Sets the parent of the body to the player
         body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
-      }
+      //}
 
       GetComponent<Animator>().avatar = playerInfo.avatar;
       GetComponent<Votable>().outline = playerInfo.outline;
