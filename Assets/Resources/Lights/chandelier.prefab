@@ -96,6 +96,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -171,7 +176,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (7)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &7622189656881521005 stripped
 Transform:
@@ -186,6 +192,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -261,7 +272,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &5906161686479571930 stripped
 Transform:
@@ -276,6 +288,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -351,7 +368,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &4823060536609444614 stripped
 Transform:
@@ -366,6 +384,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -441,7 +464,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &5738018350732584664 stripped
 Transform:
@@ -456,6 +480,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -531,7 +560,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (6)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &5404157701567816508 stripped
 Transform:
@@ -546,6 +576,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -621,7 +656,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (4)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &2286072110628654698 stripped
 Transform:
@@ -636,6 +672,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -711,7 +752,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &283243404628105567 stripped
 Transform:
@@ -726,6 +768,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 826611164099093512}
     m_Modifications:
+    - target: {fileID: 3017685214474230725, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8567985810154577405, guid: a08d4f3c9df594a2e99a00ae9fd6b902,
         type: 3}
       propertyPath: m_RootOrder
@@ -801,7 +848,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (5)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 453032914201416508, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08d4f3c9df594a2e99a00ae9fd6b902, type: 3}
 --- !u!4 &276718656272639906 stripped
 Transform:
