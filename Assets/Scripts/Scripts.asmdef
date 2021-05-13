@@ -10,7 +10,9 @@
         "PhotonChat",
         "TypeReferences",
         "Unity.TextMeshPro",
-        "Target"
+        "Target",
+        "EnoxSoftware.OpenCVForUnity",
+        "EnoxSoftware.OpenCVForUnity.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
