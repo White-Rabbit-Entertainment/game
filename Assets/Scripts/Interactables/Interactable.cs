@@ -56,8 +56,12 @@ public abstract class Interactable : MonoBehaviourPun {
       Debug.Log($"Does not have outline: {gameObject}");
       outline = gameObject.AddComponent<Outline>() as Outline;
     }
-    outline.OutlineWidth = outlineWidth;
-    outline.enabled = false;
+
+    Debug.Log($"Setting outline for {gameObject} to {outline}");
+    if (outline) {
+      outline.OutlineWidth = outlineWidth;
+      outline.enabled = false;
+    }
   
     taskMarker = gameObject.AddComponent<Target>() as Target;
     taskMarker.enabled = false;
