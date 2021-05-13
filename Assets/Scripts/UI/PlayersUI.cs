@@ -42,7 +42,7 @@ public class PlayersUI : MonoBehaviourPun {
   }
 
   public void SetSuspectedPlayer(PlayableCharacter suspectedPlayer){
-    suspectedPlayer.playerTile.EnableVotingMark();
+    // suspectedPlayer.playerTile.EnableVotingMark();
     suspectedPlayer.playerTile.transform.position = suspectTile.transform.position;
     suspectedPlayer.playerTile.transform.SetParent(suspectTile.transform,true);
   }
