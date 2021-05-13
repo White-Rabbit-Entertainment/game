@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 3197310655502759624}
   m_LocalRotation: {x: -0.0006115328, y: 0.008050256, z: -0.0033156315, w: 0.9999619}
   m_LocalPosition: {x: -951.21, y: -331.08, z: 41.1}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 7780256929691441191}
   m_Father: {fileID: 0}
@@ -47,7 +47,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3197310655502759624}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -2643173543783292932, guid: 24ab24270ada96940a12f33471752e74, type: 3}
 --- !u!23 &3173199333701492394
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66,7 +66,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a4cb5e885040089f59094576a9f6e42d, type: 2}
+  - {fileID: 7806100501455280664, guid: 24ab24270ada96940a12f33471752e74, type: 3}
+  - {fileID: -5423730058349959353, guid: 676be0ed591a34b4fa69dc09e9535850, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -202,15 +203,19 @@ MonoBehaviour:
   taskColour: {r: 0, g: 0, b: 0, a: 0}
   undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
   softRequirementTypes: []
+  softRequirementProbability: 0.5
   canBeMasterTask: 0
   hardRequirements: []
   singleUse: 0
+  interactionDisabled: 0
   team: 4
   taskTeam: 6
   outlineWidth: 5
   inRange: 0
+  manualOutline: 0
   itemAnimationTrigger: 
   playerAnimationTrigger: 
+  outline: {fileID: 0}
   task: {fileID: 0}
   isSabotaged: 0
   numberOfPlayersToFix: 1
@@ -221,6 +226,7 @@ MonoBehaviour:
   warningText: Warning - Fire on ship
   infoText: Find and put out the fire before the timer ends.
   sabotageTargetText: Fire
+  startingAmountToFix: 100
   amountToFix: 100
   playersThatFixed: []
   animationObject: {fileID: 7780256929691103153}
@@ -244,6 +250,18 @@ PrefabInstance:
     - target: {fileID: 458676, guid: 18faec2a14493684d905501076799765, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 458676, guid: 18faec2a14493684d905501076799765, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 458676, guid: 18faec2a14493684d905501076799765, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 458676, guid: 18faec2a14493684d905501076799765, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 458676, guid: 18faec2a14493684d905501076799765, type: 3}
       propertyPath: m_LocalPosition.x
@@ -284,6 +302,10 @@ PrefabInstance:
     - target: {fileID: 458676, guid: 18faec2a14493684d905501076799765, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11426332, guid: 18faec2a14493684d905501076799765, type: 3}
+      propertyPath: IsProjectile
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18faec2a14493684d905501076799765, type: 3}
