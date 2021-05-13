@@ -86,6 +86,9 @@ public class PlayerSpawner : MonoBehaviour {
         // Assign a colour 
         playerView.RPC("AssignColor", RpcTarget.All, NetworkManager.instance.GetLocalPlayerProperty<string>("Color"));
 
+        // Give the player the ghost prefab so they can spawn on death
+        character.ghostPrefab = ghostPrefab;
+
         // Set the inventoryUI
         character.inventoryUI = inventoryUI;
         character.currentTaskUI = currentTaskUI;

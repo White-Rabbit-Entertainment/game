@@ -104,4 +104,8 @@ public abstract class PlayableCharacter : Character {
 
         Destroy(gameObject);
     }
+
+    public void Update() {
+      Debug.Log($"Ghost prefab is {playerInfo.ghostPrefab}");
+    }
 }
