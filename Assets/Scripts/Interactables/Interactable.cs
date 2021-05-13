@@ -297,9 +297,7 @@ public abstract class Interactable : MonoBehaviourPun {
       foreach(TypeReference type in softRequirementTypes) {
         if (interactable.GetComponent(type.Type) != null) hasCorrectType = true;
       }
-      if (interactable.GetComponent<Interactable>() != null
-      && hasCorrectType
-      && !interactable.GetComponent<Interactable>().task != null) {
+      if (hasCorrectType && interactable.task == null) {
         softRequirements.Add(interactable.GetComponent<Interactable>());
       }
     }
