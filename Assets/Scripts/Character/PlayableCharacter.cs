@@ -112,7 +112,7 @@ public abstract class PlayableCharacter : Character {
      
         GameObject body = Instantiate(playerInfo.ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
         body.transform.parent = newCharacter.transform; // Sets the parent of the body to the player
-        body.transform.position = new Vector3(0f,0f,0f);
+        body.transform.position = newCharacter.transform.position;
 
         Destroy(gameObject);
     }
