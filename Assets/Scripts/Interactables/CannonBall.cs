@@ -65,6 +65,7 @@ public class CannonBall : Pickupable {
     [PunRPC]
     public void SetInCannonConditions() {
         inCannon = true;
+        task.isCompleted = true;
         gameObject.SetActive(false);
     }
     
