@@ -24,6 +24,7 @@ public class GameSceneManager : MonoBehaviour {
     [SerializeField] private TimerManager timerManager;
     [SerializeField] private GameOverUI gameOverUI;
     [SerializeField] private DeathUI deathUI;
+    [SerializeField] private GameObject spawnPointsGO;
 
     public Color traitorColor = new Color(0.93f, 0.035f, 0.009f);
     public Color loyalColor = new Color(0.0f, 0.436f, 1.0f);
@@ -126,14 +127,9 @@ public class GameSceneManager : MonoBehaviour {
     }
     
     public Vector3 RandomNavmeshLocation(float radius = 50f) {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
-            finalPosition = hit.position;
-        }
-        Debug.Log($"{finalPosition.x},{finalPosition.y+3}, {finalPosition.z}");
-        return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
+        List<SpawnPoint> spawnPoints = new List<SpawnPoint>(spawnPointsGO.GetComponentsInChildren<SpawnPoint>());
+        int randomIndex = UnityEngine.Random.Range(0, spawnPoints.Count); 
+        return spawnPoints[randomIndex].transform.position;
     }
 
     public void GoToLobby() {
