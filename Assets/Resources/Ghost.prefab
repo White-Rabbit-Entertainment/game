@@ -17,6 +17,8 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 0}
   assetPath: PlayerPrefabs/Ghost/Red
   ghostPrefab: {fileID: 0}
+  outline: {fileID: 0}
+  localHiddenMesh: {fileID: 0}
 --- !u!1001 &4528733773685478203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82,7 +84,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1b98a1b676dce4bf292002169cb659b4,
         type: 3}
       propertyPath: m_Name
-      value: Red
+      value: Ghost
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b98a1b676dce4bf292002169cb659b4, type: 3}

@@ -50,10 +50,20 @@ PrefabInstance:
       propertyPath: ObservedComponents.Array.data[2]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 954105655732077785, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3229952636936988353, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3314237579269030611, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.178
       objectReference: {fileID: 0}
     - target: {fileID: 6604436822466725204, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
         type: 3}
@@ -122,8 +132,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8228965742358939037, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
         type: 3}
+      propertyPath: m_Height
+      value: 2.313607
+      objectReference: {fileID: 0}
+    - target: {fileID: 8228965742358939037, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.6941568
+      objectReference: {fileID: 0}
+    - target: {fileID: 8228965742358939037, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
+        type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8228965742358939037, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.6501571
+      objectReference: {fileID: 0}
+    - target: {fileID: 8228965742358939037, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.076349914
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2203055594231124995, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}
@@ -134,6 +164,7 @@ PrefabInstance:
     - {fileID: 8958111563290821118, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}
     - {fileID: -2710470628508081133, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}
     - {fileID: 7704698449327452848, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}
+    - {fileID: 3229952636936988353, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fb1fff29035ea57d2b2ef8b4397a0dc8, type: 3}
 --- !u!1 &6972329936450734485 stripped
 GameObject:
