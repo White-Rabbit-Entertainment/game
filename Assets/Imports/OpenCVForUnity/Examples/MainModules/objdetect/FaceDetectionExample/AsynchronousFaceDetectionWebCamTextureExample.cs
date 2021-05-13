@@ -64,7 +64,7 @@ namespace OpenCVForUnityExample
         /// </summary>
         string haar_cascade_filepath;
 
-        string emotion_classifier_filepath = "Assets/StreamingAssets/";
+        string emotion_classifier_filepath;
 
         protected static readonly string EMOTION_CLASSIFIER_FILENAME = "tf_model.pb";
 
@@ -240,20 +240,11 @@ namespace OpenCVForUnityExample
             innerParameters.coeffObjectSpeedUsingInPrediction = 0.8f;
 
                 //! [Initialize network]
+            // classifier = new Net();
+            // classifier = Dnn.readNetFromTensorflow("Assets/StreamingAssets/tf_model.pb");
                 //! [Initialize network]
                 InitializeDictionary();
 
-                // outBlobNames = getOutputsNames(classifier);
-                // for (int i = 0; i < outBlobNames.Count; i++)
-                // {
-                //    Debug.Log("names [" + i + "] " + outBlobNames[i]);
-                // }
-
-                // outBlobTypes = getOutputsTypes(classifier);
-                // for (int i = 0; i < outBlobTypes.Count; i++)
-                // {
-                //    Debug.Log("types [" + i + "] " + outBlobTypes[i]);
-                // }
 
             #if UNITY_ANDROID && !UNITY_EDITOR
             // Avoids the front camera low light issue that occurs in only some Android devices (e.g. Google Pixel, Pixel2).
@@ -356,6 +347,20 @@ namespace OpenCVForUnityExample
             cascade.load (lbp_cascade_filepath);
             classifier = new Net();
             classifier = Dnn.readNetFromTensorflow(emotion_classifier_filepath);
+
+            outBlobNames = getOutputsNames(classifier);
+                for (int i = 0; i < outBlobNames.Count; i++)
+                {
+                   Debug.Log("names [" + i + "] " + outBlobNames[i]);
+                }
+
+                outBlobTypes = getOutputsTypes(classifier);
+                for (int i = 0; i < outBlobTypes.Count; i++)
+                {
+                   Debug.Log("types [" + i + "] " + outBlobTypes[i]);
+                }
+            // classifier = new Net();
+            // classifier = Dnn.readNetFromTensorflow("Assets/StreamingAssets/tf_model.pb");
             if (cascade.empty ()) {
                 Debug.LogError ("cascade file is not loaded. Please copy from “OpenCVForUnity/StreamingAssets/” to “Assets/StreamingAssets/” folder. ");
             }
@@ -493,8 +498,8 @@ namespace OpenCVForUnityExample
                     // blob.convertTo​(blobConv, CvType.CV_32S);
                     classifier.setInput(blob);    
                     List<Mat> result = new List<Mat>();
-                    TickMeter tm = new TickMeter();
-                    tm.start();
+                    // TickMeter tm = new TickMeter();
+                    // tm.start();
 
                     List<Mat> outs = new List<Mat>();
                     classifier.forward(outs, outBlobNames);
@@ -517,7 +522,7 @@ namespace OpenCVForUnityExample
                     }
 
                     // Debug.Log("DONE");
-                    tm.stop();
+                    // tm.stop();
                     // Debug.Log("Inference time, ms: " + tm.getTimeMilli());
 
                     blob.Dispose();
