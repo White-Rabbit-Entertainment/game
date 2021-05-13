@@ -15,12 +15,15 @@ public abstract class PlayableCharacter : Character {
     public Task assignedMasterTask = null;
     public Task assignedSubTask = null;
 
+    private GameSceneManager gameSceneManager;
+
     public Camera Camera {
         get { return GetComponentInChildren<Camera>(); }
     }
 
     protected override void Start() { 
       base.Start();
+      gameSceneManager = GameObject.Find("/GameSceneManager").GetComponent<GameSceneManager>();
     }
 
     public override void Pickup(Pickupable item) {
@@ -77,7 +80,7 @@ public abstract class PlayableCharacter : Character {
         UnassignTask();
 
         NetworkManager.instance.SetPlayerProperty("Team", Team.Ghost, Owner);
-        GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, new Vector3(1,10,-10), Quaternion.identity);
+        GameObject newPlayer = PhotonNetwork.Instantiate(ghostPrefab.name, gameSceneManager.RandomNavmeshLocation(), Quaternion.identity);
 
         // Kill the player for everyone else
         GetComponent<PhotonView>().RPC("KillPlayer", RpcTarget.All, newPlayer.GetComponent<PhotonView>().ViewID);
@@ -86,6 +89,12 @@ public abstract class PlayableCharacter : Character {
         NetworkManager.myCharacter = newCharacter; 
         deathUI.gameObject.SetActive(true);
 
+        // Drop everything
+        PutDown(currentHeldItem);
+        RemoveItemFromInventory();
+        if (assignedMasterTask != null) {
+            assignedMasterTask.Unassign();
+        }
 
         FindObjectOfType<OffScreenIndicator>().SetCamera();
     }
@@ -96,16 +105,12 @@ public abstract class PlayableCharacter : Character {
         newCharacter.playerTile = playerTile;
         newCharacter.playersUI = playersUI;
         newCharacter.startingTeam = startingTeam;
+        newCharacter.taskNotificationUI = taskNotificationUI;
         playersUI.SetToDead(newCharacter);
      
-        Debug.Log($"Ghost prefab is {playerInfo.ghostPrefab}");
         GameObject body = Instantiate(playerInfo.ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
         body.transform.parent = newCharacter.transform; // Sets the parent of the body to the player
 
         Destroy(gameObject);
-    }
-
-    public void Update() {
-      Debug.Log($"Ghost prefab is {playerInfo.ghostPrefab}");
     }
 }
