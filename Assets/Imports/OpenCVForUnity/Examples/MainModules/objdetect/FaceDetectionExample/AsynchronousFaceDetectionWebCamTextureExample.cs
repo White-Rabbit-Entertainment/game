@@ -507,6 +507,8 @@ namespace OpenCVForUnityExample
                     if (emotions[maxIndex] != "Angry") {
                         if (lastEmotion != emotions[maxIndex] && max > 0.65) {
                             lastEmotion = emotions[maxIndex];
+                            Debug.Log("EMOTION DETECTED:");
+                            Debug.Log(lastEmotion);
                         }
                     }
 
