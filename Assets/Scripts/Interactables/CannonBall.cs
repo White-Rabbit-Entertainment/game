@@ -34,7 +34,7 @@ public class CannonBall : Pickupable {
         // When picked up complete the task
         if (task != null) {
             task.Complete();
-            GetComponent<PickupDestination>().EnableDestinationZone();
+            Cannon.GetComponent<PickupDestination>().EnableDestinationZone();
         }
     }
     
