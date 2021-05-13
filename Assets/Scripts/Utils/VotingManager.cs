@@ -139,15 +139,15 @@ public class VotingManager : MonoBehaviour {
     if (playersVotingFor.Count > playersVotingAgainst.Count) {
       if (suspectedPlayer.IsMe()) {
         suspectedPlayer.Kill();
-        if (NetworkManager.instance.NumberOfTeamRemaining(Team.Loyal) == NetworkManager.instance.NumberOfTeamRemaining(Team.Traitor)) {
-          gameSceneManager.EndGame(Team.Traitor);
-        }
-        else if (NetworkManager.instance.NoTraitorsRemaining()) {
-          gameSceneManager.EndGame(Team.Loyal);
-        }
-        else if (NetworkManager.instance.NoLoyalsRemaining()) {
-          gameSceneManager.EndGame(Team.Traitor);
-        }
+        // if (NetworkManager.instance.NumberOfTeamRemaining(Team.Loyal) == NetworkManager.instance.NumberOfTeamRemaining(Team.Traitor)) {
+        //   gameSceneManager.EndGame(Team.Traitor);
+        // }
+        // else if (NetworkManager.instance.NoTraitorsRemaining()) {
+        //   gameSceneManager.EndGame(Team.Loyal);
+        // }
+        // else if (NetworkManager.instance.NoLoyalsRemaining()) {
+        //   gameSceneManager.EndGame(Team.Traitor);
+        // }
       }
       // Show UI to say someone was voted off
       ShowVotingOutCome(suspectedPlayer.Owner.NickName);
