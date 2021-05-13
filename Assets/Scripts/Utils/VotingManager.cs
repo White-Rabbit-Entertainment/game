@@ -32,6 +32,7 @@ public class VotingManager : MonoBehaviour {
   public GameObject voteTopRightUI;
   public TextMeshProUGUI voteResult;
   public TextMeshProUGUI voteUnsuccessful;
+  public TextMeshProUGUI helperText;
   
   bool hasVoted = false;
   bool voteStarted = false;
@@ -120,6 +121,7 @@ public class VotingManager : MonoBehaviour {
 
     bool voteIsOnYou = NetworkManager.instance.GetMe() == suspectedPlayer;
     voteTitle.text = voteIsOnYou ? "You are being voted on." : $"{suspectedPlayer.Owner.NickName} is being voted on.";
+    helperText.text = voteIsOnYou ? "Convince everyone you're not the traitor" : "Press 'Y' for yes, 'N' for no.";
     setVoteUI.SetActive(true);
     votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
@@ -180,7 +182,9 @@ public class VotingManager : MonoBehaviour {
   public void SubmitVote(Vote vote) {
     GetComponent<PhotonView>().RPC("SetVote", RpcTarget.All, vote, NetworkManager.instance.GetMe().GetComponent<PhotonView>().ViewID);
     hasVoted = true;
-    setVoteUI.SetActive(false);
+   
+    string voteText = vote == Vote.For ? "yes" : "no";
+    helperText.text = $"You voted {voteText}";
   }
     
   public void ShowVotingOutCome(string name) {

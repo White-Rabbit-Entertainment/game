@@ -16,7 +16,7 @@ MonoBehaviour:
   avatar: {fileID: 9000000, guid: e014a6985ba524065aa1aa2e4a381702, type: 3}
   color: {r: 0.8396226, g: 0, b: 0.4692938, a: 1}
   assetPath: PlayerPrefabs/Alive/Pink
-  ghostPrefab: {fileID: 919132149155446097, guid: 55f9c04f09c7d388b9a768886b5e841b,
+  ghostPrefab: {fileID: 3609673097082007146, guid: 7d196459e34ef1820b6a34fd1d7a7fc4,
     type: 3}
   outline: {fileID: 4619737043197351117}
   localHiddenMesh: {fileID: 0}
@@ -366,7 +366,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 
-      objectReference: {fileID: 2100000, guid: bb240ce5391d32eb284ef607c7930043, type: 2}
+      objectReference: {fileID: 2100000, guid: b8da0dc3668c6e7c5824d8ecee2263de, type: 2}
     - target: {fileID: 919132149155446097, guid: e014a6985ba524065aa1aa2e4a381702,
         type: 3}
       propertyPath: m_Name
