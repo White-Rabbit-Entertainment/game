@@ -64,7 +64,7 @@ namespace OpenCVForUnityExample
         /// </summary>
         string haar_cascade_filepath;
 
-        string emotion_classifier_filepath = "Assets/StreamingAssets";
+        string emotion_classifier_filepath = "Assets/StreamingAssets/";
 
         protected static readonly string EMOTION_CLASSIFIER_FILENAME = "tf_model.pb";
 
