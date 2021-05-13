@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorName: Turquoise
   avatar: {fileID: 9000000, guid: e014a6985ba524065aa1aa2e4a381702, type: 3}
-  color: {r: 0.8584906, g: 0.63788414, b: 0, a: 1}
+  color: {r: 0, g: 0.7924528, b: 0.69119287, a: 1}
   assetPath: PlayerPrefabs/Alive/Turquoise
   ghostPrefab: {fileID: 3609673097082007146, guid: 7d196459e34ef1820b6a34fd1d7a7fc4,
     type: 3}

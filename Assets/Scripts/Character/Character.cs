@@ -128,6 +128,7 @@ public abstract class Character : MonoBehaviour {
   public void AssignColor (string assetPath) {
       GameObject playerPrefab = PlayerInfo.GetPrefab(assetPath);
       playerInfo = playerPrefab.GetComponent<PlayerInfo>();
+      Debug.Log($"Ghost prefab is {playerInfo.ghostPrefab}");
 
       // Dont spawn your own body
       if (Owner != PhotonNetwork.LocalPlayer) {

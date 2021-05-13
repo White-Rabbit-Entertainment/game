@@ -97,7 +97,8 @@ public abstract class PlayableCharacter : Character {
         newCharacter.playersUI = playersUI;
         newCharacter.startingTeam = startingTeam;
         playersUI.SetToDead(newCharacter);
-      
+     
+        Debug.Log($"Ghost prefab is {playerInfo.ghostPrefab}");
         GameObject body = Instantiate(playerInfo.ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
         body.transform.parent = newCharacter.transform; // Sets the parent of the body to the player
 
