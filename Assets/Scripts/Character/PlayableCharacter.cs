@@ -102,6 +102,8 @@ public abstract class PlayableCharacter : Character {
     [PunRPC]
     public void KillPlayer(int newPlayerViewId) {
         PlayableCharacter newCharacter = PhotonView.Find(newPlayerViewId).GetComponent<PlayableCharacter>();
+        Debug.Log($"Newplayer gameObject: {PhotonView.Find(newPlayerViewId).gameObject}");
+        Debug.Log($"Newplayer character: {PhotonView.Find(newPlayerViewId).gameObject.GetComponent<PlayableCharacter>()}");
         newCharacter.playerTile = playerTile;
         newCharacter.playersUI = playersUI;
         newCharacter.startingTeam = startingTeam;
