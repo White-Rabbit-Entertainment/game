@@ -65,14 +65,11 @@ public class PlayerSpawner : MonoBehaviour {
         GameObject playerPrefab;
         // Load in the local player
         if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Traitor)) {
-            // spawnPoint = new Vector3(1,2,-10);
             playerPrefab = traitorPrefab;
             traitors.Add(PhotonNetwork.LocalPlayer.NickName);
         } else if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
-            // spawnPoint = new Vector3(1,2,10);
             playerPrefab = loyalPrefab;
         } else {
-            // spawnPoint = new Vector3(1,4,10);
             playerPrefab = ghostPrefab;
         }
         spawnPoint = gameSceneManager.RandomNavmeshLocation();
