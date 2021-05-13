@@ -103,7 +103,7 @@ public class GameSceneManager : MonoBehaviour {
         timerCountdown.Stop();
         deathUI.gameObject.SetActive(false);
         gameOverUI.OnGameOver(winningTeam);
-        
+        gameOverUI.PlayEndGameAudio(winningTeam);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.instance.GetMe().Freeze();
@@ -111,6 +111,7 @@ public class GameSceneManager : MonoBehaviour {
         // After a game has ended people can join again
         PhotonNetwork.CurrentRoom.IsVisible = true;
     }
+
 
 
     /// <summary> Check if the level has finished loading. It does this by

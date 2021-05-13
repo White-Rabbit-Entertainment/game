@@ -13,6 +13,7 @@ public class NameInputPage : MenuPage {
     [SerializeField] private ChatManager chatManager;
     [SerializeField] private GameObject invalidNameText;
     [SerializeField] private GameObject tooLongNameText;
+    [SerializeField] private GameObject container;
 
 
     
@@ -20,6 +21,13 @@ public class NameInputPage : MenuPage {
     Regex inputChecker;
 
     void OnEnable() {
+        StartCoroutine(DelayEnable());
+    }
+
+    IEnumerator DelayEnable(){
+        container.SetActive(false);
+        yield return new WaitForSeconds(10f);
+        container.SetActive(true);
         if(menuManager.isConnected){
             OnConnectedToMaster();
         }

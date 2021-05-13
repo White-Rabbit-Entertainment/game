@@ -28,6 +28,9 @@ public class SabotageManager : MonoBehaviour{
                              
     [SerializeField] private TimerManager timerManager;
 
+    [SerializeField] private AudioSource sabotageMusic;
+    [SerializeField] private AudioSource backgroundMusic;
+
   
                              
     public Sabotageable sabotageable;
@@ -41,6 +44,7 @@ public class SabotageManager : MonoBehaviour{
             if (Timer.sabotageTimer.IsComplete()) {
                 // End the game
                 Timer.sabotageTimer.End();
+                sabotageable.Fix();
                 gameSceneManager.EndGame(Team.Traitor);
             }
             playersFixing.text = "Players Fixing: " + sabotageable.numberOfPlayersFixing;
@@ -55,6 +59,8 @@ public class SabotageManager : MonoBehaviour{
         timerManager.StartTimer(Timer.sabotageTimer);
         warningText.gameObject.SetActive(true);
         sabotageUI.SetActive(true);
+        backgroundMusic.Pause();
+        sabotageMusic.Play();
         // if (NetworkManager.instance.GetMe() is Loyal){
         //     sabotageMiddleUI.SetActive(true);
         // }
@@ -91,6 +97,8 @@ public class SabotageManager : MonoBehaviour{
         taskUI.SetActive(true);
         taskNotificationUI.SetActive(true);
         fixingProgress.SetActive(false);
+        sabotageMusic.Stop();
+        backgroundMusic.UnPause();
         Timer.sabotageTimer.End();
     }
 

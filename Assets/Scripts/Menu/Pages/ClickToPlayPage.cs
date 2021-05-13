@@ -8,6 +8,7 @@ public class ClickToPlayPage : MenuPage
     // Start is called before the first frame update
     public Button clickToPlay;
     public Camera camera;
+    public AudioSource themeAudio;
     [SerializeField] private NameInputPage nameInputPage;
     void Start()
     {
@@ -16,7 +17,9 @@ public class ClickToPlayPage : MenuPage
 
     void ClickToPlay(){
         gameObject.SetActive(false);
+        // camera.GetComponent<Animator>().SetTrigger("CameraAnim");
         camera.GetComponent<Animator>().enabled = true;
+        themeAudio.Play();
         nameInputPage.Open();
         
     }

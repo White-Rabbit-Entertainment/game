@@ -15,6 +15,8 @@ public abstract class PlayableCharacter : Character {
     public Task assignedMasterTask = null;
     public Task assignedSubTask = null;
 
+    public string lastEmotion = "";
+
     public Camera Camera {
         get { return GetComponentInChildren<Camera>(); }
     }
@@ -102,5 +104,16 @@ public abstract class PlayableCharacter : Character {
         body.transform.parent = newCharacter.transform; // Sets the parent of the body to the player
 
         Destroy(gameObject);
+    }
+
+    public void SetEmotion(string emotion) {
+      int id = View.ViewID;
+      View.RPC("SetEmotionRPC", RpcTarget.All, id, emotion);
+    }
+
+    [PunRPC]
+    public void SetEmotionRPC(int playerViewId, string emotion) {
+      PlayableCharacter player = PhotonView.Find(playerViewId).GetComponent<PlayableCharacter>();
+      player.lastEmotion = emotion;
     }
 }
