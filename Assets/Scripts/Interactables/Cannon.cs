@@ -34,4 +34,12 @@ public class Cannon : Interactable {
         if (queryGameObject == gameObject) return true;
         return GetComponent<PickupDestination>().IsPartOfPickUpDestination(queryGameObject);
     }
+
+    public void EnableDestinationZone() {
+        GetComponent<PickupDestination>().EnableDestinationZone();
+    }
+    
+    public void DisableDestinationZone() {
+        GetComponent<PickupDestination>().DisableDestinationZone();
+    }
 }

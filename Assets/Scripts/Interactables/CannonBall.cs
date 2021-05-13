@@ -32,7 +32,10 @@ public class CannonBall : Pickupable {
     public override void PrimaryInteraction(Character character) {
         base.PrimaryInteraction(character);
         // When picked up complete the task
-        if (task != null) task.Complete();
+        if (task != null) {
+            task.Complete();
+            GetComponent<PickupDestination>().EnableDestinationZone();
+        }
     }
     
     public override void PrimaryInteractionOff(Character character) {
@@ -46,6 +49,7 @@ public class CannonBall : Pickupable {
     void OnCollisionEnter(Collision collision) {
         if(Cannon != null && Cannon.IsPartOfCannonEndZone(collision.gameObject)) {
             task.parent.Complete();
+            Cannon.DisableDestinationZone();
         }
     }
   

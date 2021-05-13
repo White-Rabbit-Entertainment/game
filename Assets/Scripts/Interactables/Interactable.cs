@@ -307,6 +307,7 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public virtual void OnEnterPlayerRadius() {
+    if (task != null && task.isUndone) task.EnableUndoneMarker();
     inRange = true;
   }
   
