@@ -299,7 +299,7 @@ public abstract class Interactable : MonoBehaviourPun {
       }
       if (interactable.GetComponent<Interactable>() != null
       && hasCorrectType
-      && !interactable.GetComponent<Interactable>().HasTask()) {
+      && !interactable.GetComponent<Interactable>().task != null) {
         softRequirements.Add(interactable.GetComponent<Interactable>());
       }
     }
