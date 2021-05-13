@@ -153,4 +153,10 @@ public class ItemInteract : MonoBehaviourPun {
      public void RemovePossibleInteractable(Interactable item) {
         possibleInteractables.Remove(item);
      }
+
+     public void ClearInteractionOutline() {
+         if (currentInteractable != null) {
+             currentInteractable.InteractionGlowOff();
+         }
+     }
 }

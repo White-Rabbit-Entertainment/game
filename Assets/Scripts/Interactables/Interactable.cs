@@ -57,7 +57,7 @@ public abstract class Interactable : MonoBehaviourPun {
       outline = gameObject.AddComponent<Outline>() as Outline;
     }
 
-    Debug.Log($"Setting outline for {gameObject} to {outline}");
+      Debug.Log($"Setting outline for {gameObject} to {outline}");
     if (outline) {
       outline.OutlineWidth = outlineWidth;
       outline.enabled = false;
@@ -311,7 +311,9 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public virtual void OnEnterPlayerRadius() {
-    if (task != null && task.isUndone) task.EnableUndoneMarker();
+    if (task != null && task.isUndone && NetworkManager.instance.GetMe().assignedSubTask != task) {
+      task.EnableUndoneMarker();
+    }
     inRange = true;
   }
   

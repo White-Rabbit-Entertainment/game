@@ -95,6 +95,7 @@ public abstract class PlayableCharacter : Character {
         if (assignedMasterTask != null) {
             assignedMasterTask.Unassign();
         }
+        if (GetComponent<ItemInteract>() != null) GetComponent<ItemInteract>().ClearInteractionOutline();
 
         FindObjectOfType<OffScreenIndicator>().SetCamera();
     }
