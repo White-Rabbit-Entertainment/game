@@ -64,9 +64,9 @@ namespace OpenCVForUnityExample
         /// </summary>
         string haar_cascade_filepath;
 
-        string emotion_classifier_filepath;
+        string emotion_classifier_filepath = "Assets/StreamingAssets";
 
-        protected static readonly string CLASSIFIER_FILENAME = "tf_model.pb";
+        protected static readonly string EMOTION_CLASSIFIER_FILENAME = "tf_model.pb";
 
         /// <summary>
         /// The rects where regions.
@@ -175,6 +175,7 @@ namespace OpenCVForUnityExample
         // Use this for initialization
         void Start ()
         {   
+            Debug.Log("Start");
             fpsMonitor = GetComponent<FpsMonitor> ();
 
             webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper> ();
@@ -184,8 +185,11 @@ namespace OpenCVForUnityExample
             #else
             lbp_cascade_filepath = Utils.getFilePath (LBP_CASCADE_FILENAME);
             haar_cascade_filepath = Utils.getFilePath (HAAR_CASCADE_FILENAME);
-            emotion_classifier_filepath = Utils.getFilePath (CLASSIFIER_FILENAME);
+            emotion_classifier_filepath = Utils.getFilePath (EMOTION_CLASSIFIER_FILENAME);
+
+            Debug.Log("Start end");
             Run ();
+            Debug.Log("RUN end");
             #endif
         }
 
@@ -202,7 +206,7 @@ namespace OpenCVForUnityExample
             });
             yield return getFilePathAsync_haarcascade_frontalface_alt_xml_filepath_Coroutine;
 
-            var getFilePathAsync_tf_model_pb_filepath_Coroutine = Utils.getFilePathAsync (CLASSIFIER_FILENAME, (result) => {
+            var getFilePathAsync_tf_model_pb_filepath_Coroutine = Utils.getFilePathAsync (EMOTION_CLASSIFIER_FILENAME, (result) => {
                 emotion_classifier_filepath = result;
             });
             yield return getFilePathAsync_tf_model_pb_filepath_Coroutine;
@@ -519,21 +523,21 @@ namespace OpenCVForUnityExample
                     blob.Dispose();
                     // Debug.Log(res.ToString());
 
-                // Utils.fastMatToTexture2D(rgbaMat, texture);
+                Utils.fastMatToTexture2D(rgbaMat, texture);
                     // Mat t = classifier.forward();
-                    lastEmotion = "Angry";
+                    // lastEmotion = "Angry";
                 }
                 GetObjects (resultObjects);
 
-                // rects = resultObjects.ToArray ();
-                // for (int i = 0; i < rects.Length; i++) {
-                //     //Debug.Log ("detect faces " + rects [i]);
-                //     Imgproc.rectangle (rgbaMat, new Point (rects [i].x, rects [i].y), new Point (rects [i].x + rects [i].width, rects [i].y + rects [i].height), new Scalar (255, 0, 0, 255), 2);
-                // }
+                rects = resultObjects.ToArray ();
+                for (int i = 0; i < rects.Length; i++) {
+                    //Debug.Log ("detect faces " + rects [i]);
+                    Imgproc.rectangle (rgbaMat, new Point (rects [i].x, rects [i].y), new Point (rects [i].x + rects [i].width, rects [i].y + rects [i].height), new Scalar (255, 0, 0, 255), 2);
+                }
 
-                // #if UNITY_WEBGL
-                // Imgproc.putText (rgbaMat, "WebGL platform does not support multi-threading.", new Point (5, rgbaMat.rows () - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar (255, 255, 255, 255), 1, Imgproc.LINE_AA, false);
-                // #endif
+                #if UNITY_WEBGL
+                Imgproc.putText (rgbaMat, "WebGL platform does not support multi-threading.", new Point (5, rgbaMat.rows () - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar (255, 255, 255, 255), 1, Imgproc.LINE_AA, false);
+                #endif
 
                 // Utils.fastMatToTexture2D (rgbaMat, texture);
             }
