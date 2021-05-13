@@ -70,7 +70,9 @@ public class Task : MonoBehaviour {
     isAssigned = false;
     isUndone = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
-    taskManager.CheckAllTasksCompleted();
+    if (PhotonNetwork.IsMasterClient) {
+      taskManager.CheckAllTasksCompleted();
+    }
 
     //Enable & Disable relevant targets
     DisableUndoneMarker();
