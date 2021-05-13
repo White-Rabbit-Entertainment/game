@@ -97,6 +97,7 @@ public abstract class PlayableCharacter : Character {
         }
         if (GetComponent<ItemInteract>() != null) GetComponent<ItemInteract>().ClearInteractionOutline();
 
+
         FindObjectOfType<OffScreenIndicator>().SetCamera();
     }
 
@@ -114,6 +115,7 @@ public abstract class PlayableCharacter : Character {
         GameObject body = Instantiate(playerInfo.ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
         body.transform.parent = newCharacter.transform; // Sets the parent of the body to the player
         body.transform.position = newCharacter.transform.position;
+        body.transform.Rotate(-90f, 0f, 0f);
 
         Destroy(gameObject);
     }
