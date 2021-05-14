@@ -163,7 +163,7 @@ namespace OpenCVForUnityExample
 
         Dictionary<int, string> emotions;
 
-        public string lastEmotion = "";
+        public string lastEmotion = "Neutral";
 
         public bool faceDetected = false;
 

@@ -11,7 +11,7 @@ public class EmotionRecorder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        lastEmotion = "";
+        lastEmotion = "Neutral";
         asynchronousFaceDetectionWebCamTextureExample = GetComponent<AsynchronousFaceDetectionWebCamTextureExample>();
 
     }

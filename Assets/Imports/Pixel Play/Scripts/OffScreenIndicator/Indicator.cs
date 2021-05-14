@@ -90,14 +90,14 @@ public class Indicator : MonoBehaviour
     public void Activate(bool value, GameObject go = null)
     {
         if (go == null) {
-            Debug.Log($"Setting unknown to: {value}");
+            // Debug.Log($"Setting unknown to: {value}");
         }
         Debug.Log($"Setting inidcator for {go}: {value}");
         transform.gameObject.SetActive(value);
     }
 
     void OnDisable() {
-        Debug.Log($"{gameObject} got disabled");
+        // Debug.Log($"{gameObject} got disabled");
     }
 }
 

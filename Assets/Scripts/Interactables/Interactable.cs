@@ -167,7 +167,7 @@ public abstract class Interactable : MonoBehaviourPun {
       
       // If this already has a task then just use that 
       if (this.task != null) {
-        Debug.Log($"You are trying to add another task to {gameObject}");
+        // Debug.Log($"You are trying to add another task to {gameObject}");
         return;
       }
 
