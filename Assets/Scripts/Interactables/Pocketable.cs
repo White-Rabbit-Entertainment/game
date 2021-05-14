@@ -23,7 +23,7 @@ public class Pocketable : Interactable {
 
   public void SetItemDropConditions(Vector3 position) {
     SetItemDropConditions(position);
-    View.RPC("SetItemDropConditions", RpcTarget.Others, position);
+    View.RPC("SetItemDropConditionsRPC", RpcTarget.Others, position);
   }
 
   [PunRPC]
