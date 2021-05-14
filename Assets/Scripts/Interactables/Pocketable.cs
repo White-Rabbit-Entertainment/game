@@ -45,9 +45,9 @@ public class Pocketable : Interactable {
     }
     gameObject.SetActive(false);
     
-    if (GetComponent<Rigidbody> != null) {
-        GetComponent<Rigidbody>.velocity = Vector3.Zero;
-        GetComponent<Rigidbody>.angularVelocity = Vector3.Zero;
+    if (GetComponent<Rigidbody>() != null) {
+        GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+        GetComponent<Rigidbody>().angularVelocity = new Vector3(0,0,0);
     }
   }
  

@@ -76,8 +76,8 @@ public class CannonBall : Pickupable {
         transform.position = newPosition;
 
         // Remove all velocity
-        GetComponent<Rigidbody>.velocity = Vector3.Zero;
-        GetComponent<Rigidbody>.angularVelocity = Vector3.Zero;
+        GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+        GetComponent<Rigidbody>().angularVelocity = new Vector3(0,0,0);
     }
 
     public override void AddTask(Task parentTask = null) {
