@@ -12,7 +12,7 @@ var WebRTCPlugin = {
   
   Init: function() {
     // Setup local stream
-    const constraints = {'video': true, 'audio': true}
+    const constraints = {'video': false, 'audio': true}
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             console.log('Got MediaStream:', stream);
@@ -49,7 +49,7 @@ var WebRTCPlugin = {
       Data.peerConnections[id] = peerConnection
       peerConnection.peerId = id
 
-      peerConnection.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true})
+      peerConnection.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: false})
         .then(function(offer) {
             peerConnection.setLocalDescription(offer)
               .then(function() {

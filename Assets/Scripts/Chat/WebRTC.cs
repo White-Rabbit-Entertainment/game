@@ -45,13 +45,13 @@ public class WebRTC : MonoBehaviour {
 
     public void Initialize() {
         #if !UNITY_EDITOR && UNITY_WEBGL
-            // Init();
+            Init();
         #endif
     }
 
     public void Call(int playerId) {
         #if !UNITY_EDITOR && UNITY_WEBGL
-            // MakeOffer(playerId);
+            MakeOffer(playerId);
         #endif
     }
 
@@ -117,13 +117,13 @@ public class WebRTC : MonoBehaviour {
 
     public void SetVolume(int playerId, float volume) {
         #if !UNITY_EDITOR && UNITY_WEBGL
-            // SetPeerVolume(playerId, volume);
+            SetPeerVolume(playerId, volume);
         #endif
     }
     
     public float GetVolume(int playerId) {
         #if !UNITY_EDITOR && UNITY_WEBGL
-            // return GetPeerVolume(playerId);
+            return GetPeerVolume(playerId);
         #endif
         return 0;
     }
