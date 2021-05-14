@@ -15,7 +15,7 @@ public abstract class PlayableCharacter : Character {
     public Task assignedMasterTask = null;
     public Task assignedSubTask = null;
 
-    public string lastEmotion = "";
+    public string lastEmotion = "neutral";
 
     public Camera Camera {
         get { return GetComponentInChildren<Camera>(); }
