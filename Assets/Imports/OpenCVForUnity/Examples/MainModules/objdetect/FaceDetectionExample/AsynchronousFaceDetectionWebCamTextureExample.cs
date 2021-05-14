@@ -504,14 +504,14 @@ namespace OpenCVForUnityExample
                     Double max = 0;
                     int maxIndex = 0;
                     for (int j = 0; j < 7; j++) {
-                        if (outs[0].get(0,j)[0] > max) {
+                        if (outs[0].get(0,j)[0] > max && emotions[j] != "Angry") {
                             max = outs[0].get(0,j)[0];
                             maxIndex = j;
                         } 
                     }
                     // Debug.Log(max);
                     if (emotions[maxIndex] != "Angry") {
-                        if (lastEmotion != emotions[maxIndex] && max > 0.65) {
+                        if (lastEmotion != emotions[maxIndex]) {
                             lastEmotion = emotions[maxIndex];
                             Debug.Log("EMOTION DETECTED:");
                             Debug.Log(lastEmotion);

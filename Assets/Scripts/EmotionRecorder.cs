@@ -19,7 +19,7 @@ public class EmotionRecorder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
-        if (asynchronousFaceDetectionWebCamTextureExample.lastEmotion != lastEmotion) {
+        if (NetworkManager.instance.GetMe() != null && asynchronousFaceDetectionWebCamTextureExample.lastEmotion != lastEmotion) {
             lastEmotion = asynchronousFaceDetectionWebCamTextureExample.lastEmotion;
             NetworkManager.instance.GetMe().SetEmotion(lastEmotion);
             Debug.Log("last emotion:" +  lastEmotion);
