@@ -98,7 +98,7 @@ public abstract class Character : MonoBehaviour {
   public void RemoveItemFromInventory(bool resetConditions = true) {
     if (pocketedItem == null) return;
     if (resetConditions) {
-      pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+      pocketedItem.SetItemDropConditions(transform.position);
       if (pocketedItem.task != null && pocketedItem.task.parent != null) {
         pocketedItem.task.parent.GetComponent<Interactable>().DisableTaskMarker();
       }
@@ -128,15 +128,17 @@ public abstract class Character : MonoBehaviour {
   public void AssignColor (string assetPath) {
       GameObject playerPrefab = PlayerInfo.GetPrefab(assetPath);
       playerInfo = playerPrefab.GetComponent<PlayerInfo>();
+      Debug.Log($"Ghost prefab is {playerInfo.ghostPrefab}");
 
       // Dont spawn your own body
+      GameObject body;
       if (Owner != PhotonNetwork.LocalPlayer) {
-        GameObject body = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+        body = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
         body.transform.parent = transform; // Sets the parent of the body to the player
         body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
+        GetComponent<Votable>().outline = body.GetComponent<Outline>();
       }
 
       GetComponent<Animator>().avatar = playerInfo.avatar;
-      GetComponent<Votable>().outline = playerInfo.outline;
   }
 }

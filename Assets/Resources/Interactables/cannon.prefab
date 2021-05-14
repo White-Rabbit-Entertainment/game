@@ -30,78 +30,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 4a42042874a2db894baccef023879107, type: 3}
---- !u!114 &-6924201268083353533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 110838560622236418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9317f641c52c183dbe3dc17d6d99ba9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
-  destinationZoneIndicator: {fileID: 8392301323738819762}
-  pickupDestinationExtensions:
-  - {fileID: 2696852439255848803}
---- !u!114 &69639567301894180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 110838560622236418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b9e7fa57b440e9f8a62fe4afd7c1f8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: Load the cannon
-  interactionColour: {r: 0, g: 0, b: 0, a: 0}
-  taskColour: {r: 0, g: 0, b: 0, a: 0}
-  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
-  softRequirementTypes:
-  - GuidAssignmentFailed: 0
-    GUID: e9c79b4c2f9cc0e26aa14a25ee76a84d
-    TypeNameAndAssembly: CannonBall, Scripts
-    _suppressLogs: 0
-  softRequirementProbability: 1
-  canBeMasterTask: 1
-  hardRequirements: []
-  singleUse: 0
-  interactionDisabled: 0
-  team: 22
-  taskTeam: 22
-  outlineWidth: 5
-  inRange: 0
-  itemAnimationTrigger: 
-  playerAnimationTrigger: 
-  outline: {fileID: -8007968517732176860}
-  task: {fileID: 0}
---- !u!114 &6703236929569589833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 110838560622236418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  observableSearch: 2
-  Synchronization: 3
-  OwnershipTransfer: 0
-  ObservedComponents: []
-  viewIdField: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &-8007968517732176860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4599,6 +4527,79 @@ MonoBehaviour:
     - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
     - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
     - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
+--- !u!114 &-6924201268083353533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110838560622236418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9317f641c52c183dbe3dc17d6d99ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  destinationZoneIndicator: {fileID: 8392301323738819762}
+  pickupDestinationExtensions:
+  - {fileID: 2696852439255848803}
+--- !u!114 &69639567301894180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110838560622236418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b9e7fa57b440e9f8a62fe4afd7c1f8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: Load the cannon
+  interactionColour: {r: 0, g: 0, b: 0, a: 0}
+  taskColour: {r: 0, g: 0, b: 0, a: 0}
+  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
+  softRequirementTypes:
+  - GuidAssignmentFailed: 0
+    GUID: e9c79b4c2f9cc0e26aa14a25ee76a84d
+    TypeNameAndAssembly: CannonBall, Scripts
+    _suppressLogs: 0
+  softRequirementProbability: 1
+  canBeMasterTask: 1
+  hardRequirements: []
+  singleUse: 0
+  interactionDisabled: 0
+  team: 22
+  taskTeam: 22
+  outlineWidth: 5
+  inRange: 0
+  manualOutline: 0
+  itemAnimationTrigger: 
+  playerAnimationTrigger: 
+  outline: {fileID: -8007968517732176860}
+  task: {fileID: 0}
+--- !u!114 &6703236929569589833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110838560622236418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2809307566373302822
 GameObject:
   m_ObjectHideFlags: 0
@@ -4804,7 +4805,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4a42042874a2db894baccef023879107,
         type: 3}
       propertyPath: m_Name
-      value: cannon Variant
+      value: cannon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a42042874a2db894baccef023879107, type: 3}

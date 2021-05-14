@@ -49,15 +49,14 @@ public abstract class Pickupable : Interactable {
   
   [PunRPC]
   public void ResetItemConditionsRPC() {
-    Debug.Log("Resetting item conditions");
     isPickedUp = false;
     GetComponent<BoxCollider>().enabled = true;
     GetComponent<Rigidbody>().useGravity = true;
   }
   
   public void ResetItemConditions(Character character) {
-    Debug.Log("Calling resetting item conditions RPC");
-    GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.All);
+    ResetItemConditionsRPC();
+    GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.Others);
     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
     // Set velocity of box after it is putdown to the speed to the character moving it

@@ -212,6 +212,7 @@ MonoBehaviour:
   taskTeam: 22
   outlineWidth: 5
   inRange: 0
+  manualOutline: 0
   itemAnimationTrigger: 
   playerAnimationTrigger: Pickup
   outline: {fileID: 2242797610191445408}

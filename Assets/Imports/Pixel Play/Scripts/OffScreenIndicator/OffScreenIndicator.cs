@@ -47,7 +47,6 @@ public class OffScreenIndicator : MonoBehaviour
     /// </summary>
     void DrawIndicators()
     {
-        Debug.Log($"Number of targets: {targets.Count}");
         foreach(Target target in targets)
         {
             Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCamera, target.transform.position);
@@ -82,9 +81,7 @@ public class OffScreenIndicator : MonoBehaviour
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
-                Debug.Log($"Indicator is active: {indicator.Active}");
                 indicator.Activate(true, target.gameObject);
-                Debug.Log($"Drawing indicator for {target.gameObject}: {indicator}");
             }
         }
     }

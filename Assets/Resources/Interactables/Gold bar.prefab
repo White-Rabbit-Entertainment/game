@@ -158,15 +158,19 @@ MonoBehaviour:
   taskColour: {r: 0, g: 0, b: 0, a: 0}
   undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
   softRequirementTypes: []
+  softRequirementProbability: 0.5
   canBeMasterTask: 1
   hardRequirements: []
   singleUse: 0
+  interactionDisabled: 0
   team: -1
   taskTeam: -1
   outlineWidth: 5
   inRange: 0
+  manualOutline: 0
   itemAnimationTrigger: 
   playerAnimationTrigger: Pickup
+  outline: {fileID: 0}
   task: {fileID: 0}
   isPickedUp: 0
   destination: {fileID: 0}
@@ -209,7 +213,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2309103251000201219}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.75660944, y: 1.9986813, z: 0.44184583}

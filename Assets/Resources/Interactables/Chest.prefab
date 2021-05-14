@@ -64,62 +64,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3788523152115409105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 193988928030962766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  observableSearch: 2
-  Synchronization: 3
-  OwnershipTransfer: 0
-  ObservedComponents: []
-  viewIdField: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &6609111500564807835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 193988928030962766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  taskDescription: Open the chest
-  interactionColour: {r: 0, g: 0, b: 0, a: 0}
-  taskColour: {r: 0, g: 0, b: 0, a: 0}
-  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
-  softRequirementTypes:
-  - GuidAssignmentFailed: 0
-    GUID: aabafa18701ff0058b61effccb63959e
-    TypeNameAndAssembly: Key, Scripts
-    _suppressLogs: 0
-  softRequirementProbability: 0.5
-  canBeMasterTask: 1
-  hardRequirements: []
-  singleUse: 0
-  interactionDisabled: 0
-  team: 22
-  taskTeam: 22
-  outlineWidth: 5
-  inRange: 0
-  itemAnimationTrigger: Click
-  playerAnimationTrigger: 
-  outline: {fileID: -5408793144983038942}
-  task: {fileID: 0}
 --- !u!114 &-5408793144983038942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1525,6 +1469,63 @@ MonoBehaviour:
     - {x: 0.57735026, y: -0.57732636, z: 0.5773742}
     - {x: 0.57735026, y: 0.57737416, z: 0.57732636}
     - {x: -0.57735026, y: 0.57737416, z: 0.57732636}
+--- !u!114 &3788523152115409105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193988928030962766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &6609111500564807835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193988928030962766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55e495c2ae6578be7bd66e111ac684df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskDescription: Open the chest
+  interactionColour: {r: 0, g: 0, b: 0, a: 0}
+  taskColour: {r: 0, g: 0, b: 0, a: 0}
+  undoTaskColour: {r: 0, g: 0, b: 0, a: 0}
+  softRequirementTypes:
+  - GuidAssignmentFailed: 0
+    GUID: aabafa18701ff0058b61effccb63959e
+    TypeNameAndAssembly: Key, Scripts
+    _suppressLogs: 0
+  softRequirementProbability: 0.5
+  canBeMasterTask: 1
+  hardRequirements: []
+  singleUse: 0
+  interactionDisabled: 0
+  team: 22
+  taskTeam: 22
+  outlineWidth: 5
+  inRange: 0
+  manualOutline: 0
+  itemAnimationTrigger: Click
+  playerAnimationTrigger: 
+  outline: {fileID: -5408793144983038942}
+  task: {fileID: 0}
 --- !u!1001 &1040408716457396511
 PrefabInstance:
   m_ObjectHideFlags: 0

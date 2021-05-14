@@ -20,6 +20,7 @@ public class TaskManager : MonoBehaviourPun {
   public TaskCompletionUI taskCompletionUI;
 
   private bool requested = false;
+  private bool allTasksCompleted = false;
 
   void Start() {
     tasks = new List<Task>();
@@ -91,9 +92,7 @@ public class TaskManager : MonoBehaviourPun {
         Interactable interactable = possibleMasterTaskables[i].GetComponent<Interactable>();
         if (interactable.HasSoftRequirements()) {
             float giveSubTaskWeight = UnityEngine.Random.Range(0f, 1f); 
-            Debug.Log($"Soft requiemnetProbability is: {interactable.softRequirementProbability}");
             if (giveSubTaskWeight <= interactable.softRequirementProbability) {
-                Debug.Log($"Giving requirement to {interactable.gameObject}");
                 interactable.PickHardRequirements(possibleTaskables);
             }
         }
@@ -161,7 +160,8 @@ public class TaskManager : MonoBehaviourPun {
 
   /// <summary> Return if all Loyal tasks have been completed. </summary> 
   public void CheckAllTasksCompleted() {
-    if (NumberOfTasksCompleted() == tasks.Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
+    if (NumberOfTasksCompleted() == tasks.Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && !allTasksCompleted) {
+      allTasksCompleted = true;
       gameSceneManager.EndGame(Team.Loyal);
     }
   }

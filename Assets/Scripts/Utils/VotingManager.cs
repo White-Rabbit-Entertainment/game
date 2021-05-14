@@ -24,7 +24,6 @@ public class VotingManager : MonoBehaviour {
   public TextMeshProUGUI votesFor;
   public TextMeshProUGUI votesAgainst;
   public TextMeshProUGUI voteTimeRemaining;
-  public TextMeshProUGUI voteTitle;
   public GameObject currentVoteUI;
 
   public GameObject votingOutcomeUI;
@@ -120,10 +119,9 @@ public class VotingManager : MonoBehaviour {
     votesAgainst.text = $"Against: 0";
 
     bool voteIsOnYou = NetworkManager.instance.GetMe() == suspectedPlayer;
-    voteTitle.text = voteIsOnYou ? "You are being voted on." : $"{suspectedPlayer.Owner.NickName} is being voted on.";
+    votingUIText.text = voteIsOnYou ? "You are being voted on!": $"Is {suspectedPlayer.Owner.NickName} the traitor?";
     helperText.text = voteIsOnYou ? "Convince everyone you're not the traitor" : "Press 'Y' for yes, 'N' for no.";
     setVoteUI.SetActive(true);
-    votingUIText.text = $"Is {suspectedPlayer.Owner.NickName} the traitor?";
   } 
 
   public void EndVote() {

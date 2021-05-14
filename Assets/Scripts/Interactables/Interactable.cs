@@ -56,8 +56,12 @@ public abstract class Interactable : MonoBehaviourPun {
       Debug.Log($"Does not have outline: {gameObject}");
       outline = gameObject.AddComponent<Outline>() as Outline;
     }
-    outline.OutlineWidth = outlineWidth;
-    outline.enabled = false;
+
+      Debug.Log($"Setting outline for {gameObject} to {outline}");
+    if (outline) {
+      outline.OutlineWidth = outlineWidth;
+      outline.enabled = false;
+    }
   
     taskMarker = gameObject.AddComponent<Target>() as Target;
     taskMarker.enabled = false;
@@ -299,7 +303,7 @@ public abstract class Interactable : MonoBehaviourPun {
       }
       if (interactable.GetComponent<Interactable>() != null
       && hasCorrectType
-      && !interactable.GetComponent<Interactable>().HasTask()) {
+      && interactable.GetComponent<Interactable>().task == null) {
         softRequirements.Add(interactable.GetComponent<Interactable>());
       }
     }
@@ -307,6 +311,9 @@ public abstract class Interactable : MonoBehaviourPun {
   }
 
   public virtual void OnEnterPlayerRadius() {
+    if (task != null && task.isUndone && NetworkManager.instance.GetMe().assignedSubTask != task) {
+      task.EnableUndoneMarker();
+    }
     inRange = true;
   }
   

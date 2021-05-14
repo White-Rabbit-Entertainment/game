@@ -27,10 +27,4 @@ public class PlayerInfo : MonoBehaviour {
     public static GameObject GetPrefab(string assetPath) {
         return Resources.Load<GameObject>(assetPath);
     }
-
-    public PlayerInfo(string colorName, Avatar avatar, Color color) {
-        this.colorName = colorName;
-        this.avatar = avatar;
-        this.color = color;
-    }
 }
