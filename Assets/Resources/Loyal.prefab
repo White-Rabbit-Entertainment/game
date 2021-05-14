@@ -29,6 +29,7 @@ MonoBehaviour:
   playersUI: {fileID: 0}
   assignedMasterTask: {fileID: 0}
   assignedSubTask: {fileID: 0}
+  lastEmotion: 
 --- !u!1001 &7098933628780144307
 PrefabInstance:
   m_ObjectHideFlags: 0
