@@ -9,6 +9,7 @@ public class OceanRespawn : MonoBehaviour {
     void OnTriggerEnter(Collider collider) {
         if (collider.GetComponent<PhotonView>() != null && collider.GetComponent<PhotonView>().IsMine) {
 
+            Debug.Log($"Something hit floor: {collider.gameObject}");
             // Get the collided thing, put it back on the map
             collider.transform.position = gameSceneManager.RandomNavmeshLocation();
 
