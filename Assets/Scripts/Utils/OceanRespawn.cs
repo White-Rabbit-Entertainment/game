@@ -7,6 +7,7 @@ public class OceanRespawn : MonoBehaviour {
     [SerializeField] private GameSceneManager gameSceneManager;
     // Update is called once per frame
     void OnTriggerEnter(Collider collider) {
+        Debug.Log($"Something kinda hit the floor: {collider.gameObject}");
         if (collider.GetComponent<PhotonView>() != null && collider.GetComponent<PhotonView>().IsMine) {
 
             Debug.Log($"Something hit floor: {collider.gameObject}");
