@@ -40,7 +40,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
           PhotonNetwork.CurrentRoom.IsVisible = false;
           SetRoomProperty("TasksSet", false);
           SetRoomProperty("WinningTeam", "None");
-          SetRoomProperty("NumberOfTasks", 10);
+          SetRoomProperty("NumberOfTasks", 20);
           SetRoomProperty("NumberOfTasksInitiallyCompleted", 2);
           
           List<Player> players = GetPlayers();
