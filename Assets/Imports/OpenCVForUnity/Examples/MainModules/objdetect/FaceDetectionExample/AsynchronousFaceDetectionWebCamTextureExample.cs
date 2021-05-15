@@ -163,7 +163,7 @@ namespace OpenCVForUnityExample
 
         Dictionary<int, string> emotions;
 
-        public string lastEmotion = "Neutral";
+        public string lastEmotion = "";
 
         public bool faceDetected = false;
 
@@ -175,6 +175,7 @@ namespace OpenCVForUnityExample
         // Use this for initialization
         void Start ()
         {   
+            Debug.Log("Start");
             fpsMonitor = GetComponent<FpsMonitor> ();
 
             webCamTextureToMatHelper = gameObject.GetComponent<WebCamTextureToMatHelper> ();
@@ -186,7 +187,9 @@ namespace OpenCVForUnityExample
             haar_cascade_filepath = Utils.getFilePath (HAAR_CASCADE_FILENAME);
             emotion_classifier_filepath = Utils.getFilePath (EMOTION_CLASSIFIER_FILENAME);
 
+            Debug.Log("Start end");
             Run ();
+            Debug.Log("RUN end");
             #endif
         }
 
@@ -274,11 +277,11 @@ namespace OpenCVForUnityExample
             // 6: -6198 images- Neutral
             emotions = new Dictionary<int, string>();
             emotions.Add(0, "Angry");
-            emotions.Add(1, "Disgusted");
-            emotions.Add(2, "Fearful");
+            emotions.Add(1, "Disgust");
+            emotions.Add(2, "Fear");
             emotions.Add(3, "Happy");
             emotions.Add(4, "Sad");
-            emotions.Add(5, "Surprised");
+            emotions.Add(5, "Surprise");
             emotions.Add(6, "Neutral");
 
         }
@@ -504,14 +507,14 @@ namespace OpenCVForUnityExample
                     Double max = 0;
                     int maxIndex = 0;
                     for (int j = 0; j < 7; j++) {
-                        if (outs[0].get(0,j)[0] > max && emotions[j] != "Angry") {
+                        if (outs[0].get(0,j)[0] > max) {
                             max = outs[0].get(0,j)[0];
                             maxIndex = j;
                         } 
                     }
                     // Debug.Log(max);
                     if (emotions[maxIndex] != "Angry") {
-                        if (lastEmotion != emotions[maxIndex]) {
+                        if (lastEmotion != emotions[maxIndex] && max > 0.65) {
                             lastEmotion = emotions[maxIndex];
                             Debug.Log("EMOTION DETECTED:");
                             Debug.Log(lastEmotion);
