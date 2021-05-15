@@ -130,7 +130,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 726f85e9a458d9c388416a13978dd548,
         type: 3}
       propertyPath: m_Name
-      value: rope
+      value: rope Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 726f85e9a458d9c388416a13978dd548, type: 3}

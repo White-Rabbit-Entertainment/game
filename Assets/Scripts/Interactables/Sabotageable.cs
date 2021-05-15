@@ -35,7 +35,6 @@ public class Sabotageable : Interactable {
     
     // Start is called before the first frame update
     void Start() {
-        // TODO Make all sabotagables glow red for traitors when not sabotaged
         isSabotaged = false;
         amountToFix = 100f;
         base.Start();
