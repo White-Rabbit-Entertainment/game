@@ -32,6 +32,9 @@ public class VotingManager : MonoBehaviour {
   public TextMeshProUGUI voteResult;
   public TextMeshProUGUI voteUnsuccessful;
   public TextMeshProUGUI helperText;
+
+  [SerializeField] private AudioSource votingMusic;
+  [SerializeField] private AudioSource backgroundMusic;
   
   bool hasVoted = false;
   bool voteStarted = false;
@@ -122,6 +125,10 @@ public class VotingManager : MonoBehaviour {
     votingUIText.text = voteIsOnYou ? "You are being voted on!": $"Is {suspectedPlayer.Owner.NickName} the traitor?";
     helperText.text = voteIsOnYou ? "Convince everyone you're not the traitor" : "Press 'Y' for yes, 'N' for no.";
     setVoteUI.SetActive(true);
+
+    // Start voting music
+    backgroundMusic.Pause();
+    votingMusic.Play();
   } 
 
   public void EndVote() {
@@ -155,6 +162,9 @@ public class VotingManager : MonoBehaviour {
       ShowVotingUnsuccess(suspectedPlayer.Owner.NickName);
       StartCoroutine(ShowUnsuccessInProgress());
     }
+
+    votingMusic.Stop();
+    backgroundMusic.UnPause();
   }
 
   [PunRPC]

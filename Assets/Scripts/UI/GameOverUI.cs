@@ -17,6 +17,11 @@ public class GameOverUI : MonoBehaviour {
     // [SerializeField] private Button continueButton;
     
     [SerializeField] private GameObject playerNamePrefab;
+
+    // Audio
+    [SerializeField] public AudioSource traitorWonSound;
+    [SerializeField] public AudioSource loyalsWonSound;
+    [SerializeField] private AudioSource backgroundMusic;
     
     IEnumerator SwitchScenes() {
         yield return new WaitForSeconds(4f);
@@ -25,8 +30,9 @@ public class GameOverUI : MonoBehaviour {
 
     // Update is called once per frame
     public void OnGameOver(Team winningTeam) {
-    
-        Debug.Log("Ongame over happening");
+   
+        PlayEndGameAudio(winningTeam);
+
         GetComponent<Image>().color = winningTeam == Team.Traitor ? gameSceneManager.traitorColor : gameSceneManager.loyalColor; 
         // continueButton.onClick.AddListener(gameSceneManager.GoToLobby);
 
@@ -55,5 +61,14 @@ public class GameOverUI : MonoBehaviour {
         
         gameObject.SetActive(true);
         StartCoroutine("SwitchScenes");
+    }
+
+    public void PlayEndGameAudio(Team winningTeam){
+        backgroundMusic.Stop();
+        if (winningTeam == Team.Traitor) {
+            traitorWonSound.Play();
+        } else {
+            loyalsWonSound.Play();
+        }
     }
 }
