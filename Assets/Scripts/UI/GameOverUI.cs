@@ -44,6 +44,8 @@ public class GameOverUI : MonoBehaviour {
 
             if (player.startingTeam == winningTeam) {
                 PlayerTile tile = Instantiate(playerNamePrefab, winnersGrid).GetComponent<PlayerTile>();
+                // Ensure the tile has started before we call Init
+                tile.Start();
                 tile.Init(player);
             }
         }
