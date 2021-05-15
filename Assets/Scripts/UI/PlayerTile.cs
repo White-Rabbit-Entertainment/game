@@ -8,13 +8,13 @@ public class PlayerTile : MonoBehaviour {
     private GameObject cross;
     private GameObject votingFor;
     private GameObject votingAgainst;
-    private GameObject votingMark;
+    // private GameObject votingMark;
 
     public void Start() {
         votingFor = transform.Find("VoteFor").gameObject;
         votingAgainst = transform.Find("VoteAgainst").gameObject;
         cross = transform.Find("Cross").gameObject;
-        votingMark = transform.Find("votingMarkAppear").gameObject;
+        // votingMark = transform.Find("votingMarkAppear").gameObject;
         Debug.Log(votingFor);
         Debug.Log(votingAgainst);
     }
@@ -50,13 +50,13 @@ public class PlayerTile : MonoBehaviour {
         cross.SetActive(enable);
     }
     
-    public void EnableVotingMark(bool enable = true) {
-        votingMark.SetActive(enable);
-    }
+    // public void EnableVotingMark(bool enable = true) {
+    //     votingMark.SetActive(enable);
+    // }
 
     public void Clear() {
         EnableVotingFor(false);
         EnableVotingAgainst(false);
-        EnableVotingMark(false);
+        // EnableVotingMark(false);
     }
 }
