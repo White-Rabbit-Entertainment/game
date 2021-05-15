@@ -23,7 +23,4 @@ public class ClickToPlayPage : MenuPage
         themeAudio.Play(); 
         nameInputPage.Open();
     }
-
-    // Update is called once per frame
-
 }
