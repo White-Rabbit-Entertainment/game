@@ -15,8 +15,8 @@ public class MenuManager: MonoBehaviourPunCallbacks {
     public LobbyPage lobbyPage;
     public JoinRoomPage joinRoomPage;
     public ClickToPlayPage clickToPlayPage;
-    
-        // public GameObject clickToPlayPage;
+
+    [SerializeField] private AudioSource themeAudio;
 
     public WebRTC webRTC;
     
@@ -32,8 +32,10 @@ public class MenuManager: MonoBehaviourPunCallbacks {
             clickToPlayPage.Open();
             // nameInputPage.Open();
         } else if (PhotonNetwork.CurrentRoom != null) {
+            themeAudio.Play();
             lobbyPage.Open();
         } else {
+            themeAudio.Play();
             joinRoomPage.Open();
         }
     }

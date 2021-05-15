@@ -14,12 +14,22 @@ public class NameInputPage : MenuPage {
     [SerializeField] private GameObject invalidNameText;
     [SerializeField] private GameObject tooLongNameText;
 
+    [SerializeField] private GameObject container;
+
 
     
     string pattern = @"^[a-zA-Z0-9]+$";
     Regex inputChecker;
 
     void OnEnable() {
+        StartCoroutine(DelayEnable());
+    }
+
+    IEnumerator DelayEnable() {
+        container.SetActive(false);
+        yield return new WaitForSeconds(10f);
+        container.SetActive(true);
+
         if(menuManager.isConnected){
             OnConnectedToMaster();
         }
@@ -32,14 +42,6 @@ public class NameInputPage : MenuPage {
         tooLongNameText.SetActive(false);
     }
 
-    // void Start(){
-    //     inputChecker = new Regex(pattern);
-    //     playerNameInput.Select();
-    //     playerNameInput.ActivateInputField(); 
-    //     startButton.onClick.AddListener(StartButton);
-    //     invalidNameText.SetActive(false);
-    //     tooLongNameText.SetActive(false);
-    // }
     public override void OnConnectedToMaster() {
         startButton.interactable = true;
     }
