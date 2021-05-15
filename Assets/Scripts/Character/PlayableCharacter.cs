@@ -110,6 +110,7 @@ public abstract class PlayableCharacter : Character {
         newCharacter.playersUI = playersUI;
         newCharacter.startingTeam = startingTeam;
         newCharacter.taskNotificationUI = taskNotificationUI;
+        newCharacter.playerInfo = playerInfo;
         playersUI.SetToDead(newCharacter);
      
         GameObject body = Instantiate(playerInfo.ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
