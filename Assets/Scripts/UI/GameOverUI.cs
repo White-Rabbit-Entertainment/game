@@ -21,7 +21,7 @@ public class GameOverUI : MonoBehaviour {
     // Audio
     [SerializeField] public AudioSource traitorWonSound;
     [SerializeField] public AudioSource loyalsWonSound;
-    [SerializeField] private AudioSource backgroundMusic;
+    // [SerializeField] private AudioSource backgroundMusic;
     
     IEnumerator SwitchScenes() {
         yield return new WaitForSeconds(4f);
@@ -66,7 +66,7 @@ public class GameOverUI : MonoBehaviour {
     }
 
     public void PlayEndGameAudio(Team winningTeam){
-        backgroundMusic.Stop();
+        // backgroundMusic.Stop();
         if (winningTeam == Team.Traitor) {
             traitorWonSound.Play();
         } else {
