@@ -34,7 +34,7 @@ public class VotingManager : MonoBehaviour {
   public TextMeshProUGUI helperText;
 
   [SerializeField] private AudioSource votingMusic;
-  [SerializeField] private AudioSource backgroundMusic;
+  // [SerializeField] private AudioSource backgroundMusic;
   
   bool hasVoted = false;
   bool voteStarted = false;
@@ -127,7 +127,7 @@ public class VotingManager : MonoBehaviour {
     setVoteUI.SetActive(true);
 
     // Start voting music
-    backgroundMusic.Pause();
+    // backgroundMusic.Pause();
     votingMusic.Play();
   } 
 
@@ -164,7 +164,7 @@ public class VotingManager : MonoBehaviour {
     }
 
     votingMusic.Stop();
-    backgroundMusic.UnPause();
+    // backgroundMusic.UnPause();
   }
 
   [PunRPC]
