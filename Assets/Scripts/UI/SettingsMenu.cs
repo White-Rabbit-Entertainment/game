@@ -19,6 +19,9 @@ public class SettingsMenu : MonoBehaviour {
     [SerializeField] LowPolyWater.LowPolyWater lowPolyWater;
     [SerializeField] Button graphicsButton;
 
+    [SerializeField] GameObject highMaterialShip;
+    [SerializeField] GameObject lowMaterialShip;
+
     
     private bool highGraphicsQuality = true;
 
@@ -98,7 +101,8 @@ public class SettingsMenu : MonoBehaviour {
       foreach(GameObject go in thingsToDisableForLowGraphics) {
         go.SetActive(false);
       }
-      RenderSettings.ambientIntensity = 10f;
+      lowMaterialShip.SetActive(true);
+      highMaterialShip.SetActive(false);
     }
     
     public void HighGraphics() {
@@ -108,6 +112,7 @@ public class SettingsMenu : MonoBehaviour {
       foreach(GameObject go in thingsToDisableForLowGraphics) {
         go.SetActive(true);
       }
-      RenderSettings.ambientIntensity = 1f;
+      highMaterialShip.SetActive(true);
+      lowMaterialShip.SetActive(false);
     }
 }
