@@ -98,7 +98,7 @@ public class SettingsMenu : MonoBehaviour {
       foreach(GameObject go in thingsToDisableForLowGraphics) {
         go.SetActive(false);
       }
-      RenderSettings.ambientIntensity = 1f;
+      RenderSettings.ambientIntensity = 10f;
     }
     
     public void HighGraphics() {
@@ -108,6 +108,6 @@ public class SettingsMenu : MonoBehaviour {
       foreach(GameObject go in thingsToDisableForLowGraphics) {
         go.SetActive(true);
       }
-      RenderSettings.ambientIntensity = 0f;
+      RenderSettings.ambientIntensity = 1f;
     }
 }

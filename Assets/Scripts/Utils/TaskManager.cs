@@ -101,13 +101,13 @@ public class TaskManager : MonoBehaviourPun {
         expectedNumberOfTasks++;
         PhotonView view = interactable.GetComponent<PhotonView>();
 
-        if (interactable is Stealable) {
-          if (numberOfCompletedTasks < numberOfTasksInitiallyCompleted) {
-            view.RPC("AddCompletedTaskRPC", RpcTarget.All);
-            numberOfCompletedTasks++;
-          } else {
+        if (numberOfCompletedTasks < numberOfTasksInitiallyCompleted) {
+            if (!(interactable is Stealable)) {
+              view.RPC("AddCompletedTaskRPC", RpcTarget.All);
+              numberOfCompletedTasks++;
+            }
+        } else {
             view.RPC("AddTaskRPC", RpcTarget.All);
-          }
         }
     }
 
