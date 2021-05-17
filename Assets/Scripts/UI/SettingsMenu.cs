@@ -16,7 +16,7 @@ public class SettingsMenu : MonoBehaviour {
     [SerializeField] private WebRTC webRTC;
     
     [SerializeField] List<GameObject> thingsToDisableForLowGraphics;
-    [SerializeField] LowPolyWater.LowPolyWater lowPolyWater;
+    [SerializeField] MonoBehaviour lowPolyWater;
     [SerializeField] Button graphicsButton;
 
     [SerializeField] GameObject highMaterialShip;
