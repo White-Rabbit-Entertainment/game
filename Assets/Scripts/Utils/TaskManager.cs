@@ -42,7 +42,6 @@ public class TaskManager : MonoBehaviourPun {
     if (
         !requested
       && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
-      && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
     ) {
       requested = true;
       PlayableCharacter character = NetworkManager.instance.GetMe();
