@@ -27,6 +27,13 @@ public class LobbyPage : MenuPage {
     public JoinRoomPage joinRoomPage;
     public Button back;
 
+    public Button info;
+
+    public Button infoBack;
+
+    public GameObject infoPage;
+
+
     public bool gameStarted = false;
 
     bool initialized;
@@ -44,6 +51,7 @@ public class LobbyPage : MenuPage {
       initialized = false;
       enteredRoom = false;
       back.onClick.AddListener(Back);
+      info.onClick.AddListener(Info);
       roomName.text = $"Room Name: {PhotonNetwork.CurrentRoom.Name}";
       // chatManager.Init();
       chatManager.JoinRoomChat(PhotonNetwork.CurrentRoom);
@@ -163,5 +171,14 @@ public class LobbyPage : MenuPage {
       chatManager.LeaveRoomChat(PhotonNetwork.CurrentRoom);
       PhotonNetwork.LeaveLobby();
       PhotonNetwork.LeaveRoom();
+    }
+
+    void Info(){
+      infoPage.SetActive(true);
+      infoBack.onClick.AddListener(InfoBack);
+    }
+
+    void InfoBack(){
+      infoPage.SetActive(false);
     }
 }
