@@ -47,6 +47,7 @@ public class TaskManager : MonoBehaviourPun {
       requested = true;
       PlayableCharacter character = NetworkManager.instance.GetMe();
       if (character is Loyal) {
+        Debug.Log("Requesting new task!");
         RequestNewTask();
       }
     }
@@ -152,11 +153,15 @@ public class TaskManager : MonoBehaviourPun {
   [PunRPC]
   public void AssignTask(int requestingPlayerViewId) {
     PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
+    Debug.Log($"Assigning task to {taskRequester.NickName}");
     Task nextTask = null;
     if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
+      Debug.Log($"Assigned task to {taskRequester.NickName}");
       nextTask.AssignTask(taskRequester);
+    } else {
+      Debug.Log($"Failed to assign task to {taskRequester.NickName}");
     }
   }
 
