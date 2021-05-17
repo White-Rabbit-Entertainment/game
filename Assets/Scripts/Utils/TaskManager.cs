@@ -153,15 +153,15 @@ public class TaskManager : MonoBehaviourPun {
   [PunRPC]
   public void AssignTask(int requestingPlayerViewId) {
     PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
-    Debug.Log($"Assigning task to {taskRequester.NickName}");
+    Debug.Log($"Assigning task to {taskRequester.Owner.NickName}");
     Task nextTask = null;
     if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
-      Debug.Log($"Assigned task to {taskRequester.NickName}");
+      Debug.Log($"Assigned task to {taskRequester.Owner.NickName}");
       nextTask.AssignTask(taskRequester);
     } else {
-      Debug.Log($"Failed to assign task to {taskRequester.NickName}");
+      Debug.Log($"Failed to assign task to {taskRequester.Owner.NickName}");
     }
   }
 
