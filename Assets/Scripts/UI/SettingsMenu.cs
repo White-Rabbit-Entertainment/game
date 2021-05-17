@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SettingsMenu : MonoBehaviour {
 
@@ -13,10 +14,18 @@ public class SettingsMenu : MonoBehaviour {
     [SerializeField] private GameObject playerVolumeItem;
 
     [SerializeField] private WebRTC webRTC;
+    
+    [SerializeField] List<GameObject> thingsToDisableForLowGraphics;
+    [SerializeField] LowPolyWater.LowPolyWater lowPolyWater;
+    [SerializeField] Button graphicsButton;
+
+    
+    private bool highGraphicsQuality = true;
 
     // Start is called before the first frame update
     void Start() {
       mouseSensitivitySlider.onValueChanged.AddListener (delegate {OnMouseSensitivitySliderChange ();}); 
+      graphicsButton.onClick.AddListener(ToggleGraphics);
     }
 
     public void ToggleMenu() {
@@ -75,5 +84,30 @@ public class SettingsMenu : MonoBehaviour {
       if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)){
         ToggleMenu();
       }
+    }
+
+    public void ToggleGraphics() {
+      if(highGraphicsQuality) LowGraphics();
+      else HighGraphics();
+    }
+
+    public void LowGraphics() {
+      graphicsButton.GetComponentInChildren<TMP_Text>().text = "Low";
+      highGraphicsQuality = false;
+      lowPolyWater.enabled = false;
+      foreach(GameObject go in thingsToDisableForLowGraphics) {
+        go.SetActive(false);
+      }
+      RenderSettings.ambientIntensity = 0.5f;
+    }
+    
+    public void HighGraphics() {
+      graphicsButton.GetComponentInChildren<TMP_Text>().text = "High";
+      highGraphicsQuality = true;
+      lowPolyWater.enabled = true;
+      foreach(GameObject go in thingsToDisableForLowGraphics) {
+        go.SetActive(true);
+      }
+      RenderSettings.ambientIntensity = 0f;
     }
 }
