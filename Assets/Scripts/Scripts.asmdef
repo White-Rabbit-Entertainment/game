@@ -10,7 +10,8 @@
         "PhotonChat",
         "TypeReferences",
         "Unity.TextMeshPro",
-        "Target"
+        "Target",
+        "LowPolyWater"
     ],
     "includePlatforms": [],
     "excludePlatforms": [

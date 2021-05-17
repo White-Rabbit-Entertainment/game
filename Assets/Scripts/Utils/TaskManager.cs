@@ -69,6 +69,8 @@ public class TaskManager : MonoBehaviourPun {
     int expectedNumberOfTasks = 0;
     int numberOfTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasks");
     int numberOfTasksInitiallyCompleted = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasksInitiallyCompleted");
+
+    int numberOfCompletedTasks = 0;
     // Get all possible items to assign tasks to in the environment 
     // We split this so we can assign the correct number of stealing
     // tasks.
@@ -98,10 +100,14 @@ public class TaskManager : MonoBehaviourPun {
         }
         expectedNumberOfTasks++;
         PhotonView view = interactable.GetComponent<PhotonView>();
-        if (i < numberOfTasksInitiallyCompleted) {
-          view.RPC("AddCompletedTaskRPC", RpcTarget.All);
+
+        if (numberOfCompletedTasks < numberOfTasksInitiallyCompleted) {
+            if (!(interactable is Stealable)) {
+              view.RPC("AddCompletedTaskRPC", RpcTarget.All);
+              numberOfCompletedTasks++;
+            }
         } else {
-          view.RPC("AddTaskRPC", RpcTarget.All);
+            view.RPC("AddTaskRPC", RpcTarget.All);
         }
     }
 
