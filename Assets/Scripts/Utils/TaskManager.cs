@@ -47,11 +47,7 @@ public class TaskManager : MonoBehaviourPun {
       requested = true;
       PlayableCharacter character = NetworkManager.instance.GetMe();
       if (character is Loyal) {
-        if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
-          RequestNewTask();
-        } else {
-          character.assignedMasterTask.AssignSubTaskToCharacter(character);
-        }
+        RequestNewTask();
       }
     }
   }
