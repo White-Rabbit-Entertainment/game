@@ -17,6 +17,9 @@ public class OffScreenIndicator : MonoBehaviour
     private Camera mainCamera;
     private Vector3 screenCentre;
     private Vector3 screenBounds;
+    
+    public Indicator arrowIndicator;
+    public Indicator boxIndicator;
 
     private List<Target> targets = new List<Target>();
 
@@ -28,6 +31,10 @@ public class OffScreenIndicator : MonoBehaviour
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
         TargetStateChanged += HandleTargetStateChanged;
+    }
+
+    public void SetCamera(Camera camera = null) {
+        mainCamera = camera == null ? Camera.main : camera;
     }
 
     void LateUpdate()
@@ -50,31 +57,31 @@ public class OffScreenIndicator : MonoBehaviour
             if(target.NeedBoxIndicator && isTargetVisible)
             {
                 screenPosition.z = 0;
-                indicator = GetIndicator(ref target.indicator, IndicatorType.BOX); // Gets the box indicator from the pool.
+                indicator = target.boxIndicator;
+                target.arrowIndicator.Activate(false);
+                indicator.SetImage(target.boxImage);
+                indicator.SetText(target.boxText);
             }
             else if(target.NeedArrowIndicator && !isTargetVisible)
             {
                 float angle = float.MinValue;
                 OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
-                indicator = GetIndicator(ref target.indicator, IndicatorType.ARROW); // Gets the arrow indicator from the pool.
+                indicator = target.arrowIndicator;
+                target.boxIndicator.Activate(false);
                 indicator.transform.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg); // Sets the rotation for the arrow indicator.
+                indicator.SetImage(target.arrowImage);
+                indicator.SetText(target.arrowText);
             } else {
-                target.indicator?.Activate(false);
+                target.arrowIndicator.Activate(false);
+                target.boxIndicator.Activate(false);
             }
-            if(indicator)
-            {
-                if (target.NeedBoxIndicator && isTargetVisible) {
-                    indicator.SetImage(target.boxImage);
-                    indicator.SetText(target.boxText);
-                }
-                else if (target.NeedArrowIndicator && !isTargetVisible) {
-                    indicator.SetImage(target.arrowImage);
-                    indicator.SetText(target.arrowText);
-                }
+
+            if (indicator != null) {
                 indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
+                indicator.Activate(true, target.gameObject);
             }
         }
     }
@@ -90,44 +97,22 @@ public class OffScreenIndicator : MonoBehaviour
     {
         if(active)
         {
+            if (target.arrowIndicator == null) target.arrowIndicator = CreateIndicator(IndicatorType.ARROW);
+            if (target.boxIndicator == null) target.boxIndicator = CreateIndicator(IndicatorType.BOX);
             targets.Add(target);
         }
         else
         {
-            target.indicator?.Activate(false);
-            target.indicator = null;
+            target.arrowIndicator.Activate(false);
+            target.boxIndicator.Activate(false);
             targets.Remove(target);
         }
     }
 
-    /// <summary>
-    /// Get the indicator for the target.
-    /// 1. If its not null and of the same required <paramref name="type"/> 
-    ///     then return the same indicator;
-    /// 2. If its not null but is of different type from <paramref name="type"/> 
-    ///     then deactivate the old reference so that it returns to the pool 
-    ///     and request one of another type from pool.
-    /// 3. If its null then request one from the pool of <paramref name="type"/>.
-    /// </summary>
-    /// <param name="indicator"></param>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    private Indicator GetIndicator(ref Indicator indicator, IndicatorType type)
-    {
-        if(indicator != null)
-        {
-            if(indicator.Type != type)
-            {
-                indicator.Activate(false);
-                indicator = type == IndicatorType.BOX ? BoxObjectPool.current.GetPooledObject() : ArrowObjectPool.current.GetPooledObject();
-            }
-            indicator.Activate(true); // Sets the indicator as active.
-        }
-        else
-        {
-            indicator = type == IndicatorType.BOX ? BoxObjectPool.current.GetPooledObject() : ArrowObjectPool.current.GetPooledObject();
-            indicator.Activate(true); // Sets the indicator as active.
-        }
+    private Indicator CreateIndicator(IndicatorType type) {
+        Indicator indicator = Instantiate(type == IndicatorType.BOX ? boxIndicator : arrowIndicator);
+        indicator.transform.SetParent(transform, false);
+        indicator.Activate(false);
         return indicator;
     }
 

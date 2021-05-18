@@ -8,8 +8,8 @@ public class PlayerAnimation : MonoBehaviourPun {
     private Animator animator;
     public CharacterController playerController;
 
-    int crouchHash = Animator.StringToHash("Crouched");
-    int proneHash = Animator.StringToHash("Prone");
+    // int crouchHash = Animator.StringToHash("Crouched");
+    // int proneHash = Animator.StringToHash("Prone");
 
     void Awake() {
         // If the player is not me (ie not some other player on the network)
@@ -29,17 +29,17 @@ public class PlayerAnimation : MonoBehaviourPun {
     // Update is called once per frame
     void Update() {      
         animator.SetFloat("Walking", GetComponent<Character>().Velocity().magnitude);
-        if (Input.GetKeyDown(KeyCode.Z)) {
-            animator.SetTrigger("Dancing");
-        }
-        if (Input.GetKeyDown(KeyCode.X)) {
-            animator.SetTrigger("Talking");
-        }
-        if (Input.GetKeyDown(KeyCode.C)) {
-            animator.SetBool(crouchHash, !animator.GetBool(crouchHash));
-        }
-        if (Input.GetKeyDown(KeyCode.V)) {
-            animator.SetBool(proneHash, !animator.GetBool(proneHash));
-        }
+        // if (Input.GetKeyDown(KeyCode.Z)) {
+        //     animator.SetTrigger("Dancing");
+        // }
+        // if (Input.GetKeyDown(KeyCode.X)) {
+        //     animator.SetTrigger("Talking");
+        // }
+        // if (Input.GetKeyDown(KeyCode.C)) {
+        //     animator.SetBool(crouchHash, !animator.GetBool(crouchHash));
+        // }
+        // if (Input.GetKeyDown(KeyCode.V)) {
+        //     animator.SetBool(proneHash, !animator.GetBool(proneHash));
+        // }
     }
 }

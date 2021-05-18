@@ -20,11 +20,14 @@ public abstract class Interactable : MonoBehaviourPun {
 
   [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
   public List<TypeReference> softRequirementTypes;
+  // The probability a soft requirement is assigned
+  public float softRequirementProbability = 0.5f;
 
   public bool canBeMasterTask = true;
   public List<Interactable> hardRequirements;
   
   public bool singleUse;
+  public bool interactionDisabled = false;
  
   public Team team = Team.All;
   public Team taskTeam = Team.All;
@@ -32,13 +35,14 @@ public abstract class Interactable : MonoBehaviourPun {
   public float outlineWidth = 5f;
   
   public bool inRange = false;
+  public bool manualOutline = false;
   
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
 
-  private Outline outline;
-  private Target taskMarker;
-  private Target undoneMarker;
+  [SerializeField] public Outline outline = null;
+  protected Target taskMarker;
+  protected Target undoneMarker;
   
   public Task task;
   public PhotonView View {
@@ -48,9 +52,16 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void Reset() {}
 
   public virtual void Start() {
-    outline = gameObject.AddComponent<Outline>() as Outline;
-    outline.OutlineWidth = outlineWidth;
-    outline.enabled = false;
+    if (outline == null && !manualOutline) {
+      Debug.Log($"Does not have outline: {gameObject}");
+      outline = gameObject.AddComponent<Outline>() as Outline;
+    }
+
+      Debug.Log($"Setting outline for {gameObject} to {outline}");
+    if (outline) {
+      outline.OutlineWidth = outlineWidth;
+      outline.enabled = false;
+    }
   
     taskMarker = gameObject.AddComponent<Target>() as Target;
     taskMarker.enabled = false;
@@ -111,27 +122,6 @@ public abstract class Interactable : MonoBehaviourPun {
     task.Uncomplete();
   }
 
-  [PunRPC]
-  public void SetTaskGlowRPC() {
-    SetTaskGlow();
-  }
-
-  public virtual void SetTaskGlow() {
-    //if (inRange) {
-    //  Team team = NetworkManager.instance.GetLocalPlayerProperty<Team>("Team");
-    //  if (team == Team.Traitor && HasUndoTask()) {
-    //    SetGlow(undoTaskColour);
-    //  } else if (HasTask() && task.AllChildrenCompleted()) {
-    //    SetGlow(taskColour);
-    //  } else {
-    //    outline.enabled = false;
-    //  }
-    //} else {
-    //  outline.enabled = false;
-    //}
-    outline.enabled = false;
-  }
-
   public void SetGlow(Color colour) {
     outline.OutlineColor = colour;
     outline.enabled = true;
@@ -144,10 +134,11 @@ public abstract class Interactable : MonoBehaviourPun {
   
   /// <summary> Remove glow. </summary>
   public void InteractionGlowOff() {
-    SetTaskGlow();
+    outline.enabled = false;
   }
 
   public void EnableTaskMarker() {
+    DisableUndoneMarker();
     taskMarker.enabled = true;
   }
   
@@ -170,7 +161,7 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void OnParentTaskUncomplete() {}
 
   // When we remove iteractablility from an item it should stop glowing.
-  void OnDestroy() {
+  protected virtual void OnDestroy() {
     outline.enabled = false;
   }
 
@@ -201,12 +192,12 @@ public abstract class Interactable : MonoBehaviourPun {
         }
       }
       
-      // Set outline colour and turn on
-      View.RPC("SetTaskGlowRPC", RpcTarget.All);
       if (parentTask != null) {
         task.parent = parentTask;
       } else {
-        task.taskManager.AddTask(task);
+        if (!(this is Sabotageable)) {
+          task.taskManager.AddTask(task);
+        }
       }
   }
 
@@ -270,8 +261,9 @@ public abstract class Interactable : MonoBehaviourPun {
   
   // Return true is the current player can interact with this interatable.
   public virtual bool CanInteract(Character character) {
+    if (interactionDisabled) return false;
     if (character is Loyal && ((Loyal)character).assignedSubTask == task) return true;
-    if (character is Traitor && (HasUndoTask() || (HasTask() && task.IsMasterTask() && task.AllChildrenCompleted()))) return true;
+    if (character is Traitor && (HasUndoTask() || task == null)) return true;
     if (character is Agent && task == null) return true;
     if ((character is Loyal || character is Traitor) && this is Votable && GetComponent<PlayableCharacter>() != character) return true;
     return false;
@@ -311,11 +303,23 @@ public abstract class Interactable : MonoBehaviourPun {
       }
       if (interactable.GetComponent<Interactable>() != null
       && hasCorrectType
-      && !interactable.GetComponent<Interactable>().HasTask()) {
+      && interactable.GetComponent<Interactable>().task == null) {
         softRequirements.Add(interactable.GetComponent<Interactable>());
       }
     }
     return softRequirements;
+  }
+
+  public virtual void OnEnterPlayerRadius() {
+    if (task != null && task.isUndone && NetworkManager.instance.GetMe().assignedSubTask != task) {
+      task.EnableUndoneMarker();
+    }
+    inRange = true;
+  }
+  
+  public virtual void OnExitPlayerRadius() {
+    if (task != null) task.DisableUndoneMarker();
+    inRange = false;
   }
 
 }

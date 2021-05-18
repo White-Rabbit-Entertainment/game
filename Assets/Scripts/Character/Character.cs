@@ -8,17 +8,18 @@ using Photon.Realtime;
 [RequireComponent(typeof(Animator))]
 public abstract class Character : MonoBehaviour {
   public Transform pickupDestination; 
-  public Pickupable currentHeldItem; 
 
   public Sabotageable currentFixingItem;
+  public Pickupable currentHeldItem; 
   public Pocketable pocketedItem;
   
   public InventoryUI inventoryUI;
 
   public Team team;
+  public Team startingTeam; 
 
-  public RoleInfo roleInfo;
-
+  public PlayerInfo playerInfo;
+    
   public Player Owner {
       get { return GetComponent<PhotonView>().Owner; }
     }
@@ -27,8 +28,8 @@ public abstract class Character : MonoBehaviour {
       get { return GetComponent<PhotonView>(); }
     }
 
-  public Color Colour {
-      get { return roleInfo.colour; } 
+  public Color Color {
+      get { return playerInfo.color; } 
     }
 
   protected virtual void Start() {}
@@ -48,16 +49,13 @@ public abstract class Character : MonoBehaviour {
   }
 
   public virtual void Pickup(Pickupable item) {
+
     currentHeldItem = item;
     // An item can only be moved by a player if they are the owner.
     // Therefore, give ownership of the item to the local player before
     // moving it.
-    if (item.View != null) {
-      item.View.TransferOwnership(PhotonNetwork.LocalPlayer);
-      item.SetItemPickupConditions();
-    } else {
-      item.SetItemPickupConditionsRPC();
-    }
+    item.View.TransferOwnership(PhotonNetwork.LocalPlayer);
+    item.SetItemPickupConditions();
 
     // Move to players pickup destination.
     item.transform.position = pickupDestination.position;
@@ -76,13 +74,14 @@ public abstract class Character : MonoBehaviour {
     currentFixingItem = null;
   }  
   public virtual void PutDown(Pickupable item) {
-    currentHeldItem = null;
-    if (item.View != null) {
+    if (HasItem(item)) {
+      Debug.Log($"Character putting down {gameObject}");
+      currentHeldItem = null;
       item.ResetItemConditions(this);
-    } else {
-      item.ResetItemConditionsRPC();
+      Debug.Log($"Reset item conditions");
+      item.transform.parent = GameObject.Find("/Environment").transform;
+      Debug.Log($"Put the item in the game scene");
     }
-    item.transform.parent = GameObject.Find("/Environment").transform;
   }
 
   public void AddItemToInventory(Pocketable item) {
@@ -99,7 +98,7 @@ public abstract class Character : MonoBehaviour {
   public void RemoveItemFromInventory(bool resetConditions = true) {
     if (pocketedItem == null) return;
     if (resetConditions) {
-      pocketedItem.GetComponent<PhotonView>().RPC("SetItemDropConditions", RpcTarget.All, transform.position);
+      pocketedItem.SetItemDropConditions(transform.position);
       if (pocketedItem.task != null && pocketedItem.task.parent != null) {
         pocketedItem.task.parent.GetComponent<Interactable>().DisableTaskMarker();
       }
@@ -122,17 +121,24 @@ public abstract class Character : MonoBehaviour {
   }
 
   public bool Spawned() {
-    return roleInfo != null;
+    return playerInfo != null;
   } 
 
   [PunRPC]
-  public void AssignRole (Role role) {
-      string prefabName = role.ToString();
-      GameObject prefab = (GameObject)Resources.Load("Roles/" + prefabName, typeof(GameObject));
-      GameObject body = Instantiate(prefab, new Vector3(0,0,0), Quaternion.identity);
-      body.transform.parent = transform; // Sets the parent of the body to the player
-      body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
-      roleInfo = body.GetComponent<RoleInfo>();
-      GetComponent<Animator>().avatar = roleInfo.avatar;
+  public void AssignColor (string assetPath) {
+      GameObject playerPrefab = PlayerInfo.GetPrefab(assetPath);
+      playerInfo = playerPrefab.GetComponent<PlayerInfo>();
+      Debug.Log($"Ghost prefab is {playerInfo.ghostPrefab}");
+
+      // Dont spawn your own body
+      GameObject body;
+      if (Owner != PhotonNetwork.LocalPlayer) {
+        body = Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity);
+        body.transform.parent = transform; // Sets the parent of the body to the player
+        body.transform.position = transform.position + new Vector3(0,-1.2f, -0.2f);
+        GetComponent<Votable>().outline = body.GetComponent<Outline>();
+      }
+
+      GetComponent<Animator>().avatar = playerInfo.avatar;
   }
 }

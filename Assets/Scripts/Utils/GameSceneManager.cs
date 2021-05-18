@@ -15,18 +15,29 @@ public class GameSceneManager : MonoBehaviour {
     private bool starting = false;
     private bool initialized = false;
 
-    public LoadingScreen loadingScreen;
-    public TimerCountdown timerCountdown;
-    public TaskCompletionUI taskCompletionUI;
+    private GameObject loadingScreen;
+    [SerializeField] private GameObject TraitorLoadingScreen;
+    [SerializeField] private GameObject LoyalLoadingScreen;
+    [SerializeField] private TimerCountdown timerCountdown;
+    [SerializeField] private TaskCompletionUI taskCompletionUI;
 
-    public GameObject playersWonUI;
-    public GameObject traitorInfoUI;
-    public TextMeshProUGUI playerDescriptionText;
-    public Button nextButton;
-    public Text traitorName;
+    [SerializeField] private TimerManager timerManager;
+    [SerializeField] private GameOverUI gameOverUI;
+    [SerializeField] private DeathUI deathUI;
+    [SerializeField] private GameObject spawnPointsGO;
+
+    public Color traitorColor = new Color(0.93f, 0.035f, 0.009f);
+    public Color loyalColor = new Color(0.0f, 0.436f, 1.0f);
 
     
-
+    void Start() {
+        if (NetworkManager.instance.LocalPlayerPropertyIs<Team>("Team", Team.Loyal)) {
+            loadingScreen = LoyalLoadingScreen;
+        } else {
+            loadingScreen = TraitorLoadingScreen;
+        }
+        loadingScreen.SetActive(true);
+    }
 
     void Update() {
         if (!initialized) {
@@ -36,15 +47,15 @@ public class GameSceneManager : MonoBehaviour {
             }
         }
         if (initialized && !starting && NetworkManager.instance.CheckAllPlayers<bool>("GameSceneInitalized", true)) {
-            loadingScreen.EnableButton();
+            loadingScreen.GetComponent<LoadingScreen>().EnableButton();
             if (PhotonNetwork.IsMasterClient) {
-              StartRoundTimer();
+              StartroundTimer();
             }
             starting = true;
         }
 
         if (starting) {
-            if (Timer.RoundTimer.IsStarted()) {
+            if (Timer.roundTimer.IsStarted()) {
                 started = true;
             } 
         }
@@ -70,10 +81,14 @@ public class GameSceneManager : MonoBehaviour {
     ///     lobby. 
     ///   <list>     
     public void CheckTimer() {
-      if (Timer.RoundTimer.IsComplete()) {
-        Debug.Log("Time ran out");
-        EndGame(Team.Traitor);
-      } 
+        // Debug.Log("Checking timer");
+        // Debug.Log(Timer.roundTimer.IsStarted());
+        // Debug.Log(Timer.roundTimer.TimeRemaining());
+        if (PhotonNetwork.IsMasterClient && Timer.roundTimer.IsComplete()) {
+          // If the timer has round out for us we can stop the local timer directly
+          Timer.roundTimer.End();
+          EndGame(Team.Traitor);
+        } 
     }
 
     public void EndGame(Team winningTeam) {
@@ -84,22 +99,18 @@ public class GameSceneManager : MonoBehaviour {
     [PunRPC]
     // Show the UI for the gameover
     public void EndGameRPC(Team winningTeam) {
+        Timer.roundTimer.End();
         taskCompletionUI.UpdateBar();
         timerCountdown.Stop();
+        deathUI.gameObject.SetActive(false);
+        gameOverUI.OnGameOver(winningTeam);
         
-        nextButton.onClick.AddListener(GoToLobby);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         NetworkManager.instance.GetMe().Freeze();
 
-        traitorName.text = string.Join(", ", NetworkManager.traitorNames);
-        playersWonUI.SetActive(true);
-        if (winningTeam == Team.Traitor) {
-            playerDescriptionText.text = "Traitors Won!";
-        }
-        else {
-            playerDescriptionText.text = "Loyals Won!";
-        }
+        // After a game has ended people can join again
+        PhotonNetwork.CurrentRoom.IsVisible = true;
     }
 
 
@@ -109,24 +120,19 @@ public class GameSceneManager : MonoBehaviour {
       return NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && NetworkManager.instance.AllCharactersSpawned();
     }
     
-    public void StartRoundTimer() {
+    public void StartroundTimer() {
       if (PhotonNetwork.LocalPlayer.IsMasterClient) {
-        Timer.RoundTimer.Start(1000);
+        timerManager.StartTimer(Timer.roundTimer);
       }
     }
     
-    public Vector3 RandomNavmeshLocation(float radius = 25f) {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
-            finalPosition = hit.position;
-        }
-        Debug.Log($"{finalPosition.x},{finalPosition.y+3}, {finalPosition.z}");
-        return new Vector3 (finalPosition.x,finalPosition.y+3,finalPosition.z);
+    public Vector3 RandomNavmeshLocation(float radius = 50f) {
+        List<SpawnPoint> spawnPoints = new List<SpawnPoint>(spawnPointsGO.GetComponentsInChildren<SpawnPoint>());
+        int randomIndex = UnityEngine.Random.Range(0, spawnPoints.Count); 
+        return spawnPoints[randomIndex].transform.position;
     }
 
-    void GoToLobby() {
+    public void GoToLobby() {
         NetworkManager.instance.ChangeScene("MenuScene");
     }
 }

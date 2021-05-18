@@ -27,7 +27,20 @@ var WebRTCPlugin = {
             // videoElement.muted = true;
         })
         .catch(function(error) {
-            console.error('Error accessing media devices.', error);
+            // If we fail to get video try with just audio
+            console.error('Error accessing video devices.', error);
+
+            const audioConstraints = {'audio': true}
+            navigator.mediaDevices.getUserMedia(audioConstraints)
+              .then(function(stream) {
+                  unityInstance.SendMessage("WebRTC", "FailedToGet", true);
+                  console.log('Got audio MediaStream:', stream);
+                  Data.localStream = stream;
+              })
+              .catch(function(error) {
+                  unityInstance.SendMessage("WebRTC", "FailedToGet", false);
+                  console.log('Failed to get audio MediaStream:', stream);
+              })
         });
   },
 

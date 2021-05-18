@@ -2,22 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SettingsMenu : MonoBehaviour {
 
     private bool menuOpen = false;
 
     [SerializeField] private Slider mouseSensitivitySlider;
-    [SerializeField] private GameObject settingsPanel;
 
     [SerializeField] private GameObject playerVolumesList;
     [SerializeField] private GameObject playerVolumeItem;
 
     [SerializeField] private WebRTC webRTC;
+    
+    [SerializeField] List<GameObject> thingsToDisableForLowGraphics;
+    [SerializeField] MonoBehaviour lowPolyWater;
+    [SerializeField] Button graphicsButton;
+
+    [SerializeField] GameObject highMaterialShip;
+    [SerializeField] GameObject lowMaterialShip;
+
+    
+    private bool highGraphicsQuality = true;
 
     // Start is called before the first frame update
     void Start() {
       mouseSensitivitySlider.onValueChanged.AddListener (delegate {OnMouseSensitivitySliderChange ();}); 
+      graphicsButton.onClick.AddListener(ToggleGraphics);
     }
 
     public void ToggleMenu() {
@@ -35,7 +46,7 @@ public class SettingsMenu : MonoBehaviour {
         if (!player.IsMe()) {
           GameObject item = Instantiate(playerVolumeItem, playerVolumesList.transform);
           foreach (Image image in item.GetComponentsInChildren<Image>()) {
-            image.color = player.Colour; 
+            image.color = player.playerInfo.color; 
           }
 
           Slider slider = item.GetComponentInChildren<Slider>();
@@ -54,14 +65,14 @@ public class SettingsMenu : MonoBehaviour {
       menuOpen = true;
       mouseSensitivitySlider.value = NetworkManager.instance.GetMe().GetComponentInChildren<CameraMouseLook>().mouseSensitivity;
       NetworkManager.instance.GetMe().Freeze();
-      settingsPanel.SetActive(true);
+      gameObject.SetActive(true);
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
       InitPlayerVolumes();
     }
     
     public void CloseMenu() {
-      settingsPanel.SetActive(false);
+      gameObject.SetActive(false);
       NetworkManager.instance.GetMe().Unfreeze();
       Cursor.lockState = CursorLockMode.Locked;
       Cursor.visible = false;
@@ -76,5 +87,32 @@ public class SettingsMenu : MonoBehaviour {
       if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)){
         ToggleMenu();
       }
+    }
+
+    public void ToggleGraphics() {
+      if(highGraphicsQuality) LowGraphics();
+      else HighGraphics();
+    }
+
+    public void LowGraphics() {
+      graphicsButton.GetComponentInChildren<TMP_Text>().text = "Low";
+      highGraphicsQuality = false;
+      lowPolyWater.enabled = false;
+      foreach(GameObject go in thingsToDisableForLowGraphics) {
+        go.SetActive(false);
+      }
+      lowMaterialShip.SetActive(true);
+      highMaterialShip.SetActive(false);
+    }
+    
+    public void HighGraphics() {
+      graphicsButton.GetComponentInChildren<TMP_Text>().text = "High";
+      highGraphicsQuality = true;
+      lowPolyWater.enabled = true;
+      foreach(GameObject go in thingsToDisableForLowGraphics) {
+        go.SetActive(true);
+      }
+      highMaterialShip.SetActive(true);
+      lowMaterialShip.SetActive(false);
     }
 }

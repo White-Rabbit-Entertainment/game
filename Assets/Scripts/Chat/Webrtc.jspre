@@ -35,9 +35,11 @@ Module['WebRTCPre'].CreatePeerConnection = function (id, localStream) {
           }
       };
       // Add out local video and audio
-      localStream.getTracks().forEach(function(track) {
-          peerConnection.addTrack(track, localStream);
-      });
+      if (localStream != null) {
+        localStream.getTracks().forEach(function(track) {
+            peerConnection.addTrack(track, localStream);
+        });
+      }
       
       return peerConnection
 }

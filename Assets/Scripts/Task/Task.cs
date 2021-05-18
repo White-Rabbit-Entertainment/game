@@ -14,9 +14,9 @@ public class Task : MonoBehaviour {
   public bool isUndoable = true;
   public bool isUndone = false;
 
-  public Timer timer = Timer.None;
+  public Timer timer = null;
 
-  private Interactable TaskInteractable {
+  public Interactable TaskInteractable {
     get { return GetComponent<Interactable>(); }
   }
   // This is the list of requirements that must be completed before this task
@@ -70,12 +70,9 @@ public class Task : MonoBehaviour {
     isAssigned = false;
     isUndone = false;
     PlayableCharacter me =  NetworkManager.instance.GetMe();
-   
-    if (parent !=  null) {
-      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
+    if (PhotonNetwork.IsMasterClient) {
+      taskManager.CheckAllTasksCompleted();
     }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);;
-    taskManager.CheckAllTasksCompleted();
 
     //Enable & Disable relevant targets
     DisableUndoneMarker();
@@ -125,14 +122,11 @@ public class Task : MonoBehaviour {
   }
   
   [PunRPC]
-  public void UncompleteRPC() {
+  public void UncompleteRPC(bool isUndoneByTraitor) {
     isCompleted = false;
     isAssigned = false;
-    isUndone = true;
-    if (parent != null) {
-      parent.View.RPC("SetTaskGlowRPC", RpcTarget.All);
-    }
-    View.RPC("SetTaskGlowRPC", RpcTarget.All);
+
+    if (isUndoneByTraitor) this.isUndone = true;
     
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskUncomplete();
@@ -140,15 +134,18 @@ public class Task : MonoBehaviour {
     
     if (NetworkManager.instance.GetMe() is Traitor) {
       DisableTaskMarker();
-    } else if (TaskInteractable.inRange && IsUndone()) {
+    } else if (isUndoneByTraitor && TaskInteractable.inRange && IsUndone()) {
       EnableUndoneMarker();
     }
   }
 
-  public void Uncomplete() {
+  // isUndone says if the traitor is doing the undoing and therefore if the
+  // task will be marked as undone after this uncomplete.
+  public void Uncomplete(bool isUndone = true) {
     PlayableCharacter me =  NetworkManager.instance.GetMe();
     me.taskNotificationUI.SetNotification(false);
-    View.RPC("UncompleteRPC", RpcTarget.All);
+  
+    View.RPC("UncompleteRPC", RpcTarget.All, isUndone);
   }
 
   public bool IsRequired() {
@@ -176,10 +173,20 @@ public class Task : MonoBehaviour {
     }
   }
 
-  public void AssignSubTaskToCharacter(PlayableCharacter character) {
-    Task subTask = FindIncompleteChild(this);
+  public void AssignSubTaskToCharacter(PlayableCharacter character, Task subTask = null) {
+    // If no explicit task provided then pick one
+    if (subTask == null) {
+      subTask = FindIncompleteChild(this);
+    }
+
+    // If the character already has a subtask
+    if (character.assignedSubTask != null) {
+      // Disable its marker
+      character.assignedSubTask.DisableTaskMarker();
+    }
+
     character.assignedSubTask = subTask;
-    character.contextTaskUI.SetTask(subTask);
+    character.currentTaskUI.SetTask(subTask);
     subTask.EnableTaskMarker();
   }
 

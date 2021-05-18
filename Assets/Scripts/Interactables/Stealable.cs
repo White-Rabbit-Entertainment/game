@@ -10,9 +10,9 @@ public class Stealable : Pickupable {
     public PickupDestination destination;
     public bool ignoreNextCollision = false;
 
-    public override void Reset() {
-        taskDescription = "Steal the " + this.name;
-        base.Reset();
+    public override void Start() {
+        taskDescription = "Take the " + this.name;
+        base.Start();
     }
 
     /// <summary> When a stealable item collides with the "endpoint" the item
@@ -20,7 +20,7 @@ public class Stealable : Pickupable {
     void OnCollisionEnter(Collision collision) {
         if (ignoreNextCollision) {
             ignoreNextCollision = false;
-        } else if(collision.gameObject == destination.gameObject && PhotonNetwork.LocalPlayer.IsMasterClient) {
+        } else if(destination != null && collision.gameObject == destination.gameObject && PhotonNetwork.LocalPlayer.IsMasterClient && task != null) {
             // Calls the steal rpc on all clients
             task.Complete();
 	    }
@@ -36,10 +36,14 @@ public class Stealable : Pickupable {
             // destination.indicator.SetActive(true);
             destination.EnableTaskMarker();
         }
+        if (task != null && destination != null && character is Traitor) {
+            destination.EnableDestinationZone();
+        }
         DisableTaskMarker();
     }
     
     public override void PrimaryInteractionOff(Character character) {
+        Debug.Log($"Dropping");
         base.PrimaryInteractionOff(character);
         // destination.indicator.SetActive(false);
         if (destination != null) {

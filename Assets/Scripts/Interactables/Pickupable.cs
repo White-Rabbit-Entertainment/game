@@ -22,6 +22,7 @@ public abstract class Pickupable : Interactable {
 
   public override void PrimaryInteractionOff(Character character) {
     if (isPickedUp) {
+      Debug.Log($"Putting down {gameObject}");
       character.PutDown(this);
     }
   }
@@ -54,7 +55,8 @@ public abstract class Pickupable : Interactable {
   }
   
   public void ResetItemConditions(Character character) {
-    GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.All);
+    ResetItemConditionsRPC();
+    GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.Others);
     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
     // Set velocity of box after it is putdown to the speed to the character moving it

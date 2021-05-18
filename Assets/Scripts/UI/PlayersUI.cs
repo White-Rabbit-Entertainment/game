@@ -9,7 +9,6 @@ using Photon.Realtime;
 public class PlayersUI : MonoBehaviourPun {
 
   public GameObject playerTile;
-  public GameObject playerList;
   public GameObject suspectTile;
     
   public void Init() {
@@ -19,21 +18,10 @@ public class PlayersUI : MonoBehaviourPun {
   }
 
   void AddPlayerTile(PlayableCharacter player) {
-    GameObject item = Instantiate(playerTile, playerList.transform);
-    player.playerTile = item;
+    PlayerTile tile = Instantiate(playerTile, transform).GetComponent<PlayerTile>();
+    player.playerTile = tile;
     player.playersUI = this;
-
-    // Set colour of tile to match player role
-    item.GetComponent<Image>().color = player.roleInfo.colour; 
-
-    // Set text to name
-    TextMeshProUGUI playerName = item.GetComponentInChildren<TextMeshProUGUI>();
-    playerName.text = player.Owner.NickName;
-   
-    // If the player is dead cross them out
-    if (player is Ghost) {
-      SetToDead(player);
-    }
+    tile.Init(player);
   }
 
   void RedoPlayerTiles(PlayableCharacter suspectedPlayer){
@@ -45,33 +33,29 @@ public class PlayersUI : MonoBehaviourPun {
   }
 
   public void SetPlayerVote(Vote vote, PlayableCharacter player) {
-    GameObject item = player.playerTile;
+    PlayerTile tile = player.playerTile;
     if (vote == Vote.For) {
-      item.transform.Find("VoteFor").gameObject.SetActive(true);
+      tile.EnableVotingFor();
     } else if (vote == Vote.Against) {
-      item.transform.Find("VoteAgainst").gameObject.SetActive(true);
+      tile.EnableVotingAgainst();
     }
   }
 
   public void SetSuspectedPlayer(PlayableCharacter suspectedPlayer){
-    suspectedPlayer.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(true);
+    // suspectedPlayer.playerTile.EnableVotingMark();
     suspectedPlayer.playerTile.transform.position = suspectTile.transform.position;
     suspectedPlayer.playerTile.transform.SetParent(suspectTile.transform,true);
   }
 
   public void ClearSuspectedPlayer(PlayableCharacter suspectedPlayer){
-    suspectedPlayer.playerTile.transform.SetParent(playerList.transform,true);
-    
+    suspectedPlayer.playerTile.transform.SetParent(transform, true);
   }
 
   public void ClearVote(PlayableCharacter character) {
-    character.playerTile.transform.Find("VoteFor").gameObject.SetActive(false);
-    character.playerTile.transform.Find("VoteAgainst").gameObject.SetActive(false);
-    character.playerTile.transform.Find("votingMarkAppear").gameObject.SetActive(false);
+    character.playerTile.Clear();
   }
 
   public void SetToDead(PlayableCharacter character) {
-      Transform cross = character.playerTile.transform.Find("Cross");
-      cross.gameObject.SetActive(true);
+      character.playerTile.EnableCross();
   }
 }

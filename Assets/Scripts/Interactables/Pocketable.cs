@@ -21,12 +21,16 @@ public class Pocketable : Interactable {
     gameObject.SetActive(false);
   }
 
-  [PunRPC]
   public void SetItemDropConditions(Vector3 position) {
+    SetItemDropConditionsRPC(position);
+    View.RPC("SetItemDropConditionsRPC", RpcTarget.Others, position);
+  }
+
+  [PunRPC]
+  public void SetItemDropConditionsRPC(Vector3 position) {
     gameObject.SetActive(true);
     transform.position = position;
     NetworkManager.instance.GetMe().GetComponent<ItemInteract>().RemovePossibleInteractable(this);
-    SetTaskGlow();
   }
 
   public override void PrimaryInteraction(Character character) {
@@ -40,11 +44,16 @@ public class Pocketable : Interactable {
       character.RemoveItemFromInventory(false);
     }
     gameObject.SetActive(false);
+    
+    if (GetComponent<Rigidbody>() != null) {
+        GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+        GetComponent<Rigidbody>().angularVelocity = new Vector3(0,0,0);
+    }
   }
  
   public override void OnParentTaskUncomplete() {
     // Move to random position
-    View.RPC("SetItemDropConditions", RpcTarget.All, gameSceneManager.RandomNavmeshLocation(50f));
+    SetItemDropConditions(gameSceneManager.RandomNavmeshLocation());
     task.Uncomplete();
   }
 }

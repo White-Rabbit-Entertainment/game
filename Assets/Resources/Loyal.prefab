@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupDestination: {fileID: 4117370648762688828}
-  currentHeldItem: {fileID: 0}
   currentFixingItem: {fileID: 0}
+  currentHeldItem: {fileID: 0}
   pocketedItem: {fileID: 0}
   inventoryUI: {fileID: 0}
   team: 1
-  roleInfo: {fileID: 0}
+  startingTeam: 0
+  playerInfo: {fileID: 0}
   ghostPrefab: {fileID: 7463885005024221200, guid: 124a97d11974cb6d7a5fc46a0873b674,
     type: 3}
-  contextTaskUI: {fileID: 0}
+  currentTaskUI: {fileID: 0}
+  deathUI: {fileID: 0}
   taskNotificationUI: {fileID: 0}
   playerTile: {fileID: 0}
   playersUI: {fileID: 0}
@@ -47,7 +49,7 @@ PrefabInstance:
     - target: {fileID: 3229952636936988353, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6604436822466725204, guid: fb1fff29035ea57d2b2ef8b4397a0dc8,
         type: 3}

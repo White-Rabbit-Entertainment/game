@@ -20,9 +20,12 @@ public class TaskManager : MonoBehaviourPun {
   public TaskCompletionUI taskCompletionUI;
 
   private bool requested = false;
+  private bool allTasksCompleted = false;
 
   void Start() {
     tasks = new List<Task>();
+
+    // Every 5 seconds update the task bar ui
     InvokeRepeating("UpdateTaskBar", 5f, 5f);
   }
 
@@ -39,16 +42,12 @@ public class TaskManager : MonoBehaviourPun {
     if (
         !requested
       && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
-      && NetworkManager.instance.RoomPropertyIs<int>("NumberOfTasksSet", tasks.Count) 
     ) {
       requested = true;
       PlayableCharacter character = NetworkManager.instance.GetMe();
       if (character is Loyal) {
-        if (character.assignedMasterTask == null || character.assignedMasterTask.isCompleted) {
-          RequestNewTask();
-        } else {
-          character.assignedMasterTask.AssignSubTaskToCharacter(character);
-        }
+        Debug.Log("Requesting new task!");
+        RequestNewTask();
       }
     }
   }
@@ -66,6 +65,8 @@ public class TaskManager : MonoBehaviourPun {
     int expectedNumberOfTasks = 0;
     int numberOfTasks = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasks");
     int numberOfTasksInitiallyCompleted = NetworkManager.instance.GetRoomProperty<int>("NumberOfTasksInitiallyCompleted");
+
+    int numberOfCompletedTasks = 0;
     // Get all possible items to assign tasks to in the environment 
     // We split this so we can assign the correct number of stealing
     // tasks.
@@ -86,18 +87,23 @@ public class TaskManager : MonoBehaviourPun {
 
     // Assign the first few items a Task
     for (int i = 0; i < numberOfTasks; i++) {
-        if (possibleMasterTaskables[i].GetComponent<Interactable>().HasSoftRequirements()) {
-            int numberOfSubTasks = UnityEngine.Random.Range(0, 2);
-            if (numberOfSubTasks > 0) {
-                  possibleMasterTaskables[i].GetComponent<Interactable>().PickHardRequirements(possibleTaskables);
+        Interactable interactable = possibleMasterTaskables[i].GetComponent<Interactable>();
+        if (interactable.HasSoftRequirements()) {
+            float giveSubTaskWeight = UnityEngine.Random.Range(0f, 1f); 
+            if (giveSubTaskWeight <= interactable.softRequirementProbability) {
+                interactable.PickHardRequirements(possibleTaskables);
             }
         }
         expectedNumberOfTasks++;
-        PhotonView view = possibleMasterTaskables[i].GetComponent<PhotonView>();
-        if (i < numberOfTasksInitiallyCompleted) {
-          view.RPC("AddCompletedTaskRPC", RpcTarget.All);
+        PhotonView view = interactable.GetComponent<PhotonView>();
+
+        if (numberOfCompletedTasks < numberOfTasksInitiallyCompleted) {
+            if (!(interactable is Stealable)) {
+              view.RPC("AddCompletedTaskRPC", RpcTarget.All);
+              numberOfCompletedTasks++;
+            }
         } else {
-          view.RPC("AddTaskRPC", RpcTarget.All);
+            view.RPC("AddTaskRPC", RpcTarget.All);
         }
     }
 
@@ -146,17 +152,22 @@ public class TaskManager : MonoBehaviourPun {
   [PunRPC]
   public void AssignTask(int requestingPlayerViewId) {
     PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
+    Debug.Log($"Assigning task to {taskRequester.Owner.NickName}");
     Task nextTask = null;
     if (nextTask == null) nextTask = FindUnassignedTask();
     if (nextTask == null) nextTask = FindUncompleteTask();
     if (nextTask != null) {
+      Debug.Log($"Assigned task to {taskRequester.Owner.NickName}");
       nextTask.AssignTask(taskRequester);
+    } else {
+      Debug.Log($"Failed to assign task to {taskRequester.Owner.NickName}");
     }
   }
 
   /// <summary> Return if all Loyal tasks have been completed. </summary> 
   public void CheckAllTasksCompleted() {
-    if (NumberOfTasksCompleted() == tasks.Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true)) {
+    if (NumberOfTasksCompleted() == tasks.Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && !allTasksCompleted) {
+      allTasksCompleted = true;
       gameSceneManager.EndGame(Team.Loyal);
     }
   }

@@ -7,40 +7,25 @@ public class AmountFixed : MonoBehaviour
 {
     [SerializeField] private Image countdownCircle;
     [SerializeField] private TextMeshProUGUI countdownText;
-    private float startAmountToFix;
-    private float currentAmountToFix;
-    private bool updateAmountToFix;
-    public SabotageManager SabotageManager;
+    public SabotageManager sabotageManager;
 
     // private float fillAmount = 1.0f;
-     private void OnEnable()
-     { 
-        currentAmountToFix = SabotageManager.GetAmountToFix();
-        startAmountToFix = 100f;
-        countdownCircle.fillAmount = ((startAmountToFix-currentAmountToFix)/1.0f);
-         // Easy way to represent only the seconds and skip the
-         // float     
-        countdownText.text = (int)((startAmountToFix-currentAmountToFix)/1.0f)+ "%";
-         // update the countdown on the update
-        updateAmountToFix = true;
-     }
-      private void Update()
-      {
-          if (SabotageManager.GetIsFixing())
-          {
-            // currentAmountToFix -= Time.deltaTime;
-            currentAmountToFix = SabotageManager.GetAmountToFix();
-            if (SabotageManager.amountToFix <= 0f)
-            {
-               // Stop the countdown               
-               updateAmountToFix = false;
-               currentAmountToFix = 0.0f;
-            }
-            countdownText.text = (int)((startAmountToFix-currentAmountToFix)/1.0f)+ "%";
-            float normalizedValue = Mathf.Clamp(currentAmountToFix /startAmountToFix, 0.0f, 1.0f);
-            // fillAmount = normalizedValue;
-            countdownCircle.fillAmount = normalizedValue;
-           }
+    private void OnEnable() { 
+      sabotageManager = GameObject.Find("/SabotageManager").GetComponent<SabotageManager>();
+      Sabotageable sabotageable = sabotageManager.sabotageable;
     }
 
+    private void Update() {
+       Sabotageable sabotageable = sabotageManager.sabotageable;
+       if (sabotageable != null) {
+         Debug.Log("Setting values");
+         SetValues(sabotageable);
+       }
+    }
+
+    public void SetValues(Sabotageable sabotageable) {
+      float fractionCompleted = sabotageable.startingAmountToFix - sabotageable.amountToFix;
+      countdownCircle.fillAmount = fractionCompleted / sabotageable.startingAmountToFix;
+      countdownText.text = (int)fractionCompleted + "%";
+    }
 }

@@ -93,7 +93,11 @@ public class Outline : MonoBehaviour {
     outlineFillMaterial.name = "OutlineFill (Instance)";
 
     // Retrieve or generate smooth normals
-    LoadSmoothNormals();
+    try {
+      LoadSmoothNormals();
+    } catch {
+      Debug.Log("Error loading smooth normals");
+    }
 
     // Apply material properties immediately
     needsUpdate = true;
@@ -158,6 +162,19 @@ public class Outline : MonoBehaviour {
   }
 
   void Bake() {
+    foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) {
+        if (skinnedMeshRenderer.sharedMesh.subMeshCount > 1) {
+            skinnedMeshRenderer.sharedMesh.subMeshCount = skinnedMeshRenderer.sharedMesh.subMeshCount + 1;
+            skinnedMeshRenderer.sharedMesh.SetTriangles(skinnedMeshRenderer.sharedMesh.triangles, skinnedMeshRenderer.sharedMesh.subMeshCount - 1);
+        }
+    }
+ 
+    foreach (var meshFilter in GetComponentsInChildren<MeshFilter>()) {
+        if (meshFilter.sharedMesh.subMeshCount > 1) {
+            meshFilter.sharedMesh.subMeshCount = meshFilter.sharedMesh.subMeshCount + 1;
+            meshFilter.sharedMesh.SetTriangles(meshFilter.sharedMesh.triangles, meshFilter.sharedMesh.subMeshCount - 1);
+        }
+    }
 
     // Generate smooth normals for each mesh
     var bakedMeshes = new HashSet<Mesh>();
