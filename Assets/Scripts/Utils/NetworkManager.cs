@@ -36,30 +36,32 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     public void SetupGame() {
       if (RoomPropertyIs<bool>("GameStarted", false)) {
         if (PhotonNetwork.LocalPlayer.IsMasterClient) {
+          
           // When a game starts we dont want people to be able to join
           PhotonNetwork.CurrentRoom.IsVisible = false;
+          
+          // Set some game settings and properties
           SetRoomProperty("TasksSet", false);
           SetRoomProperty("WinningTeam", "None");
           SetRoomProperty("NumberOfTasks", 20);
           SetRoomProperty("NumberOfTasksInitiallyCompleted", 2);
-          
-          List<Player> players = GetPlayers();
           int numberOfTraitors = 1;
+        
+          // Get all the players in the room
+          List<Player> players = GetPlayers();
 
-          
+          // Get all the player colours available
           List<GameObject> playerColorPrefabs = new List<GameObject>(Resources.LoadAll("PlayerPrefabs/Alive", typeof(GameObject)).Cast<GameObject>().ToArray());
           List<PlayerInfo> playerColors = new List<PlayerInfo>();
-          Debug.Log(playerColorPrefabs.Count);
           foreach(GameObject playerColorPrefab in playerColorPrefabs) {
             playerColors.Add(playerColorPrefab.GetComponent<PlayerInfo>());
-            Debug.Log("added item to playerinfo list");
-            Debug.Log(playerColorPrefab);
           }
 
           // Shuffle players and roles to ensure random team and role are assigned
           playerColors.Shuffle();
           players.Shuffle();
 
+          // Assign all players a colour and team
           for (int i = 0; i < numberOfTraitors; i++) {
             SetPlayerProperty("Team", Team.Traitor, players[i]);
             SetPlayerProperty("Color", playerColors[i % playerColors.Count].assetPath, players[i]);
@@ -69,12 +71,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
             SetPlayerProperty("Team", Team.Loyal, players[i]);
             SetPlayerProperty("Color", playerColors[i % playerColors.Count].assetPath, players[i]);
           }
+
+          // Set the game as ready (i.e. setup complete)
           SetRoomProperty("GameReady", true);
 
         }
       }
     }
-    
+   
+    // Generate a random 8 character name for a room 
     public string GenerateRoomName() {
         string roomString = string.Empty;
         for (int i = 0; i < 6; i++) {

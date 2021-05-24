@@ -3,6 +3,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// A task is an interactable that can be "completed". At the start of a round
+// interactables are selected from the scene and assigned a task (and potentially sub tasks).
+// If the loyals complete all the assigned tasks then they win the game.
+//
+// Tasks have requirements and parents, this cretes a tree strucuture of tasks.
+// A task cannot be completed until all its requirements are completed. When a
+// parent task is undone the requirements are also undone.
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Interactable))]
 public class Task : MonoBehaviour {
@@ -16,6 +23,7 @@ public class Task : MonoBehaviour {
 
   public Timer timer = null;
 
+  // The itneractable this task is on
   public Interactable TaskInteractable {
     get { return GetComponent<Interactable>(); }
   }
@@ -113,6 +121,9 @@ public class Task : MonoBehaviour {
     }
   }
   
+  // Complte the task
+  // A task can manually be completed (to not show the UI). This is useful when
+  // a task starts completed.
   public void Complete(bool isManual = false) {
     if (!isManual) {
       PlayableCharacter me =  NetworkManager.instance.GetMe();
@@ -131,7 +142,8 @@ public class Task : MonoBehaviour {
     foreach(Task requirement in requirements) {
       requirement.TaskInteractable.OnParentTaskUncomplete();
     }
-    
+   
+    // Handle markers
     if (NetworkManager.instance.GetMe() is Traitor) {
       DisableTaskMarker();
     } else if (isUndoneByTraitor && TaskInteractable.inRange && IsUndone()) {
@@ -148,10 +160,13 @@ public class Task : MonoBehaviour {
     View.RPC("UncompleteRPC", RpcTarget.All, isUndone);
   }
 
+  // Is this task currently required by another task
   public bool IsRequired() {
     return !IsMasterTask() && !parent.isCompleted;
   }
 
+  // Calls RPC to assing task to character and also call the funciton that the
+  // rpc reference to ensure task is completed instanly on master client
   public void AssignTask(PlayableCharacter character) {
     //Master calls assignToCharacter first to ensure it is done before anyone else
     AssignTaskToCharacter(character);
@@ -164,7 +179,8 @@ public class Task : MonoBehaviour {
     PlayableCharacter character = PhotonView.Find(assignedCharacterViewId).GetComponent<PlayableCharacter>();
     AssignTaskToCharacter(character);
   }
-  
+ 
+  // Assigns task to the character
   private void AssignTaskToCharacter(PlayableCharacter character) {
     character.assignedMasterTask = this;
     isAssigned = true;
@@ -173,6 +189,9 @@ public class Task : MonoBehaviour {
     }
   }
 
+  // When the character has a master task assigned then they need to be
+  // assigned the actual task they are going to do (either the assinged master
+  // task or one of its requirements).
   public void AssignSubTaskToCharacter(PlayableCharacter character, Task subTask = null) {
     // If no explicit task provided then pick one
     if (subTask == null) {
@@ -185,11 +204,14 @@ public class Task : MonoBehaviour {
       character.assignedSubTask.DisableTaskMarker();
     }
 
+    // Assign the task
     character.assignedSubTask = subTask;
     character.currentTaskUI.SetTask(subTask);
     subTask.EnableTaskMarker();
   }
 
+  // Find a task that can be completed. Travereses through tasks until a task
+  // has no uncompleted requirements. This task can then be assigned.
   private Task FindIncompleteChild(Task task) {
     if (task.AllChildrenCompleted()) {
       return task;

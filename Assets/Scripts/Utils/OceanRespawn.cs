@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+// When an item hits the ocean (i.e. thrown off the map) it should be respawned
+// at a random spawn point on this ship.
 public class OceanRespawn : MonoBehaviour {
     [SerializeField] private GameSceneManager gameSceneManager;
     // Update is called once per frame

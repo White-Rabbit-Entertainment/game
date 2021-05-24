@@ -3,18 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// Class for handling movement logic. This uses dependancy injection join avoid
+// any external dependancies making it easy to unit test.
 public class Movement
 {
+    // How far from the ground does a player have to be to be "on" the ground.
     private float groundDistance = 0.4f;
-    private float speed;
-    private float sprintFactor = 2f;
-    private float gravity;
-    private float jumpHeight;
-    private float y = 0f;
-    public float stamina;
-    private float staminaDepletionRate;
-    private float staminaRegenerationRate;
 
+    // Player movement speed
+    private float speed;
+
+    // Mutliple of speed which a player moves when sprinting
+    private float sprintFactor = 2f;
+
+    // Strenght of gravity
+    private float gravity;
+
+    // Jump height of character
+    private float jumpHeight;
+
+    // Current y position
+    private float y = 0f;
+
+    // Stamina
+    public float stamina; // Remaining
+    private float staminaDepletionRate; // How quickly deplates
+    private float staminaRegenerationRate; // How quickly regenerates
+
+    // Init movement class with values
     public Movement(float speed, float gravity, float jumpHeight, float sprintFactor, float stamina, float staminaDepletionRate, float staminaRegenerationRate) {
         this.speed = speed;
         this.gravity = gravity;
@@ -25,6 +41,7 @@ public class Movement
         this.staminaRegenerationRate = staminaRegenerationRate;
     }
 
+    // Called every update to determine movement vector required by player
     public Vector3 Calculate(float x, float z, bool isJumping, bool isGrounded, bool isSprinting, float deltaTime) {
 
         //resets falling velocity if player is grounded
@@ -49,6 +66,9 @@ public class Movement
         return move * deltaTime;
     }
 
+    // Stamina limits the amount a player can sprint. When sprinting the
+    // stamina depletes and when not it replenishes. When a player has no
+    // stamina remaining they cant sprint.
     private bool staminaHandler(bool isSprinting, float deltaTime) {
         //Left shift triggers sprint if player has stamina
          if (isSprinting)
