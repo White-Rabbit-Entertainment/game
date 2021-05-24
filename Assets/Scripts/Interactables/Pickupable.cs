@@ -4,15 +4,20 @@ using UnityEngine;
 using Photon.Pun;
 
 /// <summary><c>Pickupable</c> extends <c>Interactable</c> to allow the item to
-/// be picked up and put down. </summary>
+/// be picked up and put down.
+/// When picked up it is placed inside the gameobject of the player and thus
+/// follows then around. When an item is pickedup its physics is disabled.
+/// </summary>
 public abstract class Pickupable : Interactable {
     
+  // Whether the item is currently picked up  
   public bool isPickedUp = false;
 
   public override void Reset() {
     playerAnimationTrigger = "Pickup";
   }
-  
+ 
+  // Pickup item
   public override void PrimaryInteraction(Character character) {
     if (!isPickedUp) {
       character.Pickup(this);
@@ -20,6 +25,7 @@ public abstract class Pickupable : Interactable {
     PlayCharacterAnimation(character);
   }
 
+  // Put down item
   public override void PrimaryInteractionOff(Character character) {
     if (isPickedUp) {
       Debug.Log($"Putting down {gameObject}");
@@ -27,8 +33,8 @@ public abstract class Pickupable : Interactable {
     }
   }
 
-  /// <summary> Checks if the item is in a pickup destination, if so it is
-  /// picked up.  </summary>
+  // Checks if the item is in a pickup destination, if so it is
+  // picked up.
   public override bool CanInteract(Character character) {
     return base.CanInteract(character) && !isPickedUp && !character.HasItem();
   }
@@ -42,11 +48,12 @@ public abstract class Pickupable : Interactable {
     GetComponent<Rigidbody>().useGravity = false;
   }
   
+  // Disable physics when an item is pickedup
   public void SetItemPickupConditions() {
     GetComponent<PhotonView>().RPC("SetItemPickupConditionsRPC", RpcTarget.All);
     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
   }
-  
+
   [PunRPC]
   public void ResetItemConditionsRPC() {
     isPickedUp = false;
@@ -54,6 +61,7 @@ public abstract class Pickupable : Interactable {
     GetComponent<Rigidbody>().useGravity = true;
   }
   
+  // Re-enable physics when dropped
   public void ResetItemConditions(Character character) {
     ResetItemConditionsRPC();
     GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.Others);

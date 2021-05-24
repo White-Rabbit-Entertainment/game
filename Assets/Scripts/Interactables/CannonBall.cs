@@ -4,12 +4,11 @@ using UnityEngine;
 using Photon.Pun;
 
 public class CannonBall : Pickupable {
-    // Cannons cannot be a master task, therefore they are always going to be
-    // the child of a Cannon.
-    
-    bool inCannon = false;
+    bool inCannon = false; // Whether the cannonball is current in a cannon
     GameSceneManager gameSceneManager;
 
+    // This is used for cannons with tasks. Cannons cannot be a master task,
+    // therefore they are always going to be the child of a Cannon.
     public Cannon Cannon {
         get { 
             if (task != null && task.parent != null) {
@@ -31,9 +30,12 @@ public class CannonBall : Pickupable {
 
     public override void PrimaryInteraction(Character character) {
         base.PrimaryInteraction(character);
-        // When picked up complete the task
+
+        // When picked up 
         if (task != null) {
+            // Complete the task 
             task.Complete();
+            // Enable the pickup destination for the cannon 
             Cannon.GetComponent<PickupDestination>().EnableDestinationZone();
         }
     }
@@ -42,10 +44,13 @@ public class CannonBall : Pickupable {
         base.PrimaryInteractionOff(character);
         if (task != null && !inCannon && character is PlayableCharacter) {
             task.Uncomplete(false);
+            // Reassign the cannon ball to the character (since they currently
+            // have the  cannon as their task)
             task.AssignSubTaskToCharacter((PlayableCharacter)character);
         }
     }
 
+    // When a cannonball collides with its cannon it should be completed
     void OnCollisionEnter(Collision collision) {
         if(Cannon != null && Cannon.gameObject == collision.gameObject) {
             task.parent.Complete();
@@ -62,6 +67,8 @@ public class CannonBall : Pickupable {
         task.Uncomplete();
     }
 
+    // When a cannonball is in a cannon it should be consumed by the cannon
+    // (inactive).
     [PunRPC]
     public void SetInCannonConditions() {
         inCannon = true;
@@ -75,7 +82,7 @@ public class CannonBall : Pickupable {
         inCannon = false;
         transform.position = newPosition;
 
-        // Remove all velocity
+        // Remove all velocity (prevents strange bouncy stuff)
         GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
         GetComponent<Rigidbody>().angularVelocity = new Vector3(0,0,0);
     }

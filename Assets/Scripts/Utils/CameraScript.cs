@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// Maps webcam feed to unity texture
 public class CameraScript : MonoBehaviour {
     static WebCamTexture myWebcamTexture; 
 

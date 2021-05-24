@@ -14,12 +14,23 @@ using UnityEngine.SceneManagement;
 /// (multiplayer menu) scene. It can be referenced at any time with <code>
 /// GameManager.instance </code></summary> 
 public class TaskManager : MonoBehaviourPun {
+  
+  // GameObject which holds all items that can be assigned tasks 
   public GameObject taskables;
+  
+  // The list of all master tasks
   public List<Task> tasks;
+
   public GameSceneManager gameSceneManager;
+
+  // UI
   public TaskCompletionUI taskCompletionUI;
 
+  // Has the local player requested a task and not yet received one (prevents
+  // mulitple requests at once).
   private bool requested = false;
+
+  // Are all the tasks completed (prevents multiple endgames)
   private bool allTasksCompleted = false;
 
   void Start() {
@@ -30,6 +41,7 @@ public class TaskManager : MonoBehaviourPun {
   }
 
   void Update() {
+    // If all players are in the scene and spawned then assign tasks
     if (PhotonNetwork.LocalPlayer.IsMasterClient && 
         NetworkManager.instance.CheckAllPlayers<string>("CurrentScene", "GameScene") && 
         NetworkManager.instance.AllCharactersSpawned() && 
@@ -38,7 +50,7 @@ public class TaskManager : MonoBehaviourPun {
       SetTasks();
     }
 
-    // Set inital task
+    // Set inital task for player
     if (
         !requested
       && NetworkManager.instance.RoomPropertyIs("TasksSet", true) 
@@ -60,6 +72,9 @@ public class TaskManager : MonoBehaviourPun {
     tasks.Add(task);
   }
 
+  // Sets the tasks at the start of the game. This selects interactables from
+  // the taskables game object and assigns tasks to them as well as their
+  // requirements. Check Task class for more details.
   void SetTasks() {
     // Get the number of tasks of each type which should be created
     int expectedNumberOfTasks = 0;
@@ -88,15 +103,23 @@ public class TaskManager : MonoBehaviourPun {
     // Assign the first few items a Task
     for (int i = 0; i < numberOfTasks; i++) {
         Interactable interactable = possibleMasterTaskables[i].GetComponent<Interactable>();
+
+        // If it has soft requirements
         if (interactable.HasSoftRequirements()) {
+            // Then assign a soft requirement as a requirement with a
+            // probability of softRequirementProbability 
             float giveSubTaskWeight = UnityEngine.Random.Range(0f, 1f); 
             if (giveSubTaskWeight <= interactable.softRequirementProbability) {
+                // Picks a soft requirement and assigns it as hard requirement
                 interactable.PickHardRequirements(possibleTaskables);
             }
         }
+        // Counts number of assigned tasks
         expectedNumberOfTasks++;
         PhotonView view = interactable.GetComponent<PhotonView>();
 
+        // Manually completes some tasks so the traitor has a clear objective
+        // at the start of the game.
         if (numberOfCompletedTasks < numberOfTasksInitiallyCompleted) {
             if (!(interactable is Stealable)) {
               view.RPC("AddCompletedTaskRPC", RpcTarget.All);
@@ -117,6 +140,7 @@ public class TaskManager : MonoBehaviourPun {
     return tasks;
   }
 
+  // Return number of master tasks which have been completed
   public int NumberOfTasksCompleted() {
     int count = 0;
     foreach(Task task in tasks) {
@@ -127,6 +151,7 @@ public class TaskManager : MonoBehaviourPun {
     return count;
   }
 
+  // Find a task in the scene which hasnt yet been completed
   public Task FindUncompleteTask() {
     foreach(Task task in tasks) {
       if (!task.isCompleted) {
@@ -136,6 +161,8 @@ public class TaskManager : MonoBehaviourPun {
     return null;
   }
 
+  // Find a task in the scene which hasnt yet been completed and also hasnt yet
+  // been assigned
   public Task FindUnassignedTask() {
     foreach(Task task in tasks) {
       if (!task.isAssigned && !task.isCompleted) {
@@ -145,26 +172,32 @@ public class TaskManager : MonoBehaviourPun {
     return null;
   }
 
+  // Used by local player to request a new task from the master client. Master
+  // client is used to ensure syncrhoniation between clients (so noone gets the
+  // same task once).
   public void RequestNewTask() {
     GetComponent<PhotonView>().RPC("AssignTask", PhotonNetwork.MasterClient, NetworkManager.instance.GetMe().View.ViewID);
   }
 
+  // Master client assigns task to the requesting player. It first looks for an
+  // unassinged task, then if none available it then picks an uncompleted task
+  // (but assinged to another player).
   [PunRPC]
   public void AssignTask(int requestingPlayerViewId) {
     PlayableCharacter taskRequester = PhotonView.Find(requestingPlayerViewId).GetComponent<PlayableCharacter>();
-    Debug.Log($"Assigning task to {taskRequester.Owner.NickName}");
     Task nextTask = null;
+    // Looks for unassigned task
     if (nextTask == null) nextTask = FindUnassignedTask();
+    // Looks for a completed task if unassinged task not found
     if (nextTask == null) nextTask = FindUncompleteTask();
+    // If found a suitable task to assign then assings it to player
     if (nextTask != null) {
-      Debug.Log($"Assigned task to {taskRequester.Owner.NickName}");
       nextTask.AssignTask(taskRequester);
-    } else {
-      Debug.Log($"Failed to assign task to {taskRequester.Owner.NickName}");
     }
   }
 
-  /// <summary> Return if all Loyal tasks have been completed. </summary> 
+  /// Return if all master tasks have been completed. If this is true the game
+  /// should be ended and the loyals will win.
   public void CheckAllTasksCompleted() {
     if (NumberOfTasksCompleted() == tasks.Count && NetworkManager.instance.RoomPropertyIs<bool>("TasksSet", true) && !allTasksCompleted) {
       allTasksCompleted = true;
