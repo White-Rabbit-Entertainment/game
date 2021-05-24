@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviourPun {
         }
     }
 
+    //Create a new movement instance with the given attributes
     void Start() {
         movement = new Movement(speed, gravity, jumpHeight, sprintFactor, stamina, staminaDepletionRate, staminaRegenerationRate);
     }
@@ -31,26 +32,29 @@ public class PlayerMovement : MonoBehaviourPun {
         float z = 0;
         bool isJumping = false;
         bool isSprinting = false;
+
+        //if the player is not currently frozen read the player inputs
         if (!frozen) {
             x = Input.GetAxis("Horizontal");
             z = Input.GetAxis("Vertical");
             isJumping = Input.GetButtonDown("Jump");
             isSprinting = Input.GetKey("left shift");
         }
+
+        //check if the player is on the ground or in the air
         bool isGrounded = GetComponent<CharacterController>().isGrounded;
         
-        //apply movement
+        //Calculate the movement from the player inputs
         Vector3 move = movement.Calculate(x, z, isJumping, isGrounded, isSprinting, Time.deltaTime);
         Vector3 finalMove = move.x * transform.right + move.y * transform.up + move.z * transform.forward;
         playerController.Move(finalMove);
-
-        if (Input.GetKeyDown(KeyCode.K)) {
-            NetworkManager.instance.GetMe().Kill();
-        }
     }
 
+    //Moves the player to the given position
     [PunRPC] 
     public void MovePlayer(Vector3 position) {
+
+        //Disable the character controller while moving the player
         CharacterController characterController = GetComponent<CharacterController>();
 	    characterController.enabled = false;
         transform.position = position;

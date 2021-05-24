@@ -81,18 +81,25 @@ public class ItemInteract : MonoBehaviourPun {
         }
     }
 
+    //Returns the interactable that is closest to the centre of
+    //the players vision
     public Interactable GetBestInteractable() {
-        Debug.Log("Getting best interactable");
         float angle = float.PositiveInfinity;
         Interactable bestInteractable = null;
+        //Iterates through each interactable in the cone
+        //saving the current best found interactable
         foreach(Interactable interactable in possibleInteractables) {
             // Checks if the iteractable has been destroyed (eg player turns into ghost)
             if (interactable != null) { 
                 RaycastHit hit;
+
+                //Use raycast to calculate the angle between the centre of the
+                //players vision and the vector from the camera to the interactable
                 Vector3 direction = interactable.transform.position - cameraTransform.position;
                 Physics.Raycast(cameraTransform.position, direction, out hit); 
                 float interactableAngle = Vector3.Angle(cameraTransform.forward, direction);
-
+                
+                //If this angle is smaller than the smallest so far we have found a new best interactable
                 if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
                     angle = interactableAngle;
                     bestInteractable = interactable;
@@ -102,56 +109,58 @@ public class ItemInteract : MonoBehaviourPun {
         return bestInteractable;
     }
  
-    private Interactable ClosestInteractable() {
-        float distance = float.PositiveInfinity;
-        Interactable closestInteractable = possibleInteractables[0];
-        foreach(Interactable interactable in possibleInteractables) {
-            float interactableDistance = Vector3.Distance(transform.position, interactable.transform.position);
-            if (interactableDistance < distance) {
-                distance = interactableDistance;
-                closestInteractable = interactable;
-            }
-        }
-        return closestInteractable;
-    }
- 
-     public void OnTriggerEnter(Collider collider){
+    //Handles objects entering trigger collider
+    public void OnTriggerEnter(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
+
+        //if object is an interactable call onEnterPlayerRadius
         if (interactable != null) {
             interactable.OnEnterPlayerRadius();
         }
-     }
+    }
 
-     public void OnTriggerExit(Collider collider){
+    //Handles objects leaving trigger collider
+    public void OnTriggerExit(Collider collider){
         Interactable interactable = collider.GetComponent<Interactable>();
+
+        //if object is an interactable call onExitPlayerRadius
         if (interactable != null) {
             interactable.OnExitPlayerRadius();
         }
-     }
+    }
 
-     public void OnInteractionConeEnter(Collider collider) {
+    //Handles objects entering the interaction cone
+    public void OnInteractionConeEnter(Collider collider) {
         Interactable interactable = collider.GetComponent<Interactable>();
+
+        //if object is an interactable add it to the list of possible interactables
         if (interactable != null
             && interactable.gameObject.GetInstanceID() != gameObject.GetInstanceID()
         ) {
             possibleInteractables.Add(interactable);
         }
-     } 
-     
-     public void OnInteractionConeExit(Collider collider) {
+    } 
+    
+
+    //Handles objects leaving the interaction cone
+    public void OnInteractionConeExit(Collider collider) {
         Interactable interactable = collider.GetComponent<Interactable>();
+
+        //if object is an interactable remove it from the list of possible interactables
         if (interactable != null) {
             possibleInteractables.Remove(interactable);
         }
-     } 
+    } 
 
-     public void RemovePossibleInteractable(Interactable item) {
+    //Removes an item from the list of possible interactables
+    public void RemovePossibleInteractable(Interactable item) {
         possibleInteractables.Remove(item);
-     }
+    }
 
-     public void ClearInteractionOutline() {
-         if (currentInteractable != null) {
-             currentInteractable.InteractionGlowOff();
-         }
-     }
+    //Removes interaction outline from the current interactable
+    public void ClearInteractionOutline() {
+        if (currentInteractable != null) {
+            currentInteractable.InteractionGlowOff();
+        }
+    }
 }
