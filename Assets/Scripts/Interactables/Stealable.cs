@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-/// <summary><c>Stealable</c> extends <c>Pickupable</c> to allow the item to
-/// be picked up.</summary>
+// Stealable extends Pickupable to add in the concept of PickupDestination.
+// These are places in the scene that the pickable can be placed in to complete
+// its task.
 public class Stealable : Pickupable {
 
     public PickupDestination destination;
@@ -15,8 +16,8 @@ public class Stealable : Pickupable {
         base.Start();
     }
 
-    /// <summary> When a stealable item collides with the "endpoint" the item
-    /// should be stolen on all clients. </summary>
+    // When a stealable item collides with the "endpoint" the item
+    // should be stolen on all clients.
     void OnCollisionEnter(Collision collision) {
         if (ignoreNextCollision) {
             ignoreNextCollision = false;
@@ -26,6 +27,7 @@ public class Stealable : Pickupable {
 	    }
 	}
 
+    // Pickup the item (base Pickup method) and also enable destination marker
     public override void PrimaryInteraction(Character character) {
         if (!isPickedUp && task != null && task.isCompleted) {
             task.Uncomplete();
@@ -41,7 +43,8 @@ public class Stealable : Pickupable {
         }
         DisableTaskMarker();
     }
-    
+   
+    // Putdown the item (base Putdown method) and also disable destination marker
     public override void PrimaryInteractionOff(Character character) {
         Debug.Log($"Dropping");
         base.PrimaryInteractionOff(character);

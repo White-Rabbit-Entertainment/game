@@ -2,6 +2,12 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Pocketable extends Interactable to allow the item to
+// be pocketed.
+// When pocketed up it is added to they players inventory and its gameobject is
+// disabled.
+// Pocketed items are readded to the scene in a random position when their task
+// is undone.
 public class Pocketable : Interactable {
   
   public Texture image;
@@ -33,6 +39,7 @@ public class Pocketable : Interactable {
     NetworkManager.instance.GetMe().GetComponent<ItemInteract>().RemovePossibleInteractable(this);
   }
 
+  // Place into inventory
   public override void PrimaryInteraction(Character character) {
     character.AddItemToInventory(this);
     base.PrimaryInteraction(character);
@@ -44,13 +51,17 @@ public class Pocketable : Interactable {
       character.RemoveItemFromInventory(false);
     }
     gameObject.SetActive(false);
-    
+   
+    // 0 all velocity to prevent bouncy things
     if (GetComponent<Rigidbody>() != null) {
         GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
         GetComponent<Rigidbody>().angularVelocity = new Vector3(0,0,0);
     }
   }
- 
+
+  // When the parent task is completed this task should also be uncompleted and
+  // then the item should be re-placed in the scene at a random position (so
+  // that it can be redone).
   public override void OnParentTaskUncomplete() {
     // Move to random position
     SetItemDropConditions(gameSceneManager.RandomNavmeshLocation());

@@ -8,43 +8,70 @@ using Photon.Pun;
 
 
 /// <summary><c>Interactable</c> is the base class for anything which can be
-/// interacted with. It add the funcitons for glowing. These can then be called
-/// in <c>ItemInteract</c>. </summary>
+/// interacted with. It add the funcitons for glowing and targets.
+/// The interface between Characters and Interactables is <c>ItemInteract</c>. 
+///
+/// The key methods are:
+///  - PrimaryInteraction (and PrimaryInteractionOff) - Handles the actaul
+///    interaction between a character and the item
+///  - CanInteract - Dictates whether a character can interat with the item
+///
+/// </summary>
 [DisallowMultipleComponent]
 public abstract class Interactable : MonoBehaviourPun {
 
+  // The description of the task, shown in TaskUI
   public string taskDescription;
+
+  // Colours
   public Color interactionColour;
   public Color taskColour;
   public Color undoTaskColour;
 
-  [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
-  public List<TypeReference> softRequirementTypes;
-  // The probability a soft requirement is assigned
-  public float softRequirementProbability = 0.5f;
-
-  public bool canBeMasterTask = true;
+  // When a task is assigned to this item its hard requirements also get given
+  // tasks and they become requirements of this taks.
+  // A soft requirement can also be added to the list of requirements.
   public List<Interactable> hardRequirements;
   
+  // A list of types which an added hard requirement can be 
+  [Inherits(typeof(Interactable), IncludeBaseType = true, AllowAbstract = true, ExcludeNone = true)]
+  public List<TypeReference> softRequirementTypes;
+  // The probability a soft requirement is added to the hard requirements list
+  public float softRequirementProbability = 0.5f;
+
+  // Whether the task can be a task without a parent
+  public bool canBeMasterTask = true;
+ 
+  // If the interactable should destory it iteractable script after an
+  // interaction. I.e it can only be interacted with once
   public bool singleUse;
   public bool interactionDisabled = false;
- 
+
+  // Which teams can interact with the item
   public Team team = Team.All;
   public Team taskTeam = Team.All;
 
+  // The width of the outline on the interactable
   public float outlineWidth = 5f;
-  
-  public bool inRange = false;
+  // Allow setting of override (instead of adding at start), this is handy for
+  // adding outline to different part of gameobject or precomputed outlines.
   public bool manualOutline = false;
-  
+  [SerializeField] public Outline outline = null;
+ 
+  // Is this item currently in range of the local player
+  public bool inRange = false;
+ 
+  // Animations
   public string itemAnimationTrigger;
   public string playerAnimationTrigger;
 
-  [SerializeField] public Outline outline = null;
+  // Targets, these are used to guide the player to the item
   protected Target taskMarker;
   protected Target undoneMarker;
-  
+ 
+  // The task assigned to the interactable
   public Task task;
+
   public PhotonView View {
     get { return GetComponent<PhotonView>(); }
   }
@@ -52,17 +79,17 @@ public abstract class Interactable : MonoBehaviourPun {
   public virtual void Reset() {}
 
   public virtual void Start() {
+    // Set outline, if override provided use that, if not create an outline.
+    // Overrides are used to set the outline to a precomputed outline
     if (outline == null && !manualOutline) {
-      Debug.Log($"Does not have outline: {gameObject}");
       outline = gameObject.AddComponent<Outline>() as Outline;
     }
-
-      Debug.Log($"Setting outline for {gameObject} to {outline}");
     if (outline) {
       outline.OutlineWidth = outlineWidth;
       outline.enabled = false;
     }
-  
+ 
+    // Setup markers
     taskMarker = gameObject.AddComponent<Target>() as Target;
     taskMarker.enabled = false;
     taskMarker.boxText = "TASK";
@@ -76,11 +103,13 @@ public abstract class Interactable : MonoBehaviourPun {
     undoneMarker.boxText = "UNDONE";
     undoneMarker.TargetColor = Color.red;
 
+    // Colours
     interactionColour = new Color(1f, 1f, 1f, 1f);
     taskColour = new Color(0f, 1f, 0.3f, 1f);
     undoTaskColour = new Color(1f, 0f, 0f, 1f);
   }
 
+  // Can this item be assigned a task
   public bool IsTaskable() {
     return taskDescription != null;
   }
@@ -122,6 +151,7 @@ public abstract class Interactable : MonoBehaviourPun {
     task.Uncomplete();
   }
 
+  // Turn on the glow for this item and set it to the provided colour
   public void SetGlow(Color colour) {
     outline.OutlineColor = colour;
     outline.enabled = true;
@@ -209,7 +239,8 @@ public abstract class Interactable : MonoBehaviourPun {
       throw new Exception("AddTaskRPC cannot be used on a subtask.");
     }
   }
-  
+ 
+  // Add a task and complete it
   [PunRPC]
   public void AddCompletedTaskRPC() {
     AddTaskRPC();
@@ -217,7 +248,8 @@ public abstract class Interactable : MonoBehaviourPun {
       task.Complete(true);
     }
   }
-  
+ 
+  // Add a task with a timelimit
   [PunRPC]
   public void AddTaskWithTimerRPC(Timer timer) {
     AddTaskRPC();
@@ -229,15 +261,9 @@ public abstract class Interactable : MonoBehaviourPun {
     taskTeam = Team.None;
     team = Team.None;
   }
-  
-  //  public void CompleteTask() {
-  //   task.Complete();
-  // }
 
   [PunRPC]
-  public void PlayerAnimationTrigger() {
-
-  }
+  public void PlayerAnimationTrigger() {}
 
   [PunRPC]
   public void ItemAnimationTrigger() {
@@ -245,6 +271,7 @@ public abstract class Interactable : MonoBehaviourPun {
     animator.SetTrigger(itemAnimationTrigger);
   }
 
+  // Start the animation on the interactable as a result of an interaction (eg turning wheel of ship)
   public virtual void PlayItemAnimation() {
     Animator animator = GetComponent<Animator>();
     if (itemAnimationTrigger != null && itemAnimationTrigger != "" && animator != null) {
@@ -252,6 +279,7 @@ public abstract class Interactable : MonoBehaviourPun {
     }
   }
   
+  // Start the animation on a player as a result of an interaction (eg pickup animation)
   public virtual void PlayCharacterAnimation(Character character) {
     if (playerAnimationTrigger != null && playerAnimationTrigger != "") {
       Animator animator = character.GetComponentInChildren<Animator>();
@@ -298,9 +326,12 @@ public abstract class Interactable : MonoBehaviourPun {
     List<Interactable> softRequirements = new List<Interactable>();
     foreach (Transform interactable in interactables) {
       bool hasCorrectType = false;
+      // Check if item is valid type
       foreach(TypeReference type in softRequirementTypes) {
         if (interactable.GetComponent(type.Type) != null) hasCorrectType = true;
       }
+
+      // Check item can be a soft requirement
       if (interactable.GetComponent<Interactable>() != null
       && hasCorrectType
       && interactable.GetComponent<Interactable>().task == null) {
@@ -310,6 +341,7 @@ public abstract class Interactable : MonoBehaviourPun {
     return softRequirements;
   }
 
+  // Handle an item coming close to a player
   public virtual void OnEnterPlayerRadius() {
     if (task != null && task.isUndone && NetworkManager.instance.GetMe().assignedSubTask != task) {
       task.EnableUndoneMarker();
@@ -317,6 +349,7 @@ public abstract class Interactable : MonoBehaviourPun {
     inRange = true;
   }
   
+  // Handle an going far away from a player
   public virtual void OnExitPlayerRadius() {
     if (task != null) task.DisableUndoneMarker();
     inRange = false;
