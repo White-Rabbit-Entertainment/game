@@ -7,25 +7,18 @@ using Photon.Pun;
 
 [RequireComponent(typeof(Agent))]
 public class AgentController : MonoBehaviourPun {
-    [SerializeField]
-    NavMeshAgent navMeshAgent;
-    public float maxInteractionDistance = 3f;
 
-    // public string currentAnimationState;
-    // List<string> animationConditions = new List<string>() {
-    //   "Talking","Dancing","Idle"
-    // };
-    // public float speed = 0.5f;
+    [SerializeField] NavMeshAgent navMeshAgent;
+    [SerializeField] private Interactable currentGoal;
+
+    public float maxInteractionDistance = 3f;
     Animator animator;
 
-    [SerializeField]
-    private Interactable currentGoal;
     private NavMeshPath path;
     private bool pathSet = false;
     private bool goalInProgress = false;
     private Agent character;
 
-    // The empty gameobject which holds all the interactables
     public GameObject interactablesGameObject;
     public List<Interactable> interactables;
 
@@ -34,71 +27,20 @@ public class AgentController : MonoBehaviourPun {
         animator = GetComponentInChildren<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         character = GetComponent<Agent>();
+
         if (!GetComponent<PhotonView>().IsMine) {
           Destroy(this);
         } else {
           path = new NavMeshPath();
           interactables = new List<Interactable>(interactablesGameObject.GetComponentsInChildren<Interactable>());
         }
-        // currentAnimationState = "Idle";
-    }
-
-    private Interactable SetGoal(){
-      if (interactables.Count == 0) {
-        return null;
-      }
-
-      System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
-      int randIndex = r.Next(interactables.Count);
-
-      Interactable newInteractable = interactables[randIndex];
-      if (!newInteractable.CanInteract(character)) {
-        return null;
-      }
-      if (newInteractable.task != null) {
-        Debug.Log("Found a taks on an interactable");
-        return null;
-      }
-      return newInteractable;
-    }
-
-    private IEnumerator CompleteGoal() {
-      yield return new WaitForSeconds(5);
-      if (currentGoal is Pickupable && !((Pickupable)currentGoal).isPickedUp) {
-        currentGoal.PrimaryInteraction(character); //interact with interactable
-      }
-      currentGoal = null;
-      goalInProgress = false;
-      path = null;
-    }
-
-    private IEnumerator EndGoal(Interactable goal) {
-      yield return new WaitForSeconds(10);
-      if (GetComponent<Agent>().currentHeldItem != null) {
-        goal.PrimaryInteractionOff(character); //interact with interactable
-      }
-    }
-
-    private float GetDistance(Interactable currGoal){
-      return Vector3.Distance(currGoal.transform.position, transform.position);
-    }
-
-    private void CalculatePath(Interactable currentGoal){
-      NavMeshHit navHit;
-      path = new NavMeshPath();
-      NavMesh.SamplePosition(currentGoal.transform.position, out navHit, maxInteractionDistance, -1);
-      navMeshAgent.CalculatePath(navHit.position, path);
-      navMeshAgent.SetPath(path);
     }
 
     void Update(){
         // Set the walking speed for the animator
         animator.SetFloat("Walking", navMeshAgent.velocity.magnitude);
         if (currentGoal == null) {
-          // 80% of the time
           currentGoal = SetGoal();
-          // 10% Do an animation
-          // 10% wander aimlessly
         } else if(path == null || path.status != NavMeshPathStatus.PathComplete) {
           try {
             CalculatePath(currentGoal);
@@ -120,20 +62,51 @@ public class AgentController : MonoBehaviourPun {
         }
     }
 
-    // public string get_animation_condition(){
-    //   // return animation_conditions.PickRandom();
-    //   System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
-    //   int randNum = r.Next(animationConditions.Count);
-    //   return (string)animationConditions[randNum];
-    // }
+    private Interactable SetGoal(){
+      if (interactables.Count == 0) {
+        return null;
+      }
 
-    // public Vector3 RandomWanderPoint()
-    // {
-    //   Vector3 randomPoint = (Random.insideUnitSphere * wanderRadius) + transform.position;
-    //   NavMeshHit navHit;
-    //   NavMesh.SamplePosition(randomPoint,out navHit,wanderRadius,-1);
-    //   return new Vector3(navHit.position.x,transform.position.y,navHit.position.z);
-    // }
+      System.Random r = new System.Random(System.Guid.NewGuid().GetHashCode());
+      int randIndex = r.Next(interactables.Count);
 
+      Interactable newInteractable = interactables[randIndex];
+      if (!newInteractable.CanInteract(character)) {
+        return null;
+      }
+      if (newInteractable.task != null) {
+        Debug.Log("Found a task on an interactable");
+        return null;
+      }
+      return newInteractable;
+    }
 
+    private IEnumerator CompleteGoal() {
+      yield return new WaitForSeconds(5);
+      if (currentGoal is Pickupable && !((Pickupable)currentGoal).isPickedUp) {
+        currentGoal.PrimaryInteraction(character);
+      }
+      currentGoal = null;
+      goalInProgress = false;
+      path = null;
+    }
+
+    private IEnumerator EndGoal(Interactable goal) {
+      yield return new WaitForSeconds(10);
+      if (GetComponent<Agent>().currentHeldItem != null) {
+        goal.PrimaryInteractionOff(character);
+      }
+    }
+
+    private float GetDistance(Interactable currGoal){
+      return Vector3.Distance(currGoal.transform.position, transform.position);
+    }
+
+    private void CalculatePath(Interactable currentGoal){
+      NavMeshHit navHit;
+      path = new NavMeshPath();
+      NavMesh.SamplePosition(currentGoal.transform.position, out navHit, maxInteractionDistance, -1);
+      navMeshAgent.CalculatePath(navHit.position, path);
+      navMeshAgent.SetPath(path);
+    }    
 }

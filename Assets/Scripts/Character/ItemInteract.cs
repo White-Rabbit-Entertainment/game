@@ -22,6 +22,9 @@ public class ItemInteract : MonoBehaviourPun {
 
     public SphereCollider itemCollider;
 
+    public List<Interactable> interactablesInRange = new List<Interactable>();
+    public List<Interactable> possibleInteractables = new List<Interactable>();
+
     void Start() {
         if (photonView != null && !photonView.IsMine) {
             Destroy(GetComponent<AudioListener>());
@@ -32,30 +35,6 @@ public class ItemInteract : MonoBehaviourPun {
         }
     }
 
-    public List<Interactable> interactablesInRange = new List<Interactable>();
-    public List<Interactable> possibleInteractables = new List<Interactable>();
-    
-    public Interactable GetBestInteractable() {
-        Debug.Log("Getting best interactable");
-        float angle = float.PositiveInfinity;
-        Interactable bestInteractable = null;
-        foreach(Interactable interactable in possibleInteractables) {
-            if (interactable != null) { // Checks if the iteractable has been destroyed (eg player turns into ghost)
-                RaycastHit hit;
-                Vector3 direction = interactable.transform.position - cameraTransform.position;
-                Physics.Raycast(cameraTransform.position, direction, out hit); 
-                float interactableAngle = Vector3.Angle(cameraTransform.forward, direction);
-
-                if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
-                    angle = interactableAngle;
-                    bestInteractable = interactable;
-                }
-            }
-        }
-        return bestInteractable;
-
-    }
- 
     void Update() {
         Interactable newInteractable = null; 
         // We can only interact with an item if the item is in reach and we are
@@ -102,7 +81,27 @@ public class ItemInteract : MonoBehaviourPun {
         }
     }
 
+    public Interactable GetBestInteractable() {
+        Debug.Log("Getting best interactable");
+        float angle = float.PositiveInfinity;
+        Interactable bestInteractable = null;
+        foreach(Interactable interactable in possibleInteractables) {
+            // Checks if the iteractable has been destroyed (eg player turns into ghost)
+            if (interactable != null) { 
+                RaycastHit hit;
+                Vector3 direction = interactable.transform.position - cameraTransform.position;
+                Physics.Raycast(cameraTransform.position, direction, out hit); 
+                float interactableAngle = Vector3.Angle(cameraTransform.forward, direction);
 
+                if (interactableAngle < angle && hit.collider != null && hit.collider.GetComponent<Interactable>() == interactable) {
+                    angle = interactableAngle;
+                    bestInteractable = interactable;
+                }
+            }
+        }
+        return bestInteractable;
+    }
+ 
     private Interactable ClosestInteractable() {
         float distance = float.PositiveInfinity;
         Interactable closestInteractable = possibleInteractables[0];

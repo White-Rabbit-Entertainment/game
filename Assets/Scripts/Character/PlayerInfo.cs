@@ -14,16 +14,19 @@ public class PlayerInfo : MonoBehaviour {
 
     #if UNITY_EDITOR
         void Reset() {
+            //Set asset path for this component
             assetPath = AssetDatabase.GetAssetPath(gameObject);
             assetPath = assetPath.Replace(".prefab", "");
             assetPath = assetPath.Replace("Assets/Resources/", "");
         }
     #endif
 
+    //Returns player info component given the asset path
     public static PlayerInfo Get(string assetPath) {
         return Resources.Load<GameObject>(assetPath).GetComponent<PlayerInfo>();
     }
     
+    //Returns prefab gameobject given the asset path
     public static GameObject GetPrefab(string assetPath) {
         return Resources.Load<GameObject>(assetPath);
     }

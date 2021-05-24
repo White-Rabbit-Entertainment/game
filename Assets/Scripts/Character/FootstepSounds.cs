@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FootstepSounds : MonoBehaviour
-{
+public class FootstepSounds : MonoBehaviour {
     public CharacterController playerController;
     public AudioSource audioSource;
 
-    // Start is called before the first frame update
-    void Start()
-    {   
+    void Start() {   
         //Assign audiosource
-        audioSource = gameObject.GetComponent<AudioSource> ();
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {   
+    void Update() {   
         //If player is grounded and moving then play sound
         //High pitched sound for player running fast
         //Random ranges of pitch and volume to add variation to step sounds

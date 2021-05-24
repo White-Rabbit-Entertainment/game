@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviourPun
-{
+public class PlayerMovement : MonoBehaviourPun {
     public CharacterController playerController;
     public float speed = 5f;
     public float sprintFactor = 2f;
@@ -16,33 +15,18 @@ public class PlayerMovement : MonoBehaviourPun
     private Movement movement;
     public bool frozen = false;
 
+    //Destroy this script if the character is owned by another player
     void Awake() {
-        // If the player is not me (ie not some other player on the network)
-        // then destory this script
         if (photonView != null && !photonView.IsMine) {
             Destroy(this);
         }
-
-        // Dont destory a player on scene change
-        // DontDestroyOnLoad(gameObject);
     }
 
-    // Start is called before the first frame update
     void Start() {
         movement = new Movement(speed, gravity, jumpHeight, sprintFactor, stamina, staminaDepletionRate, staminaRegenerationRate);
     }
 
-    [PunRPC]
-    public void MovePlayer(Vector3 position) {
-        CharacterController characterController = GetComponent<CharacterController>();
-	    characterController.enabled = false;
-        transform.position = position;
-	    characterController.enabled = true;
-    }
-
-    // Update is called once per frame
     void Update() {
-        //get user input
         float x = 0;
         float z = 0;
         bool isJumping = false;
@@ -65,4 +49,11 @@ public class PlayerMovement : MonoBehaviourPun
         }
     }
 
+    [PunRPC] 
+    public void MovePlayer(Vector3 position) {
+        CharacterController characterController = GetComponent<CharacterController>();
+	    characterController.enabled = false;
+        transform.position = position;
+	    characterController.enabled = true;
+    }
 }
